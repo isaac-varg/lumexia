@@ -1,0 +1,8 @@
+import { Item } from "items"
+
+model ProcurementType {
+    id String @id @default(uuid())
+    name String
+    items Item[]
+    @@map("procurement_types")
+}

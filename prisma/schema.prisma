@@ -1,0 +1,48 @@
+//🧩Don't Edit this file.✨Generated in Mon Apr 01 2024 15:47:17 GMT-0700 (Pacific Daylight Time)✨
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model InventoryType {
+  id    String @id @default(uuid())
+  name  String
+  items Item[]
+
+  @@map("inventory_types")
+}
+
+model ItemType {
+  id    String @id @default(uuid())
+  name  String
+  items Item[]
+
+  @@map("item_types")
+}
+
+model Item {
+  id                 String          @id @default(uuid())
+  name               String
+  referenceCode      String          @unique @map("reference_code")
+  itemTypeId         String          @map("item_type_id")
+  procuremmentTypeId String          @map("procuremment_type_id")
+  inventoryTypeId    String          @map("inventory_type_id")
+  ItemType           ItemType        @relation(fields: [itemTypeId], references: [id])
+  ProcurementType    ProcurementType @relation(fields: [procuremmentTypeId], references: [id])
+  InventoryType      InventoryType   @relation(fields: [inventoryTypeId], references: [id])
+
+  @@map("items")
+}
+
+model ProcurementType {
+  id    String @id @default(uuid())
+  name  String
+  items Item[]
+
+  @@map("procurement_types")
+}
