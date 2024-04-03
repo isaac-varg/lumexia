@@ -3,6 +3,7 @@ import { Inter, Poppins} from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Searchbar from "@/components/Searchbar";
+import Providers from "@/context/Providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -27,12 +28,14 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body className={`${inter.variable} ${poppins.variable}`}>
+      <Providers>
         <div className="flex flex-row h-screen">
           <Sidebar />
           <div className="flex flex-col w-full px-8 py-8 gap-y-8">
             <Searchbar />
             {children}</div>
         </div>
+        </Providers>
       </body>
     </html>
   );
