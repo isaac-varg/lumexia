@@ -1,7 +1,7 @@
 import React from 'react';
 import Root from './Root';
 import Text from './Text';
-
+import ActionRow from './ActionRow';
 
 
 const Form = ({ children }: { children: React.ReactNode }) => (
@@ -10,6 +10,7 @@ const Form = ({ children }: { children: React.ReactNode }) => (
 
 Form.Root = Root;
 Form.Text = Text;
+Form.ActionRow = ActionRow
 
 
 export default Form;

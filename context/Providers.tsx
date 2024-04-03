@@ -1,12 +1,12 @@
 import React from "react";
-import UserInterfaceContextProvider from "./UserInterfaceContext";
+import DialogContextProvider from "./DialogContext";
 
 type ProvidersProps = {
   children: React.ReactNode;
 };
 
 const Providers = ({ children }: ProvidersProps) => {
-  return <UserInterfaceContextProvider>{children}</UserInterfaceContextProvider>;
+  return <DialogContextProvider>{children}</DialogContextProvider>;
 };
 
 export default Providers;

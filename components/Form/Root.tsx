@@ -1,28 +1,24 @@
-"use client"
-import React from 'react';
-import { useForm } from 'react-hook-form';
+"use client";
+import React from "react";
+import { UseFormReturn, useForm } from "react-hook-form";
 
 type RootProps = {
-    children: React.ReactNode;
-    inputs: {}
+  children: React.ReactNode;
+  form: UseFormReturn<any>;
+  onSubmit: (data: any) => void;
 };
 
-const Root = ({ children }: RootProps) => {
+const Root = ({ children, form, onSubmit }: RootProps) => {
 
 
-    const { handleSubmit } = useForm();
 
-    const onSubmit = (data: any) => {
-        console.log(data); 
-    };
-
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="p-6 rounded-lg border-2 border-cutty-sark-200">
-                {children}
-            </div>
-        </form>
-    );
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-y-2">
+        {children}
+      </div>
+    </form>
+  );
 };
 
 export default Root;

@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 
 type TextProps = {
-    form: UseFormReturn;
+    form: UseFormReturn<any>;
     required: boolean;
     fieldName: string;
     label: string;

@@ -1,25 +1,29 @@
 import { useContext } from 'react';
-import { UserInterfaceContext } from '@/context/UserInterfaceContext';
+import { DialogContext, DialogContextDefaults } from '@/context/DialogContext';
 
 const useDialog = () => {
-    const { setInteractivity } = useContext(UserInterfaceContext);
+    const { setDialogState } = useContext(DialogContext);
 
     const showDialog = (activeDialogIdentifier: string) => {
-        setInteractivity((prevState) => ({
+        setDialogState((prevState) => ({
             ...prevState,
-            showDialog: true,
+            isDialogOpen: true,
             activeDialogIdentifier,
         }));
     };
+
+    const resetDialogContext = () => {
+        setDialogState(DialogContextDefaults)
+    }
 
     const setDialogIdentifier = (activeDialogIdentifier: string) => {
-        setInteractivity((prevState) => ({
+        setDialogState((prevState) => ({
             ...prevState,
             activeDialogIdentifier,
         }));
     };
 
-    return { showDialog, setDialogIdentifier };
+    return { showDialog, resetDialogContext, setDialogIdentifier };
 };
 
 export default useDialog;
