@@ -8,7 +8,7 @@ type TextProps = {
 };
   const Text = ({ form, required, fieldName, label}: TextProps) => {
     return (
-      <>
+      <div className='flex flex-col gap-y-1'>
         <label className="font-poppins text-neutral-950 text-xl">
           {label}
         </label>
@@ -18,7 +18,7 @@ type TextProps = {
           placeholder={label}
         />
         {form.formState.errors.name && <span>This field is required</span>}
-      </>
+        </div>
     );
   };
   

@@ -4,7 +4,7 @@ import Card from "@/components/Card";
 import useDialog from "@/hooks/useDialog";
 import { InventoryType } from "@prisma/client";
 import React from "react";
-import InventoryTypesDialog from "./InventoryTypesDialog";
+import ProcurementTypesDialog from "./Dialog";
 import Layout from "@/components/Layout";
 
 interface InventoryTypesPanelProps {
@@ -21,12 +21,18 @@ const InventoryTypesPanel: React.FC<InventoryTypesPanelProps> = ({
   };
   return (
     <>
-      <InventoryTypesDialog />
+      <ProcurementTypesDialog />
       <Card.Root>
         <Layout.Row>
-          <Card.Title>Edit Inventory</Card.Title>
+          <Card.Title>Inventory Types</Card.Title>
           <ActionButton label="Add" onClick={handleAddClick} />
         </Layout.Row>
+        <div className="flex flex-col gap-y-2 pt-6">
+
+        {inventoryTypes.map((inventoryType) => (
+          <button className="bg-limed-spruce-100 p-4 rounded-lg" key={inventoryType.id}>{inventoryType.name}</button>
+        ))}
+        </div>
       </Card.Root>
     </>
   );

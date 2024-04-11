@@ -1,0 +1,13 @@
+import { AliasType } from "aliasTypes"
+import { ItemType } from "itemTypes"
+
+model Alias {
+    id          String    @id @default(uuid())
+    name        String
+    aliasTypeId String    @map("alias_type_id")
+    itemTypeId  String    @map("item_type_id")
+    aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
+    itemType    ItemType  @relation(fields: [itemTypeId], references: [id])
+
+    @@map("aliases")
+}

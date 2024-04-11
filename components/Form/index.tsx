@@ -2,6 +2,7 @@ import React from 'react';
 import Root from './Root';
 import Text from './Text';
 import ActionRow from './ActionRow';
+import SelectField from './Select';
 
 
 const Form = ({ children }: { children: React.ReactNode }) => (
@@ -11,6 +12,7 @@ const Form = ({ children }: { children: React.ReactNode }) => (
 Form.Root = Root;
 Form.Text = Text;
 Form.ActionRow = ActionRow
+Form.Select = SelectField
 
 
 export default Form;

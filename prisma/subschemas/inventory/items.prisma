@@ -3,14 +3,17 @@ import { ProcurementType } from "procurementTypes"
 import { InventoryType } from "inventoryTypes"
 
 model Item {
-    id String @id @default(uuid())
-    name String
-    referenceCode String @unique @map("reference_code")
-    itemTypeId String @map("item_type_id")
-    procuremmentTypeId String @map("procuremment_type_id")
-    inventoryTypeId String @map("inventory_type_id")
-    ItemType ItemType @relation(fields: [itemTypeId], references: [id])
-    ProcurementType ProcurementType @relation(fields: [procuremmentTypeId], references: [id])
-    InventoryType InventoryType @relation(fields: [inventoryTypeId], references: [id])
+    id                String          @id @default(uuid())
+    name              String
+    referenceCode     String          @unique @map("reference_code")
+    itemTypeId        String          @map("item_type_id")
+    procurementTypeId String          @map("procurement_type_id")
+    inventoryTypeId   String          @map("inventory_type_id")
+    createdAt         DateTime        @default(now()) @map("created_at")
+    updatedAt         DateTime        @default(now()) @updatedAt @map("updated_at")
+    itemType          ItemType        @relation(fields: [itemTypeId], references: [id])
+    procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
+    inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
+
     @@map("items")
 }

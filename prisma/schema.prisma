@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Apr 01 2024 15:47:17 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 09 2024 10:24:43 GMT-0700 (Pacific Daylight Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -9,6 +9,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Alias {
+  id          String    @id @default(uuid())
+  name        String
+  aliasTypeId String    @map("alias_type_id")
+  itemTypeId  String    @map("item_type_id")
+  aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
+  itemType    ItemType  @relation(fields: [itemTypeId], references: [id])
+
+  @@map("aliases")
+}
+
+model AliasType {
+  id    String  @id @default(uuid())
+  name  String
+  Alias Alias[]
+
+  @@map("alias_types")
+}
+
 model InventoryType {
   id    String @id @default(uuid())
   name  String
@@ -17,26 +36,29 @@ model InventoryType {
   @@map("inventory_types")
 }
 
-model ItemType {
-  id    String @id @default(uuid())
-  name  String
-  items Item[]
-
-  @@map("item_types")
-}
-
 model Item {
-  id                 String          @id @default(uuid())
-  name               String
-  referenceCode      String          @unique @map("reference_code")
-  itemTypeId         String          @map("item_type_id")
-  procuremmentTypeId String          @map("procuremment_type_id")
-  inventoryTypeId    String          @map("inventory_type_id")
-  ItemType           ItemType        @relation(fields: [itemTypeId], references: [id])
-  ProcurementType    ProcurementType @relation(fields: [procuremmentTypeId], references: [id])
-  InventoryType      InventoryType   @relation(fields: [inventoryTypeId], references: [id])
+  id                String          @id @default(uuid())
+  name              String
+  referenceCode     String          @unique @map("reference_code")
+  itemTypeId        String          @map("item_type_id")
+  procurementTypeId String          @map("procurement_type_id")
+  inventoryTypeId   String          @map("inventory_type_id")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @default(now()) @updatedAt @map("updated_at")
+  itemType          ItemType        @relation(fields: [itemTypeId], references: [id])
+  procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
+  inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
 
   @@map("items")
+}
+
+model ItemType {
+  id    String  @id @default(uuid())
+  name  String
+  items Item[]
+  alias Alias[]
+
+  @@map("item_types")
 }
 
 model ProcurementType {

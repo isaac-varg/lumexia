@@ -1,4 +1,4 @@
-import PageBreadcrumbs from "@/components/PageBreadcrumbs";
+import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
 
 const InventoryLayout = ({
     children,

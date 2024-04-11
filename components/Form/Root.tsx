@@ -14,7 +14,7 @@ const Root = ({ children, form, onSubmit }: RootProps) => {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-4">
         {children}
       </div>
     </form>

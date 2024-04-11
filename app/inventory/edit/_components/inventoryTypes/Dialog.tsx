@@ -1,6 +1,6 @@
 import Dialog from '@/components/Dialog'
 import React from 'react'
-import InventoryTypesForm from './InventoryTypesForm'
+import InventoryTypesForm from './Form'
 
 const InventoryTypesDialog = () => {
   return (

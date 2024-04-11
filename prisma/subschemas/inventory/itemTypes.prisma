@@ -1,8 +1,13 @@
 import { Item } from "items"
+import { Alias } from "aliases"
 
 model ItemType {
-    id String @id @default(uuid())
-    name String
+    id    String  @id @default(uuid())
+    name  String
     items Item[]
+    alias Alias[]
+
     @@map("item_types")
 }
+
+

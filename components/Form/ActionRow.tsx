@@ -1,17 +1,25 @@
 import React from "react";
-import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import Layout from "../Layout";
 import ActionButton from "../ActionButton";
+import useDialog from "@/hooks/useDialog";
 
 type FormActionRowProps = {
   form: UseFormReturn<any>;
 };
 
 const FormActionRow = ({ form }: FormActionRowProps) => {
-  const { handleSubmit } = form;
+  const { resetDialogContext } = useDialog();
+
+  const handleCancel = () => {
+    resetDialogContext();
+    form.reset();
+  };
+
   return (
-    <Layout.Row>
+    <Layout.Row justify="end">
       <ActionButton label={"Submit"} buttonType="submit"/>
+      <ActionButton label={"Cancel"} buttonType="reset" onClick={handleCancel}/>
     </Layout.Row>
   );
 };

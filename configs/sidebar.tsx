@@ -13,9 +13,9 @@ export const sidebar = [
         path: "/inventory"
     },
     {
-        label: "Tasks",
+        label: "Items",
         icon: <TbSmartHome/>,
-        path: "/"
+        path: "/inventory/items"
     },
     {
         label: "Calendar",
