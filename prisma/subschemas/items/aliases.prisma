@@ -8,6 +8,8 @@ model Alias {
     itemTypeId  String    @map("item_type_id")
     aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
     itemType    ItemType  @relation(fields: [itemTypeId], references: [id])
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
 
     @@map("aliases")
 }

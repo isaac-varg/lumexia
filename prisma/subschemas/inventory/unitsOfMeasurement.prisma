@@ -1,0 +1,17 @@
+import { UnitOfMeasurementConversion } from "./unitOfMeasurementConversions"
+import { Container } from "./containers"
+import { Transaction } from "./transactions"
+
+model UnitOfMeasurement {
+    id           String                        @id @default(uuid())
+    name         String
+    abbreviation String
+    uomA         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+    uomB         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+    createdAt    DateTime                      @default(now()) @map("created_at")
+    updatedAt    DateTime                      @updatedAt @map("updated_at")
+    Container    Container[]
+    transactions Transaction[]
+
+    @@map("units_of_measurement")
+}

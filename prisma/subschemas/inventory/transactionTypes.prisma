@@ -1,0 +1,10 @@
+import { Transaction } from "./transactions"
+
+model TransactionType {
+    id           String        @id @default(uuid())
+    name         String
+    deduction    Boolean
+    transactions Transaction[]
+
+    @@map("transaction_types")
+}

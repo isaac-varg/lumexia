@@ -1,8 +1,0 @@
-import { Alias} from "aliases"
-model AliasType {
-    id    String  @id @default(uuid())
-    name  String
-    Alias Alias[]
-
-    @@map("alias_types")
-}

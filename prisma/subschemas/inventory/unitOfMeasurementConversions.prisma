@@ -1,0 +1,14 @@
+import { UnitOfMeasurement } from "./unitsOfMeasurement"
+
+model UnitOfMeasurementConversion {
+    id               String            @id @default(uuid())
+    uomAId           String            @map("uom_a_id")
+    uomBId           String            @map("uom_b_id")
+    conversionFactor Float             @map("conversion_factor")
+    createdAt        DateTime          @default(now()) @map("created_at")
+    updatedAt        DateTime          @updatedAt @map("updated_at")
+    uomA             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomA", fields: [uomAId], references: [id])
+    uomB             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomB", fields: [uomBId], references: [id])
+
+    @@map("unit_of_measurement_conversions")
+}

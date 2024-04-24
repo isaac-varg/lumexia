@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Apr 09 2024 10:24:43 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Apr 24 2024 13:13:28 GMT-0700 (Pacific Daylight Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -9,6 +9,96 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Container {
+  id              String            @id @default(uuid())
+  lotId           String            @map("lot_id")
+  containerTypeId String            @map("container_type_id")
+  uomId           String            @map("uom_id")
+  initialQuantity Float             @map("inital_quantity")
+  lot             Lot               @relation(fields: [lotId], references: [id])
+  containerType   ContainerType     @relation(fields: [containerTypeId], references: [id])
+  uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  transactions    Transaction[]
+
+  @@map("containers")
+}
+
+model ContainerType {
+  id        String      @id @default(uuid())
+  name      String
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  Container Container[]
+}
+
+model Lot {
+  id        String      @id @default(uuid())
+  itemId    String      @map("item_id")
+  lotNumber String      @map("lot_number")
+  item      Item        @relation(fields: [itemId], references: [id])
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  Container Container[]
+}
+
+model Transaction {
+  id                String   @id @default(uuid())
+  containerId       String   @map("container_id")
+  transactionTypeId String   @map("transaction_type_id")
+  userId            String   @map("user_id")
+  uomId             String   @map("uom_id")
+  amount            Float
+  systemNote        String   @map("system_note")
+  userNote          String   @map("user_note")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  container         Container         @relation(fields: [containerId], references: [id])
+  transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
+  user              User              @relation(fields: [userId], references: [id])
+  unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])
+
+  @@map("transactions")
+}
+
+model TransactionType {
+  id           String        @id @default(uuid())
+  name         String
+  deduction    Boolean
+  transactions Transaction[]
+
+  @@map("transaction_types")
+}
+
+model UnitOfMeasurementConversion {
+  id               String            @id @default(uuid())
+  uomAId           String            @map("uom_a_id")
+  uomBId           String            @map("uom_b_id")
+  conversionFactor Float             @map("conversion_factor")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  uomA             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomA", fields: [uomAId], references: [id])
+  uomB             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomB", fields: [uomBId], references: [id])
+
+  @@map("unit_of_measurement_conversions")
+}
+
+model UnitOfMeasurement {
+  id           String                        @id @default(uuid())
+  name         String
+  abbreviation String
+  uomA         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+  uomB         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+  createdAt    DateTime                      @default(now()) @map("created_at")
+  updatedAt    DateTime                      @updatedAt @map("updated_at")
+  Container    Container[]
+  transactions Transaction[]
+
+  @@map("units_of_measurement")
+}
+
 model Alias {
   id          String    @id @default(uuid())
   name        String
@@ -16,22 +106,28 @@ model Alias {
   itemTypeId  String    @map("item_type_id")
   aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
   itemType    ItemType  @relation(fields: [itemTypeId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
   @@map("aliases")
 }
 
 model AliasType {
-  id    String  @id @default(uuid())
-  name  String
-  Alias Alias[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Alias     Alias[]
 
   @@map("alias_types")
 }
 
 model InventoryType {
-  id    String @id @default(uuid())
-  name  String
-  items Item[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  items     Item[]
 
   @@map("inventory_types")
 }
@@ -48,23 +144,105 @@ model Item {
   itemType          ItemType        @relation(fields: [itemTypeId], references: [id])
   procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
   inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
+  lot               Lot[]
 
   @@map("items")
 }
 
 model ItemType {
-  id    String  @id @default(uuid())
-  name  String
-  items Item[]
-  alias Alias[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  items     Item[]
+  alias     Alias[]
 
   @@map("item_types")
 }
 
 model ProcurementType {
-  id    String @id @default(uuid())
-  name  String
-  items Item[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  items     Item[]
 
   @@map("procurement_types")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Authenticator {
+  id                   String  @id @default(cuid())
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("authenticators")
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+  transactions  Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
 }

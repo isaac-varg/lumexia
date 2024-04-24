@@ -1,0 +1,10 @@
+import { Alias} from "aliases"
+model AliasType {
+    id        String   @id @default(uuid())
+    name      String
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    Alias     Alias[]
+
+    @@map("alias_types")
+}
