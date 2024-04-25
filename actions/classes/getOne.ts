@@ -4,9 +4,9 @@ import prisma from "@/lib/prisma";
 
 const prismaInstance = prisma as any;
 
-export const getAll = async (
+export const getOne = async (
   model: any,
-  where?: { [key: string]: string },
+  id: string,
   includes?: string[] | null
 ) => {
   let include: Record<string, boolean> | null = null;
@@ -23,18 +23,10 @@ export const getAll = async (
     include = records;
   }
 
-  if (where) {
-    const results = await prismaInstance[model].findMany({
-      where: {
-        ...where,
-      },
-      include: includes ? { ...include } : null,
-    });
-
-    return results;
-  }
-
-  const results = await prismaInstance[model].findMany({
+  const results = await prismaInstance[model].findUnique({
+    where: {
+      id,
+    },
     include: includes ? { ...include } : null,
   });
   return results;

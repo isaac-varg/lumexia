@@ -1,13 +1,13 @@
 import { AliasType } from "aliasTypes"
-import { ItemType } from "itemTypes"
+import { Item } from "items"
 
 model Alias {
     id          String    @id @default(uuid())
     name        String
     aliasTypeId String    @map("alias_type_id")
-    itemTypeId  String    @map("item_type_id")
+    itemId      String    @map("item_id")
     aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
-    itemType    ItemType  @relation(fields: [itemTypeId], references: [id])
+    item        Item      @relation(fields: [itemId], references: [id])
     createdAt   DateTime  @default(now()) @map("created_at")
     updatedAt   DateTime  @updatedAt @map("updated_at")
 

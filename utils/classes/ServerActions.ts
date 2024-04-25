@@ -2,6 +2,7 @@ import { createMany } from "@/actions/classes/createMany";
 import { createNew } from "@/actions/classes/createNew";
 import { getAll } from "@/actions/classes/getAll";
 import { getAllWithIncludes } from "@/actions/classes/getAllWithIncludes";
+import { getOne } from "@/actions/classes/getOne";
 
 export default class ServerActions {
   private model: any;
@@ -10,10 +11,15 @@ export default class ServerActions {
     this.model = model;
   }
 
-  getAll = async () => {
-    const results = await getAll(this.model);
+  getAll = async (where?: { [key: string]: string }, includes?: string[]) => {
+    const results = await getAll(this.model, where, includes);
     return results;
   };
+
+  getOne = async (id: string, includes?: string[]) => {
+    const results = await getOne(this.model, id, includes);
+    return results;
+  }
 
   getAllWithIncludes = async (includes: string[]) => {
     const results = await getAllWithIncludes(this.model, includes);

@@ -1,12 +1,13 @@
 import React from "react";
 
 interface ActionButtonProps {
-  label: string;
+  label?: string;
   onClick?: () => void;
   size?: "default";
   color?: "default";
   shape?: "default";
   buttonType?: "button" | "submit" | "reset";
+  children?: React.ReactNode;
 }
 
 const classes = {
@@ -28,6 +29,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   color = "default",
   shape = "default",
   buttonType = "button",
+  children
 }) => {
   return (
     <button
@@ -35,7 +37,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
       className={`${classes.sizes[size]} ${classes.colors[color]} ${classes.shapes[shape]}`}
       onClick={onClick}
     >
-      {label}
+        {children || label}
     </button>
   );
 };

@@ -3,7 +3,7 @@ import SortableHead from "@/components/DataTable/SortableHead";
 import { Item } from "@/types/item";
 import { createColumnHelper } from "@tanstack/react-table";
 
-const columnHelper = createColumnHelper<Item>();
+const columnHelper = createColumnHelper<any>();
 
 export const columns = [
   columnHelper.accessor("name", {
@@ -18,37 +18,31 @@ export const columns = [
       );
     },
   }),
+
   columnHelper.accessor("referenceCode", {
     header: "Refrence Code",
   }),
-  columnHelper.accessor("itemType.id", {
-    id: "itemType",
+  columnHelper.accessor("itemTypeName", {
+    // id: "itemType",
     header: "Item Type",
     cell: (row) => {
       return row.row.original.itemType?.name;
     },
     filterFn: (row, id, value) => {
+      console.log(row);
       return value.includes(row.getValue(id));
     },
   }),
-  columnHelper.accessor("inventoryType.id", {
-    id: "inventoryType",
-    header: "Inventory Type",
+  columnHelper.accessor("aliasesAll", {
+    // id: "aliases",
+    header: "Aliases",
     cell: (row) => {
-      return row.row.original.inventoryType?.name;
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  }),
-  columnHelper.accessor("procurementType.id", {
-    id: "procurementType",
-    header: "Procurement Type",
-    cell: (row) => {
-      return row.row.original.procurementType?.name;
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const count = row.row.original.aliases.length;
+      if (count > 2) {
+        return count
+      } else {
+        return row.row.original.aliasesAll;
+      }
     },
   }),
 ];

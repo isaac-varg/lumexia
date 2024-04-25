@@ -4,6 +4,8 @@ import { columns } from "./Columns";
 import { Item } from "@/types/item";
 import { Filter } from "@/types/filter";
 import { toFacetFilter } from "@/utils/data/toFacetFilter";
+import { useRouter } from "next/navigation";
+import { flattenItem } from "../_functions/flattenItem";
 
 type TableProps = {
   items: Item[];
@@ -11,43 +13,34 @@ type TableProps = {
 
 const Table = ({ items }: TableProps) => {
 
+  const router = useRouter();
+
+  const tableData =  flattenItem(items);
+
+  const handleRowClick = (row: any) => {
+    const formattedName = row.original.name.replace(/\s+/g, '-').toLowerCase();
+    router.push(
+      `/inventory/items/${`${formattedName}?id=${row.original.id}`} `
+    );
+  };
+
   const filters: Filter[] = [
+
     {
-      columnName: "procurementType",
-      filterLabel: "Procurement Type",
-      options: toFacetFilter(
-        items,
-        "procurementType.id",
-        "procurementType.name"
-      ),
-    },
-    {
-      columnName: "itemType",
+      columnName: "itemTypeName",
       filterLabel: "Item Type",
-      options: toFacetFilter(
-        items,
-        "itemType.id",
-        "itemType.name"
-      ),
+      options: toFacetFilter(tableData, "itemTypeName", "itemTypeName"),
     },
-    {
-      columnName: "inventoryType",
-      filterLabel: "Inventory Type",
-      options: toFacetFilter(
-        items,
-        "inventoryType.id",
-        "inventoryType.name"
-      ),
-    },
+
   ];
 
   return (
     <DataTable.Default
-      data={items}
+      data={tableData}
       columns={columns}
       filters={filters}
       dialogIdentifier="createItem"
-      onRowClick={(row) => console.log(row)}
+      onRowClick={(row) => handleRowClick(row)}
     />
   );
 };

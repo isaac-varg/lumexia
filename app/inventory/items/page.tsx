@@ -7,7 +7,8 @@ import CreateItem from './_components/CreateItem'
 
 const ItemsPage = async () => {
 
-  const items = await itemActions.getAllWithIncludes(['itemType', 'procurementType', 'inventoryType'])
+  const items = await itemActions.getAllWithIncludes(['itemType', 'procurementType', 'inventoryType', 'aliases']);
+
 
   return (
     <div><Table items={items} />

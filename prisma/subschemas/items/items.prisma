@@ -2,6 +2,7 @@ import { ItemType } from "itemTypes"
 import { ProcurementType } from "procurementTypes"
 import { InventoryType } from "inventoryTypes"
 import { Lot } from "../inventory/lots"
+import { Alias } from "./aliases"
 
 model Item {
     id                String          @id @default(uuid())
@@ -16,6 +17,7 @@ model Item {
     procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
     inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
     lot               Lot[]
+    aliases           Alias[]
 
     @@map("items")
 }

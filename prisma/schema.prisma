@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Apr 24 2024 13:13:28 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Apr 24 2024 14:54:08 GMT-0700 (Pacific Daylight Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -103,9 +103,9 @@ model Alias {
   id          String    @id @default(uuid())
   name        String
   aliasTypeId String    @map("alias_type_id")
-  itemTypeId  String    @map("item_type_id")
+  itemId      String    @map("item_id")
   aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
-  itemType    ItemType  @relation(fields: [itemTypeId], references: [id])
+  item        Item      @relation(fields: [itemId], references: [id])
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
@@ -145,6 +145,7 @@ model Item {
   procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
   inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
   lot               Lot[]
+  aliases           Alias[]
 
   @@map("items")
 }
@@ -155,7 +156,6 @@ model ItemType {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   items     Item[]
-  alias     Alias[]
 
   @@map("item_types")
 }
