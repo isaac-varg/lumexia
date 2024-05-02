@@ -28,7 +28,10 @@ export default function FacetedFilter<TData, TValue>({
           {title}
           {selectedValues?.size > 0 && (
             <>
-              <Separator.Root className="bg-limed-spruce-900 mx-2 w-[1px] h-6" orientation="vertical" />
+              <Separator.Root
+                className="bg-limed-spruce-900 mx-2 w-[1px] h-6"
+                orientation="vertical"
+              />
               <div className="hidden space-x-1 lg:flex">
                 {selectedValues.size > 2 ? (
                   <span className="rounded-sm px-1 font-normal">
@@ -52,13 +55,14 @@ export default function FacetedFilter<TData, TValue>({
         </button>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="rounded p-5 w-[260px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade">
+        <Popover.Content className="rounded px-2 py-2 w-[260px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade">
           <div className="flex flex-col ">
             {options.map((option) => {
               const isSelected = selectedValues.has(option.value);
               return (
                 <button
-                    // className="flex items-center justify-between py-2 px-3 w-full rounded-sm hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
+                  // className="flex items-center justify-between py-2 px-3 w-full rounded-sm hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
+                  className="font-inter text-lg text-neutral-800 px-2 py-1 bg-bay-leaf-100 rounded-lg"
                   key={option.value}
                   onClick={() => {
                     if (isSelected) {
@@ -74,10 +78,10 @@ export default function FacetedFilter<TData, TValue>({
                 >
                   <div className="flex flex-row items-center ">
                     <div
-                      className={`mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-neutral-800" ${
+                      className={`mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-neutral-800" ${
                         isSelected
                           ? "bg-bay-leaf-400 text-bay-leaf-950"
-                          : "opacity-50 [&_svg]:invisible"
+                          : "bg-bay-leaf-400 opacity-50 [&_svg]:invisible"
                       }`}
                     >
                       <RxCheck />
@@ -104,4 +108,3 @@ export default function FacetedFilter<TData, TValue>({
     </Popover.Root>
   );
 }
-

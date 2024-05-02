@@ -1,12 +1,20 @@
 import { Item } from "../items/items"
 import { Container } from "./containers"
+import { Transaction } from "./transactions"
+import { UnitOfMeasurement } from "./unitsOfMeasurement"
 
 model Lot {
-    id        String      @id @default(uuid())
-    itemId    String      @map("item_id")
-    lotNumber String      @map("lot_number")
-    item      Item        @relation(fields: [itemId], references: [id])
-    createdAt DateTime    @default(now()) @map("created_at")
-    updatedAt DateTime    @updatedAt @map("updated_at")
-    Container Container[]
+    id              String            @id @default(uuid())
+    itemId          String            @map("item_id")
+    lotNumber       String            @map("lot_number")
+    initialQuantity Float             @map("initial_quantity")
+    uomId           String            @map("uom_id")
+    item            Item              @relation(fields: [itemId], references: [id])
+    createdAt       DateTime          @default(now()) @map("created_at")
+    updatedAt       DateTime          @updatedAt @map("updated_at")
+    containers      Container[]
+    transactions    Transaction[]
+    uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    @@map("lots")
 }
+

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Apr 24 2024 14:54:08 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 30 2024 16:41:28 GMT-0700 (Pacific Daylight Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -14,13 +14,12 @@ model Container {
   lotId           String            @map("lot_id")
   containerTypeId String            @map("container_type_id")
   uomId           String            @map("uom_id")
-  initialQuantity Float             @map("inital_quantity")
-  lot             Lot               @relation(fields: [lotId], references: [id])
+  containerWeight Float             @map("container_weight")
   containerType   ContainerType     @relation(fields: [containerTypeId], references: [id])
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @updatedAt @map("updated_at")
-  transactions    Transaction[]
+  lot             Lot               @relation(fields: [lotId], references: [id])
 
   @@map("containers")
 }
@@ -31,21 +30,27 @@ model ContainerType {
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
   Container Container[]
+
+  @@map("container_types")
 }
 
 model Lot {
-  id        String      @id @default(uuid())
-  itemId    String      @map("item_id")
-  lotNumber String      @map("lot_number")
-  item      Item        @relation(fields: [itemId], references: [id])
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  Container Container[]
+  id              String            @id @default(uuid())
+  itemId          String            @map("item_id")
+  lotNumber       String            @map("lot_number")
+  initialQuantity Float             @map("initial_quantity")
+  uomId           String            @map("uom_id")
+  item            Item              @relation(fields: [itemId], references: [id])
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  containers      Container[]
+  transactions    Transaction[]
+  uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
 }
 
 model Transaction {
   id                String   @id @default(uuid())
-  containerId       String   @map("container_id")
+  lotId             String   @map("lot_id")
   transactionTypeId String   @map("transaction_type_id")
   userId            String   @map("user_id")
   uomId             String   @map("uom_id")
@@ -55,10 +60,10 @@ model Transaction {
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
-  container         Container         @relation(fields: [containerId], references: [id])
   transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
   user              User              @relation(fields: [userId], references: [id])
   unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])
+  lot               Lot               @relation(fields: [lotId], references: [id])
 
   @@map("transactions")
 }
@@ -93,8 +98,9 @@ model UnitOfMeasurement {
   uomB         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
   createdAt    DateTime                      @default(now()) @map("created_at")
   updatedAt    DateTime                      @updatedAt @map("updated_at")
-  Container    Container[]
+  lots         Lot[]
   transactions Transaction[]
+  Container    Container[]
 
   @@map("units_of_measurement")
 }

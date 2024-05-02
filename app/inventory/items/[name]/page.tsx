@@ -1,11 +1,11 @@
 import aliasActions from "@/actions/inventory/aliases";
 import itemActions from "@/actions/inventory/items";
-import Card from "@/components/Card";
 import Layout from "@/components/Layout";
-import LabelDataPair from "@/components/Text/LabelDataPair";
 import PageTitle from "@/components/Text/PageTitle";
-import { Alias } from "@/types/alias";
 import AliasesPanel from "./_components/AliasesPanel";
+import BasicsPanel from "./_components/BasicsPanel";
+import Tabs from "./_components/Tabs";
+import TabsPanel from "./_components/TabsPanel";
 
 type ItemDashboardProps = {
   params: {
@@ -30,23 +30,14 @@ const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
       <PageTitle title={item.name} />
 
       <Layout.Grid>
-        <Card.Root>
-          <Card.Title>Basic Details</Card.Title>
-          <LabelDataPair label="Name" data={item.name} />
-          <LabelDataPair label="Reference Code" data={item.referenceCode} />
-          <LabelDataPair label="Item Type" data={item.itemType.name} />
-          <LabelDataPair
-            label="Procurement Type"
-            data={item.procurementType.name}
-          />
-          <LabelDataPair
-            label="Inventory Type"
-            data={item.inventoryType.name}
-          />
-        </Card.Root>
+        <BasicsPanel item={item} />
 
         <AliasesPanel aliases={aliases} item={item} />
       </Layout.Grid>
+
+      <TabsPanel item={item} />
+
+      
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { UnitOfMeasurementConversion } from "./unitOfMeasurementConversions"
-import { Container } from "./containers"
+import { Lot } from "./lots"
 import { Transaction } from "./transactions"
+import { Container } from "./containers"
 
 model UnitOfMeasurement {
     id           String                        @id @default(uuid())
@@ -10,8 +11,10 @@ model UnitOfMeasurement {
     uomB         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
     createdAt    DateTime                      @default(now()) @map("created_at")
     updatedAt    DateTime                      @updatedAt @map("updated_at")
-    Container    Container[]
+    lots         Lot[]
     transactions Transaction[]
+    Container    Container[]
 
     @@map("units_of_measurement")
 }
+

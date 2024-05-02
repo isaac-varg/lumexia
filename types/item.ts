@@ -2,9 +2,10 @@ import { ItemType } from "./itemType"
 import { ProcurementType } from "./procurementType"
 import { InventoryType } from "./inventoryType"
 import { Alias } from "./alias"
+import { Lot } from "./lot"
 
 export interface Item {
-    id?: string
+    id: string
     name: string
     referenceCode: string
     itemTypeId: string
@@ -16,4 +17,5 @@ export interface Item {
     procurementType?: ProcurementType
     inventoryType?: InventoryType
     aliases?: Alias[]
+    lots?: Lot[]
 }

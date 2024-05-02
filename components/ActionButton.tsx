@@ -15,7 +15,8 @@ const classes = {
     default: "py-2 px-4",
   },
   colors: {
-    default: "bg-blue-500 hover:bg-blue-700 text-white",
+    default: "bg-bay-leaf-300 hover:bg-bay-leaf-400 text-white",
+    
   },
   shapes: {
     default: "rounded",
@@ -34,7 +35,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   return (
     <button
       type={buttonType}
-      className={`${classes.sizes[size]} ${classes.colors[color]} ${classes.shapes[shape]}`}
+      className={`font-poppins shadow-bay-leaf-300 shadow-md ${classes.sizes[size]} ${classes.colors[color]} ${classes.shapes[shape]}`}
       onClick={onClick}
     >
         {children || label}
