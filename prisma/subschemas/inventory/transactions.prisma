@@ -15,7 +15,6 @@ model Transaction {
     userNote          String   @map("user_note")
     createdAt         DateTime @default(now()) @map("created_at")
     updatedAt         DateTime @updatedAt @map("updated_at")
-
     transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
     user              User              @relation(fields: [userId], references: [id])
     unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])

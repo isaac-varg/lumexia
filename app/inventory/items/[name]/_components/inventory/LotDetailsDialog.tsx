@@ -1,9 +1,9 @@
 import Dialog from "@/components/Dialog";
-import { FlattenedLot } from "../_functions/flattenLots";
-import { flattenTransactions } from "../_functions/flattenTransactions";
+import { FlattenedLot } from "../../_functions/flattenLots";
+import { flattenTransactions } from "../../_functions/flattenTransactions";
 import { Lot } from "@/types/lot";
 import DataTable from "@/components/DataTable";
-import { transactionsColumns } from "../_configs/TransactionsColumns";
+import { transactionsColumns } from "../../_configs/TransactionsColumns";
 import { toFacetFilter } from "@/utils/data/toFacetFilter";
 import { Filter } from "@/types/filter";
 import Text from "@/components/Text";
@@ -29,10 +29,12 @@ const LotDetailsDialog = ({ lot }: LotDetailsDialogProps) => {
     },
   ];
 
+  if (!lot) { return null}
+
   return (
     <>
 
-      <CreateTransactionDialog />
+      <CreateTransactionDialog lot={lot} />
 
       <Dialog.Root identifier="lotDetails">
         <Dialog.Title title={`${lot?.lotNumber} Details`} />

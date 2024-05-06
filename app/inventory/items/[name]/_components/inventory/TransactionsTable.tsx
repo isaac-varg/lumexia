@@ -2,7 +2,7 @@ import DataTable from "@/components/DataTable";
 import React from "react";
 import { toFacetFilter } from "@/utils/data/toFacetFilter";
 import { Filter } from "@/types/filter";
-import { transactionsColumns } from "../_configs/TransactionsColumns";
+import { transactionsColumns } from "../../_configs/TransactionsColumns";
 import { Transaction } from "@/types/transaction";
 
 

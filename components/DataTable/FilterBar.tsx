@@ -11,9 +11,10 @@ import ActionButton from "../ActionButton";
 
 interface DataTableFilterbarProps<TData> {
   table: Table<TData>;
-  filters: Filter[];
+  filters?: Filter[] | null;
   dialogIdentifier?: string;
   linkPath?: string;
+  actionButtonTitle?: string;
 }
 
 export default function FilterBar<TData>({
@@ -21,6 +22,7 @@ export default function FilterBar<TData>({
   filters,
   dialogIdentifier,
   linkPath,
+  actionButtonTitle,
 }: DataTableFilterbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -40,30 +42,32 @@ export default function FilterBar<TData>({
           />
         </div>
 
-        <div className="flex flex-row items-center gap-x-4">
-          {filters.map((filter, index) => (
-            <FacetedFilter
-              key={index}
-              column={table.getColumn(filter.columnName)}
-              title={filter.filterLabel}
-              options={filter.options}
-            />
-          ))}
+        {filters && (
+          <div className="flex flex-row items-center gap-x-4">
+            {filters.map((filter, index) => (
+              <FacetedFilter
+                key={index}
+                column={table.getColumn(filter.columnName)}
+                title={filter.filterLabel}
+                options={filter.options}
+              />
+            ))}
 
-          {isFiltered && (
-            <button
-              onClick={() => table.resetColumnFilters()}
-              className="flex items-center px-2 lg:px-3 font-poppins"
-            >
-              Reset
-              <RxCross2 className="ml-2 h-4 w-4" />
-            </button>
-          )}
-        </div>
+            {isFiltered && (
+              <button
+                onClick={() => table.resetColumnFilters()}
+                className="flex items-center px-2 lg:px-3 font-poppins"
+              >
+                Reset
+                <RxCross2 className="ml-2 h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
       {dialogIdentifier && (
         <ActionButton
-          label="Add Item"
+          label={actionButtonTitle ?? "Add"}
           onClick={() => showDialog(dialogIdentifier)}
         />
       )}

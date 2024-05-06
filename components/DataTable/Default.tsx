@@ -18,30 +18,17 @@ import { Filter } from "@/types/filter";
 type DataTableDefaultProps = {
   data: any;
   columns: any;
-  filters: Filter[];
+  actionButtonTitle?: string;
+  filters?: Filter[] | null;
   dialogIdentifier?: string;
   linkPath?: string;
   onRowClick: (row: any) => void;
 };
 
-//add our filter to the filterFns
-
-// declare module "@tanstack/react-table" {
-//   interface FilterFns {
-//     meetmeet: FilterFn<unknown>;
-//   }
-// }
-
-
-// // custom filter function
-// const myCustomFilterFn: FilterFn<any> = (row, columnId, value, addMeta) => {
-//   console.log('filternfn ran')
-//   return true;
-// };
-
 const Default = ({
   data,
   columns,
+  actionButtonTitle,
   filters,
   onRowClick,
   dialogIdentifier,
@@ -82,6 +69,7 @@ const Default = ({
       <FilterBar
         table={table}
         filters={filters}
+        actionButtonTitle={actionButtonTitle}
         dialogIdentifier={dialogIdentifier}
         linkPath={linkPath}
       />
