@@ -1,0 +1,12 @@
+import { Supplier } from "./suppliers"
+import { Alias } from "../items/aliases"
+
+model SupplierAlias {
+    id         String   @id @default(uuid())
+    aliasId    String   @map("alias_id")
+    supplierId String   @map("supplier_id")
+    supplier   Supplier @relation(fields: [supplierId], references: [id])
+    alias      Alias    @relation(fields: [aliasId], references: [id])
+
+    @@map("supplier_aliases")
+}

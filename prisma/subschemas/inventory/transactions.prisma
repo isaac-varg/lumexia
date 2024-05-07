@@ -5,16 +5,16 @@ import { UnitOfMeasurement } from "./unitsOfMeasurement"
 import { Lot } from "./lots"
 
 model Transaction {
-    id                String   @id @default(uuid())
-    lotId             String   @map("lot_id")
-    transactionTypeId String   @map("transaction_type_id")
-    userId            String   @map("user_id")
-    uomId             String   @map("uom_id")
+    id                String            @id @default(uuid())
+    lotId             String            @map("lot_id")
+    transactionTypeId String            @map("transaction_type_id")
+    userId            String            @map("user_id")
+    uomId             String            @map("uom_id")
     amount            Float
-    systemNote        String   @map("system_note")
-    userNote          String   @map("user_note")
-    createdAt         DateTime @default(now()) @map("created_at")
-    updatedAt         DateTime @updatedAt @map("updated_at")
+    systemNote        String            @map("system_note")
+    userNote          String            @map("user_note")
+    createdAt         DateTime          @default(now()) @map("created_at")
+    updatedAt         DateTime          @updatedAt @map("updated_at")
     transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
     user              User              @relation(fields: [userId], references: [id])
     unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])
@@ -22,3 +22,4 @@ model Transaction {
 
     @@map("transactions")
 }
+

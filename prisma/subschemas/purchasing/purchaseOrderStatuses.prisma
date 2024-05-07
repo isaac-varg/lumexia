@@ -1,0 +1,11 @@
+import { PurchaseOrder } from "./purchaseOrders"
+import { PurchaseOrderItem } from "./purchaseOrderItems"
+
+model PurchaseOrderStatus {
+    id                String              @id @default(uuid())
+    name              String
+    purchaseOrders    PurchaseOrder[]
+    purchaseOrderItem PurchaseOrderItem[]
+
+    @@map("purchase_order_status")
+}

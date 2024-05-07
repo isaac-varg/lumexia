@@ -1,0 +1,21 @@
+import {  Supplier } from "./suppliers" 
+import { User } from "../users/users"
+import { PurchaseOrderStatus } from "./purchaseOrderStatuses"
+import { PurchaseOrderItem } from "./purchaseOrderItems"
+
+model PurchaseOrder {
+    id                String              @id @default(uuid())
+    referenceCode     Int                 @default(autoincrement()) @map("reference_code")
+    submittingUserId  String              @map("submitting_user_id")
+    supplierId        String              @map("supplier_id")
+    statusId          String              @map("status_id")
+    createdAt         DateTime            @default(now()) @map("created_at")
+    updatedAt         DateTime            @updatedAt @map("updated_at")
+    supplier          Supplier            @relation(fields: [supplierId], references: [id])
+    user              User                @relation(fields: [submittingUserId], references: [id])
+    status            PurchaseOrderStatus @relation(fields: [statusId], references: [id])
+    PurchaseOrderItem PurchaseOrderItem[]
+
+    @@map("purchase_orders")
+}
+

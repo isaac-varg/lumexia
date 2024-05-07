@@ -15,6 +15,6 @@ model Lot {
     containers      Container[]
     transactions    Transaction[]
     uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+
     @@map("lots")
 }
-

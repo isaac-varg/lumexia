@@ -3,21 +3,23 @@ import { ProcurementType } from "procurementTypes"
 import { InventoryType } from "inventoryTypes"
 import { Lot } from "../inventory/lots"
 import { Alias } from "./aliases"
+import { PurchaseOrderItem } from "../purchasing/purchaseOrderItems"
 
 model Item {
-    id                String          @id @default(uuid())
+    id                String              @id @default(uuid())
     name              String
-    referenceCode     String          @unique @map("reference_code")
-    itemTypeId        String          @map("item_type_id")
-    procurementTypeId String          @map("procurement_type_id")
-    inventoryTypeId   String          @map("inventory_type_id")
-    createdAt         DateTime        @default(now()) @map("created_at")
-    updatedAt         DateTime        @default(now()) @updatedAt @map("updated_at")
-    itemType          ItemType        @relation(fields: [itemTypeId], references: [id])
-    procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
-    inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
+    referenceCode     String              @unique @map("reference_code")
+    itemTypeId        String              @map("item_type_id")
+    procurementTypeId String              @map("procurement_type_id")
+    inventoryTypeId   String              @map("inventory_type_id")
+    createdAt         DateTime            @default(now()) @map("created_at")
+    updatedAt         DateTime            @updatedAt @map("updated_at")
+    itemType          ItemType            @relation(fields: [itemTypeId], references: [id])
+    procurementType   ProcurementType     @relation(fields: [procurementTypeId], references: [id])
+    inventoryType     InventoryType       @relation(fields: [inventoryTypeId], references: [id])
     lot               Lot[]
     aliases           Alias[]
+    purchaseOrderItem PurchaseOrderItem[]
 
     @@map("items")
 }
