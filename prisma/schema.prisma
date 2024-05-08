@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon May 06 2024 13:02:31 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue May 07 2024 13:33:37 GMT-0700 (Pacific Daylight Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -92,29 +92,31 @@ model UnitOfMeasurementConversion {
 }
 
 model UnitOfMeasurement {
-  id           String                        @id @default(uuid())
-  name         String
-  abbreviation String
-  uomA         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
-  uomB         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
-  createdAt    DateTime                      @default(now()) @map("created_at")
-  updatedAt    DateTime                      @updatedAt @map("updated_at")
-  lots         Lot[]
-  transactions Transaction[]
-  Container    Container[]
+  id                String                        @id @default(uuid())
+  name              String
+  abbreviation      String
+  uomA              UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+  uomB              UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+  createdAt         DateTime                      @default(now()) @map("created_at")
+  updatedAt         DateTime                      @updatedAt @map("updated_at")
+  lots              Lot[]
+  transactions      Transaction[]
+  container         Container[]
+  purchaseOrderItem PurchaseOrderItem[]
 
   @@map("units_of_measurement")
 }
 
 model Alias {
-  id          String    @id @default(uuid())
-  name        String
-  aliasTypeId String    @map("alias_type_id")
-  itemId      String    @map("item_id")
-  aliasType   AliasType @relation(fields: [aliasTypeId], references: [id])
-  item        Item      @relation(fields: [itemId], references: [id])
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
+  id            String          @id @default(uuid())
+  name          String
+  aliasTypeId   String          @map("alias_type_id")
+  itemId        String          @map("item_id")
+  aliasType     AliasType       @relation(fields: [aliasTypeId], references: [id])
+  item          Item            @relation(fields: [itemId], references: [id])
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  supplierAlias SupplierAlias[]
 
   @@map("aliases")
 }
@@ -140,19 +142,20 @@ model InventoryType {
 }
 
 model Item {
-  id                String          @id @default(uuid())
+  id                String              @id @default(uuid())
   name              String
-  referenceCode     String          @unique @map("reference_code")
-  itemTypeId        String          @map("item_type_id")
-  procurementTypeId String          @map("procurement_type_id")
-  inventoryTypeId   String          @map("inventory_type_id")
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @default(now()) @updatedAt @map("updated_at")
-  itemType          ItemType        @relation(fields: [itemTypeId], references: [id])
-  procurementType   ProcurementType @relation(fields: [procurementTypeId], references: [id])
-  inventoryType     InventoryType   @relation(fields: [inventoryTypeId], references: [id])
+  referenceCode     String              @unique @map("reference_code")
+  itemTypeId        String              @map("item_type_id")
+  procurementTypeId String              @map("procurement_type_id")
+  inventoryTypeId   String              @map("inventory_type_id")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  itemType          ItemType            @relation(fields: [itemTypeId], references: [id])
+  procurementType   ProcurementType     @relation(fields: [procurementTypeId], references: [id])
+  inventoryType     InventoryType       @relation(fields: [inventoryTypeId], references: [id])
   lot               Lot[]
   aliases           Alias[]
+  purchaseOrderItem PurchaseOrderItem[]
 
   @@map("items")
 }
@@ -175,6 +178,74 @@ model ProcurementType {
   items     Item[]
 
   @@map("procurement_types")
+}
+
+model PurchaseOrderItem {
+  id                    String              @id @default(uuid())
+  purchaseOrderId       String              @map("purchase_order_id")
+  itemId                String              @map("item_id")
+  quantity              Float
+  pricePerUnit          Float               @map("price_per_unit")
+  uomId                 String              @map("uom_id")
+  purchaseOrderStatusId String              @map("purchase_order_status_id")
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+  purchaseOrders        PurchaseOrder       @relation(fields: [purchaseOrderId], references: [id])
+  item                  Item                @relation(fields: [itemId], references: [id])
+  uom                   UnitOfMeasurement   @relation(fields: [uomId], references: [id])
+  purchaseOrderStatus   PurchaseOrderStatus @relation(fields: [purchaseOrderStatusId], references: [id])
+
+  @@map("purchase_order_items")
+}
+
+model PurchaseOrder {
+  id                String              @id @default(uuid())
+  referenceCode     Int                 @default(autoincrement()) @map("reference_code")
+  submittingUserId  String              @map("submitting_user_id")
+  supplierId        String              @map("supplier_id")
+  statusId          String              @map("status_id")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  supplier          Supplier            @relation(fields: [supplierId], references: [id])
+  user              User                @relation(fields: [submittingUserId], references: [id])
+  status            PurchaseOrderStatus @relation(fields: [statusId], references: [id])
+  PurchaseOrderItem PurchaseOrderItem[]
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderStatus {
+  id                String              @id @default(uuid())
+  name              String
+  purchaseOrders    PurchaseOrder[]
+  purchaseOrderItem PurchaseOrderItem[]
+
+  @@map("purchase_order_status")
+}
+
+model SupplierAlias {
+  id         String   @id @default(uuid())
+  aliasId    String   @map("alias_id")
+  supplierId String   @map("supplier_id")
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+  alias      Alias    @relation(fields: [aliasId], references: [id])
+
+  @@map("supplier_aliases")
+}
+
+model Supplier {
+  id             String          @id @default(uuid())
+  name           String
+  addressStreet1 String          @map("address_street1")
+  addressStreet2 String?         @map("address_street2")
+  addressCity    String          @map("address_city")
+  addressState   String          @map("address_state")
+  addressZip     String          @map("address_zip")
+  phone          String
+  purchaseOrders PurchaseOrder[]
+  supplierAlias  SupplierAlias[]
+
+  @@map("suppliers")
 }
 
 model Account {
@@ -239,8 +310,9 @@ model User {
   Authenticator Authenticator[]
   transactions  Transaction[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  purchaseOrders PurchaseOrder[]
 
   @@map("users")
 }

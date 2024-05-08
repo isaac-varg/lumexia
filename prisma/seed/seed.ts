@@ -14,6 +14,13 @@ const main = async () => {
   await seedAction("lot");
   await seedAction("container");
   await seedAction("transaction");
+  await seedAction("aliasType");
+  await seedAction("alias");
+  await seedAction("supplier");
+  await seedAction("purchaseOrderStatus");
+  await seedAction("purchaseOrder");
+  await seedAction("purchaseOrderItem");
+  await seedAction("supplierAlias");
 };
 
 main()
