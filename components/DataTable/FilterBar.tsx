@@ -30,6 +30,13 @@ export default function FilterBar<TData>({
   // const router = useRouter();
   const { showDialog } = useDialog();
 
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && table.getRowModel().rows.length === 1) {
+      // Trigger your function here
+      console.log(table.getRowModel().rows[0].original);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -37,6 +44,7 @@ export default function FilterBar<TData>({
           <DebouncedInput
             value={table.getState().globalFilter ?? ""}
             onChange={(value) => table.setGlobalFilter(String(value))}
+            onKeyDown={handleEnterPress} 
             placeholder="Search all"
             className="h-10 w-[150px] lg:w-[250px] bg-bay-leaf-100 rounded-lg px-2 lg:px-3 focus:outline-none focus:ring-2 focus:ring-bay-leaf-600 focus:ring-opacity-50 transition-all duration-200 ease-in-out text-bay-leaf-950 font-poppins"
           />

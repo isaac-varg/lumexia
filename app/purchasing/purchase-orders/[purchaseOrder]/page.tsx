@@ -5,6 +5,8 @@ import { PurchaseOrder } from "@/types/purchaseOrder";
 import { DateTime } from "luxon";
 import React from "react";
 import { LuCalendarPlus, LuCalendarClock } from "react-icons/lu";
+import ItemTable from "./_components/ItemTable";
+import { flattenOrderItems } from "./_functions/flattenOrderItems";
 
 type PurchaseOrderDetailsProps = {
   params: {
@@ -25,7 +27,8 @@ const PurchaseOrderDetails = async ({
 
   const items = await purchaseOrderItemActions.getAll({
     purchaseOrderId: purchaseOrder.id,
-  });
+  }, ["item", "uom", "purchaseOrderStatus"]);
+
   
   return (
     <div>
@@ -34,10 +37,8 @@ const PurchaseOrderDetails = async ({
         <LuCalendarPlus />
         <p>{DateTime.fromJSDate(purchaseOrder.createdAt).toFormat("DD @ t")}</p>
       </span>
-      <span className="flex flex-row gap-x-2 items-center text-sm text-neutral-500 font-poppins">
-        <LuCalendarClock />
-        <p>{DateTime.fromJSDate(purchaseOrder.updatedAt).toFormat("DD @ t")}</p>
-      </span>
+
+      <ItemTable items={flattenOrderItems(items)}/>
     </div>
   );
 };
