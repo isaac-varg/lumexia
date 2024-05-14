@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -13,14 +12,22 @@ type EditableProps = {
   data: any;
   columns: any;
   onRowClick: (row: any) => void;
+  onRowUpdate: (row: any) => void;
+  onRowDelete: (row: any) => void;
+  onRowAdd: () => string;
 };
 
-const Editable = ({ data, columns, onRowClick }: EditableProps) => {
+const Editable = ({
+  data,
+  columns,
+  onRowClick,
+  onRowUpdate,
+  onRowDelete,
+  onRowAdd,
+}: EditableProps) => {
   const [editedRows, setEditedRows] = useState({});
-  const [tableData, setTableData] = useState<FlattenedOrderItem[]>([...data]);
-  const [originalData, setOriginalData] = useState<FlattenedOrderItem[]>([
-    ...data,
-  ]);
+  const [tableData, setTableData] = useState<any[]>([...data]);
+  const [originalData, setOriginalData] = useState<any[]>([...data]);
 
   const table = useReactTable({
     data: tableData,
@@ -50,34 +57,26 @@ const Editable = ({ data, columns, onRowClick }: EditableProps) => {
             )
           );
         } else {
-          // setOriginalData((old) =>
-          //   old.map((row, index) => (index === rowIndex ? data[rowIndex] : row))
-          // );
-          
-          const wth = tableData[rowIndex].quantity as any
-
-          const updateData = {
-            pricePerUnit: tableData[rowIndex].pricePerUnit,
-            quantity: parseFloat(wth),
-
-          }
-
-          purchaseOrderItemActions.update({id: tableData[rowIndex].id}, updateData)
+          onRowUpdate(tableData[rowIndex]);
         }
       },
       addRow: () => {
-        const newRow: any = {
-          itemReferenceCode: "",
-          itemName: "",
-          pricePerUnit: 0,
-          quantity: 0,
-          uomAbbreviation: "",
-        };
 
-        const setter = (old: FlattenedOrderItem[]) => [...old, newRow];
+        const hehe = onRowAdd();
 
-        setTableData(setter);
-        setOriginalData(setter);
+        console.log(hehe);
+        // const newRow: any = {
+        //   itemReferenceCode: "",
+        //   itemName: "",
+        //   pricePerUnit: 0,
+        //   quantity: 0,
+        //   uomAbbreviation: "",
+        // };
+
+        // const setter = (old: FlattenedOrderItem[]) => [...old, newRow];
+
+        // setTableData(setter);
+        // setOriginalData(setter);
       },
       removeRow: (rowIndex: number) => {
         const setter = (old: FlattenedOrderItem[]) =>
@@ -85,7 +84,7 @@ const Editable = ({ data, columns, onRowClick }: EditableProps) => {
         setTableData(setter);
         setOriginalData(setter);
 
-        purchaseOrderItemActions.deleteOne({id: tableData[rowIndex].id})
+        onRowDelete(tableData[rowIndex]);
       },
     },
   });
@@ -130,7 +129,7 @@ const Editable = ({ data, columns, onRowClick }: EditableProps) => {
                 <FooterCell table={table} />
               </th>
             </tr>
-            </tfoot>
+          </tfoot>
         </table>
       </div>
     </div>

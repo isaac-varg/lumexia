@@ -1,6 +1,6 @@
 "use client";
 
-import { Table } from "@tanstack/react-table";
+import { Row, Table } from "@tanstack/react-table";
 import { RxCross2 } from "react-icons/rx";
 import { usePathname, useRouter } from "next/navigation";
 import FacetedFilter from "./FacetFilter";
@@ -15,6 +15,7 @@ interface DataTableFilterbarProps<TData> {
   dialogIdentifier?: string;
   linkPath?: string;
   actionButtonTitle?: string;
+  onEnter?: (row: any) => any;
 }
 
 export default function FilterBar<TData>({
@@ -23,6 +24,7 @@ export default function FilterBar<TData>({
   dialogIdentifier,
   linkPath,
   actionButtonTitle,
+  onEnter,
 }: DataTableFilterbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -32,8 +34,11 @@ export default function FilterBar<TData>({
 
   const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && table.getRowModel().rows.length === 1) {
-      // Trigger your function here
-      console.log(table.getRowModel().rows[0].original);
+      if (onEnter) {
+        onEnter(table.getRowModel().rows[0].original);
+      } else {
+        console.log('not implemented yet.')
+      }
     }
   };
 
@@ -44,7 +49,7 @@ export default function FilterBar<TData>({
           <DebouncedInput
             value={table.getState().globalFilter ?? ""}
             onChange={(value) => table.setGlobalFilter(String(value))}
-            onKeyDown={handleEnterPress} 
+            onKeyDown={handleEnterPress}
             placeholder="Search all"
             className="h-10 w-[150px] lg:w-[250px] bg-bay-leaf-100 rounded-lg px-2 lg:px-3 focus:outline-none focus:ring-2 focus:ring-bay-leaf-600 focus:ring-opacity-50 transition-all duration-200 ease-in-out text-bay-leaf-950 font-poppins"
           />

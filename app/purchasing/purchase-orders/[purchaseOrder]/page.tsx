@@ -7,6 +7,8 @@ import React from "react";
 import { LuCalendarPlus, LuCalendarClock } from "react-icons/lu";
 import ItemTable from "./_components/ItemTable";
 import { flattenOrderItems } from "./_functions/flattenOrderItems";
+import itemActions from "@/actions/inventory/items";
+import { flattenItems } from "./_functions/flattenItems";
 
 type PurchaseOrderDetailsProps = {
   params: {
@@ -25,9 +27,11 @@ const PurchaseOrderDetails = async ({
     searchParams.id
   );
 
-  const items = await purchaseOrderItemActions.getAll({
+  const orderItems = await purchaseOrderItemActions.getAll({
     purchaseOrderId: purchaseOrder.id,
   }, ["item", "uom", "purchaseOrderStatus"]);
+
+  const items = await itemActions.getAllWithIncludes(['aliases']);
 
   
   return (
@@ -38,7 +42,7 @@ const PurchaseOrderDetails = async ({
         <p>{DateTime.fromJSDate(purchaseOrder.createdAt).toFormat("DD @ t")}</p>
       </span>
 
-      <ItemTable items={flattenOrderItems(items)}/>
+      <ItemTable orderItems={flattenOrderItems(orderItems)} items={flattenItems(items)}/>
     </div>
   );
 };

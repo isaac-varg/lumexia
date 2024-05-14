@@ -23,6 +23,7 @@ type DataTableDefaultProps = {
   dialogIdentifier?: string;
   linkPath?: string;
   onRowClick: (row: any) => void;
+  onEnter?: (row: any) => any;
 };
 
 const Default = ({
@@ -33,6 +34,7 @@ const Default = ({
   onRowClick,
   dialogIdentifier,
   linkPath,
+  onEnter
 }: DataTableDefaultProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -72,6 +74,7 @@ const Default = ({
         actionButtonTitle={actionButtonTitle}
         dialogIdentifier={dialogIdentifier}
         linkPath={linkPath}
+        onEnter={onEnter}
       />
       <div className="w-full">
         <table className="min-w-full text-left text-lg font-light">

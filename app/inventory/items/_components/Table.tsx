@@ -24,6 +24,8 @@ const Table = ({ items }: TableProps) => {
     );
   };
 
+  console.log(tableData)
+
   const filters: Filter[] = [
 
     {
@@ -41,6 +43,7 @@ const Table = ({ items }: TableProps) => {
       filters={filters}
       dialogIdentifier="createItem"
       onRowClick={(row) => handleRowClick(row)}
+      onEnter={(row) => handleRowClick({original: {...row}})}
     />
   );
 };
