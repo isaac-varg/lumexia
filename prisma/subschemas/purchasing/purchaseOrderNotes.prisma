@@ -1,0 +1,12 @@
+import { User } from "../users/users"
+import { PurchaseOrder } from "./purchaseOrders"
+model PurchaseOrderNote {
+    id              String        @id @default(uuid())
+    purchaseOrderId String
+    userId          String
+    content         String
+    createdAt       DateTime      @default(now()) @map("created_at")
+    updatedAt       DateTime      @updatedAt @map("updated_at")
+    user            User          @relation(fields: [userId], references: [id])
+    purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+}

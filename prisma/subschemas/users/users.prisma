@@ -3,6 +3,7 @@ import {Session } from "./sessions"
 import { Authenticator } from "./authenticators"
 import { Transaction } from "../inventory/transactions"
 import { PurchaseOrder } from "../purchasing/purchaseOrders"
+import { PurchaseOrderNote } from "../purchasing/purchaseOrderNotes"
 
 model User {
     id            String          @id @default(cuid())
@@ -16,9 +17,10 @@ model User {
     Authenticator Authenticator[]
     transactions  Transaction[]
 
-    createdAt      DateTime        @default(now())
-    updatedAt      DateTime        @updatedAt
-    purchaseOrders PurchaseOrder[]
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
+    purchaseOrders     PurchaseOrder[]
+    purchaseOrderNotes PurchaseOrderNote[]
 
     @@map("users")
 }

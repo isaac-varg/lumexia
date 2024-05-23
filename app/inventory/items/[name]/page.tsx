@@ -17,7 +17,7 @@ type ItemDashboardProps = {
 };
 
 const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
-  const item = await itemActions.getOne(searchParams.id, [
+  const item = await itemActions.getOne(searchParams.id, undefined, [
     "itemType",
     "procurementType",
     "inventoryType",

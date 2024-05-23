@@ -27,6 +27,10 @@ const columns = [
   }),
   columnHelper.accessor("pricePerUnit", {
     header: "Price",
+    cell: TableCell,
+    meta: {
+        type: "number"
+    }
   }),
   columnHelper.accessor("quantity", {
     header: "Qty",

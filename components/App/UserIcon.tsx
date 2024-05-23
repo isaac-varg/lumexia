@@ -1,9 +1,14 @@
 import { auth, signIn, signOut } from "@/auth";
+import { redirect } from "next/navigation";
 import React from "react";
 import { RiUserLine } from "react-icons/ri";
 
 const UserIcon = async () => {
   const session = await auth();
+
+  if (!session) {
+    redirect("/api/auth/signin")
+  }
 
   if (!session)
     return (

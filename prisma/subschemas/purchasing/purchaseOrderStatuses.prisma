@@ -3,7 +3,8 @@ import { PurchaseOrderItem } from "./purchaseOrderItems"
 
 model PurchaseOrderStatus {
     id                String              @id @default(uuid())
-    name              String
+    sequence          Int                 @unique
+    name              String              @unique
     purchaseOrders    PurchaseOrder[]
     purchaseOrderItem PurchaseOrderItem[]
 

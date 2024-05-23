@@ -2,7 +2,7 @@ import Dialog from "@/components/Dialog";
 import React, { useEffect, useState } from "react";
 import FuzzySearch from "fuzzy-search";
 
-const AddItemDialog = ({ data }: { data: any[] }) => {
+const AddItemDialog = ({ data, onItemSelection}: { data: any[], onItemSelection: any }) => {
   const [results, setResults] = useState<any[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
@@ -13,7 +13,7 @@ const AddItemDialog = ({ data }: { data: any[] }) => {
   ]);
 
   const handleItemClick = (item: any) => {
-    console.log(item);
+    onItemSelection(item);
   };
 
   const handleKeydown = (event: any) => {

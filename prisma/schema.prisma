@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue May 07 2024 13:33:37 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu May 23 2024 13:25:46 GMT-0700 (Pacific Daylight Time)✨
 
 generator client {
   provider = "prisma-client-js"
@@ -7,6 +7,16 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model ContainerType {
+  id        String      @id @default(uuid())
+  name      String
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  Container Container[]
+
+  @@map("container_types")
 }
 
 model Container {
@@ -24,16 +34,6 @@ model Container {
   @@map("containers")
 }
 
-model ContainerType {
-  id        String      @id @default(uuid())
-  name      String
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  Container Container[]
-
-  @@map("container_types")
-}
-
 model Lot {
   id              String            @id @default(uuid())
   itemId          String            @map("item_id")
@@ -48,6 +48,15 @@ model Lot {
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
 
   @@map("lots")
+}
+
+model TransactionType {
+  id           String        @id @default(uuid())
+  name         String
+  deduction    Boolean
+  transactions Transaction[]
+
+  @@map("transaction_types")
 }
 
 model Transaction {
@@ -67,15 +76,6 @@ model Transaction {
   lot               Lot               @relation(fields: [lotId], references: [id])
 
   @@map("transactions")
-}
-
-model TransactionType {
-  id           String        @id @default(uuid())
-  name         String
-  deduction    Boolean
-  transactions Transaction[]
-
-  @@map("transaction_types")
 }
 
 model UnitOfMeasurementConversion {
@@ -107,6 +107,16 @@ model UnitOfMeasurement {
   @@map("units_of_measurement")
 }
 
+model AliasType {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Alias     Alias[]
+
+  @@map("alias_types")
+}
+
 model Alias {
   id            String          @id @default(uuid())
   name          String
@@ -121,16 +131,6 @@ model Alias {
   @@map("aliases")
 }
 
-model AliasType {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  Alias     Alias[]
-
-  @@map("alias_types")
-}
-
 model InventoryType {
   id        String   @id @default(uuid())
   name      String
@@ -139,6 +139,16 @@ model InventoryType {
   items     Item[]
 
   @@map("inventory_types")
+}
+
+model ItemType {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  items     Item[]
+
+  @@map("item_types")
 }
 
 model Item {
@@ -158,16 +168,6 @@ model Item {
   purchaseOrderItem PurchaseOrderItem[]
 
   @@map("items")
-}
-
-model ItemType {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  items     Item[]
-
-  @@map("item_types")
 }
 
 model ProcurementType {
@@ -198,29 +198,42 @@ model PurchaseOrderItem {
   @@map("purchase_order_items")
 }
 
-model PurchaseOrder {
-  id                String              @id @default(uuid())
-  referenceCode     Int                 @default(autoincrement()) @map("reference_code")
-  submittingUserId  String              @map("submitting_user_id")
-  supplierId        String              @map("supplier_id")
-  statusId          String              @map("status_id")
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-  supplier          Supplier            @relation(fields: [supplierId], references: [id])
-  user              User                @relation(fields: [submittingUserId], references: [id])
-  status            PurchaseOrderStatus @relation(fields: [statusId], references: [id])
-  PurchaseOrderItem PurchaseOrderItem[]
-
-  @@map("purchase_orders")
+model PurchaseOrderNote {
+  id              String        @id @default(uuid())
+  purchaseOrderId String
+  userId          String
+  content         String
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  user            User          @relation(fields: [userId], references: [id])
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
 }
 
 model PurchaseOrderStatus {
   id                String              @id @default(uuid())
-  name              String
+  sequence          Int                 @unique
+  name              String              @unique
   purchaseOrders    PurchaseOrder[]
   purchaseOrderItem PurchaseOrderItem[]
 
   @@map("purchase_order_status")
+}
+
+model PurchaseOrder {
+  id                 String              @id @default(uuid())
+  referenceCode      Int                 @default(autoincrement()) @map("reference_code")
+  submittingUserId   String              @map("submitting_user_id")
+  supplierId         String              @map("supplier_id")
+  statusId           String              @map("status_id")
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  supplier           Supplier            @relation(fields: [supplierId], references: [id])
+  user               User                @relation(fields: [submittingUserId], references: [id])
+  status             PurchaseOrderStatus @relation(fields: [statusId], references: [id])
+  PurchaseOrderItem  PurchaseOrderItem[]
+  purchaseOrderNotes PurchaseOrderNote[]
+
+  @@map("purchase_orders")
 }
 
 model SupplierAlias {
@@ -310,9 +323,10 @@ model User {
   Authenticator Authenticator[]
   transactions  Transaction[]
 
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  purchaseOrders PurchaseOrder[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  purchaseOrders     PurchaseOrder[]
+  purchaseOrderNotes PurchaseOrderNote[]
 
   @@map("users")
 }

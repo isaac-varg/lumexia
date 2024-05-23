@@ -14,7 +14,7 @@ type EditableProps = {
   onRowClick: (row: any) => void;
   onRowUpdate: (row: any) => void;
   onRowDelete: (row: any) => void;
-  onRowAdd: () => string;
+  onRowAdd: () => void;
 };
 
 const Editable = ({
@@ -62,21 +62,8 @@ const Editable = ({
       },
       addRow: () => {
 
-        const hehe = onRowAdd();
+       onRowAdd();
 
-        console.log(hehe);
-        // const newRow: any = {
-        //   itemReferenceCode: "",
-        //   itemName: "",
-        //   pricePerUnit: 0,
-        //   quantity: 0,
-        //   uomAbbreviation: "",
-        // };
-
-        // const setter = (old: FlattenedOrderItem[]) => [...old, newRow];
-
-        // setTableData(setter);
-        // setOriginalData(setter);
       },
       removeRow: (rowIndex: number) => {
         const setter = (old: FlattenedOrderItem[]) =>

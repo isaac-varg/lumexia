@@ -18,8 +18,8 @@ export default class ServerActions {
     return results;
   };
 
-  getOne = async (id: string, includes?: string[]) => {
-    const results = await getOne(this.model, id, includes);
+  getOne = async (id?: string, where?: { [key: string]: string },includes?: string[]) => {
+    const results = await getOne(this.model, id, where, includes);
     return results;
   };
 
