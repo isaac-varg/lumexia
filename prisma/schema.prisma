@@ -1,15 +1,17 @@
-//🧩Don't Edit this file.✨Generated in Tue May 28 2024 14:07:02 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue May 28 2024 14:37:09 GMT-0700 (Pacific Daylight Time)✨
 
 model ActivityLog {
   id         String   @id @default(uuid())
-  userId     String
+  userId     String   @map("user_id")
   action     String
-  entityType String?
-  entityId   Int?
+  entityType String?  @map("entity_type")
+  entityId   String?  @map("entity_id")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
   details    Json
   user       User     @relation(fields: [userId], references: [id])
+
+  @@map("activity_logs")
 }
 
 generator client {

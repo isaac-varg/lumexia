@@ -25,7 +25,7 @@ const Editable = ({
   onRowDelete,
   onRowAdd,
 }: EditableProps) => {
-  const [editedRows, setEditedRows] = useState({});
+  const [editedRows, setEditedRows] = useState<any>({});
   const [tableData, setTableData] = useState<any[]>([...data]);
   const [originalData, setOriginalData] = useState<any[]>([...data]);
 
@@ -98,7 +98,7 @@ const Editable = ({
           <tbody>
             {table.getRowModel().rows.map((row) => (
               <tr
-                onClick={() => onRowClick(row)}
+                onClick={() => {editedRows[row.id] ? null : onRowClick(row) }}
                 key={row.id}
                 className="border-b dark:border-neutral-500"
               >

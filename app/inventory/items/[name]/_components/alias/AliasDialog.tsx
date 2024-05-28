@@ -6,6 +6,7 @@ import useDialog from "@/hooks/useDialog";
 import { AliasType } from "@/types/aliasType";
 import { Item } from "@/types/item";
 import { SelectOption } from "@/types/selectOption";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { restructureData } from "@/utils/data/restructureData";
 import { useForm } from "react-hook-form";
 
@@ -38,7 +39,10 @@ const AliasDialog = ({
 
     createData.itemId = item.id;
 
-    await aliasActions.createNew(createData);
+    const response = await aliasActions.createNew(createData);
+    await createActivityLog("appendAlias", "item", item.id, {
+      context: `'${response.name}' alias was added to ${item.name}`,
+    });
     resetDialogContext();
     revalidatePage("/inventory/items/[name]");
   };

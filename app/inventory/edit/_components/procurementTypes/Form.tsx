@@ -2,6 +2,7 @@ import { revalidatePage } from "@/actions/app/revalidatePage";
 import procurementTypeActions  from "@/actions/inventory/procurementTypeActions";
 import Form from "@/components/Form";
 import useDialog from "@/hooks/useDialog";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,7 +15,8 @@ const ProcurementTypesForm = () => {
   const { resetDialogContext} = useDialog()
 
   const handleSubmit = async (data: Inputs) => {
-    await procurementTypeActions.createNew(data);
+    const response = await procurementTypeActions.createNew(data);
+    await createActivityLog('createProcurementType', 'procurementType', response.id, {context: `procurement type '${response.name} created`})
 
     revalidatePage("/inventory/edit")
     resetDialogContext();

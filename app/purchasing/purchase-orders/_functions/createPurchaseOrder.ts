@@ -2,6 +2,7 @@ import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions";
 import purchaseOrderStatusActions from "@/actions/purchasing/purchaseOrderStatusActions";
 import userActions from "@/actions/users/userAction";
 import { Supplier } from "@/types/supplier";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { Session } from "next-auth";
 
 export const createPurchaseOrder = async (supplier: Supplier, session: any) => {
@@ -19,6 +20,10 @@ export const createPurchaseOrder = async (supplier: Supplier, session: any) => {
         statusId: defaultStatus.id,
     }
     const po = await purchaseOrderActions.createNew(poData);
+
+    await createActivityLog('createPurchaseOrder', 'purchaseOrder', po.id, {
+        context: `PO #${po.referenceCode} created`
+    })
 
     return po;
 

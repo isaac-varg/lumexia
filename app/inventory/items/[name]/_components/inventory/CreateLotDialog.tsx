@@ -9,6 +9,7 @@ import { generateLotNumber } from "@/utils/lot/generateLotNumber";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { createContainer } from "../../_functions/createContainer";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 
 interface Inputs {
   lotNumber: string;
@@ -37,6 +38,13 @@ const CreateLotDialog = ({
     };
 
     const newLot = await lotActions.createNew(createData);
+
+    await createActivityLog("createLot", "item", item.id, {
+      context: `${newLot.lotNumber} was created for ${item.name}`,
+      lotId: newLot.id,
+      lotNumber: newLot.lotNumber,
+      initialQuantity: newLot.initialQuantity,
+    });
 
     for (let index = 0; index <= data.amountOfContainers; index++) {
       createContainer(newLot.id, data.containerTypeId, data.containerCapacity);

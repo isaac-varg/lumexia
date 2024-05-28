@@ -2,6 +2,7 @@ import { revalidatePage } from "@/actions/app/revalidatePage";
 import itemTypeActions from "@/actions/inventory/itemTypeActions";
 import Form from "@/components/Form";
 import useDialog from "@/hooks/useDialog";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,7 +15,13 @@ const ItemTypesForm = () => {
   const { resetDialogContext } = useDialog();
 
   const handleSubmit = async (data: Inputs) => {
-    await itemTypeActions.createNew(data);
+    const response = await itemTypeActions.createNew(data);
+    await createActivityLog(
+      "createItemType",
+      "itemType",
+      response.id,
+      { context: `item type '${response.name} created` }
+    );
     resetDialogContext();
     revalidatePage("/inventory/edit");
   };

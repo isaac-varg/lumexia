@@ -2,6 +2,7 @@ import { revalidatePage } from "@/actions/app/revalidatePage";
 import aliasTypeActions from "@/actions/inventory/aliasTypes";
 import Form from "@/components/Form";
 import useDialog from "@/hooks/useDialog";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,7 +15,10 @@ const AliasTypeForm = () => {
   const { resetDialogContext } = useDialog();
 
   const handleSubmit = async (data: Inputs) => {
-    await aliasTypeActions.createNew(data);
+    const response = await aliasTypeActions.createNew(data);
+    await createActivityLog("createAliasType", "aliasType", response.id, {
+      context: `alias type ${response.name} created`,
+    });
     resetDialogContext();
     revalidatePage("/inventory/edit");
   };

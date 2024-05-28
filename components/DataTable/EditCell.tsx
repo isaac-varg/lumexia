@@ -3,6 +3,7 @@ import { TbPencil, TbCheck, TbX } from "react-icons/tb";
 export const EditCell = ({ row, table }: any) => {
   const meta = table.options.meta;
   const setEditedRows = (e: any) => {
+    e.stopPropagation();
     const elementName = e.currentTarget.name;
 
     meta?.setEditedRows((old: []) => ({
@@ -15,7 +16,8 @@ export const EditCell = ({ row, table }: any) => {
     }
   };
 
-  const removeRow = () => {
+  const removeRow = (e: any) => {
+    e.stopPropagation();
     meta?.removeRow(row.index);
   };
 
