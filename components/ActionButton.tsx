@@ -8,6 +8,7 @@ interface ActionButtonProps {
   shape?: "default";
   buttonType?: "button" | "submit" | "reset";
   children?: React.ReactNode;
+  [key: string]: any; 
 }
 
 const classes = {
@@ -30,7 +31,8 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   color = "default",
   shape = "default",
   buttonType = "button",
-  children
+  children,
+  ...rest
 }) => {
   return (
     <button

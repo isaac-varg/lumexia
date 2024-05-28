@@ -9,6 +9,7 @@ import useDialog from "@/hooks/useDialog";
 import { Item } from "@/types/item";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import { revalidatePage } from "@/actions/app/revalidatePage";
+import { useRouter } from "next/navigation";
 
 type ItemTableProps = {
   orderItems: PurchaseOrderItem[];
@@ -18,6 +19,7 @@ type ItemTableProps = {
 
 const ItemTable = ({ orderItems, items, purchaseOrder}: ItemTableProps) => {
   const { showDialog } = useDialog();
+  const router = useRouter();
   const handleRowUpdate = (row: any) => {
 
     const rowQuantity = row.quantity as any;
@@ -78,7 +80,7 @@ const ItemTable = ({ orderItems, items, purchaseOrder}: ItemTableProps) => {
         data={orderItems}
         columns={columns}
         onRowClick={(row) => {
-          return null;
+          router.push(`/inventory/items/${row.original.item.name}?id=${row.original.item.id}`)
         }}
         onRowUpdate={handleRowUpdate}
         onRowDelete={handleRowDelete}

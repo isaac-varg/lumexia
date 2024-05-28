@@ -1,4 +1,16 @@
-//🧩Don't Edit this file.✨Generated in Thu May 23 2024 13:25:46 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue May 28 2024 14:07:02 GMT-0700 (Pacific Daylight Time)✨
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  userId     String
+  action     String
+  entityType String?
+  entityId   Int?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  details    Json
+  user       User     @relation(fields: [userId], references: [id])
+}
 
 generator client {
   provider = "prisma-client-js"
@@ -327,6 +339,7 @@ model User {
   updatedAt          DateTime            @updatedAt
   purchaseOrders     PurchaseOrder[]
   purchaseOrderNotes PurchaseOrderNote[]
+  activityLogs       ActivityLog[]
 
   @@map("users")
 }

@@ -19,6 +19,7 @@ import ActionButton from "@/components/ActionButton";
 import purchaseOrderStatusActions from "@/actions/purchasing/purchaseOrderStatusActions";
 import { PurchaseOrderStatus } from "@/types/purchaseOrderStatus";
 import NextStatusButton from "./_components/NextStatusButton";
+import PrintButton from "./_components/PrintButton";
 
 type PurchaseOrderDetailsProps = {
   params: {
@@ -65,12 +66,19 @@ const PurchaseOrderDetails = async ({
             <PageTitle title={`PO #${purchaseOrder.referenceCode}`} />
             <TagLabel>{purchaseOrder.status.name}</TagLabel>
           </div>
+          <div className="flex flex-row items-center justify-start gap-x-4">
 
-          <NextStatusButton
-            poStatuses={poStatuses}
-            currentStatusSequence={purchaseOrder.status.sequence}
-            purchaseOrderId={purchaseOrder.id}
-          />
+      
+            <NextStatusButton
+              poStatuses={poStatuses}
+              currentStatusSequence={purchaseOrder.status.sequence}
+              purchaseOrderId={purchaseOrder.id}
+            />
+            <PrintButton
+              purchaseOrder={purchaseOrder}
+              orderItems={orderItems}
+            />
+          </div>
         </span>
         <span className="flex fle11x-row gap-x-2 items-center text-sm text-neutral-500 font-poppins">
           <LuCalendarPlus />

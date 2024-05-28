@@ -1,0 +1,13 @@
+import { User } from "../users/users"
+
+model ActivityLog {
+    id         String   @id @default(uuid())
+    userId     String
+    action     String
+    entityType String?
+    entityId   Int?
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
+    details    Json
+    user       User     @relation(fields: [userId], references: [id])
+}

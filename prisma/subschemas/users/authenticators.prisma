@@ -1,16 +1,18 @@
 import { User } from "./users"
 
 model Authenticator {
-  id                   String  @id @default(cuid())
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
+    id                   String  @id @default(cuid())
+    credentialID         String  @unique
+    userId               String
+    providerAccountId    String
+    credentialPublicKey  String
+    counter              Int
+    credentialDeviceType String
+    credentialBackedUp   Boolean
+    transports           String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  @@map("authenticators")
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("authenticators")
 }
+

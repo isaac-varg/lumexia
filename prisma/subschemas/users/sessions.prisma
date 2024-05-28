@@ -1,12 +1,14 @@
 import { User } from "./users"
 
 model Session {
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@map("sessions")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("sessions")
 }
+
