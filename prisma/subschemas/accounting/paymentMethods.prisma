@@ -1,0 +1,13 @@
+import { SupplierPaymentMethod } from "../purchasing/supplierPaymentMethods"
+model PaymentMethod {
+    id                    String                  @id @default(uuid())
+    name                  String
+    type                  String
+    identifier            String
+    image                 String
+    limit                 Float
+    createdAt             DateTime                @default(now()) @map("created_at")
+    updatedAt             DateTime                @updatedAt @map("updated_at")
+    supplierPaymentMethods SupplierPaymentMethod[]
+}
+

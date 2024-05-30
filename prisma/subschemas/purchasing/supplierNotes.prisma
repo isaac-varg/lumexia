@@ -1,0 +1,10 @@
+import { Supplier } from "./suppliers"
+
+model SupplierNote {
+    id         String   @id @default(uuid())
+    supplierId String
+    content    String
+    supplier   Supplier @relation(fields: [supplierId], references: [id])
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
+}

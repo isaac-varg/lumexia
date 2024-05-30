@@ -24,8 +24,6 @@ const Table = ({ items }: TableProps) => {
     );
   };
 
-  console.log(tableData)
-
   const filters: Filter[] = [
 
     {

@@ -1,0 +1,15 @@
+import { PaymentMethod } from "../accounting/paymentMethods"
+import { Supplier } from "./suppliers"
+
+model SupplierPaymentMethod {
+    id              String   @id @default(uuid())
+    supplierId      String @map("supplier_id")
+    paymentMethodId String @map("payment_method_id")
+    createdAt       DateTime @default(now()) @map("created_at")
+
+    updatedAt     DateTime      @updatedAt @map("updated_at")
+    supplier      Supplier      @relation(fields: [supplierId], references: [id])
+    paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+@@map("supplier_payment_methods")
+}

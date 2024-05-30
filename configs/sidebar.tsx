@@ -23,8 +23,8 @@ export const sidebar = [
         path: "/purchasing/purchase-orders"
     },
     {
-        label: "Team",
+        label: "Suppliers",
         icon: <TbSmartHome/>,
-        path: "/"
+        path: "/purchasing/suppliers"
     }
 ]
