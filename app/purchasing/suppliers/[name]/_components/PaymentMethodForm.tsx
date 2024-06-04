@@ -6,6 +6,7 @@ import Form from "@/components/Form";
 import useDialog from "@/hooks/useDialog";
 import { PaymentMethod } from "@/types/paymentMethod";
 import { SelectOption } from "@/types/selectOption";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { restructureData } from "@/utils/data/restructureData";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -29,14 +30,14 @@ const PaymentMethodForm = ({
     { key: "name", rename: "label" },
   ];
 
-  const handleSubmit = async (data: Inputs) => {
-    console.log(data);
-    // todo add activity log
+  const handleSubmit = async (data: Inputs) => {   
     const response = await supplierPaymentMethodActions.createNew({
       supplierId,
       paymentMethodId: data.paymentMethodId,
     });
-
+    await createActivityLog('addSupplierPaymentMethod', 'supplier', supplierId, {
+      context: `Payment method with id of ${response.paymentMethodId} was added to supplier`
+    })
     revalidatePage("/purchasing/suppliers/[name]");
     resetDialogContext();
   };

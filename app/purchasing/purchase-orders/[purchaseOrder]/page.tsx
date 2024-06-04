@@ -44,7 +44,7 @@ const PurchaseOrderDetails = async ({
     {
       purchaseOrderId: purchaseOrder.id,
     },
-    ["item", "uom", "purchaseOrderStatus"]
+    ["item", "uom", "purchaseOrderStatus" ]
   );
 
   const items = await itemActions.getAllWithIncludes(["aliases"]);

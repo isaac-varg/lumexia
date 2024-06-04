@@ -1,10 +1,10 @@
 import { SupplierPaymentMethod } from "@/types/supplierPaymentMethod";
 import { TbCreditCard } from "react-icons/tb";
 import React from "react";
+import DeletePaymentMethod from "./DeletePaymentMethod";
 
 const PaymentMethod = ({ method }: { method: SupplierPaymentMethod }) => {
-  // todo add remove button
-  // todo make log of removal
+
   return (
     <span className="flex items-center text-xl font-poppins font-semibold gap-x-4">
       <TbCreditCard className="text-4xl" />
@@ -12,6 +12,7 @@ const PaymentMethod = ({ method }: { method: SupplierPaymentMethod }) => {
         <h1>{method.paymentMethod.name}</h1>
         <h1 className="text-slate-600">{method.paymentMethod.identifier}</h1>
       </div>
+      <DeletePaymentMethod method={method}/>
     </span>
   );
 };
@@ -21,6 +22,7 @@ const PaymentMethodsList = ({
 }: {
   supplierPaymentMethods: SupplierPaymentMethod[];
 }) => {
+
   return (
     <div>
       {supplierPaymentMethods.length > 0 ? (

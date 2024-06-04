@@ -1,43 +1,77 @@
 import Card from "@/components/Card";
 
 import { PurchaseOrder } from "@/types/purchaseOrder";
-import { TbMail, TbPhone} from "react-icons/tb";
+import { TbMail, TbPhone } from "react-icons/tb";
 import React from "react";
+import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions";
+import PaymentMethodSelector from "./PaymentMethodSelector";
+import supplierPaymentMethodActions from "@/actions/purchasing/supplierPaymentMethods";
+import PaymentMethodForm from "./PaymentMethodForm";
+import supplierNoteActions from "@/actions/purchasing/supplierNoteActions";
+import { SupplierNote } from "@/types/SupplierNote";
+import SupplierNameTag from "./SupplierNameTag";
 
-const Correspondant = ({ purchaseOrder }: { purchaseOrder: PurchaseOrder }) => {
+const Correspondant = async ({
+  purchaseOrder,
+}: {
+  purchaseOrder: PurchaseOrder;
+}) => {
+  const poWithPaymentMethod = purchaseOrder.paymentMethodId
+    ? await purchaseOrderActions.getOne(purchaseOrder.id, undefined, [
+        "paymentMethod",
+      ])
+    : null;
+
+  const supplierPaymentMethods = await supplierPaymentMethodActions.getAll(
+    { supplierId: purchaseOrder.supplier.id },
+    ["paymentMethod"]
+  );
+
+  const supplierNotes = await supplierNoteActions.getAll({supplierId: purchaseOrder.supplierId});
+
   return (
-    <div className="col-span-1 order-last">
-      <Card.Root>
-        <h1 className="text-xl font-poppins font-semibold">Supplier</h1>
+    <>
+      <PaymentMethodForm
+        methods={supplierPaymentMethods}
+        purchaseOrderId={purchaseOrder.id}
+      />
+      <div className="col-span-1 order-last">
+        <Card.Root>
+          <h1 className="text-xl font-poppins font-semibold">Supplier</h1>
 
-        <span className="flex flex-row gap-x-4 items-center">
-          <div className="bg-limed-spruce-400 rounded-full w-16 h-16" />
+        <SupplierNameTag supplier={purchaseOrder.supplier} />
+
 
           <div>
-            <h2 className="font-semibold font-inter">
-              {purchaseOrder.supplier.name}
-            </h2>
-            <h2 className="font-medium text-slate-600">12 previous orders</h2>
+            <span className="flex flex-row gap-x-4 text-lg font-inter items-center">
+              <TbMail />
+              <p>test@gmail.com</p>
+            </span>
+            <span className="flex flex-row gap-x-4 text-lg font-inter items-center">
+              <TbPhone />
+              <p>{purchaseOrder.supplier.phone}</p>
+            </span>
           </div>
-        </span>
 
-        <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
+          <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
+          <h1 className="text-xl font-poppins font-semibold">Payment Method</h1>
 
-        <div>
-          <span className="flex flex-row gap-x-4 text-lg font-inter items-center">
-            <TbMail />
-            <p>test@gmail.com</p>
-          </span>
-          <span className="flex flex-row gap-x-4 text-lg font-inter items-center">
-            <TbPhone />
-            <p>{purchaseOrder.supplier.phone}</p>
-          </span>
-        </div>
+          <PaymentMethodSelector
+            method={poWithPaymentMethod}
+            supplierPaymentMethods={supplierPaymentMethods}
+          />
 
-        <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
-
-      </Card.Root>
-    </div>
+          <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
+          <h1 className="text-xl font-poppins font-semibold">Supplier Notes</h1>
+          <ul className="list-disc px-4">
+            
+          {supplierNotes.map( (note: SupplierNote) => {
+            return <li key={note.id}>{note.content}</li>
+          })}
+        </ul>
+        </Card.Root>
+      </div>
+    </>
   );
 };
 

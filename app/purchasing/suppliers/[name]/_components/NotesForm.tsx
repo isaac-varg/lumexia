@@ -4,6 +4,7 @@ import Dialog from "@/components/Dialog";
 import Form from "@/components/Form";
 import useDialog from "@/hooks/useDialog";
 import { Supplier } from "@/types/supplier";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -16,7 +17,10 @@ const NotesForm = ({supplier }: {supplier: Supplier}) => {
   const { resetDialogContext } = useDialog() 
 
   const handleSubmit = async(data: Inputs) => {
-    await supplierNoteActions.createNew({supplierId: supplier.id, ...data})
+    const supplierNote = await supplierNoteActions.createNew({supplierId: supplier.id, ...data})
+    await createActivityLog('createSupplierNote', 'supplier', supplier.id, {
+      context: `Note '${supplierNote.content} was created`
+    }) 
     revalidatePage('/purchasing/supplier/[name]')
     resetDialogContext()
   }
