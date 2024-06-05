@@ -5,9 +5,9 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { openNewTab } from "./openNewTab";
 
 
-type Method = 'rowClick' | 'newTab' | 'motion'
+export type RowSelectionHandlerMethod = 'rowClick' | 'newTab' | 'motion'
 
-export const rowSelectionHandler = (method: Method, path: string, router: AppRouterInstance) => {
+export const rowSelectionHandler = (method: RowSelectionHandlerMethod, path: string, router: AppRouterInstance) => {
 
 
     switch (method) {

@@ -15,6 +15,7 @@ import { useState } from "react";
 import FilterBar from "./FilterBar";
 import { Filter } from "@/types/filter";
 import ContextMenu from "../ContextMenu";
+import { RowSelectionHandlerMethod } from "@/utils/auxiliary/rowSelectionHandler";
 
 type DataTableDefaultProps = {
   data: any;
@@ -23,7 +24,7 @@ type DataTableDefaultProps = {
   filters?: Filter[] | null;
   dialogIdentifier?: string;
   linkPath?: string;
-  onRowClick: (row: any, method: string) => void;
+  onRowClick: (row: any, method: RowSelectionHandlerMethod) => void;
   onEnter?: (row: any) => any;
 };
 

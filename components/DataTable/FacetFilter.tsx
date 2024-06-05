@@ -63,7 +63,7 @@ export default function FacetedFilter<TData, TValue>({
                 <button
                   // className="flex items-center justify-between py-2 px-3 w-full rounded-sm hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
                   className="font-inter text-lg text-neutral-800 px-2 py-1 bg-bay-leaf-100 rounded-lg"
-                  key={option.value}
+                  key={Math.random()}
                   onClick={() => {
                     if (isSelected) {
                       selectedValues.delete(option.value);

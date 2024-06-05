@@ -7,6 +7,7 @@ import { toFacetFilter } from "@/utils/data/toFacetFilter";
 import { Filter } from "@/types/filter";
 import { useRouter } from "next/navigation";
 import Motions from "@/components/Motions";
+import { RowSelectionHandlerMethod, rowSelectionHandler } from "@/utils/auxiliary/rowSelectionHandler";
 
 const PurchaseOrderTable = ({
   purchaseOrders,
@@ -14,10 +15,9 @@ const PurchaseOrderTable = ({
   purchaseOrders: FlattenedPurchaseOrder[];
 }) => {
   const router = useRouter();
-  const handleRowClick = (row: any) => {
-    router.push(
-      `/purchasing/purchase-orders/${row.original.referenceCode}?id=${row.original.id}`
-    );
+  const handleRowClick = (row: any, method: RowSelectionHandlerMethod) => {
+    const path =  `/purchasing/purchase-orders/${row.original.referenceCode}?id=${row.original.id}`
+    rowSelectionHandler(method,path, router)
   };
 
   const filters: Filter[] = [
@@ -41,7 +41,7 @@ const PurchaseOrderTable = ({
         columns={purchaseOrderColumns}
         dialogIdentifier="createPurchaseOrder"
         filters={filters}
-        onRowClick={(row) => handleRowClick(row)}
+        onRowClick={(row, method) => handleRowClick(row, method)}
         actionButtonTitle="New Purchase Order"
       />
     </div>

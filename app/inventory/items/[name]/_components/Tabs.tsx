@@ -3,18 +3,22 @@ import React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import TabsPanel from "@/components/Tabs";
 import { Item } from "@/types/item";
-import LotsTable from "./LotsTable";
-import { FlattenedLot } from "../../_functions/flattenLots";
+import LotsTable from "./inventory/LotsTable";
+import { FlattenedLot } from "../_functions/flattenLots";
 import { ContainerType } from "@/types/containerType";
+import { PurchaseOrder } from "@/types/purchaseOrder";
+import PurchasingPanel from "./purchasing/PurchasingPanel";
 
 const TabsDemo = ({
   item,
   lots,
-  containerTypes
+  containerTypes, 
+  purchaseOrders,
 }: {
   item: Item;
   lots: FlattenedLot[];
   containerTypes: ContainerType[]
+  purchaseOrders: any[] 
 }) => {
   const tabs = [
     { identifier: "inventory", label: "Inventory" },
@@ -30,6 +34,10 @@ const TabsDemo = ({
 
       <TabsPanel.Content identifier="inventory">
         <LotsTable item={item} lots={lots} containerTypes={containerTypes} />
+      </TabsPanel.Content>
+
+      <TabsPanel.Content identifier="purchasing">
+        <PurchasingPanel purchaseOrders={purchaseOrders} />
       </TabsPanel.Content>
     </TabsPanel.Root>
   );
