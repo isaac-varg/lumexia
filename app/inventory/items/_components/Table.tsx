@@ -6,6 +6,7 @@ import { Filter } from "@/types/filter";
 import { toFacetFilter } from "@/utils/data/toFacetFilter";
 import { useRouter } from "next/navigation";
 import { flattenItem } from "../_functions/flattenItem";
+import { rowSelectionHandler } from "@/utils/auxiliary/rowSelectionHandler";
 
 type TableProps = {
   items: Item[];
@@ -17,11 +18,12 @@ const Table = ({ items }: TableProps) => {
 
   const tableData =  flattenItem(items);
 
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: any, method?: any) => {
     const formattedName = row.original.name.replace(/\s+/g, '-').toLowerCase();
-    router.push(
-      `/inventory/items/${`${formattedName}?id=${row.original.id}`} `
-    );
+    const path = `/inventory/items/${`${formattedName}?id=${row.original.id}`} `
+
+    rowSelectionHandler(method, path, router)
+  
   };
 
   const filters: Filter[] = [
@@ -40,7 +42,7 @@ const Table = ({ items }: TableProps) => {
       columns={columns}
       filters={filters}
       dialogIdentifier="createItem"
-      onRowClick={(row) => handleRowClick(row)}
+      onRowClick={(row, method) => handleRowClick(row, method)}
       onEnter={(row) => handleRowClick({original: {...row}})}
     />
   );

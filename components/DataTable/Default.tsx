@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import FilterBar from "./FilterBar";
 import { Filter } from "@/types/filter";
+import ContextMenu from "../ContextMenu";
 
 type DataTableDefaultProps = {
   data: any;
@@ -22,7 +23,7 @@ type DataTableDefaultProps = {
   filters?: Filter[] | null;
   dialogIdentifier?: string;
   linkPath?: string;
-  onRowClick: (row: any) => void;
+  onRowClick: (row: any, method: string) => void;
   onEnter?: (row: any) => any;
 };
 
@@ -34,7 +35,7 @@ const Default = ({
   onRowClick,
   dialogIdentifier,
   linkPath,
-  onEnter
+  onEnter,
 }: DataTableDefaultProps) => {
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -94,19 +95,34 @@ const Default = ({
               </tr>
             ))}
           </thead>
+
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr
-                onClick={() => onRowClick(row)}
-                key={row.id}
-                className="border-b dark:border-neutral-500"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td className="py-4" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
+              <ContextMenu.Root key={row.id}>
+                <ContextMenu.Trigger asChild>
+                  <tr
+                    onClick={() => onRowClick(row, 'rowClick')}
+                    className="border-b dark:border-neutral-500"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td className="py-4" key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                </ContextMenu.Trigger>
+                <ContextMenu.Content>
+                  <ContextMenu.Item
+                    onClick={() => onRowClick(row, 'newTab')}
+                    // shortcut={"CTRL + A"}
+                  >
+                    New Tab
+                  </ContextMenu.Item>
+                </ContextMenu.Content>
+              </ContextMenu.Root>
             ))}
           </tbody>
         </table>
