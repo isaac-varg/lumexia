@@ -5,14 +5,14 @@ import PurchasingTotals from "./PurchasingTotals";
 
 type PurchasingPanelType = {
   purchaseOrders: any; // wow
+  item: any;
 };
 
-const PurchasingPanel = ({ purchaseOrders }: PurchasingPanelType) => {
+const PurchasingPanel = ({ purchaseOrders, item }: PurchasingPanelType) => {
   const flattenedPurchaseOrders = flattenPurchaseOrders(purchaseOrders);
-
   return (
     <div>
-    	<PurchasingTotals purchaseOrders={flattenedPurchaseOrders} />
+      <PurchasingTotals purchaseOrders={flattenedPurchaseOrders} item={item} />
       <PurchasesTable purchaseOrders={flattenedPurchaseOrders} />
     </div>
   );

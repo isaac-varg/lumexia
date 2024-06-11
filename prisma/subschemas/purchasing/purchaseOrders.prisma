@@ -17,7 +17,7 @@ model PurchaseOrder {
     user               User                @relation(fields: [submittingUserId], references: [id])
     paymentMethod      PaymentMethod?      @relation(fields: [paymentMethodId], references: [id])
     status             PurchaseOrderStatus @relation(fields: [statusId], references: [id])
-    PurchaseOrderItem  PurchaseOrderItem[]
+    purchaseOrderItems PurchaseOrderItem[]
     purchaseOrderNotes PurchaseOrderNote[]
 
     @@map("purchase_orders")

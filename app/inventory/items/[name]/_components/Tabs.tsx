@@ -1,12 +1,10 @@
 "use client";
 import React from "react";
-import * as Tabs from "@radix-ui/react-tabs";
 import TabsPanel from "@/components/Tabs";
 import { Item } from "@/types/item";
 import LotsPanel from "./inventory/LotsPanel";
 import { FlattenedLot } from "../_functions/flattenLots";
 import { ContainerType } from "@/types/containerType";
-import { PurchaseOrder } from "@/types/purchaseOrder";
 import PurchasingPanel from "./purchasing/PurchasingPanel";
 
 const TabsDemo = ({
@@ -37,7 +35,7 @@ const TabsDemo = ({
       </TabsPanel.Content>
 
       <TabsPanel.Content identifier="purchasing">
-        <PurchasingPanel purchaseOrders={purchaseOrders} />
+        <PurchasingPanel purchaseOrders={purchaseOrders} item={item} />
       </TabsPanel.Content>
     </TabsPanel.Root>
   );
