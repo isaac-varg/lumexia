@@ -30,7 +30,7 @@ const Root = ({
   shadow = "base",
 }: CardRootProps) => (
   <div
-    className={`flex flex-col w-full gap-y-4 p-6 rounded-lg ${classes.borderSize[borderSize]} ${classes.borderColor[borderColor]} ${classes.shadow[shadow]}`}
+    className={`flex flex-col w-full gap-y-4 p-6 rounded-lg ${classes.borderSize[borderSize]} ${classes.borderColor[borderColor]} ${classes.shadow[shadow]}  `}
   >
     {children}
   </div>

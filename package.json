@@ -24,6 +24,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@tanstack/react-table": "^8.15.3",
     "@types/fuzzy-search": "^2.1.5",
+    "apexcharts": "^3.49.1",
     "fuzzy-search": "^3.2.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",

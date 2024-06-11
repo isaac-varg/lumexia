@@ -19,6 +19,10 @@ const ColorSwatches: React.FC = () => {
 
 return (
     <div>
+
+
+
+
         {Object.entries(colors).map(([colorName, colorValue]) => (
             <div key={colorName} style={{ display: "flex" }}>
                 <div>

@@ -12,13 +12,13 @@ import PurchasingPanel from "./purchasing/PurchasingPanel";
 const TabsDemo = ({
   item,
   lots,
-  containerTypes, 
+  containerTypes,
   purchaseOrders,
 }: {
   item: Item;
   lots: FlattenedLot[];
-  containerTypes: ContainerType[]
-  purchaseOrders: any[] 
+  containerTypes: ContainerType[];
+  purchaseOrders: any[];
 }) => {
   const tabs = [
     { identifier: "inventory", label: "Inventory" },
@@ -28,7 +28,6 @@ const TabsDemo = ({
     tabs.splice(1, 0, { identifier: "purchasing", label: "Purchasing" });
   }
 
-  console.log(lots)
   return (
     <TabsPanel.Root defaultTabIdentifier="inventory">
       <TabsPanel.List tabTriggers={tabs} />
@@ -45,4 +44,3 @@ const TabsDemo = ({
 };
 
 export default TabsDemo;
-

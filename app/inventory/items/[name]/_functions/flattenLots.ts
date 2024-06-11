@@ -1,33 +1,44 @@
-import item from "@/prisma/seed/data/item"
-import { Lot } from "@/types/lot"
+import item from "@/prisma/seed/data/item";
+import { Lot } from "@/types/lot";
 
 export interface FlattenedLot extends Lot {
-    containerTypeName: string
-    containerQuantity: number
-    uomName: string
-    uomAbbreviation: string
-    lotNumber: string
+  containerTypeName: string;
+  containerQuantity: number;
+  totalQuantityOnHand: number;
+  uomName: string;
+  uomAbbreviation: string;
+  lotNumber: string;
 }
 
 export const flattenLots = (lots: Lot[]): FlattenedLot[] => {
+  return lots.map((lot) => {
+    if (!lot.uom || lot.containers.length < 1) {
+      return;
+    }
 
-    return lots.map((lot) => {  
+    const uniqueContainerTypes = new Set(
+      lot.containers.map((container) => container.containerTypeId),
+    );
 
-        if (!lot.uom || lot.containers.length < 1 ) { return }
+    const isSingleContainerType = uniqueContainerTypes.size === 1;
 
-        const uniqueContainerTypes = new Set(lot.containers.map(container => container.containerTypeId));
+    const {
+      uom: { name: uomName, abbreviation: uomAbbreviation },
+      lotNumber,
+    } = lot;
 
-        const isSingleContainerType = uniqueContainerTypes.size === 1
+    const containerTypeName = isSingleContainerType
+      ? lot.containers[0].containerType.name
+      : "Multiple";
+    const containerQuantity = lot.containers.length;
 
-        
-        const {
-            uom: { name: uomName, abbreviation: uomAbbreviation },
-            lotNumber,
-        } = lot;
-
-        const containerTypeName = isSingleContainerType ? lot.containers[0].containerType.name : "Multiple";
-        const containerQuantity = lot.containers.length;
-
-        return { ...lot, containerTypeName, containerQuantity,uomName, uomAbbreviation, lotNumber } as any;
-    })
-}
+    return {
+      ...lot,
+      containerTypeName,
+      containerQuantity,
+      uomName,
+      uomAbbreviation,
+      lotNumber,
+    } as any;
+  });
+};
