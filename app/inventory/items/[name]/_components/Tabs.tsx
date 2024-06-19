@@ -5,7 +5,7 @@ import { Item } from "@/types/item";
 import LotsPanel from "./inventory/LotsPanel";
 import { FlattenedLot } from "../_functions/flattenLots";
 import { ContainerType } from "@/types/containerType";
-import PurchasingPanel from "./purchasing/PurchasingPanel";
+import PurchasingPanel, { PurchaseOrderWithItems } from "./purchasing/PurchasingPanel";
 
 const TabsDemo = ({
   item,
@@ -16,7 +16,7 @@ const TabsDemo = ({
   item: Item;
   lots: FlattenedLot[];
   containerTypes: ContainerType[];
-  purchaseOrders: any[];
+  purchaseOrders: PurchaseOrderWithItems[];
 }) => {
   const tabs = [
     { identifier: "inventory", label: "Inventory" },

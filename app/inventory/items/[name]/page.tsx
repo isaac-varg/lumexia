@@ -4,7 +4,6 @@ import Layout from "@/components/Layout";
 import PageTitle from "@/components/Text/PageTitle";
 import AliasesPanel from "./_components/alias/AliasesPanel";
 import BasicsPanel from "./_components/BasicsPanel";
-import Tabs from "./_components/Tabs";
 import TabsPanel from "./_components/TabsPanel";
 
 type ItemDashboardProps = {

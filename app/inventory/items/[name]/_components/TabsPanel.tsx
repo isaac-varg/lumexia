@@ -27,14 +27,14 @@ const TabsPanel = async ({ item }: { item: Item }) => {
 			purchaseOrderItems: true,
 		},
 	});
-
 	return (
+
 		<div>
 			<Tabs
 				item={item}
 				lots={flattenedLots}
 				containerTypes={containerTypes}
-				purchaseOrders={purchaseOrders}
+				purchaseOrders={purchaseOrders as any}
 			/>
 		</div>
 	);

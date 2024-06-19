@@ -1,7 +1,21 @@
-import React from 'react';
+import React from "react";
 
-const Title = ({ children }: { children: React.ReactNode }) => (
-    <h2 className="font-poppins text-2xl font-semibold text-cutty-sark-950">{children}</h2>
+type TitleProps = {
+  children: React.ReactNode;
+  size: keyof typeof classes.size;
+};
+
+const classes = {
+  size: {
+    default: " text-2xl font-semibold ",
+    small: "font-semibold text-base uppercase",
+  },
+};
+
+const Title = ({ children, size = "default" }: TitleProps) => (
+  <h2 className={`font-poppins ${classes.size[size]} text-cutty-sark-950`}>
+    {children}
+  </h2>
 );
 
 export default Title;

@@ -34,14 +34,14 @@ const PurchasesTable = ({
     rowSelectionHandler(method, path, router);
   };
   return (
-    <>
+    <div>
       <DataTable.Default
         data={purchaseOrders}
         columns={purchaseOrderColumns}
         filters={filters}
         onRowClick={(row, method) => handleRowClick(row, method)}
       />
-    </>
+    </div>
   );
 };
 
