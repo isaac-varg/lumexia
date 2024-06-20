@@ -81,7 +81,7 @@ const PurchasingTotals = ({
           <div className="col-span-2 w-full h-full">
             <Card.Root>
               <Card.Title size="small">pricing trends</Card.Title>
-              <PricingChart data={filteredPurchases} />
+              <QuantityChart data={filteredPurchases} />
             </Card.Root>
           </div>
         </div>
@@ -93,7 +93,7 @@ const PurchasingTotals = ({
             <Card.Root>
               <Card.Title size="small">Quantity Trends</Card.Title>
 
-              <QuantityChart data={filteredPurchases} />
+              <PricingChart data={filteredPurchases} />
             </Card.Root>
           </div>
           <div className="col-span-2 w-full h-full">
