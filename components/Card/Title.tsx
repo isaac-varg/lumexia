@@ -2,7 +2,7 @@ import React from "react";
 
 type TitleProps = {
   children: React.ReactNode;
-  size: keyof typeof classes.size;
+  size?: keyof typeof classes.size;
 };
 
 const classes = {

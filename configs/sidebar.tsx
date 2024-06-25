@@ -1,5 +1,5 @@
 import { TbSmartHome } from "react-icons/tb";
-import { BsBox2Heart } from "react-icons/bs";
+import { BsBox2Heart, BsBoxSeam } from "react-icons/bs";
 
 export const sidebar = [
     {
@@ -7,6 +7,12 @@ export const sidebar = [
         icon: <TbSmartHome/>,
         path: "/"
     },
+{
+        label: "Audit",
+        icon: <BsBoxSeam/>,
+        path: "/inventory/audit"
+    },
+
     {
         label: "Inventory",
         icon: <BsBox2Heart/>,
