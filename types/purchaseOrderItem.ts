@@ -16,3 +16,9 @@ export interface PurchaseOrderItem {
 	purchaseOrderStatus: PurchaseOrderStatus;
 	uom: Uom;
 }
+
+export interface ExPurchaseOrderItem extends PurchaseOrderItem {
+	item: Item;
+	purchaseOrderStatus: PurchaseOrderStatus,
+	uom: Uom
+}

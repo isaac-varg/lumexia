@@ -20,3 +20,5 @@ model PurchaseOrderItem {
 
     @@map("purchase_order_items")
 }
+
+

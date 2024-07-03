@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface ActivityLog {
   id: string;
   userId: string;
@@ -7,4 +9,8 @@ export interface ActivityLog {
   createdAt: Date;
   updatedAt: Date;
   details: { [key: string]: any };
+}
+
+export interface ExActivityLog extends ActivityLog {
+	user: User
 }

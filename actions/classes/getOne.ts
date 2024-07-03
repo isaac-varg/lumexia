@@ -7,7 +7,7 @@ const prismaInstance = prisma as any;
 export const getOne = async (
   model: any,
   id?: string,
-  where?: { [key: string]: string },
+  where?: { [key: string]: string | number },
   includes?: string[] | null
 ) => {
   let include: Record<string, boolean> | null = null;
