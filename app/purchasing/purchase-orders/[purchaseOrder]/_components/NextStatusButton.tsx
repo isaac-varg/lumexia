@@ -24,7 +24,7 @@ const NextStatusButton = ({
 		)
 		];
 
-	if (nextStatus.sequence > 3) {
+	if ( !nextStatus || nextStatus.sequence > 3 ) {
 		return false;
 	}
 

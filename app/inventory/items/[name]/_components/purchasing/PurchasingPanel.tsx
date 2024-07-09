@@ -16,7 +16,9 @@ type PurchasingPanelType = {
 };
 
 const PurchasingPanel = ({ purchaseOrders, item }: PurchasingPanelType) => {
+
   const flattenedPurchaseOrders = flattenPurchaseOrders(purchaseOrders);
+
   return (
     <>
       <PurchasingTotals purchaseOrders={flattenedPurchaseOrders} item={item} />

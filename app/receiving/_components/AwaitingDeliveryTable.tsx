@@ -8,10 +8,11 @@ import { useRouter } from 'next/navigation';
 import { FlattenedPurchaseOrder } from '@/app/inventory/items/[name]/_functions/flattenPurchaseOrder';
 
 type AwaitingDeliveryTableProps = {
-	purchaseOrders: PurchaseOrder[];
+	purchaseOrders:   PurchaseOrder[] | any;
 }
 
 const AwaitingDeliveryTable = ({purchaseOrders} : AwaitingDeliveryTableProps ) => {
+	console.log(purchaseOrders)
 	const orders =  flattenPurchaseOrders(purchaseOrders)
 	const router = useRouter();
 

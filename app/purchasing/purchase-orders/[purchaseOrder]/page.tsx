@@ -4,22 +4,20 @@ import PageTitle from "@/components/Text/PageTitle";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import { DateTime } from "luxon";
 import React from "react";
-import { LuCalendarPlus, LuCalendarClock } from "react-icons/lu";
+import { LuCalendarPlus} from "react-icons/lu";
 import ItemTable from "./_components/ItemTable";
 import { flattenOrderItems } from "./_functions/flattenOrderItems";
 import itemActions from "@/actions/inventory/items";
 import { flattenItems } from "./_functions/flattenItems";
 import Correspondant from "./_components/Correspondant";
-import Layout from "@/components/Layout";
 import TagLabel from "@/components/Text/TagLabel";
 import Totals from "./_components/Totals";
 import NotesTable from "./_components/NotesTable";
 import purchaseOrderNoteActions from "@/actions/purchasing/purchaseOrderNoteActions";
-import ActionButton from "@/components/ActionButton";
 import purchaseOrderStatusActions from "@/actions/purchasing/purchaseOrderStatusActions";
-import { PurchaseOrderStatus } from "@/types/purchaseOrderStatus";
 import NextStatusButton from "./_components/NextStatusButton";
 import PrintButton from "./_components/PrintButton";
+import StatusTag from "./_components/StatusTag";
 
 type PurchaseOrderDetailsProps = {
   params: {
@@ -64,8 +62,11 @@ const PurchaseOrderDetails = async ({
         <span className="flex flex-row justify-between">
           <div className="flex flex-row items-center justify-start gap-x-4">
             <PageTitle title={`PO #${purchaseOrder.referenceCode}`} />
-            <TagLabel>{purchaseOrder.status.name}</TagLabel>
-          </div>
+
+						<StatusTag purchaseOrder={purchaseOrder} />
+
+                      </div>
+
           <div className="flex flex-row items-center justify-start gap-x-4">
 
       

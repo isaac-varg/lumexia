@@ -10,6 +10,7 @@ const classes = {
   justify: {
     between: "justify-between",
     end: "justify-end",
+	start: "justify-start",
   },
   gap: {
     1: "gap-1",

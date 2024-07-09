@@ -8,6 +8,7 @@ import PageTitle from "@/components/Text/PageTitle";
 import LineItemPanels from "./_components/LineItemPanels";
 import activityLogActions from "@/actions/auxiliary/activityLogActions";
 import ActivityPanel from "./_components/ActivityPanel";
+import CompleteReceivingButton from "./_components/CompleteReceivingButton";
 
 type ReceivingPOPageProps = {
 	searchParams: {
@@ -27,18 +28,24 @@ const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
 		},
 		["item", "uom", "purchaseOrderStatus"],
 	);
-	
 
-	const activity = await activityLogActions.getAll({action: "modifyPurchaseOrderItem", entityId: poId}, ["user"])
+	const activity = await activityLogActions.getAll(
+		{ entityType: "purchaseOrder", entityId: poId },
+		["user"],
+	);
 
-	console.log(activity)
+	const isAwaitingItems = items.some(item => item.purchaseOrderStatus.sequence === 3);
 
 	return (
 		<div className="flex flex-col gap-y-6 mt-6">
+			<Layout.Row>
 			<PageTitle>
 				#{purchaseOrder.referenceCode} - {purchaseOrder.supplier.name}
 			</PageTitle>
 
+				<CompleteReceivingButton isAwaitingItems={isAwaitingItems} purchaseOrder={purchaseOrder}/>
+
+			</Layout.Row>
 			<LineItemPanels items={items} />
 
 			<ActivityPanel activities={activity} />
