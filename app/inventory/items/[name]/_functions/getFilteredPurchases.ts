@@ -6,7 +6,6 @@ export const getFilteredPurchases = (
   data: SupplierTotals[],
   mode: "yearToDate" | "lastYear" | "all",
 ) => {
-console.log(data)
   const currentDate = DateTime.now();
   let start: DateTime;
   let end: DateTime;

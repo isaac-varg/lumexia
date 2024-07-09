@@ -17,18 +17,29 @@ export const getPurchasesTotals = (
 	data: FlattenedPurchaseOrder[],
 	item: Item,
 ): SupplierTotals[] => {
-	console.log(data);
 
 	const supplierTotals: SupplierTotals[] = data.reduce(
 		(acc: SupplierTotals[], curr: FlattenedPurchaseOrder) => {
-			const itemIndexFromPO = curr.purchaseOrderItems.findIndex(
+			// gets all the matching items for the po
+			// necessary because of how we handle partially deliveries (line item is split from what was received and what remains to be delivered)
+			const itemsFromPO = curr.purchaseOrderItems.filter(
 				(lineItem) => lineItem.itemId === item.id,
 			);
-			if (itemIndexFromPO === -1) {
+
+			// item dne in po
+			if (itemsFromPO.length === 0) {
 				return acc;
 			}
 
-			const lineItem = curr.purchaseOrderItems[itemIndexFromPO];
+			// get the totals for the line items for the matching product
+			// e.g., if it was split sum them too not just pull the first occurence
+			const sumOfQuantity = itemsFromPO.reduce(
+				(total: number, curr) => curr.quantity + total,
+				0,
+			);
+			// this is just the price per unit from the first occurence, it will be the same regardless if it was partially receive
+			// i.e., an item does not have multiple prices in one single po
+			const priceForItem = itemsFromPO[0].pricePerUnit;
 
 			const {
 				id: purchaseOrderId,
@@ -47,8 +58,8 @@ export const getPurchasesTotals = (
 					id: purchaseOrderId,
 					referenceCode: referenceCode,
 					createdAt: createdAt,
-					pricePerUnit: lineItem.pricePerUnit,
-					quantity: lineItem.quantity,
+					pricePerUnit: priceForItem,
+					quantity: sumOfQuantity,
 				});
 				return acc;
 			}
@@ -63,8 +74,8 @@ export const getPurchasesTotals = (
 							id: purchaseOrderId,
 							referenceCode: referenceCode,
 							createdAt: createdAt,
-							pricePerUnit: lineItem.pricePerUnit,
-							quantity: lineItem.quantity,
+							pricePerUnit: priceForItem,
+							quantity: sumOfQuantity,
 						},
 					],
 				},

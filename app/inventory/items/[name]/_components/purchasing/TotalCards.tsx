@@ -13,8 +13,6 @@ const TotalCards = ({
   countTotal: number;
 }) => {
 
-	console.log(filteredPurchases)
-	console.log(quantityTotal);
   return (
     <div className="h-full flex flex-col gap-y-4">
       <Card.Root>

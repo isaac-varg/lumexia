@@ -46,9 +46,6 @@ const PurchasingTotals = ({
 		);
 	}, [dateRangeMode, purchasesTotals]);
 
-	console.log(filteredPurchases)
-
-
 	return (
 		<div className="flex flex-col gap-y-4 h-full">
 			<Layout.Row justify="end">
@@ -84,7 +81,7 @@ const PurchasingTotals = ({
 					<div className="col-span-2 w-full h-full">
 						<Card.Root>
 							<Card.Title size="small">pricing trends</Card.Title>
-							<QuantityChart data={filteredPurchases} />
+							<PricingChart data={filteredPurchases} />
 						</Card.Root>
 					</div>
 				</div>
@@ -95,8 +92,7 @@ const PurchasingTotals = ({
 					<div className="col-span-1">
 						<Card.Root>
 							<Card.Title size="small">Quantity Trends</Card.Title>
-
-							<PricingChart data={filteredPurchases} />
+							<QuantityChart data={filteredPurchases} />
 						</Card.Root>
 					</div>
 					<div className="col-span-2 w-full h-full">
