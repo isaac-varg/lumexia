@@ -6,6 +6,7 @@ import Searchbar from "@/components/App/Searchbar";
 import Providers from "@/context/Providers";
 import { auth } from "@/auth";
 import { AuthProvider } from "@/components/App/AuthProvider";
+import Toast from "@/components/Toast";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -40,6 +41,7 @@ export default async function RootLayout({
                 {children}
               </div>
             </div>
+	<Toast.Toast />
           </AuthProvider>
         </Providers>
       </body>

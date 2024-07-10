@@ -12,48 +12,53 @@ import CompleteReceivingButton from "./_components/CompleteReceivingButton";
 import GoToPOButton from "./_components/GoToPOButton";
 
 type ReceivingPOPageProps = {
-	searchParams: {
-		id: string;
-	};
+  searchParams: {
+    id: string;
+  };
 };
 
 const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
-	const poId = searchParams.id;
+  const poId = searchParams.id;
 
-	const purchaseOrder = await purchaseOrderActions.getOne(poId, undefined, [
-		"supplier",
-	]);
-	const items: ExPurchaseOrderItem[] = await purchaseOrderItemActions.getAll(
-		{
-			purchaseOrderId: poId,
-		},
-		["item", "uom", "purchaseOrderStatus"],
-	);
+  const purchaseOrder = await purchaseOrderActions.getOne(poId, undefined, [
+    "supplier", "status"
+  ]);
+  const items: ExPurchaseOrderItem[] = await purchaseOrderItemActions.getAll(
+    {
+      purchaseOrderId: poId,
+    },
+    ["item", "uom", "purchaseOrderStatus"],
+  );
 
-	const activity = await activityLogActions.getAll(
-		{ entityType: "purchaseOrder", entityId: poId },
-		["user"],
-		[{createdAt: 'desc'}]
-	);
+  const activity = await activityLogActions.getAll(
+    { entityType: "purchaseOrder", entityId: poId },
+    ["user"],
+    [{ createdAt: "desc" }],
+  );
 
-	const isAwaitingItems = items.some(item => item.purchaseOrderStatus.sequence === 3);
+  const isAwaitingItems = items.some(
+    (item) => item.purchaseOrderStatus.sequence === 3,
+  );
 
-	return (
-		<div className="flex flex-col gap-y-6 mt-6">
-			<Layout.Row>
-			<PageTitle>
-				#{purchaseOrder.referenceCode} - {purchaseOrder.supplier.name}
-			</PageTitle>
-				
-				<GoToPOButton purchaseOrder={purchaseOrder} />
-				<CompleteReceivingButton isAwaitingItems={isAwaitingItems} purchaseOrder={purchaseOrder}/>
+  return (
+    <div className="flex flex-col gap-y-6 mt-6">
+      <Layout.Row>
+        <PageTitle>
+          #{purchaseOrder.referenceCode} - {purchaseOrder.supplier.name}
+        </PageTitle>
+        <div className="flex gap-x-4">
+          <GoToPOButton purchaseOrder={purchaseOrder} />
+          <CompleteReceivingButton
+            isAwaitingItems={isAwaitingItems}
+            purchaseOrder={purchaseOrder}
+          />
+        </div>
+      </Layout.Row>
+      <LineItemPanels items={items} />
 
-			</Layout.Row>
-			<LineItemPanels items={items} />
-
-			<ActivityPanel activities={activity} />
-		</div>
-	);
+      <ActivityPanel activities={activity} />
+    </div>
+  );
 };
 
 export default ReceivingPOPage;

@@ -14,48 +14,46 @@ const ColorSwatches: React.FC = () => {
       }
       return shades;
     },
-    {} as { [key: string]: string }
+    {} as { [key: string]: string },
   );
 
-return (
+  return (
     <div>
-
-
-
-
-        {Object.entries(colors).map(([colorName, colorValue]) => (
-            <div key={colorName} style={{ display: "flex" }}>
-                <div>
-                    <h3>{colorName}</h3>
-                    <div
-                        style={{
-                            backgroundColor: colorValue,
-                            width: "200px",
-                            height: "200px",
-                        }}
-                    ></div>
+      {Object.entries(colors).map(([colorName, colorValue]) => (
+        <div key={colorName} style={{ display: "flex" }}>
+          <div>
+            <h3>{colorName}</h3>
+            <div
+              style={{
+                backgroundColor: colorValue,
+                width: "200px",
+                height: "200px",
+              }}
+            ></div>
+          </div>
+          {Object.entries(colorShades).map(([shadeName, shadeValue]) => {
+            if (shadeName.startsWith(colorName)) {
+              return (
+                <div key={shadeName}>
+                  <h4>
+                    {shadeName.replace(/-/g, "").replace(/[a-zA-Z]/g, "")}
+                  </h4>
+                  <div
+                    style={{
+                      backgroundColor: shadeValue,
+                      width: "50px",
+                      height: "50px",
+                    }}
+                  ></div>
                 </div>
-                {Object.entries(colorShades).map(([shadeName, shadeValue]) => {
-                    if (shadeName.startsWith(colorName)) {
-                        return (
-                            <div key={shadeName}>
-                                <h4>{shadeName.replace(/-/g, "").replace(/[a-zA-Z]/g, "")}</h4>
-                                <div
-                                    style={{
-                                        backgroundColor: shadeValue,
-                                        width: "50px",
-                                        height: "50px",
-                                    }}
-                                ></div>
-                            </div>
-                        );
-                    }
-                    return null;
-                })}
-            </div>
-        ))}
+              );
+            }
+            return null;
+          })}
+        </div>
+      ))}
     </div>
-);
+  );
 };
 
 export default ColorSwatches;
