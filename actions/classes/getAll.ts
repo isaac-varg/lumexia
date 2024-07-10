@@ -7,7 +7,8 @@ const prismaInstance = prisma as any;
 export const getAll = async (
   model: any,
   where?: { [key: string]: string },
-  includes?: string[] | null
+  includes?: string[] | null,
+  orderBy?: { [key: string]: "asc" | "desc" }[],
 ) => {
   let include: Record<string, boolean> | null = null;
 
@@ -17,25 +18,25 @@ export const getAll = async (
         acc[curr] = true;
         return acc;
       },
-      {} as Record<string, boolean>
+      {} as Record<string, boolean>,
     );
 
     include = records;
   }
 
-  if (where) {
-    const results = await prismaInstance[model].findMany({
-      where: {
-        ...where,
-      },
-      include: includes ? { ...include } : null,
-    });
+  const queryOptions: any = {
+    include: includes ? { ...include } : null,
+  };
 
-    return results;
+  if (where) {
+    queryOptions.where = { ...where };
   }
 
-  const results = await prismaInstance[model].findMany({
-    include: includes ? { ...include } : null,
-  });
+  if (orderBy) {
+    queryOptions.orderBy = orderBy;
+  }
+
+  const results = await prismaInstance[model].findMany(queryOptions);
   return results;
 };
+

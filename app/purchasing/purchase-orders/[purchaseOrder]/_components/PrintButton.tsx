@@ -16,7 +16,7 @@ const PrintButton = ({ purchaseOrder, orderItems}: { purchaseOrder: PurchaseOrde
   };
   return (
     <>
-      <ActionButton onClick={handleClick} ><Layout.Row><TbCloudDownload className="text-xl" /> PO</Layout.Row></ActionButton>
+      <ActionButton color="cararra" onClick={handleClick} ><Layout.Row><TbCloudDownload className="text-2xl" /> PO</Layout.Row></ActionButton>
     </>
   );
 };

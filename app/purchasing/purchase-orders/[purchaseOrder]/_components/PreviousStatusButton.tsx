@@ -7,7 +7,7 @@ import { nextPOStatus } from "../_functions/nextPOStatus";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { nextItemStatuses } from "../_functions/nextItemStatuses";
 
-const NextStatusButton = ({
+const PreviousStatusButton = ({
 	poStatuses,
 	currentStatusSequence,
 	purchaseOrderId,
@@ -20,11 +20,11 @@ const NextStatusButton = ({
 		poStatuses[
 		poStatuses.findIndex(
 			(status: PurchaseOrderStatus) =>
-				status.sequence === currentStatusSequence + 1,
+				status.sequence === currentStatusSequence - 1,
 		)
 		];
 
-	if (!nextStatus || nextStatus.sequence > 3) {
+	if ( !nextStatus || nextStatus.sequence === 0 ) {
 		return false;
 	}
 
@@ -46,11 +46,11 @@ const NextStatusButton = ({
 
 	return (
 		<>
-			<ActionButton color="bayLeaf" onClick={() => handleClick()}>
+			<ActionButton color="indigo" onClick={() => handleClick()}>
 				Set to {nextStatus.name}
 			</ActionButton>
 		</>
 	);
 };
 
-export default NextStatusButton;
+export default PreviousStatusButton;

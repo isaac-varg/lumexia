@@ -9,6 +9,7 @@ import LineItemPanels from "./_components/LineItemPanels";
 import activityLogActions from "@/actions/auxiliary/activityLogActions";
 import ActivityPanel from "./_components/ActivityPanel";
 import CompleteReceivingButton from "./_components/CompleteReceivingButton";
+import GoToPOButton from "./_components/GoToPOButton";
 
 type ReceivingPOPageProps = {
 	searchParams: {
@@ -32,6 +33,7 @@ const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
 	const activity = await activityLogActions.getAll(
 		{ entityType: "purchaseOrder", entityId: poId },
 		["user"],
+		[{createdAt: 'desc'}]
 	);
 
 	const isAwaitingItems = items.some(item => item.purchaseOrderStatus.sequence === 3);
@@ -42,7 +44,8 @@ const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
 			<PageTitle>
 				#{purchaseOrder.referenceCode} - {purchaseOrder.supplier.name}
 			</PageTitle>
-
+				
+				<GoToPOButton purchaseOrder={purchaseOrder} />
 				<CompleteReceivingButton isAwaitingItems={isAwaitingItems} purchaseOrder={purchaseOrder}/>
 
 			</Layout.Row>

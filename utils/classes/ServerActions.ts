@@ -13,8 +13,9 @@ export default class ServerActions {
     this.model = model;
   }
 
-  getAll = async (where?: { [key: string]: string }, includes?: string[]) => {
-    const results = await getAll(this.model, where, includes);
+  getAll = async (where?: { [key: string]: string }, includes?: string[], orderBy?: { [key: string]: "asc" | "desc" }[],
+) => {
+    const results = await getAll(this.model, where, includes, orderBy);
     return results;
   };
 
