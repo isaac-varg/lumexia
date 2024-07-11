@@ -10,6 +10,7 @@ import activityLogActions from "@/actions/auxiliary/activityLogActions";
 import ActivityPanel from "./_components/ActivityPanel";
 import CompleteReceivingButton from "./_components/CompleteReceivingButton";
 import GoToPOButton from "./_components/GoToPOButton";
+import PrintLabels from "./_components/PrintLabels";
 
 type ReceivingPOPageProps = {
   searchParams: {
@@ -21,7 +22,8 @@ const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
   const poId = searchParams.id;
 
   const purchaseOrder = await purchaseOrderActions.getOne(poId, undefined, [
-    "supplier", "status"
+    "supplier",
+    "status",
   ]);
   const items: ExPurchaseOrderItem[] = await purchaseOrderItemActions.getAll(
     {
@@ -47,6 +49,7 @@ const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
           #{purchaseOrder.referenceCode} - {purchaseOrder.supplier.name}
         </PageTitle>
         <div className="flex gap-x-4">
+	<PrintLabels purchaseOrder={purchaseOrder} />
           <GoToPOButton purchaseOrder={purchaseOrder} />
           <CompleteReceivingButton
             isAwaitingItems={isAwaitingItems}

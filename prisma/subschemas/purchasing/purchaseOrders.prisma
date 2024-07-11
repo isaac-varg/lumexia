@@ -4,6 +4,7 @@ import { PurchaseOrderStatus } from "./purchaseOrderStatuses"
 import { PurchaseOrderItem } from "./purchaseOrderItems"
 import { PurchaseOrderNote } from "./purchaseOrderNotes"
 import { PaymentMethod } from "../accounting/paymentMethods"
+import { LotOrigin } from "../inventory/lotOrigins"
 model PurchaseOrder {
     id                 String              @id @default(uuid())
     referenceCode      Int                 @default(autoincrement()) @map("reference_code")
@@ -19,6 +20,7 @@ model PurchaseOrder {
     status             PurchaseOrderStatus @relation(fields: [statusId], references: [id])
     purchaseOrderItems PurchaseOrderItem[]
     purchaseOrderNotes PurchaseOrderNote[]
+    lotOrigins        	LotOrigin[]        
 
     @@map("purchase_orders")
 }

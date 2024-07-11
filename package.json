@@ -27,6 +27,8 @@
     "@tanstack/react-table": "^8.15.3",
     "@types/fuzzy-search": "^2.1.5",
     "apexcharts": "^3.49.1",
+    "easyqrcodejs": "^4.6.1",
+    "easyqrcodejs-nodejs": "^4.5.2",
     "fuzzy-search": "^3.2.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",

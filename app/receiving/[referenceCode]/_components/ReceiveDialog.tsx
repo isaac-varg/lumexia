@@ -10,6 +10,8 @@ import { revalidatePage } from "@/actions/app/revalidatePage";
 import useDialog from "@/hooks/useDialog";
 import { updatePOItem } from "../_functions/updatePOItem";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
+import lotOriginActions from "@/actions/inventory/lotOriginActions";
+import { Lot } from "@/types/lot";
 
 type ReceiveDialogProps = {
 	item: ExPurchaseOrderItem;
@@ -35,7 +37,7 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
 			uomId: item.uom.id,
 		};
 
-		const lot = await lotActions.createNew(createData);
+		const lot: Lot = await lotActions.createNew(createData);
 
 		await createContainer(lot.id, data.containerTypeId, data.containerCapacity);
 		await updatePOItem(item.id, {
@@ -52,8 +54,19 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
 				quantityOrdered: item.quantity,
 				containerCapacity: data.containerCapacity,
 				containerTypeId: data.containerTypeId,
+				lotCreated: lot.id,
 			},
 		);
+
+		// create lot origin entry
+		const originCreateData = {
+			lotId: lot.id,
+			purchaseOrderId: item.purchaseOrderId,
+			originType: 'purchaseOrderReceiving'
+		}
+		console.log(lot)
+		console.log(originCreateData)
+		await lotOriginActions.createNew(originCreateData)	
 
 		revalidatePage("/receiving/[referenceCode]");
 		resetDialogContext();

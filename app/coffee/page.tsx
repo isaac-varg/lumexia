@@ -1,7 +1,8 @@
 import config from "@/tailwind.config";
 
-const ColorSwatches: React.FC = () => {
+const ColorSwatches: React.FC =  async () => {
   const colors = config.theme?.extend?.colors || {};
+
 
   const colorShades = Object.entries(colors).reduce(
     (shades: { [key: string]: string }, [colorName, colorValue]) => {

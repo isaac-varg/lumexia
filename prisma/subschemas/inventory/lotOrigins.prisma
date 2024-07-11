@@ -1,0 +1,15 @@
+import {PurchaseOrder} from "../purchasing/purchaseOrders"
+
+model LotOrigin {
+        id              String        @id @default(uuid())
+	lotId           String        @map("lot_id")
+        purchaseOrderId String        @map("purchase_order_id")
+        // FUTURE add batchId
+        originType      String        @map("origin_type")
+        createdAt       DateTime      @default(now()) @map("created_at")
+        updatedAt       DateTime      @updatedAt @map("updated_at")
+        purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+	lot             Lot           @relation(fields: [lotId], references: [id])
+
+	@@map("lot_origins")
+}

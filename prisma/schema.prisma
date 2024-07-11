@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jun 11 2024 12:03:33 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jul 11 2024 15:39:11 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -60,6 +60,20 @@ model Container {
   @@map("containers")
 }
 
+model LotOrigin {
+  id              String        @id @default(uuid())
+  lotId           String        @map("lot_id")
+  purchaseOrderId String        @map("purchase_order_id")
+  // FUTURE add batchId
+  originType      String        @map("origin_type")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  lot             Lot           @relation(fields: [lotId], references: [id])
+
+  @@map("lot_origins")
+}
+
 model Lot {
   id              String            @id @default(uuid())
   itemId          String            @map("item_id")
@@ -71,6 +85,7 @@ model Lot {
   updatedAt       DateTime          @updatedAt @map("updated_at")
   containers      Container[]
   transactions    Transaction[]
+  lotOrigin       LotOrigin[]
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
 
   @@map("lots")
@@ -260,6 +275,7 @@ model PurchaseOrder {
   status             PurchaseOrderStatus @relation(fields: [statusId], references: [id])
   purchaseOrderItems PurchaseOrderItem[]
   purchaseOrderNotes PurchaseOrderNote[]
+  lotOrigins         LotOrigin[]
 
   @@map("purchase_orders")
 }
