@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jul 15 2024 15:02:03 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Jul 16 2024 16:44:15 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -290,6 +290,28 @@ model SupplierAlias {
   @@map("supplier_aliases")
 }
 
+model SupplierContactNote {
+  id                String   @id @default(uuid())
+  supplierContactId String   @map("supplier_contact_id")
+  content           String
+  supplierContact   Supplier @relation(fields: [supplierContactId], references: [id])
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+}
+
+model SupplierContact {
+  id         String   @id @default(uuid())
+  supplierId String   @map("supplier_id")
+  firstName  String   @map("first_name")
+  lastName   String   @map("last_name")
+  email      String
+  phone      String
+  type       String
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+}
+
 model SupplierNote {
   id         String   @id @default(uuid())
   supplierId String
@@ -325,6 +347,8 @@ model Supplier {
   supplierAlias         SupplierAlias[]
   supplierNotes         SupplierNote[]
   SupplierPaymentMethod SupplierPaymentMethod[]
+  SupplierContactNote   SupplierContactNote[]
+  SupplierContact       SupplierContact[]
 
   @@map("suppliers")
 }

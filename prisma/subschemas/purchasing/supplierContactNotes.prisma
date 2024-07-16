@@ -1,0 +1,9 @@
+model SupplierContactNote {
+	    id        	      String   @id @default(uuid())
+	    supplierContactId String   @map("supplier_contact_id")
+	    content	      String    
+            supplierContact   Supplier @relation(fields: [supplierContactId], references: [id])
+	    createdAt  	      DateTime @default(now()) @map("created_at")
+	    updatedAt 	      DateTime @updatedAt @map("updated_at")
+
+}

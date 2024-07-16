@@ -6,19 +6,15 @@ import NotesTable from './_components/NotesTable';
 import PaymentMethodsPanel from './_components/PaymentMethodsPanel';
 
 type SupplierDetailsProps = {
-    params: {
-        name: string;
-      };
       searchParams: {
         id: string;
       };
 }
 
-const SupplierDetails = async ({params, searchParams} : SupplierDetailsProps) => {
+const SupplierDetails = async ({ searchParams} : SupplierDetailsProps) => {
 
   const supplier = await supplierActions.getOne(searchParams.id);
   const notes = await supplierNoteActions.getAll({supplierId: supplier.id});
-
 
 
 
