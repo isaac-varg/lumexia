@@ -1,16 +1,9 @@
-import QRCode from 'easyqrcodejs-nodejs'
-export const generateQR = async (context: string, width: number = 512, height: number = 512) => {
-
-
-	const options = {
-		text: context,
-		width,
-		height,
+import QRCode from "qrcode";
+export const generateQR = async (content: string) => {
+	try {
+		const qr = await QRCode.toDataURL(content);
+		return qr;
+	} catch (error) {
+		throw error;
 	}
-
-	const qr = new QRCode(options)
-
-	const qrData = await qr.toDataURL();
-
-	return qrData;
-}
+};

@@ -11,85 +11,95 @@ import useDialog from "@/hooks/useDialog";
 import { updatePOItem } from "../_functions/updatePOItem";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { splitPOItem } from "../_functions/splitPOItem";
+import lotOriginActions from "@/actions/inventory/lotOriginActions";
 
-type PartialDialogProps  = {
-	item: ExPurchaseOrderItem;
-	containerTypes: ContainerType[];
+type PartialDialogProps = {
+  item: ExPurchaseOrderItem;
+  containerTypes: ContainerType[];
 };
 
 interface Inputs {
-	quantity: number;
-	containerTypeId: string;
-	containerCapacity: number;
+  quantity: number;
+  containerTypeId: string;
+  containerCapacity: number;
 }
 
 const PartialDialog = ({ item, containerTypes }: PartialDialogProps) => {
-	const form = useForm<Inputs>({defaultValues: {quantity: item.quantity}});
-	const { resetDialogContext } = useDialog();
-	const handleSubmit = async (data: Inputs) => {
-		const lotNumber = generateLotNumber(item.item.referenceCode);
+  const form = useForm<Inputs>({ defaultValues: { quantity: item.quantity } });
+  const { resetDialogContext } = useDialog();
+  const handleSubmit = async (data: Inputs) => {
+    const lotNumber = generateLotNumber(item.item.referenceCode);
 
-		const createData: any = {
-			lotNumber,
-			initialQuantity: data.quantity,
-			itemId: item.item.id,
-			uomId: item.uom.id,
-		};
+    const createData: any = {
+      lotNumber,
+      initialQuantity: data.quantity,
+      itemId: item.item.id,
+      uomId: item.uom.id,
+    };
 
-		const lot = await lotActions.createNew(createData);
+    const lot = await lotActions.createNew(createData);
 
-		await createContainer(lot.id, data.containerTypeId, data.containerCapacity);
-		await splitPOItem(item, data.quantity);	
-		await createActivityLog(
-			"receivePOItem",
-			"purchaseOrder",
-			item.purchaseOrderId,
-			{
-				context: `${item.item.name} was partially received: Received <${data.quantity} ${item.uom.abbreviation}>`,
-				purchaseOrderItemId: item.id,
-				quantityReceived: data.quantity,
-				quantityOrdered: item.quantity,
-				containerCapacity: data.containerCapacity,
-				containerTypeId: data.containerTypeId,
-			},
-		);
+    await createContainer(lot.id, data.containerTypeId, data.containerCapacity);
+    await splitPOItem(item, data.quantity);
 
-		revalidatePage("/receiving/[referenceCode]");
-		resetDialogContext();
-	};
-	return (
-		<Dialog.Root identifier={`partialDialog${item.id}`}>
-			<Dialog.Title>Partially Receive {item.item.name} </Dialog.Title>
+    await createActivityLog(
+      "receivePOItem",
+      "purchaseOrder",
+      item.purchaseOrderId,
+      {
+        context: `${item.item.name} was partially received: Received <${data.quantity} ${item.uom.abbreviation}>`,
+        purchaseOrderItemId: item.id,
+        quantityReceived: data.quantity,
+        quantityOrdered: item.quantity,
+        containerCapacity: data.containerCapacity,
+        containerTypeId: data.containerTypeId,
+      },
+    );
 
-			<Form.Root form={form} onSubmit={handleSubmit}>
-				<Form.Number
-					form={form}
-					required
-					fieldName={"quantity"}
-					label={`Quantity (${item.uom.abbreviation})`}
-				/>
+    // create lot origin entry
+    const originCreateData = {
+      lotId: lot.id,
+      purchaseOrderId: item.purchaseOrderId,
+      originType: "purchaseOrderReceiving",
+    };
+    await lotOriginActions.createNew(originCreateData);
 
-				<Form.Select
-					form={form}
-					fieldName="containerTypeId"
-					label="Container Type"
-					options={containerTypes.map((ct) => ({
-						value: ct.id,
-						label: ct.name,
-					}))}
-				/>
+    revalidatePage("/receiving/[referenceCode]");
+    resetDialogContext();
+  };
+  return (
+    <Dialog.Root identifier={`partialDialog${item.id}`}>
+      <Dialog.Title>Partially Receive {item.item.name} </Dialog.Title>
 
-				<Form.Number
-					form={form}
-					required
-					fieldName="containerCapacity"
-					label="Container Capacity (lbs)"
-				/>
+      <Form.Root form={form} onSubmit={handleSubmit}>
+        <Form.Number
+          form={form}
+          required
+          fieldName={"quantity"}
+          label={`Quantity (${item.uom.abbreviation})`}
+        />
 
-				<Form.ActionRow form={form} />
-			</Form.Root>
-		</Dialog.Root>
-	);
+        <Form.Select
+          form={form}
+          fieldName="containerTypeId"
+          label="Container Type"
+          options={containerTypes.map((ct) => ({
+            value: ct.id,
+            label: ct.name,
+          }))}
+        />
+
+        <Form.Number
+          form={form}
+          required
+          fieldName="containerCapacity"
+          label="Container Capacity (lbs)"
+        />
+
+        <Form.ActionRow form={form} />
+      </Form.Root>
+    </Dialog.Root>
+  );
 };
 
 export default PartialDialog;

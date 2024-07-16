@@ -6,7 +6,16 @@ import { createSingleLabel } from "./createSingleLabel";
 export interface LabelData {
   lot: Lot;
   quantity: number;
+  qr: string;
 }
+
+const addPage = (pdf: jsPDF, index: number, label: number) => {
+  if (index === 0 && label === 0) {
+    return;
+  }
+
+  pdf.addPage();
+};
 
 export const createLabelsPDF = (data: LabelData[]) => {
   // establish the pdf
@@ -16,16 +25,12 @@ export const createLabelsPDF = (data: LabelData[]) => {
     unit: "in",
     format: [4, 3],
   });
-
   data.forEach((lot, index) => {
     let label = 0;
 
-    if (index !== 0 && label !== 0) {
-      pdf.addPage();
-    }
-
     while (label < lot.quantity) {
-      createSingleLabel(pdf, lot.lot);
+      addPage(pdf, index, label);
+      createSingleLabel(pdf, lot);
       label++;
     }
   });

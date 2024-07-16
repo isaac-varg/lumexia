@@ -1,5 +1,18 @@
 import ServerActions from "@/utils/classes/ServerActions";
+import { getPurchasingLotOrigins } from "../auxiliary/getPurchasingLotOrigins";
 
-const lotOriginActions = new ServerActions('lotOrigin');  
+class LotOriginActions extends ServerActions {
+	constructor() {
+		super("lotOrigin");
+	}
 
-export default lotOriginActions 
+	getPurchasingLotOrigins = async (purchaseOrderId: string) => {
+		const response = await getPurchasingLotOrigins(purchaseOrderId);
+
+		return response;
+	};
+}
+
+const lotOriginActions = new LotOriginActions();
+
+export default lotOriginActions;

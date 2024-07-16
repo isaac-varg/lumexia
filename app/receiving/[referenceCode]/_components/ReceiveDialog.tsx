@@ -64,8 +64,6 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
 			purchaseOrderId: item.purchaseOrderId,
 			originType: 'purchaseOrderReceiving'
 		}
-		console.log(lot)
-		console.log(originCreateData)
 		await lotOriginActions.createNew(originCreateData)	
 
 		revalidatePage("/receiving/[referenceCode]");
