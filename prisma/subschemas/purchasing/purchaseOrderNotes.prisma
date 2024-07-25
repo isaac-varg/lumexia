@@ -9,4 +9,6 @@ model PurchaseOrderNote {
     updatedAt       DateTime      @updatedAt @map("updated_at")
     user            User          @relation(fields: [userId], references: [id])
     purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+
+    @@map("purchase_order_notes")
 }

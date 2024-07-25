@@ -1,4 +1,3 @@
-import { Table } from "jspdf-autotable";
 import React from "react";
 
 type TableRootProps = {
@@ -10,7 +9,7 @@ type TableRootProps = {
 const TableRoot = ({ headers, data, onRowClick }: TableRootProps) => {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full">
+      <table className="w-full table-auto">
         <thead className="text-xs p-4 text-left text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {headers.map((header, index) => {

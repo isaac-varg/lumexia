@@ -28,6 +28,8 @@ const NotesForm = ({supplier }: {supplier: Supplier}) => {
     <Dialog.Root identifier="createNote">
       <Form.Root form={form} onSubmit={handleSubmit}>
         <Form.Text form={form} fieldName="content" label="Content" required />
+
+	<Form.ActionRow form={form} />
       </Form.Root>
     </Dialog.Root>
   );

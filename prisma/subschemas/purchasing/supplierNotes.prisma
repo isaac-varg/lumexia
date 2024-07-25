@@ -7,4 +7,6 @@ model SupplierNote {
     supplier   Supplier @relation(fields: [supplierId], references: [id])
     createdAt  DateTime @default(now()) @map("created_at")
     updatedAt  DateTime @updatedAt @map("updated_at")
+
+    @@map("supplier_notes")
 }

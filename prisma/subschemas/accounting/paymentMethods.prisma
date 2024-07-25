@@ -11,6 +11,8 @@ model PaymentMethod {
     updatedAt              DateTime                @updatedAt @map("updated_at")
     supplierPaymentMethods SupplierPaymentMethod[]
     purchaseOrders         PurchaseOrder[]
+
+    @@map("payment_methods")
 }
 
 

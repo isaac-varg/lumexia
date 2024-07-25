@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jul 16 2024 16:44:15 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jul 24 2024 11:21:14 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -10,6 +10,8 @@ model PaymentMethod {
   updatedAt              DateTime                @updatedAt @map("updated_at")
   supplierPaymentMethods SupplierPaymentMethod[]
   purchaseOrders         PurchaseOrder[]
+
+  @@map("payment_methods")
 }
 
 model ActivityLog {
@@ -248,6 +250,8 @@ model PurchaseOrderNote {
   updatedAt       DateTime      @updatedAt @map("updated_at")
   user            User          @relation(fields: [userId], references: [id])
   purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+
+  @@map("purchase_order_notes")
 }
 
 model PurchaseOrderStatus {
@@ -291,25 +295,30 @@ model SupplierAlias {
 }
 
 model SupplierContactNote {
-  id                String   @id @default(uuid())
-  supplierContactId String   @map("supplier_contact_id")
+  id                String          @id @default(uuid())
+  supplierContactId String          @map("supplier_contact_id")
   content           String
-  supplierContact   Supplier @relation(fields: [supplierContactId], references: [id])
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+  supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id])
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  @@map("supplier_contact_notes")
 }
 
 model SupplierContact {
-  id         String   @id @default(uuid())
-  supplierId String   @map("supplier_id")
-  firstName  String   @map("first_name")
-  lastName   String   @map("last_name")
-  email      String
-  phone      String
-  type       String
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  id                   String                @id @default(uuid())
+  supplierId           String                @map("supplier_id")
+  firstName            String                @map("first_name")
+  lastName             String                @map("last_name")
+  email                String
+  phone                String
+  type                 String
+  supplier             Supplier              @relation(fields: [supplierId], references: [id])
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+  supplierContactNotes SupplierContactNote[]
+
+  @@map("supplier_contacts")
 }
 
 model SupplierNote {
@@ -319,6 +328,8 @@ model SupplierNote {
   supplier   Supplier @relation(fields: [supplierId], references: [id])
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("supplier_notes")
 }
 
 model SupplierPaymentMethod {
@@ -347,7 +358,6 @@ model Supplier {
   supplierAlias         SupplierAlias[]
   supplierNotes         SupplierNote[]
   SupplierPaymentMethod SupplierPaymentMethod[]
-  SupplierContactNote   SupplierContactNote[]
   SupplierContact       SupplierContact[]
 
   @@map("suppliers")
