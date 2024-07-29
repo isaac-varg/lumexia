@@ -6,23 +6,24 @@ import ContactsTitle from "./ContactsTitle";
 import ContactCard from "./ContactCard";
 
 const ContactsPanel = ({
-	contacts,
-	supplierId,
+  contacts,
+  supplierId,
 }: {
-	contacts: SupplierContact[];
-	supplierId: string;
+  contacts: SupplierContact[];
+  supplierId: string;
 }) => {
-	return (
-		<>
-			<ContactsAddNewForm supplierId={supplierId} />
-			<Card.Root>
-				<ContactsTitle />
+  return (
+    <>
+      <ContactsAddNewForm supplierId={supplierId} />
+      <Card.Root>
+        <ContactsTitle />
 
-
-				{contacts.map((contact) => <ContactCard key={contact.id} contact={contact} />)}
-			</Card.Root>
-		</>
-	);
+        {contacts.map((contact) => (
+          <ContactCard key={contact.id} contact={contact} supplierId={supplierId} />
+        ))}
+      </Card.Root>
+    </>
+  );
 };
 
 export default ContactsPanel;

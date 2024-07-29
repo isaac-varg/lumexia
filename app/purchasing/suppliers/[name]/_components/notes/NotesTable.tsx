@@ -13,6 +13,7 @@ import { TbPlus, TbX } from "react-icons/tb";
 import supplierNoteActions from "@/actions/purchasing/supplierNoteActions";
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
+import NoteEditForm from "./NoteEditForm";
 
 const NotesTable = ({
 	data,
@@ -22,24 +23,17 @@ const NotesTable = ({
 	supplier: Supplier;
 }) => {
 	const { showDialog } = useDialog();
-	const headers = ["Created At", "Content", ""];
 
 	const handleNoteDelete = (note: SupplierNote) => {
-		supplierNoteActions.deleteOne({id: note.id} );
+		supplierNoteActions.deleteOne({ id: note.id });
 		revalidatePage("/purchasing/suppliers/[name]");
-		createActivityLog("deleteSupplierNote", "supplier", supplier.id, {context: `Note with following content was deleted: ${note.content}`});
+		createActivityLog("deleteSupplierNote", "supplier", supplier.id, {
+			context: `Note with following content was deleted: ${note.content}`,
+		});
 	};
 
-	const notes = data.map((note) => {
-		return [
-			DateTime.fromJSDate(note.createdAt).toFormat("DD @t"),
-			note.content,
-			<ActionButton key={note.id} onClick={() => handleNoteDelete(note)} color="alert" ><TbX /></ActionButton>,
-		];
-	});
-
-	const handleRowClick = () => {
-		console.log("clicked");
+	const handleRowClick = (note: SupplierNote) => {
+		showDialog(`updateNote${note.id}`);
 	};
 
 	return (
@@ -55,11 +49,22 @@ const NotesTable = ({
 					</ActionButton>
 				</span>
 
-				<Table.Root
-					headers={headers}
-					data={notes}
-					onRowClick={handleRowClick}
-				/>
+				<div>
+					{data.map((note) => {
+						return (
+							<div
+								onClick={() => handleRowClick(note)}
+								key={note.id}
+								className=" ml-4 rounded-lg flex flex-row items-center gap-x-2 hover:bg-cararra-100 hover:cursor-pointer py-1 px-2"
+							>
+								<NoteEditForm supplier={supplier} note={note} />
+
+								<div className="h-2 w-2 rounded-full bg-cararra-900" />
+								<p className="font-inter">{note.content} </p>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</>
 	);

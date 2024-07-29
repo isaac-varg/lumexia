@@ -3,7 +3,8 @@ import Text from "@/components/Text";
 import { SupplierNote } from "@/types/SupplierNote";
 import { Supplier } from "@/types/supplier";
 import React from "react";
-import NotesTable from "./notes/NotesTable";
+import NotesTable from "../notes/NotesTable";
+import CardTitle from "./CardTitle";
 
 const SupplierInfoPanel = ({
 	supplier,
@@ -15,9 +16,10 @@ const SupplierInfoPanel = ({
 	return (
 		<Card.Root>
 			<div className="flex flex-col gap-y-8">
-				<div className="flex flex-col gap-y-4">
-					<Card.Title size="small">Supplier Info</Card.Title>
+				<CardTitle supplier={supplier}/>
 
+
+				<div className="flex flex-col gap-y-4">
 					<Text.LabelDataPair label="Name" data={supplier.name} />
 					<Text.LabelDataPair
 						label="Address"

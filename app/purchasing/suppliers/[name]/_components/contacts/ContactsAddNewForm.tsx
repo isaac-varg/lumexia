@@ -4,6 +4,7 @@ import { revalidatePage } from "@/actions/app/revalidatePage";
 import supplierContactActions from "@/actions/purchasing/supplierContactActions";
 import Dialog from "@/components/Dialog";
 import Form from "@/components/Form";
+import useDialog from "@/hooks/useDialog";
 import { SupplierContact } from "@/types/supplierContact";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import React from "react";
@@ -19,7 +20,7 @@ interface Inputs {
 
 const ContactsAddNewForm = ({supplierId} : {supplierId: string} ) => {
 	const form = useForm<Inputs>();
-
+	const {resetDialogContext} = useDialog()
 	const handleSubmit =  async (data: Inputs) => {
 
 		const createData  = {
@@ -30,14 +31,15 @@ const ContactsAddNewForm = ({supplierId} : {supplierId: string} ) => {
 			phone: data.phone,
 			type: data.type,
 		}
+
 		const contactResponse = await supplierContactActions.createNew(createData);
-		
+		resetDialogContext();	
 		createActivityLog("addSupplierContact", "supplier", supplierId, { context: `Contact ${data.firstName} ${data.lastName} was added.`, contactId: contactResponse.id } )
 		revalidatePage("/purchasing/suppliers/[name]");
 	};
 
 	return (
-		<Dialog.Root identifier="addNewContact">
+		<Dialog.Root identifier={`addNewContact`}>
 			<Form.Root form={form} onSubmit={handleSubmit}>
 				<Form.Text
 					form={form}

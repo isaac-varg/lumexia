@@ -2,7 +2,7 @@ model SupplierContactNote {
 	    id        	      String   @id @default(uuid())
 	    supplierContactId String   @map("supplier_contact_id")
 	    content	      String    
-            supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id])
+            supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
 	    createdAt  	      DateTime @default(now()) @map("created_at")
 	    updatedAt 	      DateTime @updatedAt @map("updated_at")
 

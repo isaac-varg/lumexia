@@ -33,7 +33,7 @@ const AddContactNote = ({contact} : { contact: SupplierContact } ) => {
 	}
 
   return (
-  	<Dialog.Root identifier={`contactNote${contact.id}`}>
+  	<Dialog.Root identifier={`addContactNote${contact.id}`}>
 		<Form.Root form={form} onSubmit={handleSubmit}>
 			<Form.TextArea form={form} label="Note Content" fieldName="content" required />
 			<Form.ActionRow form={form} />
