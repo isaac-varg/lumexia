@@ -1,4 +1,5 @@
 import { PaymentMethod } from "./paymentMethod";
+import { PurchaseOrderItem } from "./purchaseOrderItem";
 import { PurchaseOrderStatus } from "./purchaseOrderStatus";
 import { Supplier } from "./supplier";
 import { User } from "./user";
@@ -16,4 +17,5 @@ export interface PurchaseOrder {
 	supplier: Supplier;
 	status: PurchaseOrderStatus;
 	paymentMethod: PaymentMethod;
+	purchaseOrderItems?: PurchaseOrderItem[]
 }
