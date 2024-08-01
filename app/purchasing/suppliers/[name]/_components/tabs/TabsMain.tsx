@@ -1,30 +1,20 @@
-import prisma from "@/lib/prisma";
 import { Supplier } from "@/types/supplier";
 import TabsContent from "./TabsContent";
 import { getPurchases } from "../../_actions/getPurchases";
+import { SupplierDetailsItems, getItems } from "../../_actions/getItems";
 
 const TabsMain = async ({ supplier }: { supplier: Supplier }) => {
-	const materials = await prisma.purchaseOrderItem.findMany({
-		where: {
-			purchaseOrders: {
-				supplierId: supplier.id,
-			},
-		},
-		distinct: ["itemId"],
-		include: {
-			purchaseOrders: true,
-			item: true,
-		},
-	});
+	const items = await getItems(supplier.id);
 
 	const purchases = await getPurchases(supplier.id);
-	console.log(purchases);
 
 	return (
 		<div>
-			<TabsContent  purchases={purchases}/>
+			<TabsContent purchases={purchases} items={items as SupplierDetailsItems[]} />
 		</div>
 	);
 };
 
 export default TabsMain;
+
+

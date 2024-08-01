@@ -9,7 +9,10 @@ export const purchasesColumns = [
 		header: "PO #",
 	}),
 	columnHelper.accessor("total", {
-		header: "Total ($)"
+		header: "Total ($)",
+		cell: (row) => {
+			return row.row.original.total.toLocaleString();
+		}
 	}),
 	columnHelper.accessor("createdAt", {
 		header: "Created",

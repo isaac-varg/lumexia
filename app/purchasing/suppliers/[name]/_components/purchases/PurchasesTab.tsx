@@ -1,21 +1,40 @@
-"use client"
+"use client";
 
 import DataTable from "@/components/DataTable";
 import { purchasesColumns } from "./Columns";
+import { SupplierDetailPurchases } from "../../_actions/getPurchases";
+import TotalMetrics from "./TotalMetrics";
+import Card from "@/components/Card";
+import {
+	RowSelectionHandlerMethod,
+	rowSelectionHandler,
+} from "@/utils/auxiliary/rowSelectionHandler";
+import { useRouter } from "next/navigation";
 
-const PurchasesTab = ({purchases} : {purchases: any}) => {
-	
-	console.log(purchases);
+const PurchasesTab = ({
+	purchases,
+}: {
+	purchases: SupplierDetailPurchases[];
+}) => {
+	const router = useRouter();
 
-  return (
-    <div className="p-4">
-			<DataTable.Default
-				data={purchases}
-				columns={purchasesColumns}
-				onRowClick={(row) => console.log(row)}
-			/>
-    </div>
-  )
-}
+	const handleClick = (row: any, method: RowSelectionHandlerMethod) => {
+		const path = `/purchasing/purchase-orders/${row.original.referenceCode}?id=${row.original.id}`;
+		rowSelectionHandler(method, path, router);
+	};
 
-export default PurchasesTab
+	return (
+		<div className="p-4 flex flex-col gap-y-4">
+			<TotalMetrics purchases={purchases} />
+			<Card.Root>
+				<DataTable.Default
+					data={purchases}
+					columns={purchasesColumns}
+					onRowClick={(row) => handleClick(row, 'rowClick')}
+				/>
+			</Card.Root>
+		</div>
+	);
+};
+
+export default PurchasesTab;

@@ -1,26 +1,36 @@
-"use client" 
-import TabsPanel from '@/components/Tabs'
-import PurchasesTab from '../purchases/PurchasesTab';
+"use client";
+import TabsPanel from "@/components/Tabs";
+import PurchasesTab from "../purchases/PurchasesTab";
+import { SupplierDetailPurchases } from "../../_actions/getPurchases";
+import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
+import ItemsTab from "../items/ItemsTab";
+import { SupplierDetailsItems } from "../../_actions/getItems";
 
 const tabs = [
-  { identifier: "purchases", label: "Purchases" },
-  { identifier: "materials", label: "Materials" },
+	{ identifier: "purchases", label: "Purchases" },
+	{ identifier: "items", label: "Items" },
 ];
 
-
-const TabsContent = ({purchases} : {purchases: any}) => {
-  return (
-  
-		<TabsPanel.Root defaultTabIdentifier="purchases" >
+const TabsContent = ({
+	purchases,
+	items,
+}: {
+	purchases: SupplierDetailPurchases[];
+	items: SupplierDetailsItems[];
+}) => {
+	return (
+		<TabsPanel.Root defaultTabIdentifier="purchases">
 			<TabsPanel.List tabTriggers={tabs} />
-				<PurchasesTab purchases={purchases} />
-			<TabsPanel.Content identifier="purchases">
-				woah
 
+			<TabsPanel.Content identifier="purchases">
+				<PurchasesTab purchases={purchases} />
+			</TabsPanel.Content>
+
+			<TabsPanel.Content identifier="items">
+				<ItemsTab items={items} />
 			</TabsPanel.Content>
 		</TabsPanel.Root>
+	);
+};
 
-  )
-}
-
-export default TabsContent
+export default TabsContent;

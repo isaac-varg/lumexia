@@ -2,14 +2,23 @@
 
 import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions";
 import { PurchaseOrder } from "@/types/purchaseOrder";
-import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
+import { ExPurchaseOrderItem, PurchaseOrderItem } from "@/types/purchaseOrderItem";
+
+interface LineItems extends ExPurchaseOrderItem {
+	total: number,
+}
+
+export interface SupplierDetailPurchases extends PurchaseOrder {
+	lineItems: LineItems[] 
+	total: number
+}
 
 export const getPurchases = async (supplierId: string) => {
 	const purchases = await purchaseOrderActions.getAll({ supplierId }, [
 		"purchaseOrderItems",
 	]);
 
-	const extended = purchases.map((purchase: PurchaseOrder) => {
+	const extended: SupplierDetailPurchases[] = purchases.map((purchase: PurchaseOrder) => {
 		const { purchaseOrderItems, ...rest } = purchase;
 		const lineItems = purchase.purchaseOrderItems?.map(
 			(lineItem: PurchaseOrderItem) => {
