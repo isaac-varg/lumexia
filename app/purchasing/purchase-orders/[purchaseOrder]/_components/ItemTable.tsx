@@ -1,7 +1,7 @@
 "use client";
 import DataTable from "@/components/DataTable";
 import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import columns from "../_configs/ItemTableColumns";
 import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions";
 import AddItemDialog from "./AddItemDialog";
@@ -11,6 +11,10 @@ import { PurchaseOrder } from "@/types/purchaseOrder";
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import { useRouter } from "next/navigation";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
+import createColumns from "../_configs/ItemTableColumns";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 type ItemTableProps = {
 	orderItems: PurchaseOrderItem[];
@@ -20,15 +24,19 @@ type ItemTableProps = {
 
 const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
 	const { showDialog } = useDialog();
+  const [columns, setColumns] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true)
+
 	const router = useRouter();
 
 	const handleRowUpdate = (row: any) => {
 		const rowQuantity = row.quantity as any;
 		// const rowPricePerUnit = row.pricePerUnit as any;
-
+    console.log(row) 
 		const updateData = {
 			pricePerUnit: parseFloat(row.pricePerUnit),
 			quantity: parseFloat(rowQuantity),
+      uomId: row.uomId,
 		};
 
 		purchaseOrderItemActions.update({ id: row.id }, updateData);
@@ -105,6 +113,24 @@ const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
 	}, []);
+
+
+   useEffect(() => {
+    const fetchColumns = async () => {
+      const cols = await createColumns();
+      setColumns(cols);
+      setIsLoading(false)
+    };
+
+    fetchColumns();
+
+  }, []);
+
+
+  if (isLoading) {
+    return <div><Skeleton count={5} /></div>;
+  }
+
 
 	return (
 		<div>
