@@ -1,54 +1,91 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { SupplierDetailsItems } from "../../_actions/getItems";
 import Card from "@/components/Card";
 import ItemRow from "./ItemRow";
-import { SupplierDetailPurchases } from "../../_actions/getPurchases";
-import { getFilteredItems } from "../../_actions/getFilteredItems";
+import { SupplierFilterItems, getFilteredItems } from "../../_actions/getFilteredItems";
+import Text from "@/components/Text";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { ApexOptions } from "apexcharts";
+import Chart from "react-apexcharts";
 
-const ItemsTab = ({
-	items,
-}: {
-	items: SupplierDetailsItems[];
-}) => {
-	const [selectedItem, setSelectedItem] = useState<SupplierDetailsItems | null>();
+const chartOptions: ApexOptions = {
+  chart: {
+    type: "area",
+  },
+  stroke: { curve: "smooth" },
+};
 
-	const [itemData, setItemData] = useState<any>(null); 
+const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
+  const [selectedItem, setSelectedItem] =
+    useState<SupplierDetailsItems | null>();
 
-	const handleItemClick = (item: SupplierDetailsItems) => {
-		setSelectedItem(item);
-	};
+  const [itemData, setItemData] = useState<SupplierFilterItems | null>(null);
 
-	useEffect(() => {
-		if (!selectedItem) return;
+  const handleItemClick = (item: SupplierDetailsItems) => {
+    setSelectedItem(item);
+  };
 
-		const fetchData = async () => {
-			try {
-				const data = await getFilteredItems(selectedItem.item.id, selectedItem.purchaseOrders.supplierId);
-				setItemData(data);
-				console.log(data);
-			} catch (error) {
-				console.error("Error fetching item data:", error);
-			}
-		};
+  useEffect(() => {
+    if (!selectedItem) return;
 
-		fetchData();
-	}, [selectedItem]);
+    const fetchData = async () => {
+      try {
+        const data = await getFilteredItems(
+          selectedItem.item.id,
+          selectedItem.purchaseOrders.supplierId,
+        );
+        setItemData(data as any);
+      } catch (error) {
+        console.error("Error fetching item data:", error);
+      }
+    };
 
-	return (
-		<div className="flex gap-x-4">
-			<div className="w-1/3">
-				<Card.Root>
-					<Card.Title size="small">Items Supplied</Card.Title>
-					{items.map((item) => (
-						<ItemRow key={item.id} item={item} onClick={handleItemClick} />
-					))}
-				</Card.Root>
-			</div>
-			<div className="w-full">
-				<Card.Root>hey hey </Card.Root>
-			</div>
-		</div>
-	);
+    fetchData();
+  }, [selectedItem]);
+
+
+  return (
+    <div className="flex gap-x-4">
+      <div className="w-1/3">
+        <Card.Root>
+          <Card.Title size="small">Items Supplied</Card.Title>
+          {items.map((item) => (
+            <ItemRow key={item.id} item={item} selectedItemId={selectedItem?.id} onClick={handleItemClick} />
+          ))}
+        </Card.Root>
+      </div>
+      <div className="w-full min-h-80">
+        <Card.Root>
+          {!itemData ? <Skeleton count={5} /> : (
+            <div className="w-full flex flex-row gap-x-6">
+              <div className="w-1/3">
+                <Card.Title size="small">Summary</Card.Title>
+                <div className="flex flex-col gap-y-2">
+                  <Text.LabelDataPair label="Total Spent" data={itemData.totalSpent.toLocaleString()} />
+                  <Text.LabelDataPair label="Last Price" data={`${itemData.lastPaid.price} $/${itemData.lastPaid.uom.abbreviation}`} />
+                  <Text.LabelDataPair label="UOM(s)" data={itemData.uoms.toString()} />
+                  <Text.LabelDataPair label="Purchases" data={itemData.purchases.length} />
+                </div>
+              </div>
+              <div className="w-full min-h-80 ">
+                <Card.Title size="small">Trends
+
+
+                </Card.Title>
+                {itemData && <Chart
+                  options={chartOptions}
+                  series={itemData.pricingChartData}
+                  type="area"
+                  height={"100%"}
+                />}
+              </div>
+            </div>)}
+        </Card.Root>
+      </div>
+    </div>
+  );
 };
 
 export default ItemsTab;
