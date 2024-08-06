@@ -9,6 +9,8 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
+import Layout from "@/components/Layout";
+import ActionButton from "@/components/ActionButton";
 
 const chartOptions: ApexOptions = {
   chart: {
@@ -22,6 +24,9 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
     useState<SupplierDetailsItems | null>();
 
   const [itemData, setItemData] = useState<SupplierFilterItems | null>(null);
+  const [dateRangeMode, setDateRangeMode] = useState<
+    "yearToDate" | "lastYear" | "all"
+  >("yearToDate");
 
   const handleItemClick = (item: SupplierDetailsItems) => {
     setSelectedItem(item);
@@ -35,6 +40,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
         const data = await getFilteredItems(
           selectedItem.item.id,
           selectedItem.purchaseOrders.supplierId,
+          dateRangeMode
         );
         setItemData(data as any);
       } catch (error) {
@@ -43,7 +49,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
     };
 
     fetchData();
-  }, [selectedItem]);
+  }, [selectedItem, dateRangeMode]);
 
 
   return (
@@ -70,6 +76,26 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
                 </div>
               </div>
               <div className="w-full min-h-80 ">
+                <Layout.Row justify="end">
+                  <ActionButton
+                    color={dateRangeMode === "all" ? "cuttySark" : "cararra"}
+                    onClick={() => setDateRangeMode("all")}
+                  >
+                    All
+                  </ActionButton>
+                  <ActionButton
+                    color={dateRangeMode === "yearToDate" ? "cuttySark" : "cararra"}
+                    onClick={() => setDateRangeMode("yearToDate")}
+                  >
+                    This Year
+                  </ActionButton>
+                  <ActionButton
+                    color={dateRangeMode === "lastYear" ? "cuttySark" : "cararra"}
+                    onClick={() => setDateRangeMode("lastYear")}
+                  >
+                    Last Year
+                  </ActionButton>
+                </Layout.Row>
                 <Card.Title size="small">Trends
 
 
