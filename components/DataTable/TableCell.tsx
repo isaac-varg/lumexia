@@ -39,6 +39,7 @@ const TableCell = ({
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
         type={column.columnDef.meta?.type || "text"}
+        className="bg-cararra-100 px-2 py-1 rounded-lg"
       />
     );
   }

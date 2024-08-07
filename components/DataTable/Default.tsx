@@ -3,19 +3,22 @@
 import {
   flexRender,
   getFilteredRowModel,
+  PaginationState,
   getCoreRowModel,
   useReactTable,
   ColumnFiltersState,
   SortingState,
   getSortedRowModel,
-  FilterFn,
-  Row,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import FilterBar from "./FilterBar";
 import { Filter } from "@/types/filter";
 import ContextMenu from "../ContextMenu";
 import { RowSelectionHandlerMethod } from "@/utils/auxiliary/rowSelectionHandler";
+import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
+import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
+import ActionButton from "../ActionButton";
 
 type DataTableDefaultProps = {
   data: any;
@@ -42,6 +45,10 @@ const Default = ({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
 
   const table = useReactTable({
     data,
@@ -53,6 +60,7 @@ const Default = ({
       sorting,
       columnFilters,
       globalFilter,
+      pagination,
     },
     // filterFns: {
     //   meetmeet: myCustomFilterFn, // basically make an alias for our custom filter
@@ -65,6 +73,8 @@ const Default = ({
     getSortedRowModel: getSortedRowModel(),
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnFilters,
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     // globalFilterFn: "meetmeet", // use our custom filter by accessing it via the alias
   });
 
@@ -88,9 +98,9 @@ const Default = ({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </th>
                 ))}
               </tr>
@@ -103,7 +113,7 @@ const Default = ({
                 <ContextMenu.Trigger asChild>
                   <tr
                     onClick={() => onRowClick(row, 'rowClick')}
-                    className="border-b dark:border-neutral-500"
+                    className="border-b dark:border-neutral-500 hover:bg-bay-leaf-100"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td className="py-4" key={cell.id}>
@@ -118,7 +128,7 @@ const Default = ({
                 <ContextMenu.Content>
                   <ContextMenu.Item
                     onClick={() => onRowClick(row, 'newTab')}
-                    // shortcut={"CTRL + A"}
+                  // shortcut={"CTRL + A"}
                   >
                     New Tab
                   </ContextMenu.Item>
@@ -127,6 +137,78 @@ const Default = ({
             ))}
           </tbody>
         </table>
+        <div className="flex flex-row justify-between mt-6">
+          <div>
+            <span className="flex  text-neutral-700 font-inter font-semibold items-center gap-1">
+              Jump To Page:
+              <input
+                type="number"
+                min="1"
+                max={table.getPageCount()}
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={e => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0
+                  table.setPageIndex(page)
+                }}
+                className="border border-cararra-100 bg-cararra-100 p-2 rounded w-16"
+              />
+            </span>
+          </div>
+
+          <div className="flex gap-x-4 text-3xl" >
+            <button
+              className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <FiChevronsLeft />
+            </button>
+            <button
+              className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <FiChevronLeft />
+            </button>
+            <span className="flex items-center gap-1 font-inter font-semibold text-cararra-700 text-base">
+              <div>Page</div>
+              {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount().toLocaleString()}
+            </span>
+
+            <button
+              className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <FiChevronRight />
+            </button>
+            <button
+              className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <FiChevronsRight />
+            </button>
+
+          </div>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={e => {
+              table.setPageSize(Number(e.target.value))
+            }}
+            className="bg-cararra-200 hover:bg-cararra-300 rounded-lg px-2 py-1 font-inter text-base text-cararra-700 font-semibold w-32"
+          >
+            {[10, 20, 30, 40, 50].map(pageSize => (
+              <option key={pageSize} value={pageSize} className="font-inter text-base text-cararra-700 font-semibold">
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+
+        </div>
+        <div className="flex items-center gap-2 mt-4">
+        </div>
       </div>
     </div>
   );

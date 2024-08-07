@@ -43,9 +43,10 @@ const EditableSelectCell = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onBlur={onBlur}
+        className='bg-cararra-100 px-2 py-1 rounded-lg'
       >
         {options.map((option: any, index: number) => (
-          <option key={index} value={option.value}>
+          <option key={index} value={option.value} className='font-inter'>
             {option.label}
           </option>
         ))}</select>

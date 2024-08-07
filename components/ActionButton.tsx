@@ -13,7 +13,7 @@ interface ActionButtonProps {
 
 export const actionButtonClasses = {
 	sizes: {
-		default: "py-2 px-4",
+		default: "py-2 px-4 ",
 	},
 	colors: {
 		default: "bg-bay-leaf-300 hover:bg-bay-leaf-400 text-white",
