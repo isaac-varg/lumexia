@@ -11,6 +11,7 @@ import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 import Layout from "@/components/Layout";
 import ActionButton from "@/components/ActionButton";
+import { sortByProperty } from "@/utils/data/sortByProperty";
 
 const chartOptions: ApexOptions = {
   chart: {
@@ -27,7 +28,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
   const [dateRangeMode, setDateRangeMode] = useState<
     "yearToDate" | "lastYear" | "all"
   >("yearToDate");
-
+  const sortedItems = sortByProperty(items, 'item.name')
   const handleItemClick = (item: SupplierDetailsItems) => {
     setSelectedItem(item);
   };
@@ -50,6 +51,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
 
     fetchData();
   }, [selectedItem, dateRangeMode]);
+  
 
 
   return (
@@ -57,15 +59,17 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
       <div className="w-1/3">
         <Card.Root>
           <Card.Title size="small">Items Supplied</Card.Title>
-          {items.map((item) => (
+          <div className="flex flex-col gap-y-2 h-96 overflow-scroll">
+          {sortedItems.map((item) => (
             <ItemRow key={item.id} item={item} selectedItemId={selectedItem?.id} onClick={handleItemClick} />
           ))}
+          </div>
         </Card.Root>
       </div>
-      <div className="w-full min-h-80">
+      <div className="w-full">
         <Card.Root>
           {!itemData ? <Skeleton count={5} /> : (
-            <div className="w-full flex flex-row gap-x-6">
+            <div className="w-full flex flex-row gap-x-6 h-96">
               <div className="w-1/3">
                 <Card.Title size="small">Summary</Card.Title>
                 <div className="flex flex-col gap-y-2">
@@ -75,7 +79,8 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
                   <Text.LabelDataPair label="Purchases" data={itemData.purchases.length} />
                 </div>
               </div>
-              <div className="w-full min-h-80 ">
+              <div className="w-full  ">
+
                 <Layout.Row justify="end">
                   <ActionButton
                     color={dateRangeMode === "all" ? "cuttySark" : "cararra"}

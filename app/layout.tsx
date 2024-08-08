@@ -34,11 +34,9 @@ export default async function RootLayout({
       <body className={`${inter.variable} ${poppins.variable}`}>
         <Providers>
           <AuthProvider session={session}>
-            <div className="flex flex-row h-full ">
-              <div className="h-min-dvh" >
+            <div className="flex flex-row h-full">
                 <Sidebar />
 
-              </div>
               <div className="flex flex-col w-full px-8 py-8 gap-y-8">
                 <Searchbar />
                 {children}

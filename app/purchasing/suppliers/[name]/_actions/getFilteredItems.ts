@@ -39,7 +39,7 @@ export const getFilteredItems = async (itemId: string, supplierId: string, mode:
       }
     },
     orderBy: {
-      updatedAt: "desc",
+      updatedAt: "asc",
     },
     include: {
       purchaseOrders: true,
@@ -47,8 +47,6 @@ export const getFilteredItems = async (itemId: string, supplierId: string, mode:
       item: true
     },
   });
-
-  console.log(itemData)
 
   if (itemData.length === 0) {
     return {
@@ -61,10 +59,12 @@ export const getFilteredItems = async (itemId: string, supplierId: string, mode:
     }
   }
 
+  const lastPurchaseIndex = itemData.length - 1
+
   const totalSpent = itemData.reduce((total, item) => {
     return total + item.quantity * item.pricePerUnit;
   }, 0);
-  const lastPaid = { price: itemData[0].pricePerUnit, uom: itemData[0].uom, timestamp: itemData[0].createdAt };
+  const lastPaid = { price: itemData[lastPurchaseIndex].pricePerUnit, uom: itemData[lastPurchaseIndex].uom, timestamp: itemData[lastPurchaseIndex].createdAt };
   const uomIds = itemData
     .map((item) => item.uom.id)
     .filter((value, index, self) => self.indexOf(value) === index);
