@@ -4,6 +4,7 @@ import { FlattenedOrderItem } from "../_functions/flattenOrderItems";
 import { EditCell } from "@/components/DataTable/EditCell";
 import EditableSelectCell from "@/components/DataTable/SelectCell";
 import { getUOMs } from "../_functions/getUOMs";
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 export interface PurchaseOrderItemTData {
   itemReferenceCode: string;
@@ -57,7 +58,7 @@ const createColumns = async () => {
     columnHelper.display({
       id: "total",
       cell: (props) => {
-        return props.row.original.pricePerUnit * props.row.original.quantity;
+        return toFracitonalDigits.curreny(props.row.original.pricePerUnit * props.row.original.quantity);
       },
       header: "Total",
     }),

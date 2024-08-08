@@ -5,6 +5,7 @@ import * as Separator from "@radix-ui/react-separator";
 
 import { RxCheck, RxPlus } from "react-icons/rx";
 import { FacetOptions } from "@/types/facetOption";
+import { sortByProperty } from "@/utils/data/sortByProperty";
 
 interface DataTableFacetedFilter<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -19,6 +20,8 @@ export default function FacetedFilter<TData, TValue>({
 }: DataTableFacetedFilter<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
+
+  const sortedOptions = sortByProperty(options, "label");
 
   return (
     <Popover.Root>
@@ -38,14 +41,14 @@ export default function FacetedFilter<TData, TValue>({
                     {selectedValues.size} selected
                   </span>
                 ) : (
-                  options
+                  sortedOptions
                     .filter((option) => selectedValues.has(option.value))
                     .map((option) => (
                       <span
                         key={option.value}
                         className=" bg-limed-spruce-100 px-2 font-normal rounded-lg"
                       >
-                        {option.label}
+                        {option.label.length > 20 ? `${option.label.slice(0, 20)}...` : option.label}
                       </span>
                     ))
                 )}
@@ -55,13 +58,12 @@ export default function FacetedFilter<TData, TValue>({
         </button>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="rounded px-2 py-2 w-[260px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade">
-          <div className="flex flex-col ">
-            {options.map((option) => {
+        <Popover.Content className="rounded px-2 py-2 w-[360px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade">
+          <div className="flex flex-col gap-y-1 h-60 overflow-auto">
+            {sortedOptions.map((option) => {
               const isSelected = selectedValues.has(option.value);
               return (
                 <button
-                  // className="flex items-center justify-between py-2 px-3 w-full rounded-sm hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
                   className="font-inter text-lg text-neutral-800 px-2 py-1 bg-bay-leaf-100 rounded-lg"
                   key={Math.random()}
                   onClick={() => {
@@ -78,18 +80,18 @@ export default function FacetedFilter<TData, TValue>({
                 >
                   <div className="flex flex-row items-center ">
                     <div
-                      className={`mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-neutral-800" ${
-                        isSelected
+                      className={`mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-neutral-800" ${isSelected
                           ? "bg-bay-leaf-400 text-bay-leaf-950"
                           : "bg-bay-leaf-400 opacity-50 [&_svg]:invisible"
-                      }`}
+                        }`}
                     >
                       <RxCheck />
                     </div>
                     {option.icon && (
                       <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                     )}
-                    <span>{option.label}</span>
+                    <span>  {option.label.length > 25 ? `${option.label.slice(0, 25)}...` : option.label}
+                    </span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-inter text-lg">
                         {facets.get(option.value)}

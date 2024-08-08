@@ -1,5 +1,6 @@
 "use client";
 
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 // This handles the table cell component for an editable component.
 // It pulls functions from the Editable table core via the meta prop
 
@@ -27,9 +28,10 @@ const TableCell = ({
   }, [initialValue]);
 
   const onBlur = () => {
-    table.options.meta?.updateData(row.index, column.id, value);
+    table.options.meta?.updateData(row.index, column.id, toFracitonalDigits.digits(parseFloat(value), fractionalDigits));
   };
-
+  
+  const fractionalDigits = column.columnDef.meta?.valueType || 3
 
 
   if (tableMeta?.editedRows[row.id]) {
@@ -44,7 +46,7 @@ const TableCell = ({
     );
   }
 
-  return <span>{value}</span>
+  return <span>{toFracitonalDigits.digits(parseFloat(value), fractionalDigits)}</span>
 };
 
 export default TableCell;

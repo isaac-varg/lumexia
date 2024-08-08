@@ -3,13 +3,15 @@ import LabelDataPair from "@/components/Text/LabelDataPair";
 import item from "@/prisma/seed/data/item";
 import { Item } from "@/types/item";
 import React from "react";
+import BasicsCardTitle from "./basics/CardTitle";
+import { ItemEditSelectables } from "../page";
 
-const BasicsPanel = ({ item }: { item: Item }) => {
+const BasicsPanel = ({ item , itemEditSelectables }: { item: Item, itemEditSelectables: ItemEditSelectables }) => {
   if (!item || !item.itemType || !item.procurementType || !item.inventoryType)
     return null;
   return (
     <Card.Root>
-      <Card.Title>Basic Details</Card.Title>
+      <BasicsCardTitle item={item} itemEditSelectables={itemEditSelectables} />
       <LabelDataPair label="Name" data={item.name} />
       <LabelDataPair label="Reference Code" data={item.referenceCode} />
       <LabelDataPair label="Item Type" data={item.itemType.name} />

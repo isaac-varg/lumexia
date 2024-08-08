@@ -1,4 +1,5 @@
 "use client";
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 
@@ -11,7 +12,7 @@ export const purchasesColumns = [
 	columnHelper.accessor("total", {
 		header: "Total ($)",
 		cell: (row) => {
-			return row.row.original.total.toLocaleString();
+			return toFracitonalDigits.curreny(row.row.original.total);
 		}
 	}),
 	columnHelper.accessor("createdAt", {

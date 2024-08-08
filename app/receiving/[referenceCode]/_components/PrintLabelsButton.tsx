@@ -6,15 +6,21 @@ import {
 } from "@/utils/pdf/generators/itemLabels/createLabelsPDF";
 import { getLabelData } from "@/utils/pdf/generators/itemLabels/getLabelData";
 import React from "react";
+import { TbCloudDownload } from "react-icons/tb";
 
 const PrintLabelsButton = ({ lotOrigins }: { lotOrigins: LotOrigin[] }) => {
-	console.log(lotOrigins);
+
+
   const handleClick = () => {
-    const labelData = getLabelData(lotOrigins); 
-	console.log(labelData);
+    const labelData = getLabelData(lotOrigins);
     createLabelsPDF(labelData);
   };
-  return <ActionButton onClick={() => handleClick()}>click me</ActionButton>;
+
+
+  if (lotOrigins.length === 0) {
+    return false;
+  }
+  return <ActionButton onClick={() => handleClick()}><span className="flex flex-row gap-x-2"><TbCloudDownload className="text-2xl" />Labels</span></ActionButton>;
 };
 
 export default PrintLabelsButton;

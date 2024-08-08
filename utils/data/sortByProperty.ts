@@ -11,8 +11,8 @@ export const sortByProperty = (array: any[], property: string) => {
   const isPropertyNested = property.split(".").length > 1;
   
   const sorted = array.sort((a, b) => {
-    const valueA = isPropertyNested ? getNestedValue(a, property) : property;
-    const valueB = isPropertyNested ? getNestedValue(b, property) : property;
+    const valueA = isPropertyNested ? getNestedValue(a, property) : a[property];
+    const valueB = isPropertyNested ? getNestedValue(b, property) : b[property];
 
     if (valueA < valueB) {
       return -1;
@@ -25,3 +25,4 @@ export const sortByProperty = (array: any[], property: string) => {
 
   return sorted;
 }
+

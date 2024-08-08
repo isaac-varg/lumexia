@@ -13,6 +13,7 @@ import { getContainerTotals } from "../../_functions/getContainerTotals";
 import { FlattenedLot } from "../../_functions/flattenLots";
 import LabelDataPair from "@/components/Text/LabelDataPair";
 import { getOnHandTotal } from "../../_functions/getOnHandTotal";
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 const ContainersTable = ({
   lots,
@@ -61,7 +62,7 @@ const ContainersTable = ({
                 On Hand
               </h2>
               <h1 className="text-center font-poppins font-semibold text-4xl text-neutral-800">
-                {onHandTotal} lbs
+                {toFracitonalDigits.weight(onHandTotal)} lbs
               </h1>
           </Card.Root>
         </Layout.Grid>

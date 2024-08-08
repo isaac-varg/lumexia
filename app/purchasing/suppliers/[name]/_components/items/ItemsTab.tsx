@@ -12,6 +12,7 @@ import Chart from "react-apexcharts";
 import Layout from "@/components/Layout";
 import ActionButton from "@/components/ActionButton";
 import { sortByProperty } from "@/utils/data/sortByProperty";
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 const chartOptions: ApexOptions = {
   chart: {
@@ -51,7 +52,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
 
     fetchData();
   }, [selectedItem, dateRangeMode]);
-  
+
 
 
   return (
@@ -60,28 +61,15 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
         <Card.Root>
           <Card.Title size="small">Items Supplied</Card.Title>
           <div className="flex flex-col gap-y-2 h-96 overflow-scroll">
-          {sortedItems.map((item) => (
-            <ItemRow key={item.id} item={item} selectedItemId={selectedItem?.id} onClick={handleItemClick} />
-          ))}
+            {sortedItems.map((item) => (
+              <ItemRow key={item.id} item={item} selectedItemId={selectedItem?.id} onClick={handleItemClick} />
+            ))}
           </div>
         </Card.Root>
       </div>
       <div className="w-full">
         <Card.Root>
-          {!itemData ? <Skeleton count={5} /> : (
-            <div className="w-full flex flex-row gap-x-6 h-96">
-              <div className="w-1/3">
-                <Card.Title size="small">Summary</Card.Title>
-                <div className="flex flex-col gap-y-2">
-                  <Text.LabelDataPair label="Total Spent" data={itemData.totalSpent.toLocaleString()} />
-                  <Text.LabelDataPair label="Last Price" data={`${itemData.lastPaid.price} $/${itemData.lastPaid.uom.abbreviation}`} />
-                  <Text.LabelDataPair label="UOM(s)" data={itemData.uoms.toString()} />
-                  <Text.LabelDataPair label="Purchases" data={itemData.purchases.length} />
-                </div>
-              </div>
-              <div className="w-full  ">
-
-                <Layout.Row justify="end">
+               <Layout.Row justify="end">
                   <ActionButton
                     color={dateRangeMode === "all" ? "cuttySark" : "cararra"}
                     onClick={() => setDateRangeMode("all")}
@@ -101,6 +89,21 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
                     Last Year
                   </ActionButton>
                 </Layout.Row>
+
+          {!itemData ? <Skeleton count={5} /> : (
+            <div className="w-full flex flex-row gap-x-6 h-96">
+              <div className="w-1/3">
+                <Card.Title size="small">Summary</Card.Title>
+                <div className="flex flex-col gap-y-2">
+                  <Text.LabelDataPair label="Total Spent" data={toFracitonalDigits.curreny(itemData.totalSpent)} />
+                  <Text.LabelDataPair label="Last Price" data={`${toFracitonalDigits.curreny(itemData.lastPaid.price)} $/${itemData.lastPaid.uom.abbreviation}`} />
+                  <Text.LabelDataPair label="UOM(s)" data={itemData.uoms.toString()} />
+                  <Text.LabelDataPair label="Purchases" data={itemData.purchases.length} />
+                </div>
+              </div>
+              <div className="w-full  ">
+
+             
                 <Card.Title size="small">Trends
 
 

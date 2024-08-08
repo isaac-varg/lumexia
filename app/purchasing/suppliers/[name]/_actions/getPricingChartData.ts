@@ -1,3 +1,5 @@
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
+import { DateTime } from "luxon";
 
 interface DataItem {
     price: number  
@@ -28,7 +30,7 @@ export const getPricingChartData  = (input: InputData): YearGroup[] => {
 
         for (const month in input[year]) {
             input[year][month].forEach(item => {
-                yearGroup.data.push({ x: item.createdAt, y: parseFloat(item.price.toFixed(3)) });
+                yearGroup.data.push({ x:DateTime.fromJSDate(item.createdAt).toFormat("DD") as any, y: parseFloat(toFracitonalDigits.curreny(item.price)) });
             });
         }
 
