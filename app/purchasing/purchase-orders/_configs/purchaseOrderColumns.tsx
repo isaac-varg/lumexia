@@ -2,15 +2,16 @@
 import SortableHead from "@/components/DataTable/SortableHead";
 import { DateTime } from "luxon";
 import { createColumnHelper } from "@tanstack/react-table";
+import { SortableHeaderType } from "@/components/DataTable/SortableHeaderType";
 
 const columnHelper = createColumnHelper<any>();
 
 export const purchaseOrderColumns = [
     columnHelper.accessor("referenceCode", {
-        header: "PO #",
+        header: SortableHeaderType("PO #"),
     }),
     columnHelper.accessor("supplierName", {
-        header: "Supplier",
+        header: SortableHeaderType("Supplier"),
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
           },
@@ -22,13 +23,13 @@ export const purchaseOrderColumns = [
           },
     }),
     columnHelper.accessor("createdAt", {
-        header: "Created",
+        header: SortableHeaderType("Created"),
         cell: (row) => { 
             return DateTime.fromJSDate(row.row.original.createdAt).toFormat("DD @ t")
         }
     }),
     columnHelper.accessor("updatedAt", {
-        header: "Updated",
+        header: SortableHeaderType("Updated"),
         cell: (row) => { 
             return DateTime.fromJSDate(row.row.original.updatedAt).toFormat("DD @ t")
         }
