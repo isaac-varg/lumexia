@@ -12,6 +12,7 @@ import { Supplier } from "@/types/supplier";
 import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import { getAutoTableEnd } from "../functions/getAutoTableEnd";
 import { DateTime } from "luxon";
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 export const calculateGrandTotal = (items: PurchaseOrderItem[]) => {
   return items.reduce((total, item) => {
@@ -41,9 +42,9 @@ export const createPurchaseOrder = async (
     tableItems.push([
       item.item.name,
       item.quantity,
-      item.pricePerUnit,
+      toFracitonalDigits.curreny(item.pricePerUnit),
       item.uom.abbreviation,
-      item.quantity * item.pricePerUnit,
+      toFracitonalDigits.curreny(item.quantity * item.pricePerUnit),
     ]);
   });
 
@@ -112,7 +113,7 @@ export const createPurchaseOrder = async (
     .setTextColor("#434343");
   pdf.text("Notes", 30, autoTableEnd + 30);
   pdf.setFont("Lato-Regular", "normal", "normal").setFontSize(10);
-  pdf.text(pdf.splitTextToSize('Closed Every Friday', 200), 30, autoTableEnd + 42);
+  pdf.text(pdf.splitTextToSize('Please note we are closed every Friday.', 200), 30, autoTableEnd + 42);
 
   // total area
   pdf
@@ -127,9 +128,9 @@ export const createPurchaseOrder = async (
     .setFontSize(11)
     .setFont("Lato-Regular", "normal", "normal")
     .setTextColor("#434343");
-  pdf.text("$ " + total.toString(), 330, autoTableEnd + 30);
-  pdf.text("$ 0.00", 330, autoTableEnd + 42);
-  pdf.text("$ " + total.toString(), 330, autoTableEnd + 54);
+  pdf.text("$ " + toFracitonalDigits.curreny(total), 330, autoTableEnd + 30);
+  pdf.text("$ 0.000", 330, autoTableEnd + 42);
+  pdf.text("$ " + toFracitonalDigits.curreny(total), 330, autoTableEnd + 54);
 
   pdf.setDrawColor("#E3E3E3");
   pdf.setLineWidth(0.5);
@@ -142,5 +143,5 @@ export const createPurchaseOrder = async (
   );
   pdf.line(30, 580, 425, 580);
 
-  pdf.save("test.pdf");
+  pdf.save(`PO #${poNumber}`);
 };
