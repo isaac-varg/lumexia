@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Aug 14 2024 14:39:05 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Aug 15 2024 15:48:19 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -20,6 +20,7 @@ model RecordStatus {
   description                 String
   createdAt                   DateTime                      @default(now()) @map("created_at")
   updatedAt                   DateTime                      @updatedAt @map("updated_at")
+  BatchSize                   BatchSize[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
 
   @@map("record_statuses")
@@ -46,6 +47,17 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Equipment {
+  id            String          @id @default(uuid())
+  name          String
+  identifier    String
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  StepEquipment StepEquipment[]
+
+  @@map("equipment")
 }
 
 model ContainerType {
@@ -157,6 +169,7 @@ model UnitOfMeasurement {
   transactions      Transaction[]
   container         Container[]
   purchaseOrderItem PurchaseOrderItem[]
+  BatchSize         BatchSize[]
 
   @@map("units_of_measurement")
 }
@@ -220,6 +233,7 @@ model Item {
   lot                         Lot[]
   aliases                     Alias[]
   purchaseOrderItem           PurchaseOrderItem[]
+  BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
 
   @@map("items")
@@ -235,6 +249,59 @@ model ProcurementType {
   @@map("procurement_types")
 }
 
+model BatchSize {
+  id             String   @id @default(uuid())
+  mbprId         String   @map("mbpr_id")
+  quantity       Float
+  uomId          String   @map("uom_id")
+  recordStatusId String   @map("record_status_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  mbpr         MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  uom          UnitOfMeasurement           @relation(fields: [uomId], references: [id])
+  recordStatus RecordStatus                @relation(fields: [recordStatusId], references: [id])
+
+  @@map("batch_sizes")
+}
+
+model BatchStep {
+  id        String   @id @default(uuid())
+  mbprId    String   @map("mbpr_id")
+  sequence  Int
+  phase     String
+  label     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  mbpr            MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  BillOfMaterial  BillOfMaterial[]
+  StepActionable  StepActionable[]
+  StepAddendum    StepAddendum[]
+  StepEquipment   StepEquipment[]
+  StepInstruction StepInstruction[]
+
+  @@map("batch_steps")
+}
+
+model BillOfMaterial {
+  id            String   @id @default(uuid())
+  itemId        String   @map("item_id")
+  mbprId        String   @map("mbpr_id")
+  stepId        String   @map("step_id")
+  identifier    String
+  phase         String
+  concentration Float
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  item Item                        @relation(fields: [itemId], references: [id])
+  mbpr MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  step BatchStep                   @relation(fields: [stepId], references: [id])
+
+  @@map("bill_of_materials")
+}
+
 model MasterBatchProductionRecord {
   id                 String   @id @default(uuid())
   producesItemId     String   @map("produces_item_id")
@@ -244,10 +311,91 @@ model MasterBatchProductionRecord {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  producesItem Item         @relation(fields: [producesItemId], references: [id])
-  recordStatus RecordStatus @relation(fields: [recordStatusId], references: [id])
+  producesItem   Item             @relation(fields: [producesItemId], references: [id])
+  recordStatus   RecordStatus     @relation(fields: [recordStatusId], references: [id])
+  BatchSize      BatchSize[]
+  BatchStep      BatchStep[]
+  BillOfMaterial BillOfMaterial[]
 
   @@map("master_batch_production_records")
+}
+
+model StepActionable {
+  id               String   @id @default(uuid())
+  stepId           String   @map("step_id")
+  actionableTypeId String   @map("actionable_type_id")
+  userRoleId       String   @map("user_role_id")
+  required         Boolean
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  step           BatchStep          @relation(fields: [stepId], references: [id])
+  actionableType StepActionableType @relation(fields: [actionableTypeId], references: [id])
+  userRole       UserRole           @relation(fields: [userRoleId], references: [id])
+
+  @@map("step_actionables")
+}
+
+model StepActionableType {
+  id             String           @id @default(uuid())
+  name           String
+  description    String?
+  dataType       String           @map("data_type")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  StepActionable StepActionable[]
+
+  @@map("step_actionable_types")
+}
+
+model StepAddendum {
+  id             String   @id @default(uuid())
+  stepId         String   @map("step_id")
+  addendumTypeId String   @map("addendum_type_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  step         BatchStep        @relation(fields: [stepId], references: [id])
+  addendumType StepAddendumType @relation(fields: [addendumTypeId], references: [id])
+
+  @@map("step_addendums")
+}
+
+model StepAddendumType {
+  id           String         @id @default(uuid())
+  name         String
+  description  String?
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+  StepAddendum StepAddendum[]
+
+  @@map("step_addendum_types")
+}
+
+model StepEquipment {
+  id          String   @id @default(uuid())
+  stepId      String   @map("step_id")
+  equipmentId String   @map("equipment_id")
+  foreignId   String   @map("foreign_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  step      BatchStep @relation(fields: [stepId], references: [id])
+  equipment Equipment @relation(fields: [equipmentId], references: [id])
+
+  @@map("step_equipment")
+}
+
+model StepInstruction {
+  id                 String   @id @default(uuid())
+  stepId             String   @map("step_id")
+  instructionContent String   @map("instruction_content")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  step BatchStep @relation(fields: [stepId], references: [id])
+
+  @@map("step_instructions")
 }
 
 model PurchaseOrderItem {
@@ -440,6 +588,30 @@ model Session {
   @@map("sessions")
 }
 
+model UserRoleAssignment {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  userRoleId String   @map("user_role_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user     User     @relation(fields: [userId], references: [id])
+  userRole UserRole @relation(fields: [userRoleId], references: [id])
+
+  @@map("user_role_assignments")
+}
+
+model UserRole {
+  id                 String               @id @default(uuid())
+  name               String
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+  StepActionable     StepActionable[]
+  UserRoleAssignment UserRoleAssignment[]
+
+  @@map("user_roles")
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -452,11 +624,12 @@ model User {
   Authenticator Authenticator[]
   transactions  Transaction[]
 
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
   purchaseOrders     PurchaseOrder[]
   purchaseOrderNotes PurchaseOrderNote[]
   activityLogs       ActivityLog[]
+  UserRoleAssignment UserRoleAssignment[]
 
   @@map("users")
 }

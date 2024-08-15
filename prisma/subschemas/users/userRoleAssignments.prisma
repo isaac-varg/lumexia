@@ -1,0 +1,12 @@
+model UserRoleAssignment {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  userRoleId String   @map("user_role_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user     User     @relation(fields: [userId], references: [id])
+  userRole UserRole @relation(fields: [userRoleId], references: [id])
+
+  @@map("user_role_assignments")
+}

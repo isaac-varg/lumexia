@@ -1,0 +1,13 @@
+model BatchStep {
+  id        String   @id @default(uuid())
+  mbprId    String   @map("mbpr_id")
+  sequence  Int
+  phase     String
+  label     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  mbpr MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+
+  @@map("batch_steps")
+}

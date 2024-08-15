@@ -1,0 +1,13 @@
+model StepEquipment {
+  id          String   @id @default(uuid())
+  stepId      String   @map("step_id")
+  equipmentId String   @map("equipment_id")
+  foreignId   String   @map("foreign_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  step      BatchStep @relation(fields: [stepId], references: [id])
+  equipment Equipment @relation(fields: [equipmentId], references: [id])
+
+  @@map("step_equipment")
+}

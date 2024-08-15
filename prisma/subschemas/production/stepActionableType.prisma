@@ -1,0 +1,10 @@
+model StepActionableType {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  dataType    String   @map("data_type")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("step_actionable_types")
+}
