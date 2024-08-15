@@ -12,6 +12,8 @@ import Layout from "@/components/Layout";
 import ActionButton from "@/components/ActionButton";
 import useDialog from "@/hooks/useDialog";
 import CreateTransactionDialog from "./CreateTransactionDialog";
+import { TbQrcode } from "react-icons/tb";
+import { printLotLabel } from "../../_functions/printLotLabel";
 
 type LotDetailsDialogProps = {
   lot: Lot | null;
@@ -29,22 +31,37 @@ const LotDetailsDialog = ({ lot }: LotDetailsDialogProps) => {
     },
   ];
 
-  if (!lot) { return null}
+  if (!lot) { return null }
+
+  const printLabel = async () => {
+    await printLotLabel(lot)
+  }
 
   return (
     <>
-
       <CreateTransactionDialog lot={lot} />
 
+
       <Dialog.Root identifier="lotDetails">
-        <Dialog.Title title={`${lot?.lotNumber} Details`} />
+
+        <Layout.Row justify="between">
+          <Dialog.Title title={`${lot?.lotNumber} Details`} />
+          <ActionButton onClick={() => printLabel()}>
+            <span className="flex flex-row gap-x-2">
+            <span className="text-2xl"><TbQrcode /></span>
+            Print QR</span>
+          </ActionButton>
+        </Layout.Row>
 
         <Layout.Row>
           <Text.SectionTitle>Transactions</Text.SectionTitle>
-          <ActionButton
-            label="Create Transaction"
-            onClick={() => showDialog("createTransaction")}
-          />
+          <div>
+            <ActionButton
+              label="Create Transaction"
+              onClick={() => showDialog("createTransaction")}
+            />
+
+          </div>
         </Layout.Row>
 
         <DataTable.Default

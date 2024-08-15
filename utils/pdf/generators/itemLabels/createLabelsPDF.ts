@@ -2,6 +2,7 @@
 import { Lot } from "@/types/lot";
 import { jsPDF } from "jspdf";
 import { createSingleLabel } from "./createSingleLabel";
+import { DateTime } from "luxon";
 
 export interface LabelData {
   lot: Lot;
@@ -18,6 +19,8 @@ const addPage = (pdf: jsPDF, index: number, label: number) => {
 };
 
 export const createLabelsPDF = (data: LabelData[]) => {
+
+  const timestamp = DateTime.now().toFormat("DD @t")
   // establish the pdf
   // TODO make this configurable for client
   const pdf = new jsPDF({
@@ -35,5 +38,5 @@ export const createLabelsPDF = (data: LabelData[]) => {
     }
   });
 
-  pdf.save("hehe");
+  pdf.save(`QR Labels ${timestamp}`);
 };

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jul 29 2024 14:08:38 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Aug 14 2024 14:39:05 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -12,6 +12,17 @@ model PaymentMethod {
   purchaseOrders         PurchaseOrder[]
 
   @@map("payment_methods")
+}
+
+model RecordStatus {
+  id                          String                        @id @default(uuid())
+  name                        String
+  description                 String
+  createdAt                   DateTime                      @default(now()) @map("created_at")
+  updatedAt                   DateTime                      @updatedAt @map("updated_at")
+  MasterBatchProductionRecord MasterBatchProductionRecord[]
+
+  @@map("record_statuses")
 }
 
 model ActivityLog {
@@ -195,20 +206,21 @@ model ItemType {
 }
 
 model Item {
-  id                String              @id @default(uuid())
-  name              String
-  referenceCode     String              @unique @map("reference_code")
-  itemTypeId        String              @map("item_type_id")
-  procurementTypeId String              @map("procurement_type_id")
-  inventoryTypeId   String              @map("inventory_type_id")
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-  itemType          ItemType            @relation(fields: [itemTypeId], references: [id])
-  procurementType   ProcurementType     @relation(fields: [procurementTypeId], references: [id])
-  inventoryType     InventoryType       @relation(fields: [inventoryTypeId], references: [id])
-  lot               Lot[]
-  aliases           Alias[]
-  purchaseOrderItem PurchaseOrderItem[]
+  id                          String                        @id @default(uuid())
+  name                        String
+  referenceCode               String                        @unique @map("reference_code")
+  itemTypeId                  String                        @map("item_type_id")
+  procurementTypeId           String                        @map("procurement_type_id")
+  inventoryTypeId             String                        @map("inventory_type_id")
+  createdAt                   DateTime                      @default(now()) @map("created_at")
+  updatedAt                   DateTime                      @updatedAt @map("updated_at")
+  itemType                    ItemType                      @relation(fields: [itemTypeId], references: [id])
+  procurementType             ProcurementType               @relation(fields: [procurementTypeId], references: [id])
+  inventoryType               InventoryType                 @relation(fields: [inventoryTypeId], references: [id])
+  lot                         Lot[]
+  aliases                     Alias[]
+  purchaseOrderItem           PurchaseOrderItem[]
+  MasterBatchProductionRecord MasterBatchProductionRecord[]
 
   @@map("items")
 }
@@ -221,6 +233,21 @@ model ProcurementType {
   items     Item[]
 
   @@map("procurement_types")
+}
+
+model MasterBatchProductionRecord {
+  id                 String   @id @default(uuid())
+  producesItemId     String   @map("produces_item_id")
+  recordStatusId     String   @map("record_status_id")
+  versionLabel       String?  @map("version_label")
+  estimatedTotalTime String?  @map("estimatedTotalTime")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  producesItem Item         @relation(fields: [producesItemId], references: [id])
+  recordStatus RecordStatus @relation(fields: [recordStatusId], references: [id])
+
+  @@map("master_batch_production_records")
 }
 
 model PurchaseOrderItem {
