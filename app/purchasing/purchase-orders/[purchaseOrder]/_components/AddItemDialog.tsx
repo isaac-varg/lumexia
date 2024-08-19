@@ -34,7 +34,7 @@ const AddItemDialog = ({ data, onItemSelection}: { data: any[], onItemSelection:
         <Dialog.Title>Search Item</Dialog.Title>
        
         <input
-          placeholder="Search Name, Alias or C ode"
+          placeholder="Search Name, Alias or Code"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           onKeyDown={handleKeydown}

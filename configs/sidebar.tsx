@@ -38,4 +38,9 @@ export const sidebar = [
 		icon: <TbSmartHome />,
 		path: "/purchasing/suppliers",
 	},
+	{
+		label: "Production New",
+		icon: <TbSmartHome />,
+		path: "/production/wizard",
+	},
 ];
