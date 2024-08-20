@@ -5,9 +5,12 @@ import { Item } from '@/types/item';
 
 
 const useProductionWizard = () => {
-  
+
   // gets the state setting function from the context
-  const { setProductionWizardState } = useContext(ProductionWizardContext)
+  const {
+    selectedProducibleMaterial,
+    setProductionWizardState
+  } = useContext(ProductionWizardContext)
 
 
   // these are various hooks that we can use to manage the production wizard and its state:
@@ -20,11 +23,14 @@ const useProductionWizard = () => {
       selectedProducibleMaterial: item,
     }));
   }
-  
+
 
   // return all hook functions
-  return { setSelectedProducibleItem, };
-} 
+  return {
+    setSelectedProducibleItem,
+    selectedProducibleMaterial,
+  };
+}
 
 
 export default useProductionWizard;

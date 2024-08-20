@@ -8,7 +8,7 @@ export interface ItemDataForSearch extends Item {
   mergedAliases: string
 }
 
-const ItemSearch = ({ items }: { items: ItemDataForSearch[] }) => {
+const ItemSearch = ({ items, onSelection }: { items: ItemDataForSearch[], onSelection: (item: Item) => void }) => {
   const [searchInput, setSearchInput] = useState('')
   const [results, setResults] = useState<ItemDataForSearch[]>([])
 
@@ -19,7 +19,7 @@ const ItemSearch = ({ items }: { items: ItemDataForSearch[] }) => {
   ]);
 
   const handleItemClick = (item: Item) => {
-    console.log(item)
+    onSelection(item);
   }
 
   const handleKeydown = (event: any) => {
@@ -45,15 +45,15 @@ const ItemSearch = ({ items }: { items: ItemDataForSearch[] }) => {
         className="w-full bg-slate-200 py-2 px-4 rounded-lg text-poppins text-lg mb-6"
       />
 
-<ul>
-          <div className="flex flex-col gap-y-4">
-            {results.map((item) => (
-              <li className="border-2 rounded-lg px-4 py-2" key={item.id} onClick={() => handleItemClick(item)}>
-                <p>{`${item.name} (${item.mergedAliases})`} </p>
-              </li>
-            ))}
-          </div>
-        </ul>
+      <ul>
+        <div className="flex flex-col gap-y-4">
+          {results.map((item) => (
+            <li className="border-2 rounded-lg px-4 py-2" key={item.id} onClick={() => handleItemClick(item)}>
+              <p>{`${item.name} (${item.mergedAliases})`} </p>
+            </li>
+          ))}
+        </div>
+      </ul>
 
     </div>
   )
