@@ -4,13 +4,18 @@ import { Item } from "@/types/item";
 import FuzzySearch from "fuzzy-search";
 import { useEffect, useState } from "react"
 
-const ItemSearch = ({ items }: { items: Item[] }) => {
+export interface ItemDataForSearch extends Item {
+  mergedAliases: string
+}
+
+const ItemSearch = ({ items }: { items: ItemDataForSearch[] }) => {
   const [searchInput, setSearchInput] = useState('')
-  const [results, setResults] = useState<Item[]>([])
+  const [results, setResults] = useState<ItemDataForSearch[]>([])
 
   const searcher = new FuzzySearch(items, [
     "referenceCode",
     "name",
+    "mergedAliases"
   ]);
 
   const handleItemClick = (item: Item) => {
@@ -44,7 +49,7 @@ const ItemSearch = ({ items }: { items: Item[] }) => {
           <div className="flex flex-col gap-y-4">
             {results.map((item) => (
               <li className="border-2 rounded-lg px-4 py-2" key={item.id} onClick={() => handleItemClick(item)}>
-                <p>{`${item.name}`} </p>
+                <p>{`${item.name} (${item.mergedAliases})`} </p>
               </li>
             ))}
           </div>

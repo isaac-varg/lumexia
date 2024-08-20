@@ -3,11 +3,11 @@ import { getProducedItems } from '../../_functions/getProducedItems'
 import ItemSearch from '../ItemSearch';
 
 const Step1 = () => {
-  
+
   const [items, setItems] = useState([]);
 
-  useEffect( () => {
-    
+  useEffect(() => {
+
     const getItems = async () => {
       const items = await getProducedItems();
 
