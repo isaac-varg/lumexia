@@ -4,7 +4,7 @@ import WizardTitle from './_components/WizardTitle'
 
 const WizardPage = () => {
   return (
-    <div>
+    <div className='h-full'>
       <WizardTitle />
       <MbprWizard />
     </div>

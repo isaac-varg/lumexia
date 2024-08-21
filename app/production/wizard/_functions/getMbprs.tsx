@@ -2,7 +2,7 @@ import mbprActions from "@/actions/production/mbprActions"
 
 export const getMbprs = async (producesItemId: string) => {
     
-  const data = await mbprActions.getAll({producesItemId});
+  const data = await mbprActions.getAll({producesItemId}, ["recordStatus"]);
 
   return data;
 

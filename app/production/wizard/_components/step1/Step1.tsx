@@ -3,6 +3,7 @@ import { getProducedItems } from '../../_functions/getProducedItems'
 import ItemSearch from '../ItemSearch';
 import { Item } from '@/types/item';
 import useProductionWizard from '@/hooks/useProductionWizard';
+import Card from '@/components/Card';
 
 const Step1 = () => {
 
@@ -10,8 +11,8 @@ const Step1 = () => {
   const { setSelectedProducibleItem } = useProductionWizard()
 
   const handleSelect = (item: Item) => {
-      setSelectedProducibleItem(item);
-  } 
+    setSelectedProducibleItem(item);
+  }
 
   useEffect(() => {
 
@@ -25,10 +26,12 @@ const Step1 = () => {
   }, [])
 
   return (
-    <div>
-      <ItemSearch items={items} onSelection={handleSelect} />
+      <Card.Root>
+      <Card.Title>Item Being Produced</Card.Title>
 
-    </div> 
+        <ItemSearch items={items} onSelection={handleSelect} />
+
+      </Card.Root>
   )
 }
 

@@ -6,10 +6,10 @@ const PurchasingLayout = ({
     children: React.ReactNode;
   }>) => {
   return (
-    <div>
+    <>
         <PageBreadcrumbs />
         {children}
-    </div>
+    </>
   )
 }
 
