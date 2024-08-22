@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Aug 15 2024 15:48:19 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Aug 21 2024 13:59:01 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -290,7 +290,6 @@ model BillOfMaterial {
   mbprId        String   @map("mbpr_id")
   stepId        String   @map("step_id")
   identifier    String
-  phase         String
   concentration Float
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
@@ -307,7 +306,7 @@ model MasterBatchProductionRecord {
   producesItemId     String   @map("produces_item_id")
   recordStatusId     String   @map("record_status_id")
   versionLabel       String?  @map("version_label")
-  estimatedTotalTime String?  @map("estimatedTotalTime")
+  estimatedTotalTime Float?   @map("estimated_total_time")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 

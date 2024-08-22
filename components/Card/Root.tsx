@@ -6,7 +6,10 @@ interface CardRootProps {
 	borderSize?: keyof typeof classes.borderSize;
 	shadow?: keyof typeof classes.shadow;
 	bg?: keyof typeof classes.bg;
+
 }
+
+// TODO make this so you can toggle between h-full and not
 
 const classes = {
 	borderColor: {

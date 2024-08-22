@@ -26,12 +26,12 @@ const Step1 = () => {
   }, [])
 
   return (
-      <Card.Root>
+    <Card.Root>
       <Card.Title>Item Being Produced</Card.Title>
 
-        <ItemSearch items={items} onSelection={handleSelect} />
+      <ItemSearch items={items} onSelection={handleSelect} />
 
-      </Card.Root>
+    </Card.Root>
   )
 }
 

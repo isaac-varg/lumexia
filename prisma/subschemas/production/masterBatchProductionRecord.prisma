@@ -1,14 +1,14 @@
-
 model MasterBatchProductionRecord {
-    id              String   @id @default(uuid())
-    producesItemId  String   @map("produces_item_id")
-    recordStatusId  String    @map("record_status_id")
-    versionLabel    String?   @map("version_label")
-    estimatedTotalTime String? @map("estimatedTotalTime")
-    createdAt       DateTime @default(now()) @map("created_at")
-    updatedAt       DateTime @updatedAt @map("updated_at")
+  id                 String   @id @default(uuid())
+  producesItemId     String   @map("produces_item_id")
+  recordStatusId     String   @map("record_status_id")
+  versionLabel       String?  @map("version_label")
+  estimatedTotalTime Float?   @map("estimated_total_time")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
 
-    producesItem   Item     @relation(fields: [producesItemId], references: [id])
-    recordStatus   RecordStatus @relation(fields: [recordStatusId], references: [id])   
-    @@map("master_batch_production_records")
+  producesItem Item         @relation(fields: [producesItemId], references: [id])
+  recordStatus RecordStatus @relation(fields: [recordStatusId], references: [id])
+
+  @@map("master_batch_production_records")
 }

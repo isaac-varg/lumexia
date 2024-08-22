@@ -9,15 +9,13 @@ import Step3 from './step3/Step3';
 const MbprWizard = () => {
 
   return (
-    <div className='h-3/4 mt-6 flex flex-col justify-between'>
-      <Wizard
-        footer={<WizardFooter />}
-      >
-        <Step1 />
-        <Step2 />
-        <Step3 />
-      </Wizard>
-    </div>
+    <Wizard
+      header={<WizardFooter />}
+    >
+      <Step1 />
+      <Step2 />
+      <Step3 />
+    </Wizard>
   )
 }
 

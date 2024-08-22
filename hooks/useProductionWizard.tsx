@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { ProductionWizardContext } from '@/context/ProductionWizardContext';
 import { Item } from '@/types/item';
+import { MasterBatchProductionRecord } from '@/types/masterBatchProductionRecord';
+import { BatchStep } from '@prisma/client';
 
 
 
@@ -9,7 +11,10 @@ const useProductionWizard = () => {
   // gets the state setting function from the context
   const {
     selectedProducibleMaterial,
-    setProductionWizardState
+    setProductionWizardState,
+    selectedMbpr,
+    selectedBatchStep,
+    revalidateTrigger,
   } = useContext(ProductionWizardContext)
 
 
@@ -24,11 +29,38 @@ const useProductionWizard = () => {
     }));
   }
 
+  const setSelectedMbpr = (mbpr: MasterBatchProductionRecord) => {
+    setProductionWizardState((previousState) => ({
+      ...previousState,
+      selectedMbpr: mbpr,
+    }));
+  }
+
+const setSelectedBatchStep = (batchStep: BatchStep) => {
+    setProductionWizardState((previousState) => ({
+      ...previousState,
+      selectedBatchStep: batchStep,
+    }));
+  }
+
+  const revalidate = () => {
+    setProductionWizardState((previousState) => ({
+      ...previousState,
+      revalidateTrigger: !revalidateTrigger,
+    }))
+  }
+
 
   // return all hook functions
   return {
+    revalidateTrigger,
+    revalidate,
+    selectedMbpr,
     setSelectedProducibleItem,
+    setSelectedMbpr,
     selectedProducibleMaterial,
+    setSelectedBatchStep,
+    selectedBatchStep
   };
 }
 

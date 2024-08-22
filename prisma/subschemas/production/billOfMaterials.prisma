@@ -4,7 +4,6 @@ model BillOfMaterial {
   mbprId        String   @map("mbpr_id")
   stepId        String   @map("step_id")
   identifier    String
-  phase         String
   concentration Float
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")

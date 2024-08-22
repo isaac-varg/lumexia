@@ -4,11 +4,18 @@ import { useEffect, useState } from "react"
 import { getMbprs } from "../../_functions/getMbprs"
 import useProductionWizard from "@/hooks/useProductionWizard";
 import Card from "@/components/Card";
+import MbprCard from "./MbprCard";
+import { MasterBatchProductionRecord } from "@/types/masterBatchProductionRecord";
+import Layout from "@/components/Layout";
+import ActionButton from "@/components/ActionButton";
+import useDialog from "@/hooks/useDialog";
+import MbprForm from "./MbprForm";
 
 
 const Step2 = () => {
   const [mbprs, setMbprs] = useState([]);
-  const { selectedProducibleMaterial } = useProductionWizard()
+  const { selectedProducibleMaterial , revalidateTrigger} = useProductionWizard()
+  const { showDialog } = useDialog()
 
   useEffect(() => {
 
@@ -20,18 +27,20 @@ const Step2 = () => {
     }
 
     getData()
-  }, [selectedProducibleMaterial])
+  }, [selectedProducibleMaterial, revalidateTrigger])
 
   return (
     <Card.Root>
-      <Card.Title>Master Batch Production Records</Card.Title>
+      <MbprForm mode="create" />
 
-      <div className="grid grid-cols-4">
-        <div className="flex flex-col gap-y-2 bg-blue-300 p-2 rounded-lg shadow-xl shadow-blue-500">
-          <span>Label</span>
-          <span>Status</span>
-          <span>dd tt</span>
-        </div>
+      <Layout.Row>
+        <Card.Title>Master Batch Production Records</Card.Title>
+        <ActionButton onClick={() => showDialog('mbprNew')}>New</ActionButton>
+      </Layout.Row>
+
+      <div className="grid grid-cols-4 gap-4">
+
+        {mbprs.map((mbpr: MasterBatchProductionRecord) => <MbprCard key={mbpr.id} mbpr={mbpr} />)}
       </div>
     </Card.Root>
   )

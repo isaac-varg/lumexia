@@ -30,11 +30,12 @@ const StepDot = ({ isActive, permission, stepIndex }: { isActive: boolean, permi
 const WizardFooter = () => {
 
   const { stepCount, activeStep   } = useWizard()
-  const { selectedProducibleMaterial } = useContext(ProductionWizardContext)
+  const { selectedProducibleMaterial, selectedMbpr } = useContext(ProductionWizardContext)
 
   const permissions: Record<number, boolean> = {
     1: true, // first step is always allowed
     2: selectedProducibleMaterial !== null,
+    3: selectedMbpr !== null, 
   }
 
 
