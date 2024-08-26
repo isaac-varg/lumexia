@@ -5,6 +5,7 @@ import { toProperCase } from '@/utils/data/toProperCase'
 import Card from '@/components/Card'
 import InstructionsPanel from '../instructions/InstructionsPanel'
 import EquipmentPanel from '../equipment/EquipmentPanel'
+import AddendumsPanel from '../addendums/AddendumsPanel'
 
 const StepDetails = () => {
   const { selectedBatchStep } = useProductionWizard()
@@ -25,6 +26,8 @@ const StepDetails = () => {
 
         <InstructionsPanel />
         <EquipmentPanel />
+
+        <AddendumsPanel />
         <div />
       </div>
     </div>

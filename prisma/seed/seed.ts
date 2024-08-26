@@ -23,6 +23,7 @@ const main = async () => {
   await seedAction("supplierAlias");
   await seedAction("paymentMethod");
   await seedAction("recordStatus")
+  await seedAction("stepAddendumType")
 };
 
 main()

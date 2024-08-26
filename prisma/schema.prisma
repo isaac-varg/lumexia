@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Aug 21 2024 13:59:01 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Aug 26 2024 12:01:50 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -351,6 +351,7 @@ model StepAddendum {
   id             String   @id @default(uuid())
   stepId         String   @map("step_id")
   addendumTypeId String   @map("addendum_type_id")
+  content        String
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
@@ -375,7 +376,6 @@ model StepEquipment {
   id          String   @id @default(uuid())
   stepId      String   @map("step_id")
   equipmentId String   @map("equipment_id")
-  foreignId   String   @map("foreign_id")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 

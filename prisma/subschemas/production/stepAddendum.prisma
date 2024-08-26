@@ -2,6 +2,7 @@ model StepAddendum {
   id             String   @id @default(uuid())
   stepId         String   @map("step_id")
   addendumTypeId String   @map("addendum_type_id")
+  content        String
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 

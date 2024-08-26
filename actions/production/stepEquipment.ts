@@ -1,6 +1,6 @@
 import ServerActions from "@/utils/classes/ServerActions";
 
 
-const stepEquipment = new ServerActions('stepEquipment');
+const stepEquipmentActions= new ServerActions('stepEquipment');
 
-export default stepEquipment;
+export default stepEquipmentActions;

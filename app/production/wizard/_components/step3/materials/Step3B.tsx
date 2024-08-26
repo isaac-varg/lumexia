@@ -16,7 +16,7 @@ interface Inputs {
   concentration: number
 }
 
-const Step3B = ({ selectedItem }: { selectedItem: Item }) => {
+const Step3B = ({ selectedItem }: { selectedItem?: Item | null }) => {
 
   const { previousStep } = useWizard();
   const { revalidate, selectedMbpr, selectedBatchStep } = useProductionWizard();
@@ -30,6 +30,10 @@ const Step3B = ({ selectedItem }: { selectedItem: Item }) => {
 
     if (!selectedMbpr || !selectedBatchStep) {
       throw new Error("Missing selected MBPR or BatchStep")
+    }
+
+    if (!selectedItem) {
+      throw new Error("No item selected")
     }
 
     const payload = {
