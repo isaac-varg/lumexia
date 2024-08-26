@@ -57,7 +57,7 @@ useEffect(() => {
 
       <div className="grid grid-cols-2 gap-4">
 
-        {stepEquipment.map((se: StepEquipment ) => <EquipmentCard equipment={se} />)}
+        {stepEquipment.map((se: StepEquipment ) => <EquipmentCard key={se.id} equipment={se} />)}
       </div>
 
 

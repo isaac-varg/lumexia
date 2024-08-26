@@ -7,12 +7,14 @@ import AddendumForm from './AddendumForm'
 import { getStepAddendumTypes } from '../../../_functions/getStepAddendumTypes'
 import useProductionWizard from '@/hooks/useProductionWizard'
 import stepAddendumActions from '@/actions/production/stepAddendums'
+import AddendumCard from './AddendumCard'
+import { StepAddendum } from '@/types/stepAddendum'
 
 const AddendumsPanel = () => {
   const { showDialog } = useDialog()
   const { selectedBatchStep, revalidateTrigger } = useProductionWizard()
   const [stepAddendumTypes, setStepAddendumTypes] = useState([])
-  const [stepAddendums, setStepAddendums] = useState([])
+  const [stepAddendums, setStepAddendums] = useState<StepAddendum[]>([])
 
   useEffect(() => {
 
@@ -33,7 +35,7 @@ const AddendumsPanel = () => {
         throw new Error("Batch step not selected")
       }
 
-      const data = await stepAddendumActions.getAll({stepId: selectedBatchStep.id})
+      const data = await stepAddendumActions.getAll({stepId: selectedBatchStep.id}, ["addendumType"])
       setStepAddendums(data)
     }
 
@@ -54,7 +56,7 @@ const AddendumsPanel = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-
+        {stepAddendums.map((a) => <AddendumCard key={a.id} addendum={a} />)}
       </div>
 
 
