@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Aug 26 2024 12:01:50 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Aug 27 2024 08:47:22 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -323,25 +323,26 @@ model StepActionable {
   id               String   @id @default(uuid())
   stepId           String   @map("step_id")
   actionableTypeId String   @map("actionable_type_id")
-  userRoleId       String   @map("user_role_id")
   required         Boolean
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
   step           BatchStep          @relation(fields: [stepId], references: [id])
   actionableType StepActionableType @relation(fields: [actionableTypeId], references: [id])
-  userRole       UserRole           @relation(fields: [userRoleId], references: [id])
 
   @@map("step_actionables")
 }
 
 model StepActionableType {
-  id             String           @id @default(uuid())
-  name           String
-  description    String?
-  dataType       String           @map("data_type")
-  createdAt      DateTime         @default(now()) @map("created_at")
-  updatedAt      DateTime         @updatedAt @map("updated_at")
+  id          String   @id @default(uuid())
+  name        String
+  userRoleId  String   @map("user_role_id")
+  description String?
+  dataType    String   @map("data_type")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  userRole       UserRole         @relation(fields: [userRoleId], references: [id])
   StepActionable StepActionable[]
 
   @@map("step_actionable_types")
@@ -605,7 +606,7 @@ model UserRole {
   name               String
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
-  StepActionable     StepActionable[]
+  StepActionableType StepActionableType[]
   UserRoleAssignment UserRoleAssignment[]
 
   @@map("user_roles")

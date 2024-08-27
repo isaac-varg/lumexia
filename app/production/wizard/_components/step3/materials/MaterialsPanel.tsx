@@ -45,7 +45,7 @@ const MaterialsPanel = () => {
 
     getData();
 
-  }, [revalidateTrigger])
+  }, [selectedBatchStep, revalidateTrigger])
 
   return (
     <div className='p-4 bg-cararra-50 rounded-lg h-full flex flex-col gap-y-4'>

@@ -6,6 +6,7 @@ import Card from '@/components/Card'
 import InstructionsPanel from '../instructions/InstructionsPanel'
 import EquipmentPanel from '../equipment/EquipmentPanel'
 import AddendumsPanel from '../addendums/AddendumsPanel'
+import ActionablesPanel from '../actionables/ActionablesPanel'
 
 const StepDetails = () => {
   const { selectedBatchStep } = useProductionWizard()
@@ -28,8 +29,10 @@ const StepDetails = () => {
         <EquipmentPanel />
 
         <AddendumsPanel />
-        <div />
+
+        <ActionablesPanel />
       </div>
+
     </div>
   )
 }

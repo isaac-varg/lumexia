@@ -29,7 +29,7 @@ const InstructionsPanel = () => {
 
     getData()
 
-  }, [revalidateTrigger])
+  }, [selectedBatchStep, revalidateTrigger])
 
   return (
 

@@ -24,6 +24,7 @@ const main = async () => {
   await seedAction("paymentMethod");
   await seedAction("recordStatus")
   await seedAction("stepAddendumType")
+  await seedAction("userRole")
 };
 
 main()

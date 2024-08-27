@@ -2,14 +2,12 @@ model StepActionable {
   id               String   @id @default(uuid())
   stepId           String   @map("step_id")
   actionableTypeId String   @map("actionable_type_id")
-  userRoleId       String   @map("user_role_id")
   required         Boolean
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
   step           BatchStep          @relation(fields: [stepId], references: [id])
   actionableType StepActionableType @relation(fields: [actionableTypeId], references: [id])
-  userRole       UserRole           @relation(fields: [userRoleId], references: [id])
 
   @@map("step_actionables")
 }

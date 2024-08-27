@@ -1,10 +1,13 @@
 model StepActionableType {
-  id          String   @id @default(uuid())
-  name        String
+  id   String @id @default(uuid())
+  name String
+  userRoleId  String   @map("user_role_id")
   description String?
   dataType    String   @map("data_type")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+
+  userRole UserRole @relation(fields: [userRoleId], references: [id])
 
   @@map("step_actionable_types")
 }

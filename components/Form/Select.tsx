@@ -13,9 +13,9 @@ type SelectFieldProps = {
 const SelectField = ({ form, label, fieldName, options }: SelectFieldProps) => {
   return (
     <div className='flex flex-col gap-y-1'>
-    <label className="font-poppins text-city-900 text-xl">{label}</label>
+    <label className="font-poppins text-cutty-sark-900 text-xl">{label}</label>
       <select
-        className="px-4 py-4 border-2 border-city-100 bg-city-100 rounded-lg focus:outline-none focus:ring-0 font-inter font-medium focus:border-city-500 text-xl text-city-900 space-y-4"
+        className="px-4 py-4 border-2 border-cutt-sark-100 bg-cutt-sark-100 rounded-lg focus:outline-none focus:ring-0 font-inter font-medium focus:border-cutt-sark-500 text-xl text-cutt-sark-900 space-y-4"
         {...form.register(fieldName)}
       >
             {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
