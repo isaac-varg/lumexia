@@ -25,6 +25,7 @@ const main = async () => {
   await seedAction("recordStatus")
   await seedAction("stepAddendumType")
   await seedAction("userRole")
+  await seedAction("bprStatus")
 };
 
 main()

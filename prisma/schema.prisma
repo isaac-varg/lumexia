@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Aug 27 2024 08:47:22 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Aug 27 2024 16:53:39 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -158,18 +158,19 @@ model UnitOfMeasurementConversion {
 }
 
 model UnitOfMeasurement {
-  id                String                        @id @default(uuid())
-  name              String
-  abbreviation      String
-  uomA              UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
-  uomB              UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
-  createdAt         DateTime                      @default(now()) @map("created_at")
-  updatedAt         DateTime                      @updatedAt @map("updated_at")
-  lots              Lot[]
-  transactions      Transaction[]
-  container         Container[]
-  purchaseOrderItem PurchaseOrderItem[]
-  BatchSize         BatchSize[]
+  id                 String                        @id @default(uuid())
+  name               String
+  abbreviation       String
+  uomA               UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+  uomB               UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+  createdAt          DateTime                      @default(now()) @map("created_at")
+  updatedAt          DateTime                      @updatedAt @map("updated_at")
+  lots               Lot[]
+  transactions       Transaction[]
+  container          Container[]
+  purchaseOrderItem  PurchaseOrderItem[]
+  BatchSize          BatchSize[]
+  BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("units_of_measurement")
 }
@@ -249,6 +250,25 @@ model ProcurementType {
   @@map("procurement_types")
 }
 
+model BatchProductionRecord {
+  id                 String                      @id @default(uuid())
+  mbprId             String                      @map("mbpr_id")
+  bprStatusId        String                      @map("bpr_status_id")
+  batchSizeId        String                      @map("batch_size_id")
+  scheduledAt        DateTime?                   @map("scheduled_at")
+  completedAt        DateTime?                   @map("completed_at")
+  releasedAt         DateTime?                   @map("released_at")
+  referenceCode      Int                         @default(autoincrement()) @map("reference_code")
+  createdAt          DateTime                    @default(now()) @map("created_at")
+  updatedAt          DateTime                    @updatedAt @map("updated_at")
+  mbpr               MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  bprStatus          BprStatus                   @relation(fields: [bprStatusId], references: [id])
+  batchSize          BatchSize                   @relation(fields: [batchSizeId], references: [id])
+  BprBillOfMaterials BprBillOfMaterials[]
+
+  @@map("batch_production_records")
+}
+
 model BatchSize {
   id             String   @id @default(uuid())
   mbprId         String   @map("mbpr_id")
@@ -258,9 +278,10 @@ model BatchSize {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  mbpr         MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  uom          UnitOfMeasurement           @relation(fields: [uomId], references: [id])
-  recordStatus RecordStatus                @relation(fields: [recordStatusId], references: [id])
+  mbpr                  MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  uom                   UnitOfMeasurement           @relation(fields: [uomId], references: [id])
+  recordStatus          RecordStatus                @relation(fields: [recordStatusId], references: [id])
+  BatchProductionRecord BatchProductionRecord[]
 
   @@map("batch_sizes")
 }
@@ -294,11 +315,40 @@ model BillOfMaterial {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  item Item                        @relation(fields: [itemId], references: [id])
-  mbpr MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  step BatchStep                   @relation(fields: [stepId], references: [id])
+  item               Item                        @relation(fields: [itemId], references: [id])
+  mbpr               MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  step               BatchStep                   @relation(fields: [stepId], references: [id])
+  BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("bill_of_materials")
+}
+
+model BprBillOfMaterials {
+  id        String   @id @default(uuid())
+  bprId     String   @map("bpr_id")
+  bomId     String   @map("bom_id")
+  quantity  Float
+  uomId     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  bpr BatchProductionRecord @relation(fields: [bprId], references: [id])
+  bom BillOfMaterial        @relation(fields: [bomId], references: [id])
+  uom UnitOfMeasurement     @relation(fields: [uomId], references: [id])
+
+  @@map("bpr_bills_of_materials")
+}
+
+model BprStatus {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  bprs BatchProductionRecord[]
+
+  @@map("bpr_statuses")
 }
 
 model MasterBatchProductionRecord {
@@ -310,11 +360,12 @@ model MasterBatchProductionRecord {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  producesItem   Item             @relation(fields: [producesItemId], references: [id])
-  recordStatus   RecordStatus     @relation(fields: [recordStatusId], references: [id])
-  BatchSize      BatchSize[]
-  BatchStep      BatchStep[]
-  BillOfMaterial BillOfMaterial[]
+  producesItem          Item                    @relation(fields: [producesItemId], references: [id])
+  recordStatus          RecordStatus            @relation(fields: [recordStatusId], references: [id])
+  BatchProductionRecord BatchProductionRecord[]
+  BatchSize             BatchSize[]
+  BatchStep             BatchStep[]
+  BillOfMaterial        BillOfMaterial[]
 
   @@map("master_batch_production_records")
 }

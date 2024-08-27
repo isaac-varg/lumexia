@@ -5,5 +5,15 @@
 export const staticRecords = {
   inventory: {
     producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e' 
+  },
+  app: {
+    recordStatuses: {
+      active: 'd7b0a804-52c6-4586-b4f4-0fe49895f794'
+    }
+  },
+  production: {
+    bprStatuses: {
+      draft: '7a9fd26f-3153-42f5-9de4-6776f59ec670' 
+    }
   }
 }

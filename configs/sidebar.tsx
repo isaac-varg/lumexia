@@ -39,8 +39,13 @@ export const sidebar = [
 		path: "/purchasing/suppliers",
 	},
 	{
-		label: "Production New",
+		label: "MBPR",
 		icon: <TbSmartHome />,
-		path: "/production/wizard",
+		path: "/production/mbpr",
 	},
+  {
+    label: "BPR Plan",
+    icon: <TbSmartHome />,
+    path: "/production/planning"
+  }
 ];
