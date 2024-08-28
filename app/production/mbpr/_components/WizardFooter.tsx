@@ -36,6 +36,7 @@ const WizardFooter = () => {
     1: true, // first step is always allowed
     2: selectedProducibleMaterial !== null,
     3: selectedMbpr !== null, 
+    4: selectedMbpr !== null,
   }
 
 

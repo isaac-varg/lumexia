@@ -10,7 +10,8 @@
     "migrate": "npx prisma migrate dev",
     "merge": "npx prisma-multischema",
     "seed": "npx prisma db seed",
-    "reset": "npx prisma migrate reset"
+    "reset": "npx prisma migrate reset",
+    "import-staging": "tsx ./utils/importer/modules/staging/main.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed/seed.ts"

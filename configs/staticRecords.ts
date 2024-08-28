@@ -4,7 +4,10 @@
 
 export const staticRecords = {
   inventory: {
-    producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e' 
+    producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
+    uom: {
+      lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b'
+    }
   },
   app: {
     recordStatuses: {

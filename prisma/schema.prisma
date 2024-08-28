@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Aug 27 2024 16:53:39 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Aug 28 2024 14:38:14 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -251,18 +251,19 @@ model ProcurementType {
 }
 
 model BatchProductionRecord {
-  id                 String                      @id @default(uuid())
-  mbprId             String                      @map("mbpr_id")
-  bprStatusId        String                      @map("bpr_status_id")
-  batchSizeId        String                      @map("batch_size_id")
-  scheduledAt        DateTime?                   @map("scheduled_at")
-  completedAt        DateTime?                   @map("completed_at")
-  releasedAt         DateTime?                   @map("released_at")
-  referenceCode      Int                         @default(autoincrement()) @map("reference_code")
-  createdAt          DateTime                    @default(now()) @map("created_at")
-  updatedAt          DateTime                    @updatedAt @map("updated_at")
+  id            String    @id @default(uuid())
+  mbprId        String    @map("mbpr_id")
+  bprStatusId   String    @map("bpr_status_id")
+  batchSizeId   String    @map("batch_size_id")
+  scheduledAt   DateTime? @map("scheduled_at")
+  completedAt   DateTime? @map("completed_at")
+  releasedAt    DateTime? @map("released_at")
+  referenceCode Int       @default(autoincrement()) @map("reference_code")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
   mbpr               MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  bprStatus          BprStatus                   @relation(fields: [bprStatusId], references: [id])
+  status             BprStatus                   @relation(fields: [bprStatusId], references: [id])
   batchSize          BatchSize                   @relation(fields: [batchSizeId], references: [id])
   BprBillOfMaterials BprBillOfMaterials[]
 
@@ -340,13 +341,12 @@ model BprBillOfMaterials {
 }
 
 model BprStatus {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  bprs BatchProductionRecord[]
+  id                    String                  @id @default(uuid())
+  name                  String
+  description           String
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
+  BatchProductionRecord BatchProductionRecord[]
 
   @@map("bpr_statuses")
 }
