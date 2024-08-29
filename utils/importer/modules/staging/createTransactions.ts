@@ -14,3 +14,29 @@ export const createTransactions = async ( ) => {
   }
 }
 
+
+export const createTransactionsIndividually = async () => {
+
+   stagingTransactions.forEach( async (transaction) => {
+      
+    try {
+     
+      await prisma.transaction.create({
+        data: transaction
+      })
+
+      console.log(`Success importing <${transaction.amount}> of '${transaction.lotId}' `)
+      
+    } catch (error) {
+      console.error(`FAILED --> <${transaction.amount}> of '${transaction.lotId}' `) 
+    }
+  })
+
+
+  console.log('Finished.')
+
+
+  
+}
+
+

@@ -3,11 +3,12 @@
 //
 // this was necessary when transitioning form the old system to lumexia
 
-import { createTransactions } from "./createTransactions";
+import { createTransactions, createTransactionsIndividually } from "./createTransactions";
 
 
 const main = async () => {
-  await createTransactions()
+//  await createTransactions()
+  await createTransactionsIndividually();
 }
 
 main()
