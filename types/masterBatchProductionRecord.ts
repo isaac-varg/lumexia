@@ -1,3 +1,4 @@
+import { Item } from "./item"
 import { RecordStatus } from "./recordStatus"
 
 export interface MasterBatchProductionRecord {
@@ -9,4 +10,8 @@ export interface MasterBatchProductionRecord {
   createdAt: Date
   updatedAt: Date
   recordStatus?: RecordStatus
+}
+
+export interface ExMbpr extends MasterBatchProductionRecord {
+  producesItem: Item
 }

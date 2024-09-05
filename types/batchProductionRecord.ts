@@ -1,6 +1,6 @@
 import { BatchSize } from "./batchSize"
 import { BprStatus } from "./bprStatus"
-import { MasterBatchProductionRecord } from "./masterBatchProductionRecord"
+import { ExMbpr, MasterBatchProductionRecord } from "./masterBatchProductionRecord"
 
 export interface BatchProductionRecord {
   id: string
@@ -12,7 +12,9 @@ export interface BatchProductionRecord {
   releasedAt: Date
   referenceCode: number
 
-  mbpr: MasterBatchProductionRecord
+  mbpr: ExMbpr
   bprStatus: BprStatus
   batchSize: BatchSize
 }
+
+

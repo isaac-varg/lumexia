@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Aug 28 2024 14:38:14 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Sep 03 2024 11:37:15 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -344,6 +344,7 @@ model BprStatus {
   id                    String                  @id @default(uuid())
   name                  String
   description           String
+  sequence              Int                     @unique
   createdAt             DateTime                @default(now()) @map("created_at")
   updatedAt             DateTime                @updatedAt @map("updated_at")
   BatchProductionRecord BatchProductionRecord[]

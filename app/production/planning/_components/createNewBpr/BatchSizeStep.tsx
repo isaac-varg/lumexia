@@ -20,6 +20,7 @@ const BatchSizeStep = ({ selectedMbprId }: { selectedMbprId: string | null }) =>
       mbprId: selectedMbprId,
     }
     await createBpr(data)
+    location.reload()
     resetDialogContext()
 
 
