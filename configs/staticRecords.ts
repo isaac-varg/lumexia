@@ -16,7 +16,10 @@ export const staticRecords = {
   },
   production: {
     bprStatuses: {
-      draft: '7a9fd26f-3153-42f5-9de4-6776f59ec670' 
+      draft: '7a9fd26f-3153-42f5-9de4-6776f59ec670',
+      queued: '2a8332c8-87e4-4872-ac6a-7e184493ec44',
+      inProgress: 'a45875cd-bf1b-46d1-ae3e-09770b4e2b8a',
+
     }
   }
 }

@@ -5,8 +5,8 @@ export interface MasterBatchProductionRecord {
   id: string
   producesItemId: string
   recordStatusId: string
-  versionLabel: string
-  estimatedTotalTime: number
+  versionLabel?: string | null
+  estimatedTotalTime?: number | null
   createdAt: Date
   updatedAt: Date
   recordStatus?: RecordStatus

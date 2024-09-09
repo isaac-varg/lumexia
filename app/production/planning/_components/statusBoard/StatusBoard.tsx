@@ -1,7 +1,7 @@
 "use client"
 
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
-import { DndContext, DragOverlay, closestCenter, closestCorners } from '@dnd-kit/core';
+import { DndContext, DragOverlay, MouseSensor, TouchSensor, closestCenter, closestCorners, useSensor, useSensors } from '@dnd-kit/core';
 import { useState } from 'react';
 import { handleDragStart } from '../../_functions/statusBoard/handleDragStart';
 import StatusGroup from './StatusGroup';
@@ -20,13 +20,31 @@ type StatusBoardProps = {
 const StatusBoard = ({ bprs, statuses }: StatusBoardProps) => {
   const [batches, setBatches] = useState(bprs)
   const [activeBpr, setActiveBpr] = useState<BatchProductionRecord | null>(null);
-   console.log(batches)
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5,
+    },
+  });
+
+  const sensors = useSensors(
+    mouseSensor,
+    touchSensor,
+  );
+
+
   return (
     <DndContext
       onDragStart={(event) => handleDragStart(event, setActiveBpr)}
       onDragOver={(event) => handleDragOver(event, batches, setBatches)}
       onDragEnd={(event) => handleDragEnd(event)}
       collisionDetection={closestCenter}
+      sensors={sensors}
     >
       <div className='grid grid-cols-5 gap-4 '>
         {statuses.map((status) => {

@@ -47,5 +47,10 @@ export const sidebar = [
     label: "BPR Plan",
     icon: <TbSmartHome />,
     path: "/production/planning"
+  },
+{
+    label: "Compounding",
+    icon: <TbSmartHome />,
+    path: "/production/compounding"
   }
 ];

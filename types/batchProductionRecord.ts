@@ -7,13 +7,13 @@ export interface BatchProductionRecord {
   mbprId: string
   bprStatusId: string
   batchSizeId: string
-  scheduledAt: Date
-  completedAt: Date
-  releasedAt: Date
+  scheduledAt?: Date | null
+  completedAt?: Date | null
+  releasedAt?: Date | null
   referenceCode: number
 
   mbpr: ExMbpr
-  bprStatus: BprStatus
+  status: BprStatus
   batchSize: BatchSize
 }
 
