@@ -9,7 +9,10 @@ export const getAllCompoundables = async () => {
           bprStatusId: staticRecords.production.bprStatuses.queued
         },
         {
-          bprStatusId: staticRecords.production.bprStatuses.inProgress
+          bprStatusId: staticRecords.production.bprStatuses.compounding
+        },
+        {
+          bprStatusId: staticRecords.production.bprStatuses.stagingMaterials
         }
       ]
     },

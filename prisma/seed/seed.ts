@@ -26,6 +26,7 @@ const main = async () => {
   await seedAction("stepAddendumType")
   await seedAction("userRole")
   await seedAction("bprStatus")
+  await seedAction("bprStagingStatus")
 };
 
 main()

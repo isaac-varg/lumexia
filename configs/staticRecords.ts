@@ -18,8 +18,11 @@ export const staticRecords = {
     bprStatuses: {
       draft: '7a9fd26f-3153-42f5-9de4-6776f59ec670',
       queued: '2a8332c8-87e4-4872-ac6a-7e184493ec44',
-      inProgress: 'a45875cd-bf1b-46d1-ae3e-09770b4e2b8a',
-
+      compounding: 'a45875cd-bf1b-46d1-ae3e-09770b4e2b8a',
+      stagingMaterials: 'c63e9eff-ee29-4987-b617-602edf1a486c',
+    },
+    bprBomStatuses: {
+      notStarted: '3d5f8db4-3937-41e0-840b-da3c1ab682c5'
     }
   }
 }

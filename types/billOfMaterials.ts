@@ -1,3 +1,5 @@
+import { Item } from "./item"
+
 export interface BillOfMaterials {
   id: string
   itemId: string
@@ -8,4 +10,9 @@ export interface BillOfMaterials {
   createdAt: Date
   updatedAt: Date
 
+}
+
+
+export interface ExBillOfMaterials extends BillOfMaterials {
+  item: Item
 }

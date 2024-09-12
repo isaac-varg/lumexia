@@ -1,0 +1,19 @@
+model BprStaging {
+    id              String   @id @default(uuid())
+    bprBomId       String   @map("bpr_bom_id")
+    lotId String @map("lot_id")
+    pulledByUserId String @map("pulled_by_user_id")
+    quantity Float
+    uomId String @map("uom_id")
+    bprStagingStatusId String @map("bpr_staging_status_id")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
+
+    bprBom   BprBillOfMaterials  @relation(fields: [bprBomId], references: [id])
+    lot Lot @relation(fields: [lotId], references: [id])
+    pulledByUser User @relation(fields: [pulledByUserId], references: [id])
+    uom UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    status BprStagingStatus @relation(fields: [bprStagingStatusId], references: [id])
+
+    @@map("bpr_stagings")
+}

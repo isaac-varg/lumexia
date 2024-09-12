@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Sep 03 2024 11:37:15 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Sep 11 2024 15:01:55 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -112,6 +112,7 @@ model Lot {
   transactions    Transaction[]
   lotOrigin       LotOrigin[]
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+  BprStaging      BprStaging[]
 
   @@map("lots")
 }
@@ -171,6 +172,7 @@ model UnitOfMeasurement {
   purchaseOrderItem  PurchaseOrderItem[]
   BatchSize          BatchSize[]
   BprBillOfMaterials BprBillOfMaterials[]
+  BprStaging         BprStaging[]
 
   @@map("units_of_measurement")
 }
@@ -330,14 +332,49 @@ model BprBillOfMaterials {
   bomId     String   @map("bom_id")
   quantity  Float
   uomId     String
+  statusId  String   @map("status_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  bpr BatchProductionRecord @relation(fields: [bprId], references: [id])
-  bom BillOfMaterial        @relation(fields: [bomId], references: [id])
-  uom UnitOfMeasurement     @relation(fields: [uomId], references: [id])
+  bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
+  bom        BillOfMaterial        @relation(fields: [bomId], references: [id])
+  uom        UnitOfMeasurement     @relation(fields: [uomId], references: [id])
+  status     BprStagingStatus      @relation(fields: [statusId], references: [id])
+  BprStaging BprStaging[]
 
   @@map("bpr_bills_of_materials")
+}
+
+model BprStaging {
+  id                 String   @id @default(uuid())
+  bprBomId           String   @map("bpr_bom_id")
+  lotId              String   @map("lot_id")
+  pulledByUserId     String   @map("pulled_by_user_id")
+  quantity           Float
+  uomId              String   @map("uom_id")
+  bprStagingStatusId String   @map("bpr_staging_status_id")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  bprBom       BprBillOfMaterials @relation(fields: [bprBomId], references: [id])
+  lot          Lot                @relation(fields: [lotId], references: [id])
+  pulledByUser User               @relation(fields: [pulledByUserId], references: [id])
+  uom          UnitOfMeasurement  @relation(fields: [uomId], references: [id])
+  status       BprStagingStatus   @relation(fields: [bprStagingStatusId], references: [id])
+
+  @@map("bpr_stagings")
+}
+
+model BprStagingStatus {
+  id                 String               @id @default(uuid())
+  name               String
+  description        String
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+  BprBillOfMaterials BprBillOfMaterials[]
+  BprStaging         BprStaging[]
+
+  @@map("bpr_staging_statuses")
 }
 
 model BprStatus {
@@ -681,6 +718,7 @@ model User {
   purchaseOrders     PurchaseOrder[]
   purchaseOrderNotes PurchaseOrderNote[]
   activityLogs       ActivityLog[]
+  BprStaging         BprStaging[]
   UserRoleAssignment UserRoleAssignment[]
 
   @@map("users")
