@@ -180,6 +180,10 @@ const config: Config = {
           from: { transform: "translateX(var(--radix-toast-swipe-end-x))" },
           to: { transform: "translateX(calc(100% + var(--viewport-padding)))" },
         },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" }
+        }
       },
       animation: {
         slideUpAndFade: "slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
@@ -192,6 +196,7 @@ const config: Config = {
         hide: "hide 100ms ease-in",
         slideIn: "slideIn 150ms cubic-bezier(0.16, 1, 0.3, 1)",
         swipeOut: "swipeOut 100ms ease-out",
+        wiggle: "wiggle 200ms ease-in-out"
       },
     },
   },

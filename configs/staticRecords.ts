@@ -22,7 +22,8 @@ export const staticRecords = {
       stagingMaterials: 'c63e9eff-ee29-4987-b617-602edf1a486c',
     },
     bprBomStatuses: {
-      notStarted: '3d5f8db4-3937-41e0-840b-da3c1ab682c5'
+      notStarted: '3d5f8db4-3937-41e0-840b-da3c1ab682c5',
+      staged: 'ee67bd6c-974e-407d-99d8-6482b77aabec'
     }
   }
 }

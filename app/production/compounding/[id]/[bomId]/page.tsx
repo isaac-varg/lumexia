@@ -4,6 +4,8 @@ import { getBpr } from '../_functions/getBpr';
 import Title from '../_components/Title';
 import { getBprBomItem } from './_functions/getBprBomItem';
 import QuantitiesPanel from './_component/QuantitiesPanel';
+import EntryWizard from './_component/EntryWizard';
+import ModeView from './_component/ModeView';
 
 type BomItemPageProps = {
   searchParams: {
@@ -17,6 +19,7 @@ const BomItemPage = async ({ searchParams }: BomItemPageProps) => {
   const stagings = await getBprStaging(bprBomId)
   const bpr = await getBpr(bprId)
   const bomItem = await getBprBomItem(bprBomId)
+  
 
   if (!bomItem) return;
 
@@ -28,7 +31,7 @@ const BomItemPage = async ({ searchParams }: BomItemPageProps) => {
       
       <QuantitiesPanel bomItem={bomItem as any} staged={stagings} />
 
-
+      <ModeView bpr={bpr} bomItem={bomItem} stagings={stagings}/>
     </div>
   )
 }
