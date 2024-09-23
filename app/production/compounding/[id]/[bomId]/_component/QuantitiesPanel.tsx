@@ -13,21 +13,31 @@ const QuantitiesPanel = ({ bomItem, staged }: Props) => {
   const requiredQuantity =  bomItem.quantity;
   const stagedQuantity = staged.reduce(( sum: number, current: BprStaging) =>  current.quantity + sum, 0 )
   const remainingQuantity = requiredQuantity - stagedQuantity
-
+  const remainingStatus = remainingQuantity > 0 || remainingQuantity < 0 ? 'incomplete' : 'completed';
+  
   return (
     <div className='grid grid-cols-3 gap-4'>
       <QuantityBox title='Required' quantity={requiredQuantity} />
       <QuantityBox  title='staged Quantity' quantity={stagedQuantity}/>
-      <QuantityBox title='remaining Quantity' quantity={remainingQuantity}/>
+      <QuantityBox title='remaining Quantity' quantity={remainingQuantity} remainingStatus={remainingStatus}/>
 
     </div>
   )
 }
 
 
-const QuantityBox = ({ title, quantity }: { title: string, quantity: number }) => {
 
-  return <div className='flex flex-col gap-y-4 p-6 bg-swirl-100 rounded-lg items-center justify-center'>
+
+
+const QuantityBox = ({ title, quantity, remainingStatus = 'default' }: { title: string, quantity: number, remainingStatus?: 'incomplete' | 'completed'  | 'default'}) => {
+
+const bgColor = {
+  default: 'bg-swirl-100',
+  incomplete: 'bg-rose-200',
+  completed: 'bg-emerald-200'
+}
+
+  return <div className={`flex flex-col gap-y-4 p-6 ${ bgColor[remainingStatus]} rounded-lg items-center justify-center`}>
     <div className='text-2xl font-poppins font-semibold uppercase'>{title}</div>
     <div className='text-3xl font-medium font-poppins'>{toFracitonalDigits.weight(quantity)} </div>
 

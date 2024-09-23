@@ -1,3 +1,4 @@
+"use client"
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
 import React from 'react'
 

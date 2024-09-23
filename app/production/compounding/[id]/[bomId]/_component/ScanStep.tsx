@@ -8,14 +8,15 @@ const ScanStep = ({handleScan} : { handleScan: Dispatch<React.SetStateAction<str
   const { nextStep } = useWizard()
 
 
-  const handleScanEnd = (scannedLot: string) => {
+  const handleScanEnd = async (scannedLot: string) => {
     handleScan(scannedLot)
     nextStep()
 
   }
 
   const handleDemoClick = () => {
-    setScannedLot('f1218048-d086-46ee-aeab-eb3bc256e930')
+    setScannedLot('f1218048-d086-46ee-aeab-eb3bc256e930') // correct lot
+    //setScannedLot('0b5991b9-b7e7-49c0-9840-2ec0e1024757') // wrong lot
     setIsScanComplete(true);
 
   }

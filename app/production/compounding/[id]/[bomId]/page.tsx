@@ -31,7 +31,7 @@ const BomItemPage = async ({ searchParams }: BomItemPageProps) => {
       
       <QuantitiesPanel bomItem={bomItem as any} staged={stagings} />
 
-      <ModeView bpr={bpr} bomItem={bomItem} stagings={stagings}/>
+      <ModeView  bomItem={bomItem} stagings={stagings}/>
     </div>
   )
 }
