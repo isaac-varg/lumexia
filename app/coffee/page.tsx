@@ -1,4 +1,6 @@
+"use client"
 import config from "@/tailwind.config";
+import Confetti from "react-confetti";
 
 const ColorSwatches: React.FC =  async () => {
   const colors = config.theme?.extend?.colors || {};
@@ -20,6 +22,8 @@ const ColorSwatches: React.FC =  async () => {
 
   return (
     <div>
+
+    <Confetti />
       {Object.entries(colors).map(([colorName, colorValue]) => (
         <div key={colorName} style={{ display: "flex" }}>
           <div>

@@ -4,7 +4,6 @@ import { getBpr } from '../_functions/getBpr';
 import Title from '../_components/Title';
 import { getBprBomItem } from './_functions/getBprBomItem';
 import QuantitiesPanel from './_component/QuantitiesPanel';
-import EntryWizard from './_component/EntryWizard';
 import ModeView from './_component/ModeView';
 
 type BomItemPageProps = {

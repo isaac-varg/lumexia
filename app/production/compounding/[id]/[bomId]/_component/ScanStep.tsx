@@ -13,14 +13,7 @@ const ScanStep = ({handleScan} : { handleScan: Dispatch<React.SetStateAction<str
     nextStep()
 
   }
-
-  const handleDemoClick = () => {
-    setScannedLot('f1218048-d086-46ee-aeab-eb3bc256e930') // correct lot
-    //setScannedLot('0b5991b9-b7e7-49c0-9840-2ec0e1024757') // wrong lot
-    setIsScanComplete(true);
-
-  }
-
+  
   useEffect(() => {
     const handleScanEntry = (event: any) => {
       if (event.key === "Enter") {
@@ -50,7 +43,7 @@ const ScanStep = ({handleScan} : { handleScan: Dispatch<React.SetStateAction<str
   }, [scannedLot, isScanComplete, handleScanEnd]);
 
   return (
-    <div onClick={() => handleDemoClick()} className="p-10 rounded-lg bg-cutty-sark-100 flex flex-col items-center justify-center gap-y-4">
+    <div className="p-10 rounded-lg bg-cutty-sark-100 flex flex-col items-center justify-center gap-y-4">
       <BsQrCodeScan className="text-[200px]" />
       <h1 className="font-poppins text-4xl font-bold">Scan Barcode</h1>
     </div>

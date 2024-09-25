@@ -1,6 +1,10 @@
 import React from 'react'
 import Title from './_components/Title';
-import prisma from '@/lib/prisma';
+import { getBpr } from './_functions/getBpr';
+import { getStagings } from './_functions/getStagings';
+import { getBprBom } from './_functions/getBprBom';
+import AwaitingVerificationPanel from './_components/AwaitingVerificationPanel';
+import ReactConfetti from 'react-confetti';
 
 type BprQualityProps = {
   searchParams: {
@@ -10,24 +14,16 @@ type BprQualityProps = {
 
 const BprQualityPage =  async ({ searchParams} : BprQualityProps) => {
   const { id } = searchParams
-  const bpr = await prisma.batchProductionRecord.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      mbpr: {
-        include: {
-          producesItem: true
-        }
-      },
-      status: true,
-      batchSize: true,
-    }
-  }) 
+  const bpr = await getBpr(id) 
+  const stagings = await getStagings(id);
+  const bom = await getBprBom(id)
 
+ 
   return (
-    <div>
+    <div className='flex flex-col gap-y-4'>
      <Title bpr={bpr as any} />
+      
+     <AwaitingVerificationPanel bomItems={bom as any}  />
 
      
     </div>
