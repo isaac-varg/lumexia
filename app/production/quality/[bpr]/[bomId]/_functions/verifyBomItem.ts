@@ -1,42 +1,22 @@
 "use server"
 
-import { revalidatePage } from "@/actions/app/revalidatePage";
-import bprStagingVerificationActions from "@/actions/production/bprStagingVerifications";
-import bprStagingActions from "@/actions/production/bprStagings";
-import { getUserId } from "@/actions/users/getUserId"
-import { staticRecords } from "@/configs/staticRecords";
-import { ExBprStaging } from "@/types/bprStaging";
+import bprBomActions from "@/actions/production/bprBom";
+import { staticRecords } from "@/configs/staticRecords"
+import { BprBom  } from "@/types/bprBom"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 
-export const verifyBomItem = async (staging: ExBprStaging) => {
+// the naming is really similar to the verifyBomItemStaging, but
+// this is the overall bom item the other file is for the actual scan/staging to fulfill the item
+// i.e., a bomitem can have many different lots scanned/stagings
 
-  const userId = await getUserId();
-  const newStatusId = staging.bprStagingStatusId === staticRecords.production.bprBomStatuses.staged ? staticRecords.production.bprBomStatuses.verified : staticRecords.production.bprBomStatuses.secondaryVerification;
+export const verifyBomItem = async (bomItem: BprBom) => {
 
-  console.log(userId);
-  console.log(newStatusId)
+  const payload = {
+      statusId: staticRecords.production.bprBomStatuses.verified
+  };
 
-  // make the verification entry
-  const verificatioPayload = {
-     userId,
-     bprStagingId: staging.id,
-  }
+  const bomResponse: BprBom = await bprBomActions.update({id: bomItem.id } , payload)
 
-
-  console.log(verificatioPayload)
-
-  const verification = await bprStagingVerificationActions.createNew(verificatioPayload);
-
-console.log(verification)
-  // change staging status
-  
-  const stagingUpdate = await bprStagingActions.update({id: staging.id}, {bprStagingStatusId: newStatusId})
-console.log(stagingUpdate)
-
-
- // create activity log 
-  createActivityLog('verifyBomStaging', 'staging', staging.id, {context: `Staging Item was verified.`, verificationId: verification.id})
-
-  revalidatePage("/production/quality/[bpr]/[bomId]")
+  await createActivityLog( 'updateBprBom' , 'bprBom', bomItem.id, {context: `BOM item status changed to ${bomResponse.statusId}`})
 
 }

@@ -3,27 +3,45 @@
 import ActionButton from '@/components/ActionButton';
 import { ExBprStaging } from '@/types/bprStaging';
 import React, { useState } from 'react';
-import { verifyBomItem } from '../_functions/verifyBomItem';
+import { verifyBomItemStaging } from '../_functions/verifyBomItemStaging';
+import { staticRecords } from '@/configs/staticRecords';
 
 const StagedCard = ({ staging }: { staging: ExBprStaging }) => {
 
+  const { staged, verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
+
+  let bg;
+  switch (staging.bprStagingStatusId) {
+    case verified:
+      bg = "bg-blue-200"
+      break;
+    case secondaryVerification:
+      bg = "bg-emerald-200"
+      break;
+    default:
+      bg = 'bg-zinc-100'
+      break;
+  }
+
   const handleVerify = async () => {
-    await verifyBomItem(staging)
+    await verifyBomItemStaging(staging)
   }
 
   const handleNote = () => {
 
   }
 
+
+
   return (
-    <div className={`p-8 bg-zinc-100 rounded-lg flex flex-col gap-y-4 font-poppins font-medium text-xl `}>
+    <div className={`p-8 ${bg} rounded-lg flex flex-col gap-y-4 font-poppins font-medium text-xl `}>
       <span className=''>{staging.quantity} lb</span>
       <h1>Lot: {staging.lot.lotNumber}</h1>
       <span>Staged By {staging.pulledByUser.name}</span>
 
       <div className='flex gap-x-4'>
-      <ActionButton onClick={() => handleVerify()}>Verify</ActionButton>
-      <ActionButton onClick={() => handleNote()} color='cararra'>Note</ActionButton>
+      {staging.bprStagingStatusId === staged && <ActionButton onClick={() => handleVerify()}>Verify</ActionButton>}
+        <ActionButton onClick={() => handleNote()} color='cararra'>Note</ActionButton>
       </div>
     </div>
   );

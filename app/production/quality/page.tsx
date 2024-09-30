@@ -3,6 +3,7 @@ import { getAwaitingVerificationBprs } from './_function/getAwaitingVerification
 import BprCard from './_components/BprCard';
 import PageTitle from '@/components/Text/PageTitle';
 import Confetti from '@/components/Confetti/Confetti';
+import { KeyObject } from 'crypto';
 
 const QualityPage = async () => {
 
@@ -10,9 +11,11 @@ const QualityPage = async () => {
   
   const hasVerifiables = bprs.length !== 0;
 
+
+
   return (
     <div className='flex flex-col gap-y-4'>
-      <PageTitle>Awaiting Verification</PageTitle>
+      <PageTitle>Awaiting Primary Verification</PageTitle> 
 
       {!hasVerifiables && <Confetti />}
       <div className='grid grid-cols-3 gap-4'>

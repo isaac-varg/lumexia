@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Sep 11 2024 15:01:55 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Sep 30 2024 14:06:24 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -356,11 +356,12 @@ model BprStaging {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  bprBom       BprBillOfMaterials @relation(fields: [bprBomId], references: [id])
-  lot          Lot                @relation(fields: [lotId], references: [id])
-  pulledByUser User               @relation(fields: [pulledByUserId], references: [id])
-  uom          UnitOfMeasurement  @relation(fields: [uomId], references: [id])
-  status       BprStagingStatus   @relation(fields: [bprStagingStatusId], references: [id])
+  bprBom                 BprBillOfMaterials       @relation(fields: [bprBomId], references: [id])
+  lot                    Lot                      @relation(fields: [lotId], references: [id])
+  pulledByUser           User                     @relation(fields: [pulledByUserId], references: [id])
+  uom                    UnitOfMeasurement        @relation(fields: [uomId], references: [id])
+  status                 BprStagingStatus         @relation(fields: [bprStagingStatusId], references: [id])
+  BprStagingVerification BprStagingVerification[]
 
   @@map("bpr_stagings")
 }
@@ -375,6 +376,19 @@ model BprStagingStatus {
   BprStaging         BprStaging[]
 
   @@map("bpr_staging_statuses")
+}
+
+model BprStagingVerification {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  bprStagingId String   @map("bpr_staging_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user       User       @relation(fields: [userId], references: [id])
+  bprStaging BprStaging @relation(fields: [bprStagingId], references: [id])
+
+  @@map("bpr_staging_verifications")
 }
 
 model BprStatus {
@@ -713,13 +727,14 @@ model User {
   Authenticator Authenticator[]
   transactions  Transaction[]
 
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  purchaseOrders     PurchaseOrder[]
-  purchaseOrderNotes PurchaseOrderNote[]
-  activityLogs       ActivityLog[]
-  BprStaging         BprStaging[]
-  UserRoleAssignment UserRoleAssignment[]
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  purchaseOrders         PurchaseOrder[]
+  purchaseOrderNotes     PurchaseOrderNote[]
+  activityLogs           ActivityLog[]
+  BprStaging             BprStaging[]
+  BprStagingVerification BprStagingVerification[]
+  UserRoleAssignment     UserRoleAssignment[]
 
   @@map("users")
 }
