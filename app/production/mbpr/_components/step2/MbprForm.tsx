@@ -1,4 +1,3 @@
-import { revalidatePage } from '@/actions/app/revalidatePage'
 import mbprActions from '@/actions/production/mbprActions'
 import Dialog from '@/components/Dialog'
 import Form from '@/components/Form'
@@ -12,8 +11,8 @@ import { useForm } from 'react-hook-form'
 
 
 interface MbprFormInputs {
-  recordStatusId: string
-  versionLabel: string
+  recordStatusId: string 
+  versionLabel: string 
   estimatedTotalTime: number
 }
 
@@ -24,7 +23,7 @@ type MbpRFormProps = {
 
 const MbprForm = ({ mode, mbpr }: MbpRFormProps) => {
   const [statusOptions, setStatusOptions] = useState([])
-  const defaultValues = {
+  const defaultValues: any = {
     versionLabel: mbpr ? mbpr.versionLabel : '',
     recordStatusId: mbpr ? mbpr.recordStatusId : '',
     estimatedTotalTime: mbpr ? mbpr.estimatedTotalTime : 0

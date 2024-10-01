@@ -1,4 +1,3 @@
-import ActionButton from '@/components/ActionButton'
 import { ExBprStaging } from '@/types/bprStaging'
 import React from 'react'
 import StagedEntryCard from './StagedEntryCard'
@@ -44,7 +43,7 @@ const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isV
 
       </div>}
       <div className='grid grid-cols-3 gap-4'>
-        {stagings.map((entry: ExBprStaging) => <StagedEntryCard entry={entry} />)}
+        {stagings.map((entry: ExBprStaging) => <StagedEntryCard key={entry.id} entry={entry} />)}
       </div>
     </div>
   )

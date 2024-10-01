@@ -1,12 +1,21 @@
 "use client"
 import React, { useRef, useState } from 'react'
-import { Camera } from "react-camera-pro";
+import { Camera, CameraType } from "react-camera-pro";
 
 
 const ImageStep = () => {
 
-  const camera = useRef(null);
-  const [image, setImage] = useState(null);
+  const camera = useRef<CameraType>(null);
+  const [image, setImage] = useState<null | string>(null);
+
+  const handleCameraClick = () => {
+    if (!camera || !camera.current) {
+      return
+    }
+
+    const image = camera.current.takePhoto() as any
+    setImage(image)
+  }
 
   return (
     <div>ImageStep
@@ -18,10 +27,13 @@ const ImageStep = () => {
           'It is not possible to switch camera to different one because there is only one video device accessible.',
         canvas: 'Canvas is not supported.',
       }} ref={camera} />
-      <button onClick={() => setImage(camera.current.takePhoto())}>Take photo</button>
-      { image && 
-      <img src={image} alt='Taken photo' />
+
+
+      <button onClick={() => handleCameraClick()}>Take photo</button>
+      {image &&
+        <img src={image} alt='Taken photo' />
       }
+
     </div>
   )
 }

@@ -52,7 +52,7 @@ const QuantityStep = ({handleQuantity} : { handleQuantity: Dispatch<React.SetSta
         <span onClick={() => handleDeleteButton()} className='text-3xl'><TbBackspace /></span>
       </span>
 
-      {numbers.map(num => <NumberButton num={num} handleClick={handleNumButton} />)}
+      {numbers.map(num => <NumberButton key={num} num={num} handleClick={handleNumButton} />)}
 
       <div onClick={() => handleDecimalButton()} className={buttonClass} >.</div>
 

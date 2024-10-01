@@ -1,6 +1,5 @@
 import { DragOverEvent } from "@dnd-kit/core";
 import { BatchProductionRecord } from "@/types/batchProductionRecord";
-import { findContainer } from "./findContainer";
 import { Dispatch, SetStateAction } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import StatusBoard from './_components/statusBoard/StatusBoard'
-import bprActions from '@/actions/production/bprActions';
 import bprStatusActions from '@/actions/production/bprStatuses';
 import PageTitle from '@/components/Text/PageTitle';
 import AddBprButton from './_components/createNewBpr/AddBprButton';
@@ -26,7 +25,7 @@ const PlanningPage = async () => {
         <AddBprButton />
       </div>
 
-        <StatusBoard bprs={bprs} statuses={statuses} />
+        <StatusBoard bprs={bprs as any} statuses={statuses} />
         <div />
 
 
