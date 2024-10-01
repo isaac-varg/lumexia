@@ -9,7 +9,6 @@ const EntryCard = ({ bomItem }: { bomItem: ExBprBom }) => {
   const router = useRouter()
 
   const handleClick = ( ) => {
-    console.log(bomItem)
     router.push(`/production/quality/${bomItem.bpr.referenceCode}/${bomItem.bom.identifier}?bprBomId=${bomItem.id}&bprId=${bomItem.bprId}`)
   }
   return (

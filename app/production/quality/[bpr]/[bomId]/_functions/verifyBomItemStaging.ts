@@ -8,11 +8,13 @@ import { staticRecords } from "@/configs/staticRecords";
 import { ExBprStaging } from "@/types/bprStaging";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 
-export const verifyBomItemStaging = async (staging: ExBprStaging) => {
+export const verifyBomItemStaging = async (staging: ExBprStaging, isSecondary: boolean) => {
 
   const userId = await getUserId();
+  const { verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
 
-  const newStatusId = staging.bprStagingStatusId === staticRecords.production.bprBomStatuses.staged ? staticRecords.production.bprBomStatuses.verified : staticRecords.production.bprBomStatuses.secondaryVerification;
+  const statusId = isSecondary ? secondaryVerification : verified
+
 
   // make the verification entry
   const verificatioPayload = {
@@ -24,7 +26,7 @@ export const verifyBomItemStaging = async (staging: ExBprStaging) => {
 
   // change staging status
 
-  const stagingUpdate = await bprStagingActions.update({ id: staging.id }, { bprStagingStatusId: newStatusId })
+  const stagingUpdate = await bprStagingActions.update({ id: staging.id }, { bprStagingStatusId: statusId })
 
 
   // create activity log 

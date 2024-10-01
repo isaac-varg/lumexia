@@ -1,13 +1,17 @@
 "use client"
+import useProduction from '@/hooks/useProduction'
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-const BprCard = ({ bpr }: { bpr: BatchProductionRecord }) => {
+const BprCard = ({ bpr, isSecondary = false}: { bpr: BatchProductionRecord, isSecondary: boolean }) => {
+
+  const { setIsSecondaryVerificationMode } = useProduction()
 
   const router = useRouter()
 
   const handleClick = () => {
+    setIsSecondaryVerificationMode(isSecondary);
     router.push(`/production/quality/${bpr.referenceCode}?id=${bpr.id}`)
   }
   return (

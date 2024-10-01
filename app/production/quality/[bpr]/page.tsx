@@ -13,17 +13,21 @@ type BprQualityProps = {
 }
 
 const BprQualityPage =  async ({ searchParams} : BprQualityProps) => {
+
+
   const { id } = searchParams
   const bpr = await getBpr(id) 
   const stagings = await getStagings(id);
-  const bom = await getBprBom(id)
+  const bom = await getBprBom(id, false)
+  const bomNeedingSecondary = await getBprBom(id, true)
 
  
   return (
     <div className='flex flex-col gap-y-4'>
      <Title bpr={bpr as any} />
       
-     <AwaitingVerificationPanel bomItems={bom as any}  />
+
+     <AwaitingVerificationPanel bomItems={bom as any}  bomNeedingSecondary={bomNeedingSecondary as any} />
 
      
     </div>

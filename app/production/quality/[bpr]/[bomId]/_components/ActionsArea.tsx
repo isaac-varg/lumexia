@@ -6,17 +6,22 @@ import React from 'react'
 import { verifyBomItem } from '../_functions/verifyBomItem'
 import { ExBprBom } from '@/types/bprBom'
 import { useRouter } from 'next/navigation'
+import useProduction from '@/hooks/useProduction'
 
-const ActionsArea = ({ stagings, bomItem }: { stagings: ExBprStaging[], bomItem: ExBprBom}) => {
+const ActionsArea = ({ stagings, bomItem }: { stagings: ExBprStaging[], bomItem: ExBprBom }) => {
 
-  const router = useRouter()
-  
-  const allVerified = stagings.every((staging) => staging.bprStagingStatusId === staticRecords.production.bprBomStatuses.verified)
-// todo make check to see if required and staged amount are equal
+  const router = useRouter();
+  const { isSecondaryVerificationMode } = useProduction()
+
+  const { verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
+  const allVerifiedComparison = isSecondaryVerificationMode ? secondaryVerification : verified;
+
+  const allVerified = stagings.every((staging) => staging.bprStagingStatusId === allVerifiedComparison)
+  // todo make check to see if required and staged amount are equal
 
 
   const handleComplete = async () => {
-    await verifyBomItem(bomItem)
+    await verifyBomItem(bomItem, isSecondaryVerificationMode)
     router.back()
 
   }

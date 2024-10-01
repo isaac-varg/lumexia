@@ -5,10 +5,16 @@ import { ExBprStaging } from '@/types/bprStaging';
 import React, { useState } from 'react';
 import { verifyBomItemStaging } from '../_functions/verifyBomItemStaging';
 import { staticRecords } from '@/configs/staticRecords';
+import useProduction from '@/hooks/useProduction';
 
 const StagedCard = ({ staging }: { staging: ExBprStaging }) => {
 
   const { staged, verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
+  const { isSecondaryVerificationMode } = useProduction()
+
+  const completedStatus = isSecondaryVerificationMode ? secondaryVerification : verified;
+
+
 
   let bg;
   switch (staging.bprStagingStatusId) {
@@ -24,7 +30,7 @@ const StagedCard = ({ staging }: { staging: ExBprStaging }) => {
   }
 
   const handleVerify = async () => {
-    await verifyBomItemStaging(staging)
+    await verifyBomItemStaging(staging, isSecondaryVerificationMode)
   }
 
   const handleNote = () => {
@@ -40,7 +46,7 @@ const StagedCard = ({ staging }: { staging: ExBprStaging }) => {
       <span>Staged By {staging.pulledByUser.name}</span>
 
       <div className='flex gap-x-4'>
-      {staging.bprStagingStatusId === staged && <ActionButton onClick={() => handleVerify()}>Verify</ActionButton>}
+        {staging.bprStagingStatusId !== completedStatus && <ActionButton onClick={() => handleVerify()}>Verify</ActionButton>}
         <ActionButton onClick={() => handleNote()} color='cararra'>Note</ActionButton>
       </div>
     </div>
