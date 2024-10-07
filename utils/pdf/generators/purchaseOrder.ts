@@ -99,7 +99,7 @@ export const createPurchaseOrder = async (
   autoTable(pdf, {
     startY: 190,
     headStyles: { fillColor: "#333333", fontSize: 12 },
-    head: [["Product", "Quantity", "UOM", "Unit Price", "Total"]],
+    head: [["Product", "Quantity", "Unit Price", "UOM", "Total"]],
     body: tableItems,
   });
 
