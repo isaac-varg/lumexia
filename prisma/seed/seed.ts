@@ -7,7 +7,7 @@ const main = async () => {
   await seedAction("itemType");
 
   await seedAction("user");
-  await seedAction("account");
+  //await seedAction("account");
 
   await seedAction("item");
   await seedAction("activityLog");
@@ -22,6 +22,7 @@ const main = async () => {
 
   await seedAction("aliasType");
   await seedAction("alias");
+  await seedAction("paymentMethod");
 
   await seedAction("supplier");
   await seedAction("purchaseOrderStatus");
@@ -29,7 +30,6 @@ const main = async () => {
   await seedAction("purchaseOrderItem");
   await seedAction("purchaseOrderNote");
   await seedAction("supplierAlias");
-  await seedAction("paymentMethod");
   await seedAction("recordStatus");
   await seedAction("stepAddendumType");
   await seedAction("userRole");
