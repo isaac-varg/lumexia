@@ -1,6 +1,5 @@
 import Card from "@/components/Card";
 import LabelDataPair from "@/components/Text/LabelDataPair";
-import item from "@/prisma/seed/data/item";
 import { Item } from "@/types/item";
 import React from "react";
 import BasicsCardTitle from "./basics/CardTitle";

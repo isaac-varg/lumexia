@@ -1,4 +1,3 @@
-import item from "@/prisma/seed/data/item";
 import { Lot } from "@/types/lot";
 
 export interface FlattenedLot extends Lot {
