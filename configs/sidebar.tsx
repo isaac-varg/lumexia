@@ -1,61 +1,82 @@
-import { TbSmartHome } from "react-icons/tb";
-import { BsBox2Heart, BsBoxSeam } from "react-icons/bs";
+import { TbBook2, TbClipboardCheck, TbSmartHome, TbTruck } from "react-icons/tb";
+import { BsBox2Heart, BsBoxSeam, BsFillJournalBookmarkFill } from "react-icons/bs";
+import { TbScale , TbCreditCard , TbClipboardHeart } from "react-icons/tb";
+import { BiBuildings } from "react-icons/bi";
+import { SlNotebook } from "react-icons/sl";
+import { MdOilBarrel } from "react-icons/md";
 
 export const sidebar = [
-  {
-    label: "Dashboard",
-    icon: <TbSmartHome />,
-    path: "/",
-  },
-  {
-    label: "Audit",
-    icon: <BsBoxSeam />,
-    path: "/inventory/audit",
-  },
+        {
+                label: "main",
+                contents: [
+                        {
+                                label: "Dashboard",
+                                icon: <TbSmartHome />,
+                                path: "/",
+                        },
+                ]
+        },
+        {
+                label: "inventory",
+                contents: [
+                        {
+                                label: "Audit",
+                                icon: <TbScale />,
+                                path: "/inventory/audit",
+                        },
+                        {
+                                label: "Items",
+                                icon: <BsBox2Heart />,
+                                path: "/inventory/items",
+                        },
 
-  {
-    label: "Inventory",
-    icon: <BsBox2Heart />,
-    path: "/inventory",
-  },
-  {
-    label: "Items",
-    icon: <TbSmartHome />,
-    path: "/inventory/items",
-  },
-  {
-    label: "Purchasing",
-    icon: <TbSmartHome />,
-    path: "/purchasing/purchase-orders",
-  },
-  {
-    label: "Receiving",
-    icon: <TbSmartHome />,
-    path: "/receiving/",
-  },
-  {
-    label: "Suppliers",
-    icon: <TbSmartHome />,
-    path: "/purchasing/suppliers",
-  },
-  {
-    label: "MBPR",
-    icon: <TbSmartHome />,
-    path: "/production/mbpr",
-  },
-  {
-    label: "BPR Plan",
-    icon: <TbSmartHome />,
-    path: "/production/planning"
-  },
-  {
-    label: "Compounding",
-    icon: <TbSmartHome />,
-    path: "/production/compounding"
-  },
-  {
-    label: "Quality",
-    icon: <TbSmartHome />,
-    path: "/production/quality"
-  }
+                ]
+        },
+        {
+                label: "Purchasing",
+                contents: [
+                        {
+                                label: "Purchasing",
+                                icon: <TbCreditCard />,
+                                path: "/purchasing/purchase-orders",
+                        },
+                        {
+                                label: "Receiving",
+                                icon: <TbTruck />,
+                                path: "/receiving/",
+                        },
+                        {
+                                label: "Suppliers",
+                                icon: <BiBuildings />,
+                                path: "/purchasing/suppliers",
+                        },
+
+                ]
+        },
+        {
+                label: 'production',
+                contents: [
+                        {
+                                label: "MBPR",
+                                icon: <TbBook2 />,
+                                path: "/production/mbpr",
+                        },
+                        {
+                                label: "Planning",
+                                icon: <TbClipboardHeart/>,
+                                path: "/production/planning"
+                        },
+                        {
+                                label: "Compounding",
+                                icon: <MdOilBarrel/>,
+                                path: "/production/compounding"
+                        },
+                        {
+                                label: "Quality",
+                                icon: <TbClipboardCheck />,
+                                path: "/production/quality"
+                        }
+
+                ]
+        }
 ];
