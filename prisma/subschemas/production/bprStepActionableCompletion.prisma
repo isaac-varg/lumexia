@@ -1,0 +1,13 @@
+model BprStepActionableCompletion {
+  id        String   @id @default(uuid())
+  completedByUserId String @map("completed_by_user_id")
+  bprStepActionableId String @map("bpr_step_actionable_id")
+  completedAt DateTime @map("completed_at")
+  value String
+
+  completedByUser User @relation(fields: [completedByUserId], references: [id])
+  bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
+
+@@map("bpr_step_action_completions")
+}
+

@@ -23,6 +23,7 @@ model User {
       transactions  Transaction[]
     purchaseOrderNotes PurchaseOrderNote[]
     activityLogs       ActivityLog[]
+    bprStepActionables BprStepActionable[]
 
 
  

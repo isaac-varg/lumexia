@@ -26,7 +26,7 @@ const CompoundingPage = async ({ searchParams }: CompoundingPageProps) => {
 
       {isStaging && <StagingPanel bom={bom as any} />}
 
-      {!isStaging && <CompoundingPanel />}
+      {!isStaging && <CompoundingPanel bpr={bpr as any} />}
 
     </div>
   )

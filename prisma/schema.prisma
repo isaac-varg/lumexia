@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Oct 07 2024 15:19:23 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Oct 10 2024 11:26:55 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -267,6 +267,7 @@ model BatchProductionRecord {
   mbpr               MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   status             BprStatus                   @relation(fields: [bprStatusId], references: [id])
   batchSize          BatchSize                   @relation(fields: [batchSizeId], references: [id])
+  BprBatchStep       BprBatchStep[]
   BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("batch_production_records")
@@ -300,6 +301,7 @@ model BatchStep {
 
   mbpr            MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   BillOfMaterial  BillOfMaterial[]
+  BprBatchStep    BprBatchStep[]
   StepActionable  StepActionable[]
   StepAddendum    StepAddendum[]
   StepEquipment   StepEquipment[]
@@ -324,6 +326,22 @@ model BillOfMaterial {
   BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("bill_of_materials")
+}
+
+model BprBatchStep {
+  id          String    @id @default(uuid())
+  batchStepId String    @map("batch_step_id")
+  bprId       String    @map("bpr_id")
+  completedAt DateTime? @map("completed_at")
+  isComplete  Boolean
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  batchStep          BatchStep             @relation(fields: [batchStepId], references: [id])
+  bpr                BatchProductionRecord @relation(fields: [bprId], references: [id])
+  bprStepActionables BprStepActionable[]
+
+  @@map("bpr_batch_steps")
 }
 
 model BprBillOfMaterials {
@@ -403,6 +421,36 @@ model BprStatus {
   @@map("bpr_statuses")
 }
 
+model BprStepActionable {
+  id                    String   @id @default(uuid())
+  bprBatchStepId        String   @map("bpr_batch_step_id")
+  batchStepActionableId String   @map("batch_step_actionable_id")
+  isComplete            Boolean
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  bprBatchStep                BprBatchStep                  @relation(fields: [bprBatchStepId], references: [id])
+  stepActionable              StepActionable                @relation(fields: [batchStepActionableId], references: [id])
+  BprStepActionableCompletion BprStepActionableCompletion[]
+  User                        User?                         @relation(fields: [userId], references: [id])
+  userId                      String?
+
+  @@map("bpr_step_actionables")
+}
+
+model BprStepActionableCompletion {
+  id                  String   @id @default(uuid())
+  completedByUserId   String   @map("completed_by_user_id")
+  bprStepActionableId String   @map("bpr_step_actionable_id")
+  completedAt         DateTime @map("completed_at")
+  value               String
+
+  completedByUser   User              @relation(fields: [completedByUserId], references: [id])
+  bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
+
+  @@map("bpr_step_action_completions")
+}
+
 model MasterBatchProductionRecord {
   id                 String   @id @default(uuid())
   producesItemId     String   @map("produces_item_id")
@@ -430,8 +478,9 @@ model StepActionable {
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
-  step           BatchStep          @relation(fields: [stepId], references: [id])
-  actionableType StepActionableType @relation(fields: [actionableTypeId], references: [id])
+  step              BatchStep           @relation(fields: [stepId], references: [id])
+  actionableType    StepActionableType  @relation(fields: [actionableTypeId], references: [id])
+  BprStepActionable BprStepActionable[]
 
   @@map("step_actionables")
 }
@@ -726,13 +775,15 @@ model User {
   updatedAt      DateTime        @updatedAt
   purchaseOrders PurchaseOrder[]
 
-  transactions           Transaction[]
-  purchaseOrderNotes     PurchaseOrderNote[]
-  activityLogs           ActivityLog[]
-  BprStaging             BprStaging[]
-  BprStagingVerification BprStagingVerification[]
-  Authenticator          Authenticator[]
-  UserRoleAssignment     UserRoleAssignment[]
+  transactions                Transaction[]
+  purchaseOrderNotes          PurchaseOrderNote[]
+  activityLogs                ActivityLog[]
+  bprStepActionables          BprStepActionable[]
+  BprStaging                  BprStaging[]
+  BprStagingVerification      BprStagingVerification[]
+  BprStepActionableCompletion BprStepActionableCompletion[]
+  Authenticator               Authenticator[]
+  UserRoleAssignment          UserRoleAssignment[]
 
   @@map("users")
 }
