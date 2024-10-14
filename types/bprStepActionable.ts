@@ -15,5 +15,5 @@ export interface BprStepActionable {
 export interface ExBprStepActionable extends BprStepActionable {
     bprBatchStep: BprBatchStep
     user: User
-    batchStepActionable: StepActionable
+    stepActionable: StepActionable
 }
