@@ -7,31 +7,34 @@ import AwaitingVerificationPanel from './_components/AwaitingVerificationPanel';
 import ReactConfetti from 'react-confetti';
 
 type BprQualityProps = {
-  searchParams: {
-    id: string;
-  };
+    searchParams: {
+        id: string;
+    };
 }
 
-const BprQualityPage =  async ({ searchParams} : BprQualityProps) => {
+const BprQualityPage = async ({ searchParams }: BprQualityProps) => {
 
 
-  const { id } = searchParams
-  const bpr = await getBpr(id) 
-  const stagings = await getStagings(id);
-  const bom = await getBprBom(id, false)
-  const bomNeedingSecondary = await getBprBom(id, true)
+    const { id } = searchParams
+    const bpr = await getBpr(id)
 
- 
-  return (
-    <div className='flex flex-col gap-y-4'>
-     <Title bpr={bpr as any} />
-      
+    // for staging
+    const bom = await getBprBom(id, false)
+    const bomNeedingSecondary = await getBprBom(id, true)
 
-     <AwaitingVerificationPanel bomItems={bom as any}  bomNeedingSecondary={bomNeedingSecondary as any} />
 
-     
-    </div>
-  )
+
+    return (
+        <div className='flex flex-col gap-y-4'>
+            <Title bpr={bpr as any} />
+
+
+            <AwaitingVerificationPanel bomItems={bom as any} bomNeedingSecondary={bomNeedingSecondary as any} />
+
+
+
+        </div>
+    )
 }
 
 export default BprQualityPage

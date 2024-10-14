@@ -11,7 +11,7 @@ const AllStepsPanel = ({ steps }: { steps: ExBprBatchStep[] }) => {
                 <Card.Root>
                         <Card.Title>All Steps</Card.Title>
                         <div className='grid grid-cols-4 gap-4'>
-                                {sortedSteps.map((step) => <StepCard key={step.id} step={step} />)}
+                                {sortedSteps.map((step) => <StepCard key={step.id} step={step} isReadOnly={true} />)}
                         </div>
                 </Card.Root>
         )

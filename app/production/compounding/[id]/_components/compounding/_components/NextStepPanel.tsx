@@ -14,7 +14,7 @@ const NextStepPanel = async ({ steps }: { steps: ExBprBatchStep[] }) => {
     return (
         <Card.Root>
             <Card.Title>Current Step</Card.Title>
-            <StepCard step={currentStep as any} />
+            <StepCard step={currentStep as any} isReadOnly={false} />
         </Card.Root>
     )
 }

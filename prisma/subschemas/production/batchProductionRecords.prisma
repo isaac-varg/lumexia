@@ -14,5 +14,7 @@ model BatchProductionRecord {
   status    BprStatus                   @relation(fields: [bprStatusId], references: [id])
   batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
+  bprBatchSteps BprBatchStep[]
+
   @@map("batch_production_records")
 }

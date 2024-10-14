@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Oct 10 2024 11:26:55 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Oct 14 2024 15:17:22 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -264,10 +264,11 @@ model BatchProductionRecord {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  mbpr               MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  status             BprStatus                   @relation(fields: [bprStatusId], references: [id])
-  batchSize          BatchSize                   @relation(fields: [batchSizeId], references: [id])
-  BprBatchStep       BprBatchStep[]
+  mbpr      MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  status    BprStatus                   @relation(fields: [bprStatusId], references: [id])
+  batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
+
+  bprBatchSteps      BprBatchStep[]
   BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("batch_production_records")

@@ -3,6 +3,7 @@ import { getAwaitingVerificationBprs } from './_function/getAwaitingVerification
 import BprCard from './_components/BprCard';
 import PageTitle from '@/components/Text/PageTitle';
 import Confetti from '@/components/Confetti/Confetti';
+import { getStepsWithQuality } from './_function/getStepsWithQuality';
 
 const QualityPage = async () => {
 
@@ -11,6 +12,13 @@ const QualityPage = async () => {
 
   const hasVerifiables = bprs.length !== 0;
   const hasSecondaries = secondaryBprs.length !== 0;
+
+
+    // for compounding
+    const awaitingCompoundingVerification = await getStepsWithQuality()
+
+
+
 
   return (
     <div className='flex flex-col gap-y-4'>

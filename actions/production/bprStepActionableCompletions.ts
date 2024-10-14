@@ -1,6 +1,6 @@
 import ServerActions from "@/utils/classes/ServerActions";
 
 
-const bprStepActionableCompletions = new ServerActions('bprStepActionableCompletion');
+const bprStepActionableCompletionActions = new ServerActions('bprStepActionableCompletion');
 
-export default bprStepActionableCompletions
+export default bprStepActionableCompletionActions

@@ -2,17 +2,27 @@ import { BatchProductionRecord } from "@/types/batchProductionRecord"
 import { getBatchSteps } from "./_functions/getBatchSteps"
 import AllStepsPanel from "./_components/AllStepsPanel"
 import NextStepPanel from "./_components/NextStepPanel"
+import { sortByProperty } from "@/utils/data/sortByProperty"
+import { getCurrentStep } from "./_functions/getCurrentStep"
+import Confetti from "@/components/Confetti/Confetti"
 
 const CompoundingPanel = async ({ bpr }: { bpr: BatchProductionRecord }) => {
 
-        const steps = await getBatchSteps(bpr.id)
+    const steps = await getBatchSteps(bpr.id)
 
-        return (
-                <div className="flex flex-col gap-4">
-                        <NextStepPanel steps={steps} />
-                        <AllStepsPanel steps={steps} />
-                </div>
-        )
+    const sortedSteps = sortByProperty(steps, "batchStep.sequence")
+    const currentStep = await getCurrentStep(sortedSteps)
+
+    if (!currentStep) {
+        return <Confetti />
+    }
+
+    return (
+        <div className="flex flex-col gap-4">
+            <NextStepPanel steps={steps} />
+            <AllStepsPanel steps={steps} />
+        </div>
+    )
 }
 
 export default CompoundingPanel
