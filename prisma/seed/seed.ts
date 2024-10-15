@@ -49,6 +49,7 @@ const main = async () => {
         await seedAction("stepInstruction");
         await seedAction("billOfMaterial");
         await seedAction("batchSize");
+        await seedAction("bprStepActionableStatus");
 
 };
 

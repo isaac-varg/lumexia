@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Oct 14 2024 15:17:22 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Oct 15 2024 06:52:57 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -426,12 +426,14 @@ model BprStepActionable {
   id                    String   @id @default(uuid())
   bprBatchStepId        String   @map("bpr_batch_step_id")
   batchStepActionableId String   @map("batch_step_actionable_id")
+  statusId              String   @map("status_id")
   isComplete            Boolean
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
   bprBatchStep                BprBatchStep                  @relation(fields: [bprBatchStepId], references: [id])
   stepActionable              StepActionable                @relation(fields: [batchStepActionableId], references: [id])
+  status                      BprStepActionableStatus       @relation(fields: [statusId], references: [id])
   BprStepActionableCompletion BprStepActionableCompletion[]
   User                        User?                         @relation(fields: [userId], references: [id])
   userId                      String?
@@ -450,6 +452,18 @@ model BprStepActionableCompletion {
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
   @@map("bpr_step_action_completions")
+}
+
+model BprStepActionableStatus {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  BprStepActionable BprStepActionable[]
+
+  @@map("bpr_step_actionable_statuses")
 }
 
 model MasterBatchProductionRecord {

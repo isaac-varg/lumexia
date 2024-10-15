@@ -5,6 +5,7 @@ import bprActions from "@/actions/production/bprActions";
 import bprBatchStepActions from "@/actions/production/bprBatchSteps";
 import bprStepActionableActions from "@/actions/production/bprStepActionables";
 import stepActionableActions from "@/actions/production/stepActionables";
+import { staticRecords } from "@/configs/staticRecords";
 import { BatchProductionRecord } from "@/types/batchProductionRecord";
 import { BatchStep } from "@/types/batchStep"
 import { StepActionable } from "@/types/stepActionable";
@@ -13,20 +14,15 @@ export const generateBprBatchStepEntries = async (bprId: string) => {
 
     const bpr: BatchProductionRecord = await bprActions.getOne(bprId);
     const batchSteps = await batchStepActions.getAll({ mbprId: bpr.mbprId })
-    
-    console.log('batchSteps', batchSteps)
+
 
     batchSteps.forEach(async (step: BatchStep) => {
 
         const bprBatchStep = await createBprBatchStep(step.id, bpr.id);
         const stepActionables = await stepActionableActions.getAll({ stepId: step.id });
 
-        console.log("stepActionables", stepActionables)
-
-
         stepActionables.forEach(async (actionable: StepActionable) => {
 
-            console.log("bprbatchstep", bprBatchStep)
 
             await createBprStepActionable(bprBatchStep.id, actionable.id);
 
@@ -54,9 +50,9 @@ const createBprStepActionable = async (bprBatchStepId: string, batchStepActionab
         bprBatchStepId,
         batchStepActionableId,
         isComplete: false,
+        statusId: staticRecords.production.bprStepActionableStatuses.notStarted,
     };
 
-    console.log("payload", payload)
 
     await bprStepActionableActions.createNew(payload);
 

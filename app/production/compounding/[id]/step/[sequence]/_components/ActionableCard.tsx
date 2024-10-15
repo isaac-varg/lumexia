@@ -7,7 +7,7 @@ import BooleanActionable from "./BooleanActionable"
 
 const ActionableCard = ({ actionable, userRole }: { actionable: ExBprStepActionable, userRole: UserRoleAssignment }) => {
 
-    const actionableType = actionable.stepActionable.actionableType.dataType;
+    const actionableType = actionable.stepActionable.actionableType.dataType.toLowerCase();
 
     if (userRole.userRoleId !== actionable.stepActionable.actionableType.userRoleId) { return null }
 
@@ -38,7 +38,7 @@ const ActionableCard = ({ actionable, userRole }: { actionable: ExBprStepActiona
 
             <div className="bg-neutral-400 w-fuyll h-px " />
 
-            {actionableType === 'Boolean' && <BooleanActionable bprStepActionableId={actionable.id} bprId={actionable.bprBatchStep.bprId} />}
+            {actionableType === 'boolean' && <BooleanActionable bprStepActionableId={actionable.id} bprId={actionable.bprBatchStep.bprId} />}
 
 
         </div>

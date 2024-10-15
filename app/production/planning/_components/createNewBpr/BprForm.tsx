@@ -16,7 +16,6 @@ const BprForm = () => {
   const [items, setItems] = useState<ItemDataForSearch[]>([])
   const [selectedItem, setSelectedItem] = useState<ItemDataForSearch>()
   const [selectedMbpr, setSelectedMbpr] = useState<MasterBatchProductionRecord>()
-  const [bprSizes, setBprSizes] = useState<BatchSize[]>([])
 
   const handleItemSelection = (item: ItemDataForSearch) => {
       setSelectedItem(item);

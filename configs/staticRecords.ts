@@ -27,6 +27,13 @@ export const staticRecords = {
       verified: '9a8f0c18-a035-424c-ba0f-d7635cf1fee8',
       secondaryVerification: '52311908-0abf-4fa8-92d9-0152cce93da7',
       consumed: 'ec7240b9-d2db-4447-9ad5-1b2ff0ba7885'
+    },
+    bprStepActionableStatuses: {
+        notStarted: 'todo',
+        compounded: 'todo',
+        verify: 'todo',
+        secondaryVerification: 'todo', // as if necessary
+        completed: 'todo'
     }
   }
 }

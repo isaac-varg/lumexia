@@ -7,15 +7,15 @@ import { TbPlus } from "react-icons/tb"
 
 const AddBprButton = () => {
 
-  const {showDialog} = useDialog()
-  return (
-    <>
-      <BprForm />
+    const { showDialog } = useDialog()
+    return (
+        <>
+            <BprForm />
 
 
-      <ActionButton onClick={() => showDialog('newBprForm') }><TbPlus /></ActionButton>
-    </>
-  )
+            <ActionButton onClick={() => showDialog('newBprForm')}><TbPlus /></ActionButton>
+        </>
+    )
 }
 
 export default AddBprButton

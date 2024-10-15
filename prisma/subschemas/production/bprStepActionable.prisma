@@ -2,12 +2,14 @@ model BprStepActionable {
   id        String   @id @default(uuid())
   bprBatchStepId    String   @map("bpr_batch_step_id")
   batchStepActionableId String @map("batch_step_actionable_id")
+  statusId String @map("status_id")
   isComplete Boolean
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   bprBatchStep BprBatchStep @relation(fields: [bprBatchStepId], references: [id])
   stepActionable StepActionable @relation(fields: [batchStepActionableId], references: [id])
+  status BprStepActionableStatus @relation(fields: [statusId], references: [id])
 
 
   @@map("bpr_step_actionables")
