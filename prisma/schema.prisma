@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Oct 15 2024 06:52:57 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Oct 15 2024 15:28:08 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -334,6 +334,7 @@ model BprBatchStep {
   batchStepId String    @map("batch_step_id")
   bprId       String    @map("bpr_id")
   completedAt DateTime? @map("completed_at")
+  statusId    String
   isComplete  Boolean
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
@@ -341,8 +342,21 @@ model BprBatchStep {
   batchStep          BatchStep             @relation(fields: [batchStepId], references: [id])
   bpr                BatchProductionRecord @relation(fields: [bprId], references: [id])
   bprStepActionables BprStepActionable[]
+  status             BprBatchStepStatus    @relation(fields: [statusId], references: [id])
 
   @@map("bpr_batch_steps")
+}
+
+model BprBatchStepStatus {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  BprBatchStep BprBatchStep[]
+
+  @@map("bpr_batch_step_statuses")
 }
 
 model BprBillOfMaterials {
@@ -427,16 +441,17 @@ model BprStepActionable {
   bprBatchStepId        String   @map("bpr_batch_step_id")
   batchStepActionableId String   @map("batch_step_actionable_id")
   statusId              String   @map("status_id")
-  isComplete            Boolean
+  isCompounded          Boolean  @map("isCompounded")
+  isVerified            Boolean  @map("isVerified")
+  isSecondarilyVerified Boolean  @map("isSecondarilyVerified")
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
 
-  bprBatchStep                BprBatchStep                  @relation(fields: [bprBatchStepId], references: [id])
-  stepActionable              StepActionable                @relation(fields: [batchStepActionableId], references: [id])
-  status                      BprStepActionableStatus       @relation(fields: [statusId], references: [id])
-  BprStepActionableCompletion BprStepActionableCompletion[]
-  User                        User?                         @relation(fields: [userId], references: [id])
-  userId                      String?
+  bprBatchStep                  BprBatchStep                    @relation(fields: [bprBatchStepId], references: [id])
+  stepActionable                StepActionable                  @relation(fields: [batchStepActionableId], references: [id])
+  status                        BprStepActionableStatus         @relation(fields: [statusId], references: [id])
+  BprStepActionableCompletion   BprStepActionableCompletion[]
+  BprStepActionableVerification BprStepActionableVerification[]
 
   @@map("bpr_step_actionables")
 }
@@ -445,8 +460,9 @@ model BprStepActionableCompletion {
   id                  String   @id @default(uuid())
   completedByUserId   String   @map("completed_by_user_id")
   bprStepActionableId String   @map("bpr_step_actionable_id")
-  completedAt         DateTime @map("completed_at")
   value               String
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
 
   completedByUser   User              @relation(fields: [completedByUserId], references: [id])
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
@@ -464,6 +480,20 @@ model BprStepActionableStatus {
   BprStepActionable BprStepActionable[]
 
   @@map("bpr_step_actionable_statuses")
+}
+
+model BprStepActionableVerification {
+  id                  String   @id @default(uuid())
+  completedByUserId   String   @map("completed_by_user_id")
+  bprStepActionableId String   @map("bpr_step_actionable_id")
+  type                String
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  completedByUser   User              @relation(fields: [completedByUserId], references: [id])
+  bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
+
+  @@map("bpr_step_actionable_verifications")
 }
 
 model MasterBatchProductionRecord {
@@ -486,12 +516,14 @@ model MasterBatchProductionRecord {
 }
 
 model StepActionable {
-  id               String   @id @default(uuid())
-  stepId           String   @map("step_id")
-  actionableTypeId String   @map("actionable_type_id")
-  required         Boolean
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
+  id                            String   @id @default(uuid())
+  stepId                        String   @map("step_id")
+  actionableTypeId              String   @map("actionable_type_id")
+  required                      Boolean
+  verificationRequired          Boolean  @map("verification_required")
+  secondaryVerificationRequired Boolean  @map("secondary_verification_required")
+  createdAt                     DateTime @default(now()) @map("created_at")
+  updatedAt                     DateTime @updatedAt @map("updated_at")
 
   step              BatchStep           @relation(fields: [stepId], references: [id])
   actionableType    StepActionableType  @relation(fields: [actionableTypeId], references: [id])
@@ -790,15 +822,15 @@ model User {
   updatedAt      DateTime        @updatedAt
   purchaseOrders PurchaseOrder[]
 
-  transactions                Transaction[]
-  purchaseOrderNotes          PurchaseOrderNote[]
-  activityLogs                ActivityLog[]
-  bprStepActionables          BprStepActionable[]
-  BprStaging                  BprStaging[]
-  BprStagingVerification      BprStagingVerification[]
-  BprStepActionableCompletion BprStepActionableCompletion[]
-  Authenticator               Authenticator[]
-  UserRoleAssignment          UserRoleAssignment[]
+  transactions                  Transaction[]
+  purchaseOrderNotes            PurchaseOrderNote[]
+  activityLogs                  ActivityLog[]
+  BprStaging                    BprStaging[]
+  BprStagingVerification        BprStagingVerification[]
+  BprStepActionableCompletion   BprStepActionableCompletion[]
+  BprStepActionableVerification BprStepActionableVerification[]
+  Authenticator                 Authenticator[]
+  UserRoleAssignment            UserRoleAssignment[]
 
   @@map("users")
 }

@@ -51,6 +51,9 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
 
     const isStepCompleted = getIsStepCompleted(filteredActionables as any)
 
+    // this helps determine the next status for the stepactionspanel
+    const isVerificationRequired = filteredActionables.some((actionable) =>  actionable.stepActionable.verificationRequired === true);
+
     if (!bpr) return
 
 
@@ -65,7 +68,7 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
 
                 <div className='grid grid-cols-2 gap-6'>
 
-                    {!isActuallyReadOnly && <StepActionsPanel isStepCompleted={isStepCompleted} bprBatchStep={step} />}
+                    {!isActuallyReadOnly && <StepActionsPanel isVerificationRequired={isVerificationRequired} isStepCompleted={isStepCompleted} bprBatchStep={step} />}
 
                     {!isActuallyReadOnly && <div className='col-span-2'>
                         <Card.Root>

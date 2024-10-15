@@ -11,7 +11,7 @@ const ActionableCard = ({ actionable, userRole }: { actionable: ExBprStepActiona
 
     if (userRole.userRoleId !== actionable.stepActionable.actionableType.userRoleId) { return null }
 
-    if (actionable.isComplete === true) {
+    if (actionable.isCompounded === true) {
         return <div className='relative flex flex-col p-6 bg-limed-spruce-200 rounded-lg shadow-lg gap-y-4'>
             <div className="absolute bg-bay-leaf-400 inset-0 flex z-50 items-center justify-center opacity-90  rounded-lg">
                 <span className="font-poppins font-black text-2xl">Completed</span>
@@ -38,7 +38,7 @@ const ActionableCard = ({ actionable, userRole }: { actionable: ExBprStepActiona
 
             <div className="bg-neutral-400 w-fuyll h-px " />
 
-            {actionableType === 'boolean' && <BooleanActionable bprStepActionableId={actionable.id} bprId={actionable.bprBatchStep.bprId} />}
+            {actionableType === 'boolean' && <BooleanActionable bprStepActionable={actionable} bprId={actionable.bprBatchStep.bprId} />}
 
 
         </div>

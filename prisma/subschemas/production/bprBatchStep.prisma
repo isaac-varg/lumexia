@@ -3,6 +3,7 @@ model BprBatchStep {
   batchStepId    String   @map("batch_step_id")
   bprId String @map("bpr_id")
   completedAt DateTime? @map("completed_at")
+  statusId String
   isComplete Boolean
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -10,6 +11,8 @@ model BprBatchStep {
   batchStep BatchStep @relation(fields: [batchStepId], references: [id])
   bpr BatchProductionRecord @relation(fields: [bprId], references: [id])
   bprStepActionables BprStepActionable[]
+  status BprBatchStepStatus @relation(fields: [statusId], references: [id])
+
 
   @@map("bpr_batch_steps")
 }

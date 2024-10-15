@@ -1,0 +1,11 @@
+model BprBatchStepStatus {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("bpr_batch_step_statuses")
+
+}
+

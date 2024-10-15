@@ -50,7 +50,7 @@ const main = async () => {
         await seedAction("billOfMaterial");
         await seedAction("batchSize");
         await seedAction("bprStepActionableStatus");
-
+        await seedAction("bprBatchStepStatus");
 };
 
 main()

@@ -38,6 +38,7 @@ const createBprBatchStep = async (batchStepId: string, bprId: string) => {
         batchStepId,
         bprId,
         isComplete: false,
+        statusId: staticRecords.production.bprBatchStepStatuses.fulfillStep,
     }
     const bprBatchStep = await bprBatchStepActions.createNew(payload);
 
@@ -49,8 +50,10 @@ const createBprStepActionable = async (bprBatchStepId: string, batchStepActionab
     const payload = {
         bprBatchStepId,
         batchStepActionableId,
-        isComplete: false,
-        statusId: staticRecords.production.bprStepActionableStatuses.notStarted,
+        isCompounded: false,
+        isVerified: false,
+        isSecondarilyVerified: false,
+        statusId: staticRecords.production.bprStepActionableStatuses.compounding,
     };
 
 

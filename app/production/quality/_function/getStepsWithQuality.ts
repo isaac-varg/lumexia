@@ -1,4 +1,3 @@
-import bprActions from "@/actions/production/bprActions"
 import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
 
@@ -6,13 +5,13 @@ export const getStepsWithQuality = async () => {
 
     // first we need bprs with a compounding status
     const bprs = await getIncompleteBprs()
-    
+   
     console.log(bprs)
 
     return bprs
 
-
 }
+
 
 
 const getIncompleteBprs = async () => {
@@ -24,7 +23,7 @@ const getIncompleteBprs = async () => {
                     bprStatusId: staticRecords.production.bprStatuses.compounding
                 },
                 {
-                    BprBatchStep: {
+                    bprBatchSteps: {
                         some: {
                             isComplete: false,
                         }
@@ -35,4 +34,5 @@ const getIncompleteBprs = async () => {
     })
     return bprs
 }
+
 

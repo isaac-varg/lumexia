@@ -6,14 +6,15 @@ export interface BprStepActionable {
     id: string
     bprBatchStepId: string
     batchStepActionableId: string
+    statusId: String
     createdAt: Date
     updatedAt: Date
-    userId: string
-    isComplete: boolean
+    isCompounded: boolean
+    isVerified: boolean
+    isSecondarilyVerified: boolean
 } 
 
 export interface ExBprStepActionable extends BprStepActionable {
     bprBatchStep: BprBatchStep
-    user: User
     stepActionable: StepActionable
 }

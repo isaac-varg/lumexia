@@ -1,15 +1,14 @@
-model BprStepActionableCompletion {
+model BprStepActionableVerification {
   id        String   @id @default(uuid())
   completedByUserId String @map("completed_by_user_id")
   bprStepActionableId String @map("bpr_step_actionable_id")
-  value String
-    createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
+  type String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   completedByUser User @relation(fields: [completedByUserId], references: [id])
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
-@@map("bpr_step_action_completions")
-}
+  @@map("bpr_step_actionable_verifications")
 
+}

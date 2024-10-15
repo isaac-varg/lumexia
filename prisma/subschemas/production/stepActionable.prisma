@@ -3,6 +3,8 @@ model StepActionable {
   stepId           String   @map("step_id")
   actionableTypeId String   @map("actionable_type_id")
   required         Boolean
+  verificationRequired Boolean @map("verification_required")
+  secondaryVerificationRequired Boolean @map("secondary_verification_required")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 

@@ -5,6 +5,8 @@ export interface StepActionable {
   stepId: string
   actionableTypeId: string
   required: boolean
+  verificationRequired: boolean
+  secondaryVerificationRequired: boolean
   createdAt: Date
   updatedAt: Date
   

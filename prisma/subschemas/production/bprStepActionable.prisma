@@ -3,7 +3,9 @@ model BprStepActionable {
   bprBatchStepId    String   @map("bpr_batch_step_id")
   batchStepActionableId String @map("batch_step_actionable_id")
   statusId String @map("status_id")
-  isComplete Boolean
+  isCompounded Boolean @map("isCompounded")
+  isVerified Boolean @map("isVerified")
+  isSecondarilyVerified Boolean @map("isSecondarilyVerified")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

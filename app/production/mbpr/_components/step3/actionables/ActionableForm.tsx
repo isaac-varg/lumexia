@@ -10,67 +10,84 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 
 type Inputs = {
-  actionableTypeId: string
-  required: boolean
+    actionableTypeId: string
+    required: boolean
+    verificationRequired: boolean
+    secondaryVerificationRequired: boolean
 }
 
 
 const ActionableForm = ({ actionableTypes }: { actionableTypes: ActionableType[] }) => {
 
-  const form = useForm({defaultValues: {actionableTypeId: '', required: true}})
-  const { selectedBatchStep, selectedMbpr, revalidate } = useProductionWizard()
-  const { resetDialogContext } = useDialog()
+    const form = useForm({ defaultValues: { actionableTypeId: '', required: true , verificationRequired: true, secondaryVerificationRequired: true} })
+    const { selectedBatchStep, selectedMbpr, revalidate } = useProductionWizard()
+    const { resetDialogContext } = useDialog()
 
-  const handleSubmit = async (data: Inputs) => {
-    if (!selectedBatchStep) { throw new Error("Batch step not selected") }
+    const handleSubmit = async (data: Inputs) => {
+        if (!selectedBatchStep) { throw new Error("Batch step not selected") }
 
-    const { actionableTypeId, required } = data;
-    const payload = {
-      stepId: selectedBatchStep.id,
-      actionableTypeId,
-      required,
+        const { actionableTypeId, required, verificationRequired, secondaryVerificationRequired } = data;
+        const payload = {
+            stepId: selectedBatchStep.id,
+            actionableTypeId,
+            required,
+            verificationRequired,
+            secondaryVerificationRequired,
+
+        }
+
+
+        const finish = (response: StepActionable) => {
+
+            if (!selectedBatchStep || !selectedMbpr) { throw new Error('Batch step not selected.') }
+
+            createActivityLog('createdBatchActionable', 'mbprId', selectedMbpr?.id, { context: `Created batch actionable.`, actionableId: response.id })
+            revalidate()
+            resetDialogContext();
+
+        }
+
+        const response = await stepActionableActions.createNew(payload)
+
+        finish(response)
+
+
     }
 
 
-    const finish = (response: StepActionable) => {
+    return (
+        <Dialog.Root identifier='createActionableForm' >
+            <Form.Root form={form} onSubmit={handleSubmit}>
+                <Form.Select
+                    fieldName='actionableTypeId'
+                    label='Type'
+                    form={form}
+                    options={actionableTypes.map((at) => ({ value: at.id, label: at.name }))}
+                />
 
-      if (!selectedBatchStep || !selectedMbpr) { throw new Error('Batch step not selected.') }
+                <Form.Toggle
+                    form={form}
+                    label='Required'
+                    fieldName='required'
+                />
 
-      createActivityLog('createdBatchActionable', 'mbprId', selectedMbpr?.id, { context: `Created batch actionable.`, actionableId: response.id })
-      revalidate()
-      resetDialogContext();
+                <Form.Toggle
+                    form={form}
+                    label='Verificiation Required'
+                    fieldName='verificationRequired'
+                />
 
-    }
+                <Form.Toggle
+                    form={form}
+                    label='Secondary Verification Required'
+                    fieldName='secondaryVerificationRequired'
+                />
 
-    const response = await stepActionableActions.createNew(payload)
+                <Form.ActionRow form={form} />
+            </Form.Root>
 
-    finish(response)
-
-
-  }
-
-
-  return (
-    <Dialog.Root identifier='createActionableForm' >
-      <Form.Root form={form} onSubmit={handleSubmit}>
-        <Form.Select
-          fieldName='actionableTypeId'
-          label='Type'
-          form={form}
-          options={actionableTypes.map((at) => ({ value: at.id, label: at.name }))}
-        />
-
-        <Form.Toggle
-          form={form}
-          label='Required'
-          fieldName='required'
-        />
-
-        <Form.ActionRow form={form} />
-      </Form.Root>
-
-    </Dialog.Root>
-  )
+        </Dialog.Root>
+    )
 }
 
 export default ActionableForm
