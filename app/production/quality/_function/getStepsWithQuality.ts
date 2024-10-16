@@ -5,8 +5,9 @@ export const getStepsWithQuality = async () => {
 
     // first we need bprs with a compounding status
     const bprs = await getIncompleteBprs()
-   
-    console.log(bprs)
+
+    
+console.log(JSON.stringify(bprs, null, 4));
 
     return bprs
 
@@ -16,20 +17,31 @@ export const getStepsWithQuality = async () => {
 
 const getIncompleteBprs = async () => {
 
-    const bprs = await prisma.batchProductionRecord.findMany({
+    const bprs = await prisma.bprStepActionable.findMany({
         where: {
             AND: [
                 {
-                    bprStatusId: staticRecords.production.bprStatuses.compounding
+                    isCompounded: true,
                 },
                 {
-                    bprBatchSteps: {
-                        some: {
-                            isComplete: false,
-                        }
+                    isVerified: false,
+                },
+                {
+                    stepActionable: {
+                        verificationRequired: true
                     }
                 }
             ]
+        },
+        include: {
+            stepActionable: true,
+            bprBatchStep: {
+                include: {
+                    batchStep: true,
+                }
+            },
+            status: true,
+            BprStepActionableCompletion: true,
         }
     })
     return bprs

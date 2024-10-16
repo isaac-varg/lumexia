@@ -1,6 +1,5 @@
 "use client"
 
-import Separator from "@/components/Separator/Separator"
 import { ExBprStepActionable } from "@/types/bprStepActionable"
 import { UserRoleAssignment } from "@prisma/client"
 import BooleanActionable from "./BooleanActionable"

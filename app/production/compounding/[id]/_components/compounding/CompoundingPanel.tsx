@@ -19,8 +19,8 @@ const CompoundingPanel = async ({ bpr }: { bpr: BatchProductionRecord }) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <NextStepPanel steps={steps} />
-            <AllStepsPanel steps={steps} />
+            <NextStepPanel steps={steps as any} />
+            <AllStepsPanel steps={steps as any} />
         </div>
     )
 }

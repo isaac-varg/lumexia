@@ -11,7 +11,6 @@ import React from 'react'
 
 const BooleanActionable = ({ bprStepActionable, bprId }: { bprStepActionable: ExBprStepActionable, bprId: string }) => {
 
-    console.log('asdffffff', bprStepActionable)
     const handleClick = async () => {
 
         const userId = await getUserId()

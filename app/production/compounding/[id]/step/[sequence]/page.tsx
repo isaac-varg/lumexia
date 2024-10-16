@@ -8,7 +8,7 @@ import { GiCauldron } from "react-icons/gi";
 import Card from '@/components/Card';
 import { StepEquipment } from '@/types/stepEquipment';
 import billOfMaterialActions from '@/actions/production/billOfMaterials';
-import { BillOfMaterials, ExBillOfMaterials } from '@/types/billOfMaterials';
+import { ExBillOfMaterials } from '@/types/billOfMaterials';
 import { MdOilBarrel } from 'react-icons/md';
 import { TbAlertHexagon, TbClipboardCheck, TbClipboardList } from 'react-icons/tb';
 import stepInstructionActions from '@/actions/production/stepInstructions';
@@ -23,17 +23,19 @@ import userRoleAssignmentActions from '@/actions/users/userRoleAssignments';
 import { getIsStepCompleted } from './_function/getIsStepCompleted';
 import StepActionsPanel from './_components/StepActionsPanel';
 import ReadOnly from './_components/ReadOnly';
+import Locked from './_components/Locked';
 
 type StepPageProps = {
     searchParams: {
         id: string;
         isReadOnly: string;
+        isLocked: string;
     };
 };
 
 const StepPage = async ({ searchParams }: StepPageProps) => {
 
-    const { id, isReadOnly } = searchParams;
+    const { id, isReadOnly, isLocked } = searchParams;
     const userId = await getUserId()
     const step: ExBprBatchStep = await bprBatchStepActions.getOne(id, undefined, ["bpr", "batchStep"])
     const bpr = await getBpr(step.bpr.id)
@@ -44,6 +46,7 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
     const actionables = await getActionables(step.id)
     const userRole = await userRoleAssignmentActions.getAll({ userId });
     const isActuallyReadOnly = isReadOnly === 'true' ? true : false; //not sure why this is necessary
+    const isActuallyLocked = isLocked === 'true' ? true : false;
 
     if (userRole.length > 1 || userRole.length === 0) { throw new Error("User has too many or no user role assignments.") }
 
@@ -52,7 +55,7 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
     const isStepCompleted = getIsStepCompleted(filteredActionables as any)
 
     // this helps determine the next status for the stepactionspanel
-    const isVerificationRequired = filteredActionables.some((actionable) =>  actionable.stepActionable.verificationRequired === true);
+    const isVerificationRequired = filteredActionables.some((actionable) => actionable.stepActionable.verificationRequired === true);
 
     if (!bpr) return
 
@@ -60,7 +63,8 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
     return (
         <div className='flex flex-col gap-y-4'>
             <Title bpr={bpr as any} />
-
+            
+            <Locked isLocked={isActuallyLocked} />
             <ReadOnly isReadOnly={isReadOnly} />
 
             <div className='flex flex-col gap-y-4'>
@@ -68,16 +72,16 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
 
                 <div className='grid grid-cols-2 gap-6'>
 
-                    {!isActuallyReadOnly && <StepActionsPanel isVerificationRequired={isVerificationRequired} isStepCompleted={isStepCompleted} bprBatchStep={step} />}
+                    {!isActuallyReadOnly  && <StepActionsPanel isVerificationRequired={isVerificationRequired} isStepCompleted={isStepCompleted} bprBatchStep={step} />}
 
-                    {!isActuallyReadOnly && <div className='col-span-2'>
+                    {!isActuallyReadOnly && !isActuallyLocked  ? (<div className='col-span-2'>
                         <Card.Root>
                             <Card.Title><span className='flex gap-x-2 items-center'><TbClipboardCheck /> <p>Actionables</p></span></Card.Title>
 
                             {actionables.map((actionable) => <ActionableCard key={actionable.id} userRole={userRole[0]} actionable={actionable as any} />)}
 
                         </Card.Root>
-                    </div>
+                    </div> ): <div className='col-span-2' /> 
                     }
 
                     <Card.Root>

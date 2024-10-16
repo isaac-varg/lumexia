@@ -15,14 +15,12 @@ const NextStepPanel = async ({ steps }: { steps: ExBprBatchStep[] }) => {
     if (!currentStep) { return null }
     const isLocked = await isCurrentStepLocked(sortedSteps, currentStep.batchStep.sequence)
 
-    console.log(isLocked)
-
-
-
     return (
         <Card.Root>
             <Card.Title>Current Step</Card.Title>
-            <StepCard step={currentStep as any} isReadOnly={false} />
+            <div className='grid grid-cols-3'>
+            <StepCard step={currentStep as any} isReadOnly={false} isLocked={isLocked} />
+            </div>
         </Card.Root>
     )
 }
