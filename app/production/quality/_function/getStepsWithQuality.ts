@@ -1,13 +1,11 @@
-import { staticRecords } from "@/configs/staticRecords"
+import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
 
-export const getStepsWithQuality = async () => {
+export const getStepsWithQuality = async (isSecondary: boolean) => {
 
     // first we need bprs with a compounding status
-    const bprs = await getIncompleteBprs()
+    const bprs = await getIncompleteBprs(isSecondary)
 
-
-    console.log(JSON.stringify(bprs, null, 4));
 
     return bprs
 
@@ -15,22 +13,26 @@ export const getStepsWithQuality = async () => {
 
 
 
-const getIncompleteBprs = async () => {
+const getIncompleteBprs = async (isSecondary: boolean) => {
 
+    const isVerified = isSecondary ? true : false
+    const secondarySpread = isSecondary ? { verificationRequired: true } : { secondaryVerificationRequired: true };
+    const statusId = isSecondary ? staticRecords.production.bprStepActionableStatuses.secondaryVerification : staticRecords.production.bprStepActionableStatuses.verify;
 
     // lol maybe do a sql query instead
     const bprs = await prisma.bprStepActionable.findMany({
         where: {
             AND: [
+                { statusId },
                 {
                     isCompounded: true,
                 },
                 {
-                    isVerified: false,
+                    isVerified,
                 },
                 {
                     stepActionable: {
-                        verificationRequired: true
+                        ...secondarySpread
                     }
                 }
             ]
@@ -53,7 +55,7 @@ const getIncompleteBprs = async () => {
                 }
             },
             status: true,
-            BprStepActionableCompletion: true,
+            completion: true,
         }
     })
     return bprs

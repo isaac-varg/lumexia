@@ -12,9 +12,18 @@ export const getActionables = async (bprBatchStepId: string) => {
             bprBatchStep: true,
             stepActionable: {
                 include: {
-                    actionableType: true
+                    actionableType: {
+                        include: {
+                            userRole: true
+                        }
+                    },
+                },
+            },
+            completion: {
+                include: {
+                    completedByUser: true
                 }
-            }
+            } 
         }
     })
 

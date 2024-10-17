@@ -13,24 +13,6 @@ const StepActionsPanel = ({ isStepCompleted, bprBatchStep, isVerificationRequire
     const router = useRouter()
 
     const handleComplete = async () => {
-
-        // changing how this is done for now
-        // const { fulfillStep, verify, secondaryVerification, completed } = staticRecords.production.bprBatchStepStatuses
-        // switch (bprBatchStep.statusId) {
-        //     case fulfillStep:
-        //         statusId = verify;
-        //         break;
-        //     case verify:
-        //         statusId = secondaryVerification;
-        //         break;
-        //     case secondaryVerification:
-        //         statusId = completed;
-        //         break;
-        //     default:
-        //         throw new Error("Current status not found in flow.")
-        // }
-        //
-
         // if there is not any actionables that require verification then it should be set to completed, otherwise, it should be set to awaiting verification
         
         

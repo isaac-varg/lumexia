@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Oct 17 2024 07:18:40 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Oct 17 2024 09:52:16 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
