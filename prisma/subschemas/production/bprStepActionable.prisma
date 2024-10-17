@@ -12,6 +12,7 @@ model BprStepActionable {
   bprBatchStep BprBatchStep @relation(fields: [bprBatchStepId], references: [id])
   stepActionable StepActionable @relation(fields: [batchStepActionableId], references: [id])
   status BprStepActionableStatus @relation(fields: [statusId], references: [id])
+  completion BprStepActionableCompletion[]
 
 
   @@map("bpr_step_actionables")

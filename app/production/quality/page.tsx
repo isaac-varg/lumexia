@@ -4,6 +4,7 @@ import BprCard from './_components/BprCard';
 import PageTitle from '@/components/Text/PageTitle';
 import Confetti from '@/components/Confetti/Confetti';
 import { getStepsWithQuality } from './_function/getStepsWithQuality';
+import CompoundingStepCard from './_components/CompoundingStepCard';
 
 const QualityPage = async () => {
 
@@ -28,14 +29,19 @@ const QualityPage = async () => {
                 <div className='flex flex-col gap-y-4'>
                     <PageTitle>Awaiting Primary Verification</PageTitle>
 
-                    {!hasVerifiables && <div className='w-1/3 flex flex-col bg-neutral-100 rounded-lg p-4 gap-y-4 hover:cursor-pointer hover:bg-neutral-200 font-poppins text-lg font-medium'>You&apos;re all done here!</div>}
+                    {(!hasVerifiables && !hasCompundingVerifiables) && <div className='w-1/3 flex flex-col bg-neutral-100 rounded-lg p-4 gap-y-4 hover:cursor-pointer hover:bg-neutral-200 font-poppins text-lg font-medium'>You&apos;re all done here!</div>}
+
+                    <div className='grid grid-cols-3 gap-4'>
+                        {hasVerifiables && (
+                            bprs.map((bpr) => <BprCard key={bpr.id} bpr={bpr as any} isSecondary={false} />)
+                        )}
+
+                        {hasCompundingVerifiables && (
+                            compoundingVerification.map((step) => <CompoundingStepCard key={step.id} step={step as any} isSecondary={false} />)
+                        )}
+                    </div>
 
 
-                    {hasVerifiables && (
-                        <div className='grid grid-cols-3 gap-4'>
-                            {bprs.map((bpr) => <BprCard key={bpr.id} bpr={bpr as any} isSecondary={false} />)}
-                        </div>
-                    )}
 
                     <PageTitle>Awaiting Secondary Verification</PageTitle>
                     {!hasSecondaries && <div className='w-1/3 flex flex-col bg-neutral-100 rounded-lg p-4 gap-y-4 hover:cursor-pointer hover:bg-neutral-200 font-poppins text-lg font-medium'>You&apos;re all done here!</div>}
