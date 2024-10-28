@@ -3,7 +3,7 @@ import React from "react";
 interface ActionButtonProps {
 	label?: string;
 	onClick?: () => void;
-	size?: "default";
+	size?: keyof typeof actionButtonClasses.sizes;
 	color?: keyof typeof actionButtonClasses.colors;
 	shape?: "default";
 	buttonType?: "button" | "submit" | "reset";
@@ -14,6 +14,7 @@ interface ActionButtonProps {
 export const actionButtonClasses = {
 	sizes: {
 		default: "py-2 px-4 ",
+        large: "py-4 px-6 text-4xl"
 	},
 	colors: {
 		default: "bg-bay-leaf-300 hover:bg-bay-leaf-400 text-white",
