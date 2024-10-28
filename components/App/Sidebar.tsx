@@ -21,7 +21,7 @@ const Sidebar: React.FC = () => {
 
                                 {sidebar.map((group) => {
                                         return (
-                                                <div className="flex flex-col gap-y-3">
+                                                <div  key={group.label} className="flex flex-col gap-y-3">
                                                         <SidebarGroupTitle>{group.label}</SidebarGroupTitle>
                                                         <div className="flex flex-col gap-y-2">
                                                                 {group.contents.map((sidebarItem) => <SidebarButton key={sidebarItem.label} {...sidebarItem} />)}

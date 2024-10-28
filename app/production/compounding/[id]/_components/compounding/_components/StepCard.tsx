@@ -7,11 +7,11 @@ import { TbLock } from 'react-icons/tb'
 import { isReadable } from 'stream'
 
 const StepCard = ({ step, isReadOnly, isLocked }: { step: ExBprBatchStep, isReadOnly: boolean, isLocked: boolean }) => {
-
+    const router = useRouter()
+    
     if (!step) { return null }
 
     const { sequence, phase, label } = step.batchStep;
-    const router = useRouter()
     const handleClick = () => {
         router.push(`/production/compounding/${step.bpr.referenceCode}/step/${sequence}?id=${step.id}&isReadOnly=${isReadOnly}&isLocked=${isLocked}`)
     }
