@@ -22,5 +22,5 @@ export const getInventory = async (bom: ExBprBom[]) => {
 }
 
 
-const getAllocations = async ()
+//const getAllocations = async ()
 

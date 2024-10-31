@@ -43,14 +43,32 @@ const main = async () => {
 
         await seedAction("bprStatus");
         await seedAction("bprStagingStatus");
+        await seedAction("stepActionableType");
+        await seedAction("stepAddendumType")
 
         await seedAction("masterBatchProductionRecord");
-        await seedAction("batchStep")
+        await seedAction("batchStep");
+        await seedAction("stepActionable");
+        await seedAction("stepAddendum")
         await seedAction("stepInstruction");
+
         await seedAction("billOfMaterial");
         await seedAction("batchSize");
+        await seedAction("stepEquipment")
         await seedAction("bprStepActionableStatus");
         await seedAction("bprBatchStepStatus");
+
+        await seedAction("batchProductionRecord");
+        await seedAction("bprBatchStep");
+        await seedAction("bprStepActionable");
+        await seedAction("bprBillOfMaterials");
+        await seedAction("bprStaging");
+        await seedAction("bprStagingVerification");
+        await seedAction("bprStepActionableCompletion");
+
+
+        await seedAction("bprStepActionableVerification");
+
 };
 
 main()
