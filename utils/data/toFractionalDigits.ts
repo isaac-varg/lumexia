@@ -1,3 +1,7 @@
+// this is providing a string. 
+// i made hte other utility that basically does the same thing to 
+// avoid converting to and from string to maybe avoid floating point precision errors
+
 import { fractionalDigits } from "@/configs/data/fractionalDigits"
 
 export const toFracitonalDigits = {

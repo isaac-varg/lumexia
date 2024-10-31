@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Oct 17 2024 09:52:16 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Oct 30 2024 15:52:27 GMT-0700 (Pacific Daylight Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -86,15 +86,16 @@ model Container {
 }
 
 model LotOrigin {
-  id              String        @id @default(uuid())
-  lotId           String        @map("lot_id")
-  purchaseOrderId String        @map("purchase_order_id")
-  // FUTURE add batchId
-  originType      String        @map("origin_type")
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
-  lot             Lot           @relation(fields: [lotId], references: [id])
+  id              String                 @id @default(uuid())
+  lotId           String                 @map("lot_id")
+  purchaseOrderId String?                @map("purchase_order_id")
+  bprId           String?                @map("bpr_id")
+  originType      String                 @map("origin_type")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+  purchaseOrder   PurchaseOrder?         @relation(fields: [purchaseOrderId], references: [id])
+  bpr             BatchProductionRecord? @relation(fields: [bprId], references: [id])
+  lot             Lot                    @relation(fields: [lotId], references: [id])
 
   @@map("lot_origins")
 }
@@ -269,6 +270,7 @@ model BatchProductionRecord {
   batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
   bprBatchSteps      BprBatchStep[]
+  LotOrigin          LotOrigin[]
   BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("batch_production_records")

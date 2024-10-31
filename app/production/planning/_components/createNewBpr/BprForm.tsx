@@ -7,7 +7,6 @@ import { getProducedItems } from '../../../mbpr/_functions/getProducedItems'
 import { Wizard  } from 'react-use-wizard'
 import SelectItemStep from './SelectItemStep'
 import BatchSizeStep from './BatchSizeStep'
-import { BatchSize } from '@/types/batchSize'
 import MbprStep from './MbprStep'
 import { MasterBatchProductionRecord } from '@/types/masterBatchProductionRecord'
 
@@ -45,7 +44,7 @@ const BprForm = () => {
       <Wizard>
           <SelectItemStep items={items} onItemSelection={handleItemSelection}/>
           <MbprStep selectedItemId={selectedItem ? selectedItem.id : null  } onMbprSelection={handleMbprSelection} />
-          <BatchSizeStep selectedMbprId={selectedMbpr ? selectedMbpr.id : null} />
+          <BatchSizeStep selectedItem={selectedItem ? selectedItem : null} selectedMbprId={selectedMbpr ? selectedMbpr.id : null}  />
       </Wizard>
     </Dialog.Root>
   )

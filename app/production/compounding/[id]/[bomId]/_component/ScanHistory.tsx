@@ -6,14 +6,22 @@ import { ExBprBom } from '@/types/bprBom'
 import { staticRecords } from '@/configs/staticRecords'
 import { updateBomItem } from '../_functions/updateBomItem'
 import { useRouter } from 'next/navigation'
+import { productionConfigs } from '@/configs/data/productionConfigs'
 
 
 const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isViewMode: boolean) => void, stagings: any, bomItem: ExBprBom }) => {
 
 
   const stagedQuantity = stagings.reduce((sum: number, current: ExBprStaging) => current.quantity + sum, 0)
-  const isCompletable = stagedQuantity === bomItem.quantity;
+  const requiredQuantity = bomItem.quantity;
   const router = useRouter()
+
+ 
+  // determine if remaining is within acceptable tolerance range
+  const acceptableQtyLower = requiredQuantity - (requiredQuantity * productionConfigs.compounding.toleranceThreshold)
+  const acceptableQtyUpper = requiredQuantity + (requiredQuantity * productionConfigs.compounding.toleranceThreshold)
+
+  const isStagedAcceptable = stagedQuantity >= acceptableQtyLower  && stagedQuantity <= acceptableQtyUpper;
 
   const handleAdd = () => {
     setIsViewMode(false)
@@ -35,7 +43,7 @@ const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isV
         <ActionPanel onClick={() => handleAdd()}>
           Add New
         </ActionPanel>
-        {isCompletable &&
+        {isStagedAcceptable &&
           <ActionPanel onClick={() => handleComplete()}>
             Complete Staging
           </ActionPanel>

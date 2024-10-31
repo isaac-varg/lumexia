@@ -5,8 +5,9 @@ import { BatchSize } from '@/types/batchSize'
 import React, { useEffect, useState } from 'react'
 import { createBpr } from '../../_functions/createBpr'
 import useDialog from '@/hooks/useDialog'
+import { Item } from '@/types/item'
 
-const BatchSizeStep = ({ selectedMbprId }: { selectedMbprId: string | null }) => {
+const BatchSizeStep = ({ selectedMbprId, selectedItem}: { selectedMbprId: string | null,  selectedItem: Item | null }) => {
 
   const [sizes, setSizes] = useState<BatchSize[]>([])
   const { resetDialogContext} = useDialog()
@@ -14,10 +15,13 @@ const BatchSizeStep = ({ selectedMbprId }: { selectedMbprId: string | null }) =>
   const handleSizeSelection =  async (size: BatchSize) => {
 
     if (!selectedMbprId) { throw new Error("No MBPR selected.")}
+    
+    if (!selectedItem) { throw new Error("No item selected.")}
   
     const data = {
       size,
       mbprId: selectedMbprId,
+      selectedItem,
     }
     await createBpr(data)
     location.reload()
