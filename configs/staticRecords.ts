@@ -7,6 +7,11 @@ export const staticRecords = {
         producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
         uom: {
             lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b'
+        },
+        containerTypes: {
+            drum: '8dfd5db7-06c9-4246-817e-8332f87df56f',
+            tote: 'a8aa60c5-54ee-43f6-856f-625af5735391',
+            container: 'c16c1cec-f71d-4b76-9075-40062ec5b740',
         }
     },
     app: {

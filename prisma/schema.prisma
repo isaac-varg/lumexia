@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Oct 30 2024 15:52:27 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Nov 04 2024 11:16:11 GMT-0800 (Pacific Standard Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -270,7 +270,7 @@ model BatchProductionRecord {
   batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
   bprBatchSteps      BprBatchStep[]
-  LotOrigin          LotOrigin[]
+  lotOrigin          LotOrigin[]
   BprBillOfMaterials BprBillOfMaterials[]
 
   @@map("batch_production_records")

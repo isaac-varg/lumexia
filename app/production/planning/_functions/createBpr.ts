@@ -11,6 +11,7 @@ import { Item } from "@/types/item"
 import { generateLotNumber } from "@/utils/lot/generateLotNumber"
 import lotOriginActions from "@/actions/inventory/lotOriginActions"
 import { BatchProductionRecord } from "@/types/batchProductionRecord"
+import containerActions from "@/actions/inventory/containerActions"
 
 interface BprWizardData {
     size: BatchSize,
@@ -29,19 +30,33 @@ export const createBpr = async (wizardData: BprWizardData) => {
     const lotPayload = {
         itemId: wizardData.selectedItem.id,
         lotNumber: generateLotNumber(wizardData.selectedItem.referenceCode),
-        initialQuantity: wizardData.size.quantity,
+        initialQuantity:  0 , //wizardData.size.quantity,
         uomId: staticRecords.inventory.uom.lb,
     }
+
 
     const bpr: BatchProductionRecord = await bprActions.createNew(payload)
 
     const lot = await lotActions.createNew(lotPayload)
+
+
+    // todo this must be specified and stored else where because different products have different densities and therefore differing container weights. also some products are filled into different containers than drums.
+
+    const containerPayload = {
+        lotId: lot.id,
+        containerTypeId: staticRecords.inventory.containerTypes.drum,
+        uomId: staticRecords.inventory.uom.lb,
+        containerWeight: 450,
+    }
+
 
     await lotOriginActions.createNew({
         lotId: lot.id,
         originType: 'batchProduction',
         bprId: bpr.id,
     });
+
+    await containerActions.createNew(containerPayload);
 
     await createBprBom(bpr.id)
     await generateBprBatchStepEntries(bpr.id)

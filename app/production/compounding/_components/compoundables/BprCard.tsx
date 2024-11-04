@@ -18,6 +18,9 @@ const BprCard = ({ bpr }: BprCardProps) => {
         <div onClick={() => handleClick()} className="border border-neutral-800 rounded-lg flex py-4 px-2 flex-col gap-y-4">
             <h1 className="font-bold font-poppins text-xl"># {bpr.referenceCode} </h1>
 
+
+            {bpr.lotOrigin[0] && <h1 className="font-bold font-poppins text-xl">{bpr.lotOrigin[0].lot?.lotNumber} </h1> }
+
             <h1 className="font-bold font-poppins text-xl">{bpr.mbpr.producesItem.name} </h1>
         </div>
 

@@ -15,6 +15,11 @@ export const getBpr = async (bprId: string) => {
       },
       status: true,
       batchSize: true,
+      lotOrigin: {
+          include: {
+              lot: true
+          }
+      }
     }
   })
 

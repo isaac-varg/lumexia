@@ -1,5 +1,6 @@
 import { BatchSize } from "./batchSize"
 import { BprStatus } from "./bprStatus"
+import { LotOrigin } from "./lotOrigin"
 import { ExMbpr, MasterBatchProductionRecord } from "./masterBatchProductionRecord"
 
 export interface BatchProductionRecord {
@@ -15,6 +16,7 @@ export interface BatchProductionRecord {
   mbpr: ExMbpr
   status: BprStatus
   batchSize: BatchSize
+  lotOrigin: LotOrigin[]
 }
 
 
