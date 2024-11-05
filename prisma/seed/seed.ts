@@ -66,7 +66,6 @@ const main = async () => {
         await seedAction("bprStagingVerification");
         await seedAction("bprStepActionableCompletion");
 
-
         await seedAction("bprStepActionableVerification");
 
 };

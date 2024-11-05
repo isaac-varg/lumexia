@@ -1,10 +1,8 @@
 import React from 'react'
 import Title from './_components/Title';
 import { getBpr } from './_functions/getBpr';
-import { getStagings } from './_functions/getStagings';
 import { getBprBom } from './_functions/getBprBom';
 import AwaitingVerificationPanel from './_components/AwaitingVerificationPanel';
-import ReactConfetti from 'react-confetti';
 
 type BprQualityProps = {
     searchParams: {
@@ -14,15 +12,12 @@ type BprQualityProps = {
 
 const BprQualityPage = async ({ searchParams }: BprQualityProps) => {
 
-
     const { id } = searchParams
     const bpr = await getBpr(id)
 
     // for staging
     const bom = await getBprBom(id, false)
     const bomNeedingSecondary = await getBprBom(id, true)
-
-
 
     return (
         <div className='flex flex-col gap-y-4'>

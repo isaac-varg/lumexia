@@ -1,7 +1,9 @@
 "use server"
 
+import bprActions from "@/actions/production/bprActions";
 import bprBomActions from "@/actions/production/bprBom";
 import { staticRecords } from "@/configs/staticRecords"
+import prisma from "@/lib/prisma";
 import { BprBom } from "@/types/bprBom"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 
@@ -10,6 +12,8 @@ import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 // i.e., a bomitem can have many different lots scanned/stagings
 
 export const verifyBomItem = async (bomItem: BprBom, isSecondary: boolean) => {
+
+    console.log("oogie,goo", bomItem)
 
   const { verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
 
@@ -23,4 +27,34 @@ export const verifyBomItem = async (bomItem: BprBom, isSecondary: boolean) => {
 
   await createActivityLog('updateBprBom', 'bprBom', bomItem.id, { context: `BOM item status changed to ${bomResponse.statusId}` })
 
+  await isBprStaged(bomItem.bprId);
+
 }
+
+
+const isBprStaged = async (bprId: string) => {
+
+    const boms = await prisma.bprBillOfMaterials.findMany({
+        where: {
+            bprId,
+        },
+        include: {
+            status: true,
+        } 
+    });
+
+    const isAllStaged = boms.every((item) => item.statusId === staticRecords.production.bprBomStatuses.secondaryVerification)
+
+    if (!isAllStaged) {
+        return;
+    }
+
+    handleAllStaged(bprId)
+}
+
+const handleAllStaged = async (bprId: string) => {
+
+    await bprActions.update({ id: bprId }, { bprStatusId: staticRecords.production.bprStatuses.compounding});
+
+    await createActivityLog('updateBpr', 'bpr', bprId, {context: `BPR staging of materials completed`});
+} 
