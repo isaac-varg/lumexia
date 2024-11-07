@@ -12,6 +12,10 @@ export const staticRecords = {
             drum: '8dfd5db7-06c9-4246-817e-8332f87df56f',
             tote: 'a8aa60c5-54ee-43f6-856f-625af5735391',
             container: 'c16c1cec-f71d-4b76-9075-40062ec5b740',
+        },
+        inventoryTypes: {
+               consumable: '2bbed7c5-5ce1-4624-b1a2-8b9b50c903b5',
+               tracked: '9eddbeb5-e748-4580-8e29-a7a64f8f9a84'
         }
     },
     app: {

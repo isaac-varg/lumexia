@@ -1,8 +1,9 @@
 "use client"
-import Card from '@/components/Card'
 import React, { useState } from 'react'
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { updateBpr } from '../_functions/updateBpr';
+import { Panels } from '@/components/Panels';
+import Text from '@/components/Text';
 
 
 const SchedulingPanel = ({ start, end, bprId }: { start: Date | null, end: Date | null, bprId: string }) => {
@@ -28,20 +29,17 @@ const SchedulingPanel = ({ start, end, bprId }: { start: Date | null, end: Date 
     }
 
     return (
-        <Card.Root>
-            <Card.Title >
-                <span className='flex gap-x-2'>
-                    Scheduling
-                </span>
-            </Card.Title>
+        <Panels.Root>
+            <Text.SectionTitle>Scheduling</Text.SectionTitle>
+
 
             <Datepicker
                 separator='to'
-                containerClassName={'border-2 text-neutral-800 border-neutral-500 rounded-lg'}
                 value={value}
                 onChange={newValue => handleDateSelection(newValue)}
             />
-        </Card.Root>
+        </Panels.Root>
+
     )
 }
 

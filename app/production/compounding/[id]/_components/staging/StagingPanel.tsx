@@ -8,13 +8,16 @@ import StagedPanel from './StagedPanel'
 const StagingPanel = ({ bom }: { bom: ExBprBom[] }) => {
 
 
+    const sortedBom = bom.sort((a, b) => {
+        return parseInt(a.bom.identifier, 10) - parseInt(b.bom.identifier, 10);
+    });
 
-  return (
-    <div className='flex flex-col gap-y-4' >
-      <NotStartedPanel bom={bom} />
-      <StagedPanel bom={bom} />
-    </div>
-  )
+    return (
+        <div className='flex flex-col gap-y-4' >
+            <NotStartedPanel bom={sortedBom} />
+            <StagedPanel bom={sortedBom} />
+        </div>
+    )
 }
 
 export default StagingPanel

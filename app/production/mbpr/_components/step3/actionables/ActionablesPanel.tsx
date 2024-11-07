@@ -1,3 +1,6 @@
+"use client"
+
+
 import React, { useEffect, useState } from 'react'
 import Text from '@/components/Text'
 import ActionButton from '@/components/ActionButton'
