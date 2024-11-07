@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Nov 04 2024 11:16:11 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Nov 06 2024 15:59:51 GMT-0800 (Pacific Standard Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -254,16 +254,17 @@ model ProcurementType {
 }
 
 model BatchProductionRecord {
-  id            String    @id @default(uuid())
-  mbprId        String    @map("mbpr_id")
-  bprStatusId   String    @map("bpr_status_id")
-  batchSizeId   String    @map("batch_size_id")
-  scheduledAt   DateTime? @map("scheduled_at")
-  completedAt   DateTime? @map("completed_at")
-  releasedAt    DateTime? @map("released_at")
-  referenceCode Int       @default(autoincrement()) @map("reference_code")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+  id                String    @id @default(uuid())
+  mbprId            String    @map("mbpr_id")
+  bprStatusId       String    @map("bpr_status_id")
+  batchSizeId       String    @map("batch_size_id")
+  scheduledForStart DateTime? @map("scheduled_for_start")
+  scheduledForEnd   DateTime? @map("scheduled_for_end")
+  completedAt       DateTime? @map("completed_at")
+  releasedAt        DateTime? @map("released_at")
+  referenceCode     Int       @default(autoincrement()) @map("reference_code")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
 
   mbpr      MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   status    BprStatus                   @relation(fields: [bprStatusId], references: [id])

@@ -11,6 +11,6 @@ export interface BatchSize {
   createdAt: Date
   updatedAt: Date
   uom: Uom 
-  status: RecordStatus
+  recordStatus: RecordStatus
   mbpr: MasterBatchProductionRecord
 }
