@@ -1,7 +1,7 @@
 
 const classes = {
     bg: {
-        default: 'bg-neutral-100',
+        default: 'bg-neutral-100/50',
     },
     base: 'flex flex-col gap-y-4 p-6 rounded-lg'
 }

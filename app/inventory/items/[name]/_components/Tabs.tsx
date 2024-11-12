@@ -6,17 +6,21 @@ import LotsPanel from "./inventory/LotsPanel";
 import { FlattenedLot } from "../_functions/flattenLots";
 import { ContainerType } from "@/types/containerType";
 import PurchasingPanel, { PurchaseOrderWithItems } from "./purchasing/PurchasingPanel";
+import ProductionTab from "./production/ProductionTab";
+import { BomUsage } from "../_functions/getBomUsage";
 
 const TabsDemo = ({
   item,
   lots,
   containerTypes,
   purchaseOrders,
+  usage
 }: {
   item: Item;
   lots: FlattenedLot[];
   containerTypes: ContainerType[];
   purchaseOrders: PurchaseOrderWithItems[];
+  usage: BomUsage
 }) => {
   const tabs = [
     { identifier: "inventory", label: "Inventory" },
@@ -36,6 +40,11 @@ const TabsDemo = ({
 
       <TabsPanel.Content identifier="purchasing">
         <PurchasingPanel purchaseOrders={purchaseOrders} item={item} />
+      </TabsPanel.Content>
+
+
+      <TabsPanel.Content identifier="production">
+        <ProductionTab  item={item} usage={usage} />
       </TabsPanel.Content>
     </TabsPanel.Root>
   );

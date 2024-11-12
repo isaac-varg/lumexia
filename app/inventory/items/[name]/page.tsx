@@ -43,6 +43,8 @@ const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
     procurementTypes,
     inventoryTypes,
   }
+
+
   
 
   const aliases = await aliasActions.getAll({ itemId: item.id }, ["aliasType"]);
