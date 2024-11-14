@@ -5,7 +5,7 @@ export interface Alias {
     name: string;
     itemId: string;
     aliasTypeId: string
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
     aliasType?: AliasType
 }

@@ -33,6 +33,14 @@ const createColumns = async () => {
     }),
     columnHelper.accessor("itemName", {
       header: "Item",
+      cell: (props) => {
+
+          if (props.row.original.alias) {
+              return props.row.original.alias;
+          }
+
+          return props.row.original.item.name;
+      }
     }),
     columnHelper.accessor("pricePerUnit", {
       header: "Price",

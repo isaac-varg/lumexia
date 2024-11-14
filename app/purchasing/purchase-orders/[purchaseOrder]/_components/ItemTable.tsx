@@ -2,7 +2,6 @@
 import DataTable from "@/components/DataTable";
 import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import React, { useEffect, useState } from "react";
-import columns from "../_configs/ItemTableColumns";
 import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions";
 import AddItemDialog from "./AddItemDialog";
 import useDialog from "@/hooks/useDialog";
@@ -28,6 +27,7 @@ const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
   const [isLoading, setIsLoading] = useState(true)
 
 	const router = useRouter();
+
 
 	const handleRowUpdate = (row: any) => {
 		const rowQuantity = row.quantity as any;

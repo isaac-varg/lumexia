@@ -14,8 +14,13 @@ export const staticRecords = {
             container: 'c16c1cec-f71d-4b76-9075-40062ec5b740',
         },
         inventoryTypes: {
-               consumable: '2bbed7c5-5ce1-4624-b1a2-8b9b50c903b5',
-               tracked: '9eddbeb5-e748-4580-8e29-a7a64f8f9a84'
+            consumable: '2bbed7c5-5ce1-4624-b1a2-8b9b50c903b5',
+            tracked: '9eddbeb5-e748-4580-8e29-a7a64f8f9a84'
+        },
+        aliases: {
+            types: {
+                supplier: '7173f88e-057a-43a7-aa37-6b9b97707b08'
+            }
         }
     },
     app: {

@@ -10,7 +10,6 @@ export interface FlattenedLot extends Lot {
 }
 
 export const flattenLots = (lots: Lot[]): FlattenedLot[] => {
-    console.log("hehehe", lots)
   return lots.map((lot) => {
     if (!lot.uom || lot.containers.length < 1) {
       return;
