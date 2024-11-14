@@ -12,7 +12,7 @@ const SizeCard = ({ size }: { size: BatchSize }) => {
 
 
 
-  const accentColor = size.status ? accentColorClasses[size.status.name] : accentColorClasses.inactive
+  const accentColor = size.recordStatus ? accentColorClasses[size.recordStatus.name] : accentColorClasses.inactive
 
   return (
     <>
@@ -22,7 +22,7 @@ const SizeCard = ({ size }: { size: BatchSize }) => {
           <div className='flex flex-row items-center justify-between'>
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{size.quantity}</h5>
           </div>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{size.status?.name}</p>
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{size.recordStatus?.name}</p>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{DateTime.fromJSDate(size.createdAt).toFormat("DD @t")}</p>
         </div>
       </div>

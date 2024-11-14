@@ -27,7 +27,7 @@ const DayPanel = ({
             </span>
 
             <div className='py-4 flex flex-col h-full w-full gap-y-2'>
-            {bprs && bprs.map((bpr) => <BprCard  bpr={bpr}/>)}
+            {bprs && bprs.map((bpr) => <BprCard key={bpr.id}  bpr={bpr}/>)}
             </div>
         </div >
     )

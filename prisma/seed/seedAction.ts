@@ -1,13 +1,27 @@
+
 import { createMany } from "../../actions/classes/createMany";
 
 export const seedAction = async (model: string) => {
   try {
-    const seedData = await import(`./data/${model}`);
+    // Dynamically import the file
+    const seedDataModule = await import(`./data/${model}`);
+    
+    // Check if `default` is wrapped inside another `default` property
+    const seedData = seedDataModule.default?.default || seedDataModule.default;
 
-    await createMany(model, seedData.default);
-    console.log(`Seeded ${model} successfully!`);
+
+    // Pass the data to createMany if it exists
+    if (seedData) {
+      await createMany(model, seedData);
+      console.log(`Seeded ${model} successfully!`);
+    } else {
+      console.error(`No data found in the ${model} module.` );
+    }
   } catch (error) {
-    console.error(`Something went wrong with the ${model} seed: ${error}`);
-  } finally {
+    if (model !== 'inventoryType') {
+      return;
+    }
+    console.error(`Something went wrong with the ${model} seed:`, error);
   }
 };
+

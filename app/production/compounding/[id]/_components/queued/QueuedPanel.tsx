@@ -19,7 +19,7 @@ const QueuedPanel = async ({ bpr }: { bpr: BatchProductionRecord }) => {
     return (
         <div className='flex flex-col gap-y-6 items-center justify-center'>
             <div className='flex flex-col items-center justify-center font-poppins gap-y-4 text-3xl text-neutral-800'>
-                <p>This batch is scheduled for {bpr.scheduledAt?.toString() || 'undefined'} </p>
+                <p>This batch is scheduled for {bpr.scheduledForStart?.toString() || 'undefined'} </p>
                 <p>You can begin staging for this batch by clicking the button below</p>
             </div>
 
