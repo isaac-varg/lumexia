@@ -4,6 +4,9 @@
 
 export const staticRecords = {
     inventory: {
+        transactionTypes: {
+            bprConsumption: '098a21b2-3101-46a3-b3fe-ca81bb109a4a',
+        },
         producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
         uom: {
             lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b'
@@ -39,8 +42,19 @@ export const staticRecords = {
             queued: '2a8332c8-87e4-4872-ac6a-7e184493ec44',
             compounding: 'a45875cd-bf1b-46d1-ae3e-09770b4e2b8a',
             stagingMaterials: 'c63e9eff-ee29-4987-b617-602edf1a486c',
+            awaitingQc: '79591355-7e7f-4598-ab6c-612bce05526b',
+            completed: '30ad195c-1e63-4101-839f-4be663548c19'
         },
+        //really terrible naming, this is actually bprStagingStatuses... 
         bprBomStatuses: {
+            notStarted: '3d5f8db4-3937-41e0-840b-da3c1ab682c5',
+            staged: 'ee67bd6c-974e-407d-99d8-6482b77aabec',
+            verified: '9a8f0c18-a035-424c-ba0f-d7635cf1fee8',
+            secondaryVerification: '52311908-0abf-4fa8-92d9-0152cce93da7',
+            consumed: 'ec7240b9-d2db-4447-9ad5-1b2ff0ba7885'
+        },
+        // copy of above to start using proper name... 
+        bprStagingStatuses: {
             notStarted: '3d5f8db4-3937-41e0-840b-da3c1ab682c5',
             staged: 'ee67bd6c-974e-407d-99d8-6482b77aabec',
             verified: '9a8f0c18-a035-424c-ba0f-d7635cf1fee8',

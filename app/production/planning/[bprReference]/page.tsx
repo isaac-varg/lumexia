@@ -7,6 +7,7 @@ import SchedulingPanel from './_components/SchedulingPanel';
 import Layout from '@/components/Layout';
 import BasicsPanel from './_components/BasicsPanel';
 import MaterialSufficiency from './_components/MaterialSufficiency';
+import ActionsPanel from './_components/ActionsPanel';
 
 type PlanningBprPage = {
     searchParams: {
@@ -34,6 +35,9 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
         <div className='flex flex-col gap-y-6'>
 
             <Title bpr={bpr as any} />
+
+            <ActionsPanel bpr={bpr as any} />
+
             <Layout.Grid cols={2} >
 
                 <BasicsPanel bpr={bpr as any} />
@@ -41,7 +45,7 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
 
             </Layout.Grid>
 
-            <MaterialSufficiency materials={sortedMaterialInventory as any } />
+            <MaterialSufficiency materials={sortedMaterialInventory as any} />
 
         </div>
     )

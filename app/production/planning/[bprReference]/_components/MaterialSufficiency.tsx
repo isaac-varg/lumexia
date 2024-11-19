@@ -13,7 +13,6 @@ export interface MaterialsBom extends ExBprBom {
 
 const MaterialSufficiency = ({ materials }: { materials: MaterialsBom[] }) => {
 
-    console.log('mats', materials)
 
     return (
         <Panels.Root>
