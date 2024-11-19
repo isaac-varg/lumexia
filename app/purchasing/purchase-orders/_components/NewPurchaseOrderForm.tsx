@@ -45,7 +45,7 @@ const NewPurchaseOrderForm = ({ suppliers  }: NewPurchaseOrderFormProps) => {
       <Dialog.Title>Select Supplier</Dialog.Title>
 
       <input
-        placeholder="Search Name, Alias or C ode"
+        placeholder="Search Name"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         onKeyDown={handleKeydown}

@@ -49,7 +49,7 @@ const ItemSearch = ({ items, onSelection }: { items: ItemDataForSearch[], onSele
         <div className="flex flex-col gap-y-4">
           {results.map((item) => (
             <li className="border-2 rounded-lg px-4 py-2" key={item.id} onClick={() => handleItemClick(item)}>
-              <p>{`${item.name} (${item.mergedAliases})`} </p>
+              <p>{`${item.name} ${item.mergedAliases.length < 1 ? "" :  `(${item.mergedAliases})`}`} </p>
             </li>
           ))}
         </div>

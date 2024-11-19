@@ -21,13 +21,6 @@ const SupplierInfoPanel = ({
 
         <div className="flex flex-col gap-y-4">
           <Text.LabelDataPair label="Name" data={supplier.name} />
-          <Text.LabelDataPair
-            label="Address"
-            data={`${supplier.addressStreet1}
-			${supplier.addressStreet2} ${supplier.addressCity} ${supplier.addressState} ${supplier.addressZip}`}
-          />
-
-          <Text.LabelDataPair label="Phone" data={supplier.phone} />
         </div>
         <div>
           <NotesTable data={notes} supplier={supplier} />
