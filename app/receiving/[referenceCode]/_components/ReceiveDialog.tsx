@@ -12,6 +12,8 @@ import { updatePOItem } from "../_functions/updatePOItem";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import lotOriginActions from "@/actions/inventory/lotOriginActions";
 import { Lot } from "@/types/lot";
+import { staticRecords } from "@/configs/staticRecords";
+import { toInventoryUom } from "@/utils/uom/toInventoryUom";
 
 type ReceiveDialogProps = {
 	item: ExPurchaseOrderItem;
@@ -29,17 +31,23 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
 	const { resetDialogContext } = useDialog();
 	const handleSubmit = async (data: Inputs) => {
 		const lotNumber = generateLotNumber(item.item.referenceCode);
+        
+        let quantity = data.quantity;
+        if (item.uom.id !== staticRecords.inventory.uom.lb) {
+            const convertedQuantity = await toInventoryUom(item.uom.id, data.quantity);
+            quantity = convertedQuantity;
+        }
 
 		const createData: any = {
 			lotNumber,
-			initialQuantity: data.quantity,
+			initialQuantity: quantity, 
 			itemId: item.item.id,
-			uomId: item.uom.id,
+			uomId: staticRecords.inventory.uom.lb,
 		};
 
 		const lot: Lot = await lotActions.createNew(createData);
 
-		await createContainer(lot.id, data.containerTypeId, data.containerCapacity);
+		await createContainer(lot.id, data.containerTypeId, data.containerCapacity, item.uomId);
 		await updatePOItem(item.id, {
 			purchaseOrderStatusId: "db907b0f-4aac-42d7-9118-ee35e178d9b3",
 		});
@@ -95,7 +103,7 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
 					form={form}
 					required
 					fieldName="containerCapacity"
-					label="Container Capacity (lbs)"
+					label={`Container Capacity ${item.uom.abbreviation}`}
 				/>
 
 				<Form.ActionRow form={form} />

@@ -1,3 +1,4 @@
+"use server"
 import prisma from "@/lib/prisma"
 
 export const getConversionFactor = async (uomAId: string, uomBId: string) => {
@@ -7,6 +8,8 @@ export const getConversionFactor = async (uomAId: string, uomBId: string) => {
 			uomBId,
 		},
 	})
+    
+    if (conversion.length === 0) { throw new Error("Conversion not found.")}
 
 	return conversion[0].conversionFactor;
 }
