@@ -40,6 +40,10 @@ const PurchasesTable = ({
         columns={purchaseOrderColumns}
         filters={filters}
         onRowClick={(row, method) => handleRowClick(row, method)}
+        initialSortBy={[{
+            id: 'referenceCode',
+            desc: true,
+        }]}
       />
     </div>
   );
