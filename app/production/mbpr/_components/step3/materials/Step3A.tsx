@@ -11,7 +11,7 @@ const Step3A = ({ items, onItemSelection, isItemSelected  }: { items: ItemDataFo
   
 
   return (
-    <div className='flex flex-col gap-y-4'>
+    <div className='flex flex-col gap-y-4 '>
 
       <Dialog.Title>Select Item</Dialog.Title>
 

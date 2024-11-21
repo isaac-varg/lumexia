@@ -41,8 +41,9 @@ const AddItemDialog = ({ data, onItemSelection }: { data: any[], onItemSelection
                     className="w-full bg-slate-200 py-2 px-4 rounded-lg text-poppins text-lg mb-6"
                 />
 
+                
                 <ul>
-                    <div className="flex flex-col gap-y-4">
+                    <div className="flex flex-col overflow-y-auto  max-h-[600px] gap-y-4">
                         {results.map((item) => (
                             <li className="border-2 rounded-lg px-4 py-2" key={item.id} onClick={() => handleItemClick(item)}>
                                 <p>{`${item.name} ${item.aliasesAll.length < 1 ? "" : `(${item.mergedAliases})`}`} </p>
