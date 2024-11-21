@@ -91,13 +91,7 @@ const PurchaseOrderDetails = async ({
                         </div>
                     </div>
                 </span>
-                {/*       <span className="flex fle11x-row gap-x-2 items-center text-sm text-neutral-500 font-poppins">
-          <LuCalendarPlus />
-          <p>
-            {DateTime.fromJSDate(purchaseOrder.createdAt).toFormat("DD @ t")}
-          </p>
-        </span> */}
-            </div>
+                          </div>
 
             <div className="grid grid-cols-3 gap-x-4 ">
                 <Correspondant purchaseOrder={purchaseOrder} />

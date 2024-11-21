@@ -76,5 +76,11 @@ export const staticRecords = {
             completed: 'bec61e3f-87f0-485b-813f-65a8bd8103df',
         }
 
+    },
+    purchasing: {
+        poStatuses: {
+            confirmedSlashAwaitingDelivery: 'd1c6bb97-a554-49b5-9a6a-0261405dc2cc',
+            received: 'db907b0f-4aac-42d7-9118-ee35e178d9b3'
+        }
     }
 }

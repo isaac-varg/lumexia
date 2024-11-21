@@ -24,7 +24,7 @@ const PreviousStatusButton = ({
 		)
 		];
 
-	if ( !nextStatus || nextStatus.sequence === 0 ) {
+	if ( !nextStatus || nextStatus.sequence === 0  || currentStatusSequence === 4 ) {
 		return false;
 	}
 
