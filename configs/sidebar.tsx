@@ -4,6 +4,7 @@ import { TbScale , TbCreditCard , TbClipboardHeart } from "react-icons/tb";
 import { BiBuildings } from "react-icons/bi";
 import { SlNotebook } from "react-icons/sl";
 import { MdOilBarrel } from "react-icons/md";
+import { FaBacteria } from "react-icons/fa";
 
 export const sidebar = [
         {
@@ -78,5 +79,15 @@ export const sidebar = [
                         }
 
                 ]
+        },
+        {
+            label: "Quality",
+            contents: [
+                {
+                    label: "Micro",
+                    icon: <FaBacteria />,
+                    path: "/quality/micro/new"
+                }
+            ]
         }
 ];
