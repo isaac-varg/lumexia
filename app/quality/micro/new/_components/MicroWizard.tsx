@@ -1,17 +1,21 @@
 "use client"
 
-import React from 'react'
-import { Wizard } from 'react-use-wizard'
+import React, { useEffect, useState } from 'react'
+import { Wizard, useWizard } from 'react-use-wizard'
 import BprSelectionStep from './BprSelectionStep'
 import { IBprForSSF } from '../_functions/getBprs'
+import SampleDesignation from './SampleDesignation'
 
-const MicroWizard = ({bprs}: {bprs: IBprForSSF[]}) => {
+const MicroWizard = ({ bprs }: { bprs: IBprForSSF[] }) => {
 
-  return (
-      <Wizard>
-        <BprSelectionStep bprs={bprs} onSelection={() => console.log('hi')} />
-      </Wizard>
-  )
+    const [ selectedBpr, setSelectedBpr ] = useState<IBprForSSF | null>(null);
+
+    return (
+        <Wizard>
+            <BprSelectionStep bprs={bprs} onSelection={(bpr: IBprForSSF) => setSelectedBpr(bpr)} />
+            <SampleDesignation selectedBpr={selectedBpr}/>
+        </Wizard>
+    )
 }
 
 export default MicroWizard

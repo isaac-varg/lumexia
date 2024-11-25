@@ -68,6 +68,7 @@ const main = async () => {
 
         await seedAction("bprStepActionableVerification");
 
+        await seedAction("microSubmission");
 };
 
 main()

@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import { IBprForSSF } from '../_functions/getBprs'
 import FuzzySearch from 'fuzzy-search'
+import Text from '@/components/Text'
+import { useWizard } from 'react-use-wizard'
 
 const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelection: (bpr: IBprForSSF) => void  }) => {
     const [searchInput, setSearchInput] = useState('')
     const [results, setResults] = useState<IBprForSSF[]>([])
+    const { nextStep } = useWizard()
 
-    console.log(bprs)
     const searcher = new FuzzySearch(bprs, [
         "referenceCode",
         "producedItemIID",
@@ -18,6 +20,8 @@ const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelecti
 
     const handleItemClick = (bpr: IBprForSSF ) => {
         onSelection(bpr);
+        nextStep()
+        
     }
 
     const handleKeydown = (event: any) => {
@@ -34,7 +38,10 @@ const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelecti
 
 
     return (
-        <div>
+        <div className='flex flex-col gap-y-4'>
+
+            <Text.SectionTitle>Select a BPR</Text.SectionTitle>
+
             <input
                 placeholder="Search Name, Alias or Code"
                 value={searchInput}

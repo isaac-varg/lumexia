@@ -1,6 +1,4 @@
 import { jsPDF } from "jspdf";
-import { Lot } from "@/types/lot";
-import { generateQR } from "@/actions/qr/generateQR";
 import { DateTime } from "luxon";
 
 // assets & data

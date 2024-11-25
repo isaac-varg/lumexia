@@ -5,11 +5,22 @@ type NumberProps = {
   required: boolean;
   fieldName: string;
   label: string;
+  orientation?: keyof typeof classes.orientation 
   // validation?: { value: (value: any) => string | undefined }; // Optional validation function
 };
-const Form = ({ form, required, fieldName, label }: NumberProps) => {
+
+const classes = {
+    orientation: {
+        vertical: "flex flex-col gap-y-1",
+        horizontal: "flex justify-between items-center"
+    }
+}
+const Form = ({ form, required, fieldName, label, orientation = 'vertical' }: NumberProps) => {
+
+
+
   return (
-    <div className="flex flex-col gap-y-1">
+    <div className={`${classes.orientation[orientation]}`}>
       <label className="font-poppins text-neutral-950 text-xl">{label}</label>
       <input
           {...form.register(fieldName, {

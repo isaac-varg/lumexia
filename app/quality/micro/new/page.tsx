@@ -10,7 +10,11 @@ const NewMicroSubmissionPage = async () => {
     return (
         <div className='flex flex-col gap-y-6'>
             <PageTitle>New SSF Micro Submission</PageTitle>
+
+            <div className='bg-neutral-100 rounded-lg p-6'>
             <MicroWizard bprs={bprs} />
+
+            </div>
         </div>
     )
 }

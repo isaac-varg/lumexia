@@ -10,6 +10,7 @@ export interface IBprForSSF {
     bprReferenceCode: number 
     producedItemName: string
     producedItemIID: string
+    lotNumber: string
 }
 
 export const getBprs = async () => {
@@ -38,6 +39,7 @@ export const getBprs = async () => {
             bprReferenceCode: bpr.referenceCode,
             producedItemName: bpr.mbpr.producesItem.name,
             producedItemIID: bpr.mbpr.producesItem.referenceCode,
+            lotNumber: bpr.lotOrigin.length !== 0 ? bpr.lotOrigin[0].lot.lotNumber : "",
         }
     })
 

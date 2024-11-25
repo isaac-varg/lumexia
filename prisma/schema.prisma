@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Nov 06 2024 15:59:51 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Nov 25 2024 15:04:05 GMT-0800 (Pacific Standard Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -273,6 +273,7 @@ model BatchProductionRecord {
   bprBatchSteps      BprBatchStep[]
   lotOrigin          LotOrigin[]
   BprBillOfMaterials BprBillOfMaterials[]
+  MicroSubmission    MicroSubmission[]
 
   @@map("batch_production_records")
 }
@@ -738,6 +739,13 @@ model Supplier {
   SupplierContact       SupplierContact[]
 
   @@map("suppliers")
+}
+
+model MicroSubmission {
+  id               String                @id @default(uuid())
+  bprId            String
+  submissionNumber Int                   @default(autoincrement()) @map("submission_number")
+  bpr              BatchProductionRecord @relation(fields: [bprId], references: [id])
 }
 
 model Account {

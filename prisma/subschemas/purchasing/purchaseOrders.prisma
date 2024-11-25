@@ -5,6 +5,7 @@ import { PurchaseOrderItem } from "./purchaseOrderItems"
 import { PurchaseOrderNote } from "./purchaseOrderNotes"
 import { PaymentMethod } from "../accounting/paymentMethods"
 import { LotOrigin } from "../inventory/lotOrigins"
+
 model PurchaseOrder {
     id                 String              @id @default(uuid())
     referenceCode      Int                 @default(autoincrement()) @map("reference_code")

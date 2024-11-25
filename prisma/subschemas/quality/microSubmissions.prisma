@@ -1,0 +1,8 @@
+model MicroSubmission {
+    id               String                @id @default(uuid())
+    bprId            String @map("bpr_id")
+    submissionNumber Int                   @default(autoincrement()) @map("submission_number")
+    bpr              BatchProductionRecord @relation(fields: [bprId], references: [id])
+
+    @@map("micro_submissions")
+}
