@@ -9,6 +9,7 @@ export const seedAction = async (model: string) => {
     // Check if `default` is wrapped inside another `default` property
     const seedData = seedDataModule.default?.default || seedDataModule.default;
 
+    console.log('ran', model)
 
     // Pass the data to createMany if it exists
     if (seedData) {
@@ -18,9 +19,9 @@ export const seedAction = async (model: string) => {
       console.error(`No data found in the ${model} module.` );
     }
   } catch (error) {
-    if (model !== 'inventoryType') {
-      return;
-    }
+    // if (model !== 'inventoryType') {
+    //   return;
+    // }
     console.error(`Something went wrong with the ${model} seed:`, error);
   }
 };

@@ -38,7 +38,6 @@ const main = async () => {
         await seedAction("supplierNote");
         await seedAction("supplierPaymentMethod");
 
-        await seedAction("lotOrigin");
         await seedAction("userRole");
 
         await seedAction("bprStatus");
@@ -68,7 +67,8 @@ const main = async () => {
 
         await seedAction("bprStepActionableVerification");
 
-        await seedAction("microSubmission");
+        await seedAction("lotOrigin");
+        //await seedAction("microSubmission");
 };
 
 main()
