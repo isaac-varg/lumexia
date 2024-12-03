@@ -52,7 +52,15 @@ export const getBomUsage = async (itemId: string) => {
     const data = await Promise.all(usage.map((bom) => {
 
         if (bom.mbpr.BatchSize.length !== 1) {
-            throw new Error(`${bom.mbpr.versionLabel} MBPR either has 0 or too many active batch sizes.`)
+
+            console.error(`${bom.mbpr.versionLabel} MBPR either has 0 or too many active batch sizes.`)
+            return {
+                producedItem: '',
+                concentration: '',
+                quantity: 0,
+                mbprLabel: '',
+            }
+
         }
 
         const concentration = bom.concentration;
@@ -73,7 +81,7 @@ export const getBomUsage = async (itemId: string) => {
     const totalUsage = data.reduce((previous, current) => previous + current.quantity, 0);
 
     // now for series data for charts
-    
+
     const series: number[] = []
     const seriesLabel: string[] = []
     data.forEach((usage) => {
@@ -83,7 +91,7 @@ export const getBomUsage = async (itemId: string) => {
     });
 
     const payload: BomUsage = {
-        usage: [...data],
+        usage: [...data as any],
         totalUsage,
         charts: {
             series,
