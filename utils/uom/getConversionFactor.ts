@@ -9,7 +9,7 @@ export const getConversionFactor = async (uomAId: string, uomBId: string) => {
 		},
 	})
     
-    if (conversion.length === 0) { throw new Error("Conversion not found.")}
+    if (conversion.length === 0) { return null}
 
 	return conversion[0].conversionFactor;
 }

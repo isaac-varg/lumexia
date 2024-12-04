@@ -88,6 +88,11 @@ export const getFilteredItems = async (itemId: string, supplierId: string, mode:
                         item.uomId,
                         defaultUomId,
                     );
+
+                    if (!conversionFactor) {
+                        price = item.pricePerUnit;
+                        return
+                    }
                     const convertedPricePerUnit = item.pricePerUnit / conversionFactor;
                     price = convertedPricePerUnit;
                 } else {

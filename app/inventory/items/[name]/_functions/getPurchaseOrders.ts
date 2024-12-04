@@ -23,7 +23,7 @@ export const getPurchaseOrders = async (itemId: string) => {
         },
     });
 
-    const convertedPurchaseOrders = await Promise.all(purchaseOrders.map( async (po) => {
+    const convertedPurchaseOrders = await Promise.all(purchaseOrders.map(async (po) => {
 
         if (po.purchaseOrderItems.every((item) => item.uomId === staticRecords.inventory.uom.lb)) {
             return { ...po }
@@ -36,13 +36,19 @@ export const getPurchaseOrders = async (itemId: string) => {
 
 
             if (item.itemId !== itemId) {
-                
                 return { ...item }
             }
 
 
             if (item.uomId !== staticRecords.inventory.uom.lb) {
-                const conversionFactor = await getConversionFactor(item.uomId, staticRecords.inventory.uom.lb)
+                let conversionFactor = await getConversionFactor(item.uomId, staticRecords.inventory.uom.lb)
+
+                if (!conversionFactor) {
+                    quantity = item.quantity
+                    price = item.pricePerUnit
+                    return
+                }
+
                 const convertedQuantity = await toInventoryUom(item.uomId, item.quantity);
                 const convertedPrice = item.pricePerUnit / conversionFactor;
                 quantity = convertedQuantity;
