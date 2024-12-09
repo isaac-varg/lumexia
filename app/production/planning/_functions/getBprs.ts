@@ -1,12 +1,38 @@
 "use server"
-import bprActions from "@/actions/production/bprActions"
 
-export const getBprs = async ( ) => {
+import prisma from "@/lib/prisma"
+import { IBpr } from "@/types/batchProductionRecord";
+import { MasterBatchProductionRecord } from "@/types/masterBatchProductionRecord";
+import { BprStatus } from "@prisma/client";
 
- const bprs = await bprActions.getAll(undefined, ["status"]);
 
+export interface PlanningIBpr extends IBpr {
+    status: BprStatus,
+    mbpr: MasterBatchProductionRecord,
+    producedItemName: string
+    bprStatusName: string,
+}
 
+export const getBprs = async ()  => {
+    const bprs = await prisma.batchProductionRecord.findMany({
+        include: {
+            status: true,
+            mbpr: {
+                include: {
+                    producesItem: true
+                }
+            }
+        }
+    })
 
- return bprs 
+    const fixed: PlanningIBpr[] = await Promise.all(bprs.map(async (bpr) => {
+        return {
+            ...bpr,
+            producedItemName: bpr.mbpr.producesItem.name,
+            bprStatusName: bpr.status.name,
+        }
+    }));
+
+    return fixed;
 
 }

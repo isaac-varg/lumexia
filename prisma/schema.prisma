@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Nov 25 2024 15:04:05 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Dec 04 2024 14:45:41 GMT-0800 (Pacific Standard Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -12,6 +12,18 @@ model PaymentMethod {
   purchaseOrders         PurchaseOrder[]
 
   @@map("payment_methods")
+}
+
+model Config {
+  id          String   @id @default(uuid())
+  key         String
+  value       String
+  dataType    String   @map("data_type")
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("configs")
 }
 
 model RecordStatus {
@@ -743,9 +755,11 @@ model Supplier {
 
 model MicroSubmission {
   id               String                @id @default(uuid())
-  bprId            String
+  bprId            String                @map("bpr_id")
   submissionNumber Int                   @default(autoincrement()) @map("submission_number")
   bpr              BatchProductionRecord @relation(fields: [bprId], references: [id])
+
+  @@map("micro_submissions")
 }
 
 model Account {
