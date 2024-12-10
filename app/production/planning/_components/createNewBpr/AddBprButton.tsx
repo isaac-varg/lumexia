@@ -13,7 +13,10 @@ const AddBprButton = () => {
             <BprForm />
 
 
-            <ActionButton onClick={() => showDialog('newBprForm')}><TbPlus /></ActionButton>
+            <button onClick={() => showDialog('newBprForm')} className="btn flex gap-x-2">
+                <TbPlus />
+                Request Batch
+            </button>
         </>
     )
 }
