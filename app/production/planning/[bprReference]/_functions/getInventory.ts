@@ -2,9 +2,11 @@
 "use server"
 
 import { getLotsByItem } from "@/actions/auxiliary/getLotsByItem"
-import { ExBprBom } from "@/types/bprBom"
-import { MaterialsBom } from "../_components/MaterialSufficiency"
+import { BprBom, ExBprBom } from "@/types/bprBom"
 import prisma from "@/lib/prisma"
+
+
+
 
 export const getInventory = async (bom: ExBprBom[]) => {
     const data = await Promise.all(bom.map(async (material: ExBprBom) => {
@@ -20,9 +22,43 @@ export const getInventory = async (bom: ExBprBom[]) => {
                 }
             },
             include: {
-                bpr: true
+                bpr: {
+                    include: {
+                        mbpr: {
+                            include: {
+                                producesItem: true,
+                            }
+                        },
+                        status: true
+                    }
+                },
+                bom: true,
+                uom: true,
             }
         })
+
+
+
+        const purchases = await prisma.purchaseOrderItem.findMany({
+            where: {
+                itemId: material.bom.item.id,
+            },
+            orderBy: {
+                purchaseOrders: {
+                    referenceCode: 'desc',
+                },
+            },
+            include: {
+                purchaseOrders: {
+                    include: {
+                        status: true
+                    }
+                },
+                purchaseOrderStatus: true
+            },
+            take: 5
+        })
+
 
 
         const totalOnHand = lots.reduce(
@@ -37,8 +73,9 @@ export const getInventory = async (bom: ExBprBom[]) => {
             ...material,
             totalQuantityOnHand: totalOnHand,
             allocated,
-            totalQuantityAllocated, 
+            totalQuantityAllocated,
             totalQuantityAvailable,
+            purchases,
         }
     }))
 

@@ -2,13 +2,17 @@
 
 import { Panels } from '@/components/Panels'
 import Text from '@/components/Text'
-import { ExBprBom } from '@/types/bprBom'
+import { BprBom, ExBprBom } from '@/types/bprBom'
 import MaterialSufficiencyLine from './MaterialSufficiencyLine'
+import { PurchaseOrderItem } from '@/types/purchaseOrderItem'
 
 
 export interface MaterialsBom extends ExBprBom {
     totalQuantityOnHand: number,
+    totalQuantityAllocated: number,
     totalQuantityAvailable: number,
+    allocated: BprBom[]
+    purchases: PurchaseOrderItem[]
 }
 
 const MaterialSufficiency = ({ materials }: { materials: MaterialsBom[] }) => {
