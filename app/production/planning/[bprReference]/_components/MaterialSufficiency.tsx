@@ -4,15 +4,19 @@ import { Panels } from '@/components/Panels'
 import Text from '@/components/Text'
 import { BprBom, ExBprBom } from '@/types/bprBom'
 import MaterialSufficiencyLine from './MaterialSufficiencyLine'
-import { PurchaseOrderItem } from '@/types/purchaseOrderItem'
+import { ExPurchaseOrderItem, PurchaseOrderItem } from '@/types/purchaseOrderItem'
+import { PurchaseOrder } from '@/types/purchaseOrder'
 
+interface IPlanningPOItem extends ExPurchaseOrderItem {
+    purchaseOrders: PurchaseOrder
+}
 
 export interface MaterialsBom extends ExBprBom {
     totalQuantityOnHand: number,
     totalQuantityAllocated: number,
     totalQuantityAvailable: number,
     allocated: BprBom[]
-    purchases: PurchaseOrderItem[]
+    purchases: IPlanningPOItem[]
 }
 
 const MaterialSufficiency = ({ materials }: { materials: MaterialsBom[] }) => {

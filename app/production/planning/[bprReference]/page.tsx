@@ -8,6 +8,8 @@ import Layout from '@/components/Layout';
 import BasicsPanel from './_components/BasicsPanel';
 import MaterialSufficiency from './_components/MaterialSufficiency';
 import ActionsPanel from './_components/ActionsPanel';
+import ChangeStatusDialog from './_components/ChangeStatusDialog';
+import { getBprStatuses } from './_functions/getBprStatuses';
 
 type PlanningBprPage = {
     searchParams: {
@@ -19,6 +21,7 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
 
     const { id } = searchParams;
     const bpr = await getBpr(id)
+    const statuses = await getBprStatuses();
 
     if (!bpr) { return null }
     const bom = await getBprBom(bpr.id)
@@ -33,6 +36,7 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
 
     return (
         <div className='flex flex-col gap-y-6'>
+            <ChangeStatusDialog statuses={statuses} bprId={bpr.id}/>
 
             <Title bpr={bpr as any} />
 

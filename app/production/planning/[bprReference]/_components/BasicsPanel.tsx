@@ -10,6 +10,7 @@ const BasicsPanel = ({bpr}: {bpr: BatchProductionRecord}) => {
                 
             <Text.LabelDataPair label='Batch Size' data={`${bpr.batchSize.quantity} lbs`} />
             
+            <Text.LabelDataPair label='Status' data={bpr.status.name}/>
             
       </Panels.Root>
   )

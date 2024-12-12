@@ -1,9 +1,9 @@
-
 "use server"
 
 import { getLotsByItem } from "@/actions/auxiliary/getLotsByItem"
-import { BprBom, ExBprBom } from "@/types/bprBom"
+import { ExBprBom } from "@/types/bprBom"
 import prisma from "@/lib/prisma"
+import { staticRecords } from "@/configs/staticRecords"
 
 
 
@@ -11,14 +11,21 @@ import prisma from "@/lib/prisma"
 export const getInventory = async (bom: ExBprBom[]) => {
     const data = await Promise.all(bom.map(async (material: ExBprBom) => {
         const lots = await getLotsByItem(material.bom.itemId)
+        const { queued, stagingMaterials, compounding, completed } = staticRecords.production.bprStatuses;
 
         const allocated = await prisma.bprBillOfMaterials.findMany({
             where: {
                 bom: {
                     itemId: material.bom.item.id,
                 },
-                bprId: {
-                    not: material.bpr.id
+                bpr: {
+                    OR: [
+                        { bprStatusId: queued },
+                        { bprStatusId: stagingMaterials },
+                        { bprStatusId: compounding },
+                        { bprStatusId: completed },
+
+                    ]
                 }
             },
             include: {
@@ -36,7 +43,6 @@ export const getInventory = async (bom: ExBprBom[]) => {
                 uom: true,
             }
         })
-
 
 
         const purchases = await prisma.purchaseOrderItem.findMany({
