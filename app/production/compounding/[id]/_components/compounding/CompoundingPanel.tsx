@@ -5,6 +5,7 @@ import NextStepPanel from "./_components/NextStepPanel"
 import { sortByProperty } from "@/utils/data/sortByProperty"
 import { getCurrentStep } from "./_functions/getCurrentStep"
 import Confetti from "@/components/Confetti/Confetti"
+import { updateBatch } from "./_functions/updateBatch"
 
 const CompoundingPanel = async ({ bpr }: { bpr: BatchProductionRecord }) => {
 
@@ -13,7 +14,10 @@ const CompoundingPanel = async ({ bpr }: { bpr: BatchProductionRecord }) => {
     const sortedSteps = sortByProperty(steps, "batchStep.sequence")
     const currentStep = await getCurrentStep(sortedSteps)
 
+
+
     if (!currentStep) {
+        updateBatch(bpr.id)
         return <Confetti />
     }
 
