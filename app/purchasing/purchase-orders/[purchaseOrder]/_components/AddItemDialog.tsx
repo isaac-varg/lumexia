@@ -12,6 +12,8 @@ const AddItemDialog = ({ data, onItemSelection }: { data: any[], onItemSelection
         "aliasesAll",
     ]);
 
+    console.log(data)
+
     const handleItemClick = (item: any) => {
         onItemSelection(item);
     };
@@ -46,7 +48,7 @@ const AddItemDialog = ({ data, onItemSelection }: { data: any[], onItemSelection
                     <div className="flex flex-col overflow-y-auto  max-h-[600px] gap-y-4">
                         {results.map((item) => (
                             <li className="border-2 rounded-lg px-4 py-2" key={item.id} onClick={() => handleItemClick(item)}>
-                                <p>{`${item.name} ${item.aliasesAll.length < 1 ? "" : `(${item.mergedAliases})`}`} </p>
+                                <p>{`${item.name} ${item.aliasesAll.length < 1 ? "" : `(${item.aliasesAll})`}`} </p>
                             </li>
                         ))}
                     </div>
