@@ -39,11 +39,18 @@ export const staticRecords = {
     production: {
         bprStatuses: {
             draft: '7a9fd26f-3153-42f5-9de4-6776f59ec670',
+            allocatedMaterials: '13b7b0dd-bd1b-4b23-a1c1-64f17f193eae',
+            verifyingBomFulfillment: 'b1701ec8-b094-4528-bb88-e70aedcc2909',
+            awaitingMaterials: 'cfb2102c-43a9-4e3a-8490-40ec9eb22930',
+            knownMaterialArrival: '5fec6206-ce94-402e-ad34-9efe1b615cfc',
             queued: '2a8332c8-87e4-4872-ac6a-7e184493ec44',
-            compounding: 'a45875cd-bf1b-46d1-ae3e-09770b4e2b8a',
             stagingMaterials: 'c63e9eff-ee29-4987-b617-602edf1a486c',
+            compounding: 'a45875cd-bf1b-46d1-ae3e-09770b4e2b8a',
+            completed: '30ad195c-1e63-4101-839f-4be663548c19',
             awaitingQc: '79591355-7e7f-4598-ab6c-612bce05526b',
-            completed: '30ad195c-1e63-4101-839f-4be663548c19'
+            released: '0ec79764-cc04-41b8-a3d6-c91e71a2f159',
+            investigating: '1aecf3b0-723a-43c9-b46f-907417602210',
+            failed: '7f2d60ff-ecea-415e-8ed3-e868002354ed',
         },
         //really terrible naming, this is actually bprStagingStatuses... 
         bprBomStatuses: {
@@ -82,5 +89,8 @@ export const staticRecords = {
             confirmedSlashAwaitingDelivery: 'd1c6bb97-a554-49b5-9a6a-0261405dc2cc',
             received: 'db907b0f-4aac-42d7-9118-ee35e178d9b3'
         }
+    },
+    configs: {
+        isProductionNotionEnabled: '1f782875-32aa-4804-b344-84221b4c391b', 
     }
 }

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Dec 04 2024 14:45:41 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Dec 17 2024 14:51:28 GMT-0800 (Pacific Standard Time)✨
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -265,6 +265,18 @@ model ProcurementType {
   @@map("procurement_types")
 }
 
+model NotionBpr {
+  id           String   @id @default(uuid())
+  lumexiaBprId String   @map("lumexia_bpr_id")
+  notionPageId String   @map("notion_page_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  bpr BatchProductionRecord @relation(fields: [lumexiaBprId], references: [id])
+
+  @@map("notion_bprs")
+}
+
 model BatchProductionRecord {
   id                String    @id @default(uuid())
   mbprId            String    @map("mbpr_id")
@@ -284,6 +296,7 @@ model BatchProductionRecord {
 
   bprBatchSteps      BprBatchStep[]
   lotOrigin          LotOrigin[]
+  NotionBpr          NotionBpr[]
   BprBillOfMaterials BprBillOfMaterials[]
   MicroSubmission    MicroSubmission[]
 
