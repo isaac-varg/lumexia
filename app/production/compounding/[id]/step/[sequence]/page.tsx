@@ -24,6 +24,7 @@ import { getIsStepCompleted } from './_function/getIsStepCompleted';
 import StepActionsPanel from './_components/StepActionsPanel';
 import ReadOnly from './_components/ReadOnly';
 import Locked from './_components/Locked';
+import { getBom } from './_function/getBom';
 
 type StepPageProps = {
     searchParams: {
@@ -40,7 +41,8 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
     const step: ExBprBatchStep = await bprBatchStepActions.getOne(id, undefined, ["bpr", "batchStep"])
     const bpr = await getBpr(step.bpr.id)
     const equipment = await stepEquipmentActions.getAll({ stepId: step.batchStepId }, ["equipment"])
-    const bom = await billOfMaterialActions.getAll({ stepId: step.batchStepId }, ["item"])
+   // const bom = await billOfMaterialActions.getAll({ stepId: step.batchStepId }, ["item"])
+    const bom = await getBom(step.batchStepId);
     const instructions = await stepInstructionActions.getAll({ stepId: step.batchStepId })
     const addendums = await stepAddendumActions.getAll({ stepId: step.batchStepId }, ["addendumType"])
     const actionables = await getActionables(step.id)
@@ -63,7 +65,7 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
     return (
         <div className='flex flex-col gap-y-4'>
             <Title bpr={bpr as any} />
-            
+
             <Locked isLocked={isActuallyLocked} />
             <ReadOnly isReadOnly={isReadOnly} />
 
@@ -72,16 +74,16 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
 
                 <div className='grid grid-cols-2 gap-6'>
 
-                    {!isActuallyReadOnly  && <StepActionsPanel isVerificationRequired={isVerificationRequired} isStepCompleted={isStepCompleted} bprBatchStep={step} />}
+                    {!isActuallyReadOnly && <StepActionsPanel isVerificationRequired={isVerificationRequired} isStepCompleted={isStepCompleted} bprBatchStep={step} />}
 
-                    {!isActuallyReadOnly && !isActuallyLocked  ? (<div className='col-span-2'>
+                    {!isActuallyReadOnly && !isActuallyLocked ? (<div className='col-span-2'>
                         <Card.Root>
                             <Card.Title><span className='flex gap-x-2 items-center'><TbClipboardCheck /> <p>Actionables</p></span></Card.Title>
 
                             {actionables.map((actionable) => <ActionableCard key={actionable.id} userRole={userRole[0]} actionable={actionable as any} />)}
 
                         </Card.Root>
-                    </div> ): <div className='col-span-2' /> 
+                    </div>) : <div className='col-span-2' />
                     }
 
                     <Card.Root>
@@ -95,9 +97,9 @@ const StepPage = async ({ searchParams }: StepPageProps) => {
 
                     <Card.Root>
                         <Card.Title><span className='flex gap-x-2 items-center'><MdOilBarrel /> <p>Equipment</p></span></Card.Title>
-                        {bom.map((item: ExBillOfMaterials) => {
+                        {bom.map((item: any) => {
                             return <div key={item.id} className='flex flex-col p-6 bg-bone-200 rounded-lg shadow-lg'>
-                                <span className='flex gap-x-3 items-center font-inter text-lg text-neutral-900 font-semibold'><div className='flex items-center justify-center rounded-full text-swirl-100 w-8 h-8 bg-swirl-900 p-2'>{item.identifier}</div> <p>{item.item.name}</p></span>
+                                <span className='flex gap-x-3 items-center font-inter text-lg text-neutral-900 font-semibold'><div className='flex items-center justify-center rounded-full text-swirl-100 w-8 h-8 bg-swirl-900 p-2'>{item.identifier}</div> <p>{`${item.item.name} ${item.aliasesAll.length < 1 ? "" : `(${item.aliasesAll})`}`}</p></span>
                             </div>
                         })}
                     </Card.Root>
