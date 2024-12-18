@@ -52,12 +52,14 @@ const AliasDialog = ({
             context: `'${response.name}' alias was added to ${item.name}`,
         });
 
-        const supplierAlias = await supplierAliasActions.createNew({
-            aliasId: response.id,
-            supplierId: data.supplierId,
-        })
+        if (data.aliasTypeId === staticRecords.inventory.aliases.types.supplier) {
+            const supplierAlias = await supplierAliasActions.createNew({
+                aliasId: response.id,
+                supplierId: data.supplierId,
+            })
 
-        await createActivityLog("supplierAliasAppended", "supplierAlias", supplierAlias.id, { context: "Alias assed to supplier" })
+            await createActivityLog("supplierAliasAppended", "supplierAlias", supplierAlias.id, { context: "Alias assed to supplier" })
+        }
 
         resetDialogContext();
         revalidatePage("/inventory/items/[name]");

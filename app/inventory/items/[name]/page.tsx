@@ -11,6 +11,7 @@ import inventoryTypeActions from "@/actions/inventory/inventoryTypeActions";
 import { ItemType } from "@/types/itemType";
 import { ProcurementType } from "@/types/procurementType";
 import { InventoryType } from "@/types/inventoryType";
+import { getAliases } from "./_functions/getAliases";
 
 type ItemDashboardProps = {
   params: {
@@ -45,7 +46,7 @@ const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
   }
 
 
-  const aliases = await aliasActions.getAll({ itemId: item.id }, ["aliasType"]);
+  const aliases = await getAliases(item.id) 
 
   return (
     <div className="flex flex-col gap-y-6">
