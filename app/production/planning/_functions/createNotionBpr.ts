@@ -62,7 +62,7 @@ export const createNotionBpr = async (bprId: string) => {
             "Status": {
                 type: 'status',
                 status: {
-                    name: 'Requested'
+                    name: 'Draft'
                 }
             },
             "Batch Size (lbs)": {
