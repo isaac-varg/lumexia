@@ -49,7 +49,7 @@ const MaterialAllocationDialog = ({
                         <tbody>
                             {material.allocated.map((bprBom) => {
                                 return (
-                                    <tr>
+                                    <tr key={bprBom.id}>
                                         <th>{bprBom.bpr.referenceCode}</th>
                                         <td>{bprBom.bpr.mbpr.producesItem.name}</td>
                                         <td>{bprBom.bpr.status.name}</td>
@@ -76,7 +76,7 @@ const MaterialAllocationDialog = ({
                         <tbody>
                             {material.purchases.map((po) => {
                                 return (
-                                    <tr>
+                                    <tr key={po.id}>
                                         <th>{po.purchaseOrders.referenceCode}</th>
                                         <td>{po.quantity}</td>
                                         <td>{po.purchaseOrders.status.name}</td>
