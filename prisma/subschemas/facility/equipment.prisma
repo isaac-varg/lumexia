@@ -1,9 +1,11 @@
 model Equipment {
-    id              String   @id @default(uuid())
-    name String
-    identifier String
-    createdAt       DateTime @default(now()) @map("created_at")
-    updatedAt       DateTime @updatedAt @map("updated_at")
+    id              String        @id @default(uuid())
+    name            String
+    identifier      String
+    equipmentTypeId String        @map("equipment_type_id")
+    createdAt       DateTime      @default(now()) @map("created_at")
+    updatedAt       DateTime      @updatedAt @map("updated_at")
+    equipmentType   EquipmentType @relation(fields: [equipmentTypeId], references: [id])
 
     @@map("equipment")
 }
