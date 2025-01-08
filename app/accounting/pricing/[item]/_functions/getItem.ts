@@ -1,11 +1,10 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { warn } from "console";
 
 export const getItem = async ( itemId: string ) => {
     
-    const response = await prisma.item.findMany({
+    const response = await prisma.item.findUniqueOrThrow({
         where: {
             id: itemId,
         },
