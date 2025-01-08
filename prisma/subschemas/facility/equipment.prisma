@@ -6,6 +6,7 @@ model Equipment {
     createdAt       DateTime      @default(now()) @map("created_at")
     updatedAt       DateTime      @updatedAt @map("updated_at")
     equipmentType   EquipmentType @relation(fields: [equipmentTypeId], references: [id])
+    compoundingVessel CompoundingVessel[]
 
     @@map("equipment")
 }

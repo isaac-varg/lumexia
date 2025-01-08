@@ -19,3 +19,4 @@ export interface Item {
     aliases?: Alias[]
     lots?: Lot[]
 }
+

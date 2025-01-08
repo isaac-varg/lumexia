@@ -20,6 +20,8 @@ model Item {
     lot               Lot[]
     aliases           Alias[]
     purchaseOrderItem PurchaseOrderItem[]
+    itemPricingData ItemPricingData[]
+    itemCostDeterminations ItemCostDetermination[]
 
     @@map("items")
 }

@@ -1,4 +1,64 @@
-//🧩Don't Edit this file.✨Generated in Tue Dec 17 2024 14:51:28 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Jan 07 2025 15:11:52 GMT-0800 (Pacific Standard Time)✨
+model ConsumerContainer {
+  id                    String                  @id @default(uuid())
+  name                  String
+  containerCost         Float                   @map("container_cost")
+  fillLaborCost         Float                   @map("fill_labor_cost")
+  shippingCost          Float                   @map("shipping_cost")
+  freeShippingCost      Float                   @map("free_shipping_cost")
+  createdAt             DateTime                @default(now()) @map("created_at")
+  updatedAt             DateTime                @updatedAt @map("updated_at")
+  ItemConsumerContainer ItemConsumerContainer[]
+
+  @@map("consumer_containers")
+}
+
+model ItemConsumerContainer {
+  id                  String            @id @default(uuid())
+  itemId              String            @map("item_id")
+  consumerContainerId String            @map("consumer_container_id")
+  fillQuantity        Float             @map("fill_quantity")
+  declaredQuantity    Float             @map("declared_quantity")
+  uomId               String            @map("uom_id")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+  item                Item              @relation(fields: [itemId], references: [id])
+  consumerContainer   ConsumerContainer @relation(fields: [consumerContainerId], references: [id])
+  uom                 UnitOfMeasurement @relation(fields: [uomId], references: [id])
+
+  @@map("item_consumer_containers")
+}
+
+model ItemCostDetermination {
+  id                String          @id @default(uuid())
+  itemId            String          @map("item_id")
+  itemPricingDataId String          @map("item_pricing_data_id")
+  itemCost          Float           @map("item_cost")
+  upcomingCostUsed  Boolean         @map("upcoming_cost_used")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+  item              Item            @relation(fields: [itemId], references: [id])
+  itemPricingData   ItemPricingData @relation(fields: [itemPricingDataId], references: [id])
+
+  @@map("item_cost_determinations")
+}
+
+model ItemPricingData {
+  id                         String                  @id @default(uuid())
+  itemId                     String                  @map("item_id")
+  arrivalCost                Float                   @map("arrival_cost")
+  productionUsageCost        Float                   @map("productionUsageCost")
+  unforeseenDifficultiesCost Float                   @map("unforeseen_difficulties_cost")
+  isUpcomingPriceActive      Boolean                 @map("isUpcomingPriceActive")
+  upcomingPrice              Float                   @map("upcomingPrice")
+  createdAt                  DateTime                @default(now()) @map("created_at")
+  updatedAt                  DateTime                @updatedAt @map("updated_at")
+  item                       Item                    @relation(fields: [itemId], references: [id])
+  ItemCostDetermination      ItemCostDetermination[]
+
+  @@map("item_pricing_data")
+}
+
 model PaymentMethod {
   id                     String                  @id @default(uuid())
   name                   String
@@ -62,14 +122,27 @@ datasource db {
 }
 
 model Equipment {
-  id            String          @id @default(uuid())
-  name          String
-  identifier    String
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
-  StepEquipment StepEquipment[]
+  id                String              @id @default(uuid())
+  name              String
+  identifier        String
+  equipmentTypeId   String              @map("equipment_type_id")
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  equipmentType     EquipmentType       @relation(fields: [equipmentTypeId], references: [id])
+  compoundingVessel CompoundingVessel[]
+  StepEquipment     StepEquipment[]
 
   @@map("equipment")
+}
+
+model EquipmentType {
+  id        String      @id @default(uuid())
+  name      String
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  equipment Equipment[]
+
+  @@map("equipment_types")
 }
 
 model ContainerType {
@@ -172,20 +245,21 @@ model UnitOfMeasurementConversion {
 }
 
 model UnitOfMeasurement {
-  id                 String                        @id @default(uuid())
-  name               String
-  abbreviation       String
-  uomA               UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
-  uomB               UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
-  createdAt          DateTime                      @default(now()) @map("created_at")
-  updatedAt          DateTime                      @updatedAt @map("updated_at")
-  lots               Lot[]
-  transactions       Transaction[]
-  container          Container[]
-  purchaseOrderItem  PurchaseOrderItem[]
-  BatchSize          BatchSize[]
-  BprBillOfMaterials BprBillOfMaterials[]
-  BprStaging         BprStaging[]
+  id                    String                        @id @default(uuid())
+  name                  String
+  abbreviation          String
+  uomA                  UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+  uomB                  UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+  createdAt             DateTime                      @default(now()) @map("created_at")
+  updatedAt             DateTime                      @updatedAt @map("updated_at")
+  lots                  Lot[]
+  transactions          Transaction[]
+  container             Container[]
+  purchaseOrderItem     PurchaseOrderItem[]
+  ItemConsumerContainer ItemConsumerContainer[]
+  BatchSize             BatchSize[]
+  BprBillOfMaterials    BprBillOfMaterials[]
+  BprStaging            BprStaging[]
 
   @@map("units_of_measurement")
 }
@@ -249,6 +323,9 @@ model Item {
   lot                         Lot[]
   aliases                     Alias[]
   purchaseOrderItem           PurchaseOrderItem[]
+  itemPricingData             ItemPricingData[]
+  itemCostDeterminations      ItemCostDetermination[]
+  ItemConsumerContainer       ItemConsumerContainer[]
   BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
 
@@ -523,6 +600,18 @@ model BprStepActionableVerification {
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
   @@map("bpr_step_actionable_verifications")
+}
+
+model CompoundingVessel {
+  id              String    @id @default(uuid())
+  equipmentId     String    @map("equipment_id")
+  capacity        Float
+  operationalCost Float     @map("operational_cost")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  equipment       Equipment @relation(fields: [equipmentId], references: [id])
+
+  @@map("compounding_vessels")
 }
 
 model MasterBatchProductionRecord {
