@@ -11,7 +11,7 @@ import { staticRecords } from "@/configs/staticRecords"
 export const getInventory = async (bom: ExBprBom[]) => {
     const data = await Promise.all(bom.map(async (material: ExBprBom) => {
         const lots = await getLotsByItem(material.bom.itemId)
-        const { queued, stagingMaterials, compounding, completed } = staticRecords.production.bprStatuses;
+        const { queued, stagingMaterials, compounding, completed, awaitingMaterials } = staticRecords.production.bprStatuses;
 
         const allocated = await prisma.bprBillOfMaterials.findMany({
             where: {
@@ -24,7 +24,7 @@ export const getInventory = async (bom: ExBprBom[]) => {
                         { bprStatusId: stagingMaterials },
                         { bprStatusId: compounding },
                         { bprStatusId: completed },
-
+                        { bprStatusId: awaitingMaterials },
                     ]
                 }
             },
