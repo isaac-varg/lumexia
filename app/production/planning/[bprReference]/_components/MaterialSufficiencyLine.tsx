@@ -30,6 +30,7 @@ const MaterialSufficiencyLine = ({ material }: { material: MaterialsBom }) => {
     return (
         <>
         <MaterialAllocationDialog material={material}/>
+    
 
         <tr className={`${classes.bg[bgClasses]} hover:bg-neutral-200 hover:cursor-pointer`} onClick={() => handleClick()}>
             <th>{material.bom.identifier}</th>
