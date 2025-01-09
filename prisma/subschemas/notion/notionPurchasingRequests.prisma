@@ -1,0 +1,10 @@
+model NotionPurchasingRequest {
+    id                         String            @id @default(uuid())
+    notionPageId               String            @map("notion_page_id")
+    lumexiaPurchasingRequestId String            @map("lumexia_purchasing_request_id")
+    createdAt                  DateTime          @default(now()) @map("created_at")
+    updatedAt                  DateTime          @updatedAt @map("updated_at")
+    lumexiaPurchasingRequest   PurchasingRequest @relation(fields: [lumexiaPurchasingRequestId], references: [id])
+
+    @@map("notion_purchasing_requests")
+}

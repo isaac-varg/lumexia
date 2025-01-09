@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jan 07 2025 15:11:52 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jan 09 2025 09:29:25 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -325,6 +325,7 @@ model Item {
   purchaseOrderItem           PurchaseOrderItem[]
   itemPricingData             ItemPricingData[]
   itemCostDeterminations      ItemCostDetermination[]
+  requests                    PurchasingRequest[]
   ItemConsumerContainer       ItemConsumerContainer[]
   BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
@@ -349,9 +350,33 @@ model NotionBpr {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  bpr BatchProductionRecord @relation(fields: [lumexiaBprId], references: [id])
+  bpr                 BatchProductionRecord @relation(fields: [lumexiaBprId], references: [id])
+  PurchasingRequest   PurchasingRequest?    @relation(fields: [purchasingRequestId], references: [id])
+  purchasingRequestId String?
 
   @@map("notion_bprs")
+}
+
+model NotionPurchaseOrder {
+  id           String        @id @default(uuid())
+  notionPageId String        @map("notion_page_id")
+  lumexiaPoId  String        @map("lumexia_po_id")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  lumexiaPo    PurchaseOrder @relation(fields: [lumexiaPoId], references: [id])
+
+  @@map("notion_purchase_orders")
+}
+
+model NotionPurchasingRequest {
+  id                         String            @id @default(uuid())
+  notionPageId               String            @map("notion_page_id")
+  lumexiaPurchasingRequestId String            @map("lumexia_purchasing_request_id")
+  createdAt                  DateTime          @default(now()) @map("created_at")
+  updatedAt                  DateTime          @updatedAt @map("updated_at")
+  lumexiaPurchasingRequest   PurchasingRequest @relation(fields: [lumexiaPurchasingRequestId], references: [id])
+
+  @@map("notion_purchasing_requests")
 }
 
 model BatchProductionRecord {
@@ -371,11 +396,14 @@ model BatchProductionRecord {
   status    BprStatus                   @relation(fields: [bprStatusId], references: [id])
   batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
-  bprBatchSteps      BprBatchStep[]
-  lotOrigin          LotOrigin[]
-  NotionBpr          NotionBpr[]
-  BprBillOfMaterials BprBillOfMaterials[]
-  MicroSubmission    MicroSubmission[]
+  bprBatchSteps              BprBatchStep[]
+  lotOrigin                  LotOrigin[]
+  NotionBpr                  NotionBpr[]
+  BprBillOfMaterials         BprBillOfMaterials[]
+  RequestBpr                 RequestBpr[]
+  RequestInventorySnapshot   RequestInventorySnapshot? @relation(fields: [requestInventorySnapshotId], references: [id])
+  requestInventorySnapshotId String?
+  MicroSubmission            MicroSubmission[]
 
   @@map("batch_production_records")
 }
@@ -757,23 +785,113 @@ model PurchaseOrderStatus {
 }
 
 model PurchaseOrder {
-  id                 String              @id @default(uuid())
-  referenceCode      Int                 @default(autoincrement()) @map("reference_code")
-  submittingUserId   String              @map("submitting_user_id")
-  supplierId         String              @map("supplier_id")
-  statusId           String              @map("status_id")
-  paymentMethodId    String?             @map("payment_method_id")
-  createdAt          DateTime            @default(now()) @map("created_at")
-  updatedAt          DateTime            @updatedAt @map("updated_at")
-  supplier           Supplier            @relation(fields: [supplierId], references: [id])
-  user               User                @relation(fields: [submittingUserId], references: [id])
-  paymentMethod      PaymentMethod?      @relation(fields: [paymentMethodId], references: [id])
-  status             PurchaseOrderStatus @relation(fields: [statusId], references: [id])
-  purchaseOrderItems PurchaseOrderItem[]
-  purchaseOrderNotes PurchaseOrderNote[]
-  lotOrigins         LotOrigin[]
+  id                         String                    @id @default(uuid())
+  referenceCode              Int                       @default(autoincrement()) @map("reference_code")
+  submittingUserId           String                    @map("submitting_user_id")
+  supplierId                 String                    @map("supplier_id")
+  statusId                   String                    @map("status_id")
+  paymentMethodId            String?                   @map("payment_method_id")
+  createdAt                  DateTime                  @default(now()) @map("created_at")
+  updatedAt                  DateTime                  @updatedAt @map("updated_at")
+  supplier                   Supplier                  @relation(fields: [supplierId], references: [id])
+  user                       User                      @relation(fields: [submittingUserId], references: [id])
+  paymentMethod              PaymentMethod?            @relation(fields: [paymentMethodId], references: [id])
+  status                     PurchaseOrderStatus       @relation(fields: [statusId], references: [id])
+  purchaseOrderItems         PurchaseOrderItem[]
+  purchaseOrderNotes         PurchaseOrderNote[]
+  lotOrigins                 LotOrigin[]
+  NotionPurchaseOrder        NotionPurchaseOrder[]
+  RequestInventorySnapshot   RequestInventorySnapshot? @relation(fields: [requestInventorySnapshotId], references: [id])
+  requestInventorySnapshotId String?
+  RequestPurchaseOrder       RequestPurchaseOrder[]
 
   @@map("purchase_orders")
+}
+
+model PurchasingRequest {
+  id                        String                     @id @default(uuid())
+  statusId                  String                     @map("status_id")
+  priorityId                String                     @map("priority_id")
+  itemId                    String                     @map("item_id")
+  title                     String
+  createdAt                 DateTime                   @default(now()) @map("created_at")
+  updatedAt                 DateTime                   @updatedAt @map("updated_at")
+  status                    RequestStatus              @relation(fields: [statusId], references: [id])
+  item                      Item                       @relation(fields: [itemId], references: [id])
+  requestInventorySnapshots RequestInventorySnapshot[]
+  priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
+  bprs                      RequestBpr[]
+  pos                       RequestPurchaseOrder[]
+  notionRequests            NotionPurchasingRequest[]
+  notionBprs                NotionBpr[]
+
+  @@map("purchasing_requests")
+}
+
+// bprs linked to this request
+
+model RequestBpr {
+  id        String                @id @default(uuid())
+  requestId String                @map("request_id")
+  bprId     String                @map("bpr_id")
+  createdAt DateTime              @default(now()) @map("created_at")
+  updatedAt DateTime              @updatedAt @map("updated_at")
+  request   PurchasingRequest     @relation(fields: [requestId], references: [id])
+  bpr       BatchProductionRecord @relation(fields: [bprId], references: [id])
+
+  @@map("request_bprs")
+}
+
+model RequestInventorySnapshot {
+  id                String                  @id @default(uuid())
+  requestId         String                  @map("request_id")
+  objectName        String                  @map("object_name")
+  onHandQuantity    Float                   @map("on_hand_quantity")
+  allocatedQuantity Float                   @map("allocated_quantity")
+  availableQuantity Float                   @map("available_quantity")
+  bprAllocations    BatchProductionRecord[]
+  pendingPos        PurchaseOrder[]
+  createdAt         DateTime                @default(now()) @map("created_at")
+  updatedAt         DateTime                @updatedAt @map("updated_at")
+  request           PurchasingRequest       @relation(fields: [requestId], references: [id])
+
+  @@map("request_inventory_snapshots")
+}
+
+model RequestPriority {
+  id                 String              @id @default(uuid())
+  name               String
+  description        String
+  sequence           Int
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  purchasingRequests PurchasingRequest[]
+
+  @@map("request_priorities")
+}
+
+model RequestPurchaseOrder {
+  id        String            @id @default(uuid())
+  requestId String            @map("request_id")
+  poId      String            @map("po_id")
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime          @updatedAt @map("updated_at")
+  request   PurchasingRequest @relation(fields: [requestId], references: [id])
+  po        PurchaseOrder     @relation(fields: [poId], references: [id])
+
+  @@map("request_purchase_orders")
+}
+
+model RequestStatus {
+  id          String              @id @default(uuid())
+  name        String
+  description String
+  sequence    Int
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+  requests    PurchasingRequest[]
+
+  @@map("request_statuses")
 }
 
 model SupplierAlias {

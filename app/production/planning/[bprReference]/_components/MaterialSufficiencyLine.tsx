@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { MaterialsBom } from './MaterialSufficiency'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'

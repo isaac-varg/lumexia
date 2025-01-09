@@ -1,4 +1,4 @@
-import { TbBook2, TbClipboardCheck, TbShoppingBag, TbSmartHome, TbTruck } from "react-icons/tb";
+import { TbBook2, TbClipboardCheck, TbShoppingBag, TbShoppingBagPlus, TbSmartHome, TbTruck } from "react-icons/tb";
 import { BsBox2Heart, BsBoxSeam, BsFillJournalBookmarkFill } from "react-icons/bs";
 import { TbScale, TbCreditCard, TbClipboardHeart } from "react-icons/tb";
 import { BiBuildings } from "react-icons/bi";
@@ -37,6 +37,11 @@ export const sidebar = [
     {
         label: "Purchasing",
         contents: [
+            {
+                label: "Requests",
+                icon: <TbShoppingBagPlus />,
+                path: "/purchasing/requests/"
+            },
             {
                 label: "Purchasing",
                 icon: <TbCreditCard />,

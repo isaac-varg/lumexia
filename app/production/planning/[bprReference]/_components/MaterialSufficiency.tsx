@@ -1,4 +1,3 @@
-"use client"
 
 import { Panels } from '@/components/Panels'
 import Text from '@/components/Text'
@@ -6,6 +5,7 @@ import { BprBom, ExBprBom } from '@/types/bprBom'
 import MaterialSufficiencyLine from './MaterialSufficiencyLine'
 import { ExPurchaseOrderItem, PurchaseOrderItem } from '@/types/purchaseOrderItem'
 import { PurchaseOrder } from '@/types/purchaseOrder'
+import { getPurchasingRequests } from '../_functions/getPurchasingRequests'
 
 interface IPlanningPOItem extends ExPurchaseOrderItem {
     purchaseOrders: PurchaseOrder
@@ -19,8 +19,7 @@ export interface MaterialsBom extends ExBprBom {
     purchases: IPlanningPOItem[]
 }
 
-const MaterialSufficiency = ({ materials }: { materials: MaterialsBom[] }) => {
-
+const MaterialSufficiency = async ({ materials }: { materials: MaterialsBom[] }) => {
 
     return (
         <Panels.Root>

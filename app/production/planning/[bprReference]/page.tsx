@@ -10,6 +10,7 @@ import MaterialSufficiency from './_components/MaterialSufficiency';
 import ActionsPanel from './_components/ActionsPanel';
 import ChangeStatusDialog from './_components/ChangeStatusDialog';
 import { getBprStatuses } from './_functions/getBprStatuses';
+import { getPurchasingRequests } from './_functions/getPurchasingRequests';
 
 type PlanningBprPage = {
     searchParams: {

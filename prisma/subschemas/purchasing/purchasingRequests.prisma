@@ -1,0 +1,19 @@
+model PurchasingRequest {
+    id                        String                     @id @default(uuid())
+    statusId                  String                     @map("status_id")
+    priorityId                String                     @map("priority_id")
+    itemId                    String                     @map("item_id")
+    title                     String
+    createdAt                 DateTime                   @default(now()) @map("created_at")
+    updatedAt                 DateTime                   @updatedAt @map("updated_at")
+    status                    RequestStatus              @relation(fields: [statusId], references: [id])
+    item                      Item                       @relation(fields: [itemId], references: [id])
+    requestInventorySnapshots RequestInventorySnapshot[]
+    priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
+    bprs                      RequestBpr[]
+    pos                       RequestPurchaseOrder[]
+    notionRequests            NotionPurchasingRequest[]
+    notionBprs                NotionBpr[]
+
+    @@map("purchasing_requests")
+}

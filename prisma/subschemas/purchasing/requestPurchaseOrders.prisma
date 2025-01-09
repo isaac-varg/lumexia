@@ -1,0 +1,11 @@
+model RequestPurchaseOrder {
+    id        String            @id @default(uuid())
+    requestId String            @map("request_id")
+    poId      String            @map("po_id")
+    createdAt DateTime          @default(now()) @map("created_at")
+    updatedAt DateTime          @updatedAt @map("updated_at")
+    request   PurchasingRequest @relation(fields: [requestId])
+    po        PurchaseOrder     @relation(fields: [poId], references: [id])
+
+    @@map("request_purchase_orders")
+}

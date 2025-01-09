@@ -1,0 +1,13 @@
+// bprs linked to this request
+
+model RequestBpr {
+    id         String   @id @default(uuid())
+    requestId String @map("request_id")
+    bprId String @map("bpr_id")
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
+    request PurchasingRequest @relation(fields: [requestId])
+    bpr BatchProductionRecord @relation(fields: [bprId], references: [id])
+
+    @@map("request_bprs")
+}

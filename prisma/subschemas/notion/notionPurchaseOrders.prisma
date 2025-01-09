@@ -1,0 +1,10 @@
+model NotionPurchaseOrder {
+    id           String        @id @default(uuid())
+    notionPageId String        @map("notion_page_id")
+    lumexiaPoId  String        @map("lumexia_po_id")
+    createdAt    DateTime      @default(now()) @map("created_at")
+    updatedAt    DateTime      @updatedAt @map("updated_at")
+    lumexiaPo    PurchaseOrder @relation(fields: [lumexiaPoId], references: [id])
+
+    @@map("notion_purchase_orders")
+}
