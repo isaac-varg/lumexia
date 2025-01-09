@@ -35,7 +35,6 @@ const main = async () => {
     await seedAction("purchaseOrderNote");
     await seedAction("supplierAlias");
     await seedAction("recordStatus");
-    await seedAction("stepAddendumType");
     await seedAction("supplierContact");
     await seedAction("supplierContactNote");
     await seedAction("supplierNote");
