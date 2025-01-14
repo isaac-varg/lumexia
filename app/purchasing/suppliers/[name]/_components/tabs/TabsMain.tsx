@@ -10,7 +10,7 @@ const TabsMain = async ({ supplier }: { supplier: Supplier }) => {
 
 	return (
 		<div>
-			<TabsContent purchases={purchases} items={items as SupplierDetailsItems[]} />
+			<TabsContent purchases={purchases} items={items as any[]} />
 		</div>
 	);
 };

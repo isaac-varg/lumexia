@@ -71,7 +71,7 @@ const main = async () => {
 
     await seedAction("lotOrigin");
     await seedAction("config")
-    //await seedAction("microSubmission");
+    await seedAction("microSubmission");
 };
 
 main()

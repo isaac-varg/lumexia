@@ -44,6 +44,7 @@
     "easyqrcodejs-nodejs": "^4.5.2",
     "framer-motion": "^11.7.0",
     "fuzzy-search": "^3.2.1",
+    "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "luxon": "^3.4.4",

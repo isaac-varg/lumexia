@@ -1,15 +1,17 @@
 model RequestInventorySnapshot {
-    id                String                  @id @default(uuid())
-    requestId         String                  @map("request_id")
-    objectName        String                  @map("object_name")
-    onHandQuantity    Float                   @map("on_hand_quantity")
-    allocatedQuantity Float                   @map("allocated_quantity")
-    availableQuantity Float                   @map("available_quantity")
-    bprAllocations    BatchProductionRecord[]
-    pendingPos        PurchaseOrder[]
-    createdAt         DateTime                @default(now()) @map("created_at")
-    updatedAt         DateTime                @updatedAt @map("updated_at")
-    request           PurchasingRequest       @relation(fields: [requestId], references: [id])
+    id                String            @id @default(uuid())
+    requestId         String            @map("request_id")
+    objectName        String            @map("object_name") //was for a screenshot
+    onHandQuantity    Float             @map("on_hand_quantity")
+    warningShown      Boolean           @map("warning_shown")
+    warningOverridden Boolean           @map("warning_overridden")
+    allocatedQuantity Float             @map("allocated_quantity")
+    availableQuantity Float             @map("available_quantity")
+    allocatedBprIds   String[]
+    pendingPoIds      String[]
+    createdAt         DateTime          @default(now()) @map("created_at")
+    updatedAt         DateTime          @updatedAt @map("updated_at")
+    request           PurchasingRequest @relation(fields: [requestId], references: [id])
 
     @@map("request_inventory_snapshots")
 }

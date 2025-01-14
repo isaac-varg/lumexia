@@ -117,7 +117,7 @@ export const createPurchaseOrder = async (
         .setTextColor("#434343");
     pdf.text("Notes", 30, autoTableEnd + 30);
     pdf.setFont("Lato-Regular", "normal", "normal").setFontSize(10);
-    pdf.text(pdf.splitTextToSize('We will be closed from December 19th to January 6th. Please schedule delivery January 6th or later. Please note we are closed every Friday.', 200), 30, autoTableEnd + 42);
+    pdf.text(pdf.splitTextToSize('Please note we are closed every Friday.', 200), 30, autoTableEnd + 42);
 
     // total area
     pdf
