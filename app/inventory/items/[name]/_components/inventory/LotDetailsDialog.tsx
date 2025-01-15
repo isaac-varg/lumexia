@@ -69,6 +69,7 @@ const LotDetailsDialog = ({ lot }: LotDetailsDialogProps) => {
           columns={transactionsColumns}
           onRowClick={(row) => console.log(row)}
           filters={filters}
+          tableStateName="itemDetailsLot"
         />
       </Dialog.Root>
     </>

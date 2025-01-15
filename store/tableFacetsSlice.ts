@@ -1,3 +1,4 @@
+import { Filter } from '@/types/filter';
 import { create } from 'zustand';
 
 // Array of objects where each object has a "key" and a "value" which is an array of strings.
@@ -6,6 +7,18 @@ type FilterArray = { id: string; value: string[] }[];
 type State = {
     items: FilterArray;
     pos: FilterArray;
+    productionPlanningList: FilterArray
+    poDetailsItems: FilterArray
+    supplierDetailsPurchasesTab: FilterArray
+    suppliers: FilterArray
+    itemDetailsLot: FilterArray
+    poRequests: FilterArray
+    receiving: FilterArray
+    itemDetailsLotDialog: FilterArray
+    itemDetailsTransactons: FilterArray
+    itemDetailsPurchasesTab: FilterArray
+receivingRecentlyCompleted: FilterArray
+
 };
 
 export type TableStateName = keyof State;
@@ -21,6 +34,17 @@ type Actions = {
 export const useTableFacets = create<State & Actions>((set) => ({
     items: [],
     pos: [],
+    productionPlanningList: [],
+    poDetailsItems: [],
+    supplierDetailsPurchasesTab: [],
+    suppliers: [],
+    itemDetailsLot: [],
+    poRequests: [],
+    receiving: [],
+    itemDetailsLotDialog: [],
+    itemDetailsTransactons: [],
+    itemDetailsPurchasesTab: [],
+receivingRecentlyCompleted: [],
 
     setFilter: (tableState, value) =>
         set((state) => ({

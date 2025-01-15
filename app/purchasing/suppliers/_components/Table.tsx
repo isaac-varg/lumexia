@@ -26,6 +26,7 @@ const Table = ({ suppliers }: TableProps) => {
       dialogIdentifier="createSupplier"
       onRowClick={(row, method) => handleRowClick(row, method)}
       onEnter={(row) => handleRowClick({ original: { ...row } }, 'rowClick')}
+      tableStateName="suppliers"
     />
   );
 };

@@ -44,6 +44,7 @@ const PurchasesTable = ({
             id: 'referenceCode',
             desc: true,
         }]}
+        tableStateName="itemDetailsPurchasesTab"
       />
     </div>
   );

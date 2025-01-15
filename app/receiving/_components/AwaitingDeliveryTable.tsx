@@ -39,6 +39,7 @@ const AwaitingDeliveryTable = ({
         data={orders}
         onRowClick={(row) => handleRowClick(row.original)}
         columns={columns}
+        tableStateName="receivingRecentlyCompleted"
       />
     </div>
   );

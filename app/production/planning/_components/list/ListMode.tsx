@@ -1,5 +1,4 @@
 import DataTable from '@/components/DataTable'
-import { BatchProductionRecord } from '@/types/batchProductionRecord'
 import { Filter } from '@/types/filter'
 import { toFacetFilter } from '@/utils/data/toFacetFilter'
 import React from 'react'
@@ -42,6 +41,7 @@ const ListMode = ({ bprs }: ListModeProps) => {
                 filters={filters}
                 columns={columns}
                 onRowClick={(row) => handleClick(row.original)}
+                tableStateName='productionPlanningList'
 
             />
         </div>

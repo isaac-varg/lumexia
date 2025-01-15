@@ -28,6 +28,7 @@ const TransactionsTable = ({ transactions } : {transactions: Transaction[]}) => 
         filters={filters}
         dialogIdentifier="createItem"
         onRowClick={(row) => handleRowClick(row)}
+        tableStateName="itemDetailsTransactons"
       />
     </>
   );

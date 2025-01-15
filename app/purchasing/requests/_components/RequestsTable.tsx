@@ -36,6 +36,7 @@ const RequestsTable = ({ requests }: { requests: IPurchasingRequest[] }) => {
                 data={requests}
                 columns={columns}
                 onRowClick={(row) => handleClick(row)}
+                tableStateName='poRequests'
             />
         </div>
     )

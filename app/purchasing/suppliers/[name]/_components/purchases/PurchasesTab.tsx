@@ -31,6 +31,7 @@ const PurchasesTab = ({
 					data={purchases}
 					columns={purchasesColumns}
 					onRowClick={(row) => handleClick(row, 'rowClick')}
+                    tableStateName="supplierDetailsPurchasesTab"
 				/>
 			</Card.Root>
 		</div>

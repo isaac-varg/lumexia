@@ -39,6 +39,7 @@ const RecentlyCompletedTable = ({
         data={orders}
         onRowClick={(row) => handleRowClick(row.original)}
         columns={columns}
+        tableStateName="receiving"
       />
     </div>
   );

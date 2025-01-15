@@ -72,6 +72,7 @@ const ContainersTable = ({
           columns={lotsColumns}
           dialogIdentifier="createLot"
           onRowClick={(row) => handleRowClick(row)}
+          tableStateName="itemDetailsLotDialog"
         />
       </div>
     </>
