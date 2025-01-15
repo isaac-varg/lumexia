@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jan 13 2025 11:51:35 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jan 15 2025 10:54:41 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -1028,6 +1028,31 @@ model Session {
   @@map("sessions")
 }
 
+model UserConfigGroup {
+  id          String       @id @default(uuid())
+  name        String       @map("name")
+  description String
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  userConfigs UserConfig[]
+
+  @@map("user_config_groups")
+}
+
+model UserConfig {
+  id            String          @id @default(uuid())
+  userId        String          @map("user_id")
+  configGroupId String          @map("config_group_id")
+  name          String
+  value         String
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  user          User            @relation(fields: [userId], references: [id])
+  configGroup   UserConfigGroup @relation(fields: [configGroupId], references: [id])
+
+  @@map("user_configs")
+}
+
 model UserRoleAssignment {
   id         String   @id @default(uuid())
   userId     String   @map("user_id")
@@ -1053,21 +1078,20 @@ model UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  purchaseOrders PurchaseOrder[]
-
+  id                            String                          @id @default(cuid())
+  name                          String?
+  email                         String?                         @unique
+  emailVerified                 DateTime?                       @map("email_verified")
+  image                         String?
+  accounts                      Account[]
+  sessions                      Session[]
+  createdAt                     DateTime                        @default(now())
+  updatedAt                     DateTime                        @updatedAt
+  purchaseOrders                PurchaseOrder[]
   transactions                  Transaction[]
   purchaseOrderNotes            PurchaseOrderNote[]
   activityLogs                  ActivityLog[]
+  userConfigs                   UserConfig[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]

@@ -34,7 +34,10 @@ export const staticRecords = {
             productionQuality: 'ea83900a-24fa-448c-9737-02c98bfaa193',
             production: 'ef88a45c-3114-4eed-90fb-d76e25b6782c',
             systemAdmin: '95e34f0a-0b52-40e4-a48d-0643f3b1a8f4',
-        }
+        },
+        userConfigGroups: {
+            panelSelections: '579091aa-13e9-4c0c-86a0-983f07a93ad7'
+        },
     },
     production: {
         bprStatuses: {
@@ -91,6 +94,6 @@ export const staticRecords = {
         }
     },
     configs: {
-        isProductionNotionEnabled: '1f782875-32aa-4804-b344-84221b4c391b', 
+        isProductionNotionEnabled: '1f782875-32aa-4804-b344-84221b4c391b',
     }
 }

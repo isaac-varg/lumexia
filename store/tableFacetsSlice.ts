@@ -1,4 +1,3 @@
-import { Filter } from '@/types/filter';
 import { create } from 'zustand';
 
 // Array of objects where each object has a "key" and a "value" which is an array of strings.

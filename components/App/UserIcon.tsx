@@ -4,48 +4,50 @@ import React from "react";
 import { RiUserLine } from "react-icons/ri";
 
 const UserIcon = async () => {
-  const session = await auth();
+    const session = await auth();
 
-  if (!session) {
-    redirect("/api/auth/signin")
-  }
+    if (!session) {
+        redirect("/api/auth/signin")
+    }
 
-  if (!session)
+    if (!session)
+        return (
+            <form
+                action={async () => {
+                    "use server";
+                    await signIn();
+                }}
+            >
+                <button className="flex items-center" type="submit">
+                    <RiUserLine className="text-gray-700 text-2xl mr-2 cursor-pointer" />
+                </button>
+            </form>
+        );
+
+
+
     return (
-      <form
-        action={async () => {
-          "use server";
-          await signIn();
-        }}
-      >
-        <button className="flex items-center" type="submit">
-          <RiUserLine className="text-gray-700 text-2xl mr-2 cursor-pointer" />
-        </button>
-      </form>
+        <div className="w-8 h-8 ">
+            {session?.user?.image ? (
+                <form
+                    action={async () => {
+                        "use server";
+                        await signOut();
+                    }}
+                >
+                    <button type="submit">
+                        <img
+                            className="rounded-full"
+                            src={session.user.image}
+                            alt="User Avatar"
+                        />
+                    </button>
+                </form>
+            ) : (
+                <RiUserLine className="text-gray-700 text-2xl mr-2 cursor-pointer" />
+            )}
+        </div>
     );
-
-  return (
-    <div className="w-8 h-8 ">
-      {session?.user?.image ? (
-        <form
-          action={async () => {
-            "use server";
-            await signOut();
-          }}
-        >
-          <button type="submit">
-            <img
-              className="rounded-full"
-              src={session.user.image}
-              alt="User Avatar"
-            />
-          </button>
-        </form>
-      ) : (
-        <RiUserLine className="text-gray-700 text-2xl mr-2 cursor-pointer" />
-      )}
-    </div>
-  );
 };
 
 export default UserIcon;
