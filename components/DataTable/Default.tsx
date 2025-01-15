@@ -31,7 +31,7 @@ type DataTableDefaultProps = {
     onEnter?: (row: any) => any;
     initialSortBy?: { id: string, desc: boolean }[];
     // initial states from zustand store
-    tableStateName: TableStateName 
+    tableStateName: TableStateName
 };
 
 const Default = ({
@@ -51,29 +51,17 @@ const Default = ({
     const tableFilterState = useTableFilter()
     const tableFacetsState = useTableFacets()
 
+
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>(initialSortBy || []);
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(tableFacetsState[tableStateName]);
     const [globalFilter, setGlobalFilter] = useState(tableFilterState[tableStateName] ?? "");
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
 
-    console.log('tan',columnFilters)
-    const initialTableFacets: any[] = []
-    tableFacetsState[tableStateName].forEach((facet, index) => {
 
-        console.log('fff',  facet)
-        initialTableFacets.push({
-            id: index,
-            value: [...facet.get()]//[...tableFacetsState[tableStateName].get(index)], 
-        })
-    })
-
-
-
-    console.log(initialTableFacets)
     const table = useReactTable({
         data,
         columns,

@@ -7,8 +7,8 @@ import { Filter } from "@/types/filter";
 import DebouncedInput from "../DebouncedInput";
 import useDialog from "@/hooks/useDialog";
 import ActionButton from "../ActionButton";
-import {  useTableFilter } from "@/store/tableFilterSlice";
-import { TableStateName } from "@/store/tableFacetsSlice";
+import { useTableFilter } from "@/store/tableFilterSlice";
+import { TableStateName, useTableFacets } from "@/store/tableFacetsSlice";
 
 interface DataTableFilterbarProps<TData> {
     table: Table<TData>;
@@ -17,7 +17,7 @@ interface DataTableFilterbarProps<TData> {
     linkPath?: string;
     actionButtonTitle?: string;
     onEnter?: (row: any) => any;
-    tableStateName: TableStateName 
+    tableStateName: TableStateName
 }
 
 export default function FilterBar<TData>({
@@ -33,6 +33,7 @@ export default function FilterBar<TData>({
 
     const { showDialog } = useDialog();
     const tableFilterState = useTableFilter()
+    const tableFacetState = useTableFacets()
 
     const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -49,9 +50,18 @@ export default function FilterBar<TData>({
     const handleFilterChange = (value: string | number) => {
         // set tanstack state
         table.setGlobalFilter(String(value))
-        
-      
+
+
         tableFilterState.setFilter(tableStateName, value as string)
+
+    }
+
+    const handleFacetReset = () => {
+        // tanstack
+        table.resetColumnFilters()
+
+        // store
+        tableFacetState.resetFilter(tableStateName)
 
     }
 
@@ -84,7 +94,7 @@ export default function FilterBar<TData>({
 
                         {isFiltered && (
                             <button
-                                onClick={() => table.resetColumnFilters()}
+                                onClick={() => handleFacetReset()}
                                 className="flex items-center px-2 lg:px-3 font-poppins"
                             >
                                 Reset

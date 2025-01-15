@@ -1,80 +1,71 @@
 import { create } from 'zustand';
 
-// map where each set belongs to the name of the facet or really column name
-type NamedSets<T> = Map<string, Set<T>>;
+// Array of objects where each object has a "key" and a "value" which is an array of strings.
+type FilterArray = { id: string; value: string[] }[];
 
 type State = {
-    items: NamedSets<string>;
-    pos: NamedSets<string>;
+    items: FilterArray;
+    pos: FilterArray;
 };
 
 export type TableStateName = keyof State;
 
 type Actions = {
-    setFilter: (filterName: TableStateName, value: NamedSets<any>) => void;
-    addToNamedSet: <T>(filterName: TableStateName, setName: string, value: T) => void;
-    removeNamedSet: (filterName: TableStateName, setName: string) => void;
-    resetNamedSet: (filterName: TableStateName, setName: string) => void;
-    removeValueFromNamedSet: <T>(filterName: TableStateName, setName: string, value: T) => void;
+    setFilter: (tableState: TableStateName, value: FilterArray) => void;
+    addToFilter: (tableState: TableStateName, filterName: string, value: string) => void;
+    removeFilter: (tableState: TableStateName, filterName: string) => void;
+    resetFilter: (tableState: TableStateName) => void;
+    removeValueFromFilter: (tableState: TableStateName, filterName: string, value: string) => void;
 };
 
 export const useTableFacets = create<State & Actions>((set) => ({
-    items: new Map<string, Set<string>>(),
-    pos: new Map<string, Set<string>>(),
+    items: [],
+    pos: [],
 
-    setFilter: (filterName, value) =>
+    setFilter: (tableState, value) =>
         set((state) => ({
             ...state,
-            [filterName]: value,
+            [tableState]: value,
         })),
 
-    addToNamedSet: (filterName, setName, value) =>
+    addToFilter: (tableState, filterName, value) =>
         set((state) => {
-            const map = state[filterName] as NamedSets<any>;
-            // create a copy of the map.
-            const updatedMap = new Map(map);
+            const array = state[tableState] as FilterArray;
+            const updatedArray = array.map((obj) =>
+                obj.id === filterName ? { ...obj, value: [...obj.value, value] } : obj
+            );
 
-            // use existing set if it exists or create a new one if it dne
-            const existingSet = updatedMap.get(setName) || new Set();
-            // add the value to the set
-            existingSet.add(value);
-
-            // update the map with the modified est.
-            updatedMap.set(setName, existingSet);
-
-            return { ...state, [filterName]: updatedMap };
-        }),
-    removeNamedSet: (filterName, setName) =>
-        set((state) => {
-            const map = state[filterName] as NamedSets<any>;
-            const updatedMap = new Map(map);
-
-            updatedMap.delete(setName);
-
-            return { ...state, [filterName]: updatedMap };
-        }),
-
-    resetNamedSet: (filterName, setName) =>
-        set((state) => {
-            const map = state[filterName] as NamedSets<any>;
-            const updatedMap = new Map(map);
-
-            updatedMap.set(setName, new Set());
-
-            return { ...state, [filterName]: updatedMap };
-        }),
-    removeValueFromNamedSet: (filterName, setName, value) =>
-        set((state) => {
-            const map = state[filterName] as NamedSets<any>;
-            const updatedMap = new Map(map); 
-
-            const existingSet = updatedMap.get(setName);
-            if (existingSet) {
-                existingSet.delete(value); 
-                updatedMap.set(setName, existingSet); 
+            // If the setName does not exist, add a new object
+            if (!updatedArray.some((obj) => obj.id === filterName)) {
+                updatedArray.push({ id: filterName, value: [value] });
             }
 
-            return { ...state, [filterName]: updatedMap };
+            return { ...state, [tableState]: updatedArray };
+        }),
+
+    removeFilter: (tableState, filterName) =>
+        set((state) => {
+            const array = state[tableState] as FilterArray;
+            const updatedArray = array.filter((obj) => obj.id !== filterName);
+
+            return { ...state, [tableState]: updatedArray };
+        }),
+
+    resetFilter: (tableState) =>
+        set((state) => ({
+            ...state,
+            [tableState]: [],
+        })),
+
+    removeValueFromFilter: (tableState, filterName, value) =>
+        set((state) => {
+            const array = state[tableState] as FilterArray;
+            const updatedArray = array.map((obj) =>
+                obj.id === filterName
+                    ? { ...obj, value: obj.value.filter((v) => v !== value) }
+                    : obj
+            );
+
+            return { ...state, [tableState]: updatedArray };
         }),
 }));
-

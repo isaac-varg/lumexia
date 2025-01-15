@@ -31,15 +31,18 @@ export default function FacetedFilter<TData, TValue>({
     const handleClick = (isSelected: boolean, option: FacetOptions) => {
         if (!column) { return }
 
+        const filterName = column.id;
+        const filterValue = option.value
+
         if (isSelected) {
             //for zunstand state
-            tableFacets.removeValueFromNamedSet(tableStateName, column.id, option.value)
+            tableFacets.removeValueFromFilter(tableStateName, filterName, filterValue )
 
             // for tanstack
             selectedValues.delete(option.value);
         } else {
             //state
-            tableFacets.addToNamedSet(tableStateName, column.id, option.value)
+            tableFacets.addToFilter(tableStateName, filterName, filterValue)
 
             // tanstack
             selectedValues.add(option.value);
