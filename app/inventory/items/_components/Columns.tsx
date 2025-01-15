@@ -21,7 +21,6 @@ export const columns = [
       return row.row.original.itemType?.name;
     },
     filterFn: (row, id, value) => {
-      console.log(row);
       return value.includes(row.getValue(id));
     },
   }),

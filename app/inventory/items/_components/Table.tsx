@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { flattenItem } from "../_functions/flattenItem";
 import { rowSelectionHandler } from "@/utils/auxiliary/rowSelectionHandler";
 import { getSlug } from "@/utils/general/getSlug";
+import { useTableFilter } from "@/store/tableFilterSlice";
 
 type TableProps = {
     items: Item[];
@@ -16,6 +17,9 @@ type TableProps = {
 const Table = ({ items }: TableProps) => {
 
     const router = useRouter();
+    const tableFilterState = useTableFilter() 
+
+    const globalFilter = tableFilterState.items;
 
     const tableData = flattenItem(items);
 
@@ -45,6 +49,7 @@ const Table = ({ items }: TableProps) => {
             dialogIdentifier="createItem"
             onRowClick={(row, method) => handleRowClick(row, method)}
             onEnter={(row) => handleRowClick({ original: { ...row } })}
+            tableStateName="items"
         />
     );
 };

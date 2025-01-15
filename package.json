@@ -62,7 +62,8 @@
     "react-loading-skeleton": "^3.4.0",
     "react-tailwindcss-datepicker": "^1.7.2",
     "react-use": "^17.5.1",
-    "react-use-wizard": "^2.3.0"
+    "react-use-wizard": "^2.3.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@prisma/client": "^5.20.0",

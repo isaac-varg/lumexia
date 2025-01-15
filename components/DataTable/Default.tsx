@@ -17,6 +17,8 @@ import { Filter } from "@/types/filter";
 import ContextMenu from "../ContextMenu";
 import { RowSelectionHandlerMethod } from "@/utils/auxiliary/rowSelectionHandler";
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
+import { useTableFilter } from "@/store/tableFilterSlice";
+import { TableStateName, useTableFacets } from "@/store/tableFacetsSlice";
 
 type DataTableDefaultProps = {
     data: any;
@@ -28,6 +30,8 @@ type DataTableDefaultProps = {
     onRowClick: (row: any, method: RowSelectionHandlerMethod) => void;
     onEnter?: (row: any) => any;
     initialSortBy?: { id: string, desc: boolean }[];
+    // initial states from zustand store
+    tableStateName: TableStateName 
 };
 
 const Default = ({
@@ -40,16 +44,36 @@ const Default = ({
     linkPath,
     onEnter,
     initialSortBy,
+    tableStateName,
+
 }: DataTableDefaultProps) => {
+
+    const tableFilterState = useTableFilter()
+    const tableFacetsState = useTableFacets()
+
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>(initialSortBy || []);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [globalFilter, setGlobalFilter] = useState("");
+    const [globalFilter, setGlobalFilter] = useState(tableFilterState[tableStateName] ?? "");
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
 
+    console.log('tan',columnFilters)
+    const initialTableFacets: any[] = []
+    tableFacetsState[tableStateName].forEach((facet, index) => {
+
+        console.log('fff',  facet)
+        initialTableFacets.push({
+            id: index,
+            value: [...facet.get()]//[...tableFacetsState[tableStateName].get(index)], 
+        })
+    })
+
+
+
+    console.log(initialTableFacets)
     const table = useReactTable({
         data,
         columns,
@@ -78,6 +102,7 @@ const Default = ({
 
     return (
         <div className="flex flex-col gap-y-6">
+
             <FilterBar
                 table={table}
                 filters={filters}
@@ -85,6 +110,7 @@ const Default = ({
                 dialogIdentifier={dialogIdentifier}
                 linkPath={linkPath}
                 onEnter={onEnter}
+                tableStateName={tableStateName}
             />
             <div className="w-full">
                 <table className="min-w-full text-left text-lg font-light">

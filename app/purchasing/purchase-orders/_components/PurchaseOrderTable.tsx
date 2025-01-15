@@ -43,6 +43,7 @@ const PurchaseOrderTable = ({
         filters={filters}
         onRowClick={(row, method) => handleRowClick(row, method)}
         actionButtonTitle="New Purchase Order"
+        tableStateName="pos"
       />
     </div>
   );
