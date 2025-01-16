@@ -1,6 +1,6 @@
 "use client"
 
-import { PanelStates, usePanelSelection } from "@/store/panelSelectionSlice";
+import { PanelStates, usePanelActions, usePanelSelection } from "@/store/panelSelectionSlice";
 import { UserConfig } from "@/types/UserConfig";
 
 type SetterProps = {
@@ -8,19 +8,20 @@ type SetterProps = {
 }
 
 
-const ConfigurationStateSetter = ({ panelSelections } : SetterProps) => {
-    const panelSelectionState = usePanelSelection()
+const ConfigurationStateSetter = ({ panelSelections }: SetterProps) => {
+    
+    const { setPanelState }  = usePanelActions()
 
     panelSelections.forEach((config) => {
 
         const panelName = config.name as PanelStates
-        panelSelectionState.setPanelState(panelName, config.value)
+        setPanelState(panelName, config.value)
 
-    }) 
+    })
 
-    
 
-  return null;
+
+    return null;
 }
 
 export default ConfigurationStateSetter

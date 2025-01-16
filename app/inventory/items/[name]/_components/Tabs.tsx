@@ -9,6 +9,7 @@ import PurchasingPanel, { PurchaseOrderWithItems } from "./purchasing/Purchasing
 import ProductionTab from "./production/ProductionTab";
 import { BomUsage } from "../_functions/getBomUsage";
 import PricingTab from "./pricing/PricingTab";
+import { PanelStates } from "@/store/panelSelectionSlice";
 
 const TabsDemo = ({
     item,
@@ -23,6 +24,7 @@ const TabsDemo = ({
     purchaseOrders: PurchaseOrderWithItems[];
     usage: BomUsage
 }) => {
+    const isPurchased = item.procurementType?.name === "Purchased"
     const tabs = [
         { identifier: "inventory", label: "Inventory" },
         { identifier: "production", label: "Production" },
@@ -32,13 +34,15 @@ const TabsDemo = ({
         { identifier: "purchasing", label: "Purchasing" },
         { identifier: "pricing", label: "Pricing"}
     ]
-    if (item.procurementType?.name === "Purchased") {
+    if (isPurchased) {
         tabs.splice(1, 0, ...purchasedAdditionalTabs);
     }
 
+    const panelStateName: PanelStates = isPurchased ? 'itemDetails' : 'productionItemDetails'
+
     return (
-        <TabsPanel.Root defaultTabIdentifier="inventory">
-            <TabsPanel.List tabTriggers={tabs} />
+        <TabsPanel.Root panelStateName={panelStateName}>
+            <TabsPanel.List tabTriggers={tabs} panelStateName={panelStateName}/>
 
             <TabsPanel.Content identifier="inventory">
                 <LotsPanel item={item} lots={lots} containerTypes={containerTypes} />

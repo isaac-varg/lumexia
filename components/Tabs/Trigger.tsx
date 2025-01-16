@@ -1,14 +1,30 @@
 import React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import ContextMenu from "../ContextMenu";
+import { PanelStates, usePanelActions  } from "@/store/panelSelectionSlice";
+import { updateUserConfig } from "@/actions/users/updateUserConfig";
+import { staticRecords } from "@/configs/staticRecords";
 
 const TabTrigger = ({
     identifier,
     label,
+    panelStateName,
 }: {
     identifier: string;
     label: string;
+    panelStateName: PanelStates;
 }) => {
+
+    const { setPanelState } = usePanelActions()
+    const handleDefaultSelection = () => {
+
+        setPanelState(panelStateName, identifier)
+
+        updateUserConfig(panelStateName, identifier, staticRecords.app.userConfigGroups.panelSelections )
+
+    }
+
+
     return (
         <ContextMenu.Root>
 
@@ -24,7 +40,7 @@ const TabTrigger = ({
                 </ContextMenu.Trigger>
             </Tabs.Trigger>
             <ContextMenu.Content>
-                <ContextMenu.Item onClick={() => console.log('herasd')}>hey</ContextMenu.Item>
+                <ContextMenu.Item onClick={() => handleDefaultSelection()}>Set as Default Tab</ContextMenu.Item>
             </ContextMenu.Content>
         </ContextMenu.Root>
     );

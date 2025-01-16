@@ -36,7 +36,8 @@ export const staticRecords = {
             systemAdmin: '95e34f0a-0b52-40e4-a48d-0643f3b1a8f4',
         },
         userConfigGroups: {
-            panelSelections: '579091aa-13e9-4c0c-86a0-983f07a93ad7'
+            panelSelections: '579091aa-13e9-4c0c-86a0-983f07a93ad7',
+            general: '879f6a09-8308-4215-8572-18489e028cc8',
         },
     },
     production: {
