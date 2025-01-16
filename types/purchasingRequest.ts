@@ -4,6 +4,7 @@ export interface PurchasingRequest {
     priorityId: string
     itemId: string
     title: string
+    referenceCode: number
     createdAt: Date
     updatedAt: Date
 }

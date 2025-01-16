@@ -5,9 +5,11 @@ import { MaterialsBom } from "../_components/MaterialSufficiency"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { staticRecords } from "@/configs/staticRecords";
 import { DateTime } from "luxon";
+import { getUserId } from "@/actions/users/getUserId";
 
 export const createRequest = async (material: MaterialsBom, priorityId: string) => {
 
+    const requestingUserId = await getUserId()
     const allocatedBprIds = material.allocated.map((bprBom) => bprBom.id);
     const pendingPoIds = material.purchases.filter((po) => po.purchaseOrderStatusId !== staticRecords.purchasing.poStatuses.received).map((po) => po.id)
     const week = DateTime.now().toFormat("WW")
@@ -16,8 +18,9 @@ export const createRequest = async (material: MaterialsBom, priorityId: string) 
         data: {
             statusId: '226db3a6-2756-4a5d-a6c5-b741339baeea',
             itemId: material.bom.itemId,
-            title: `${material.bom.item.name} <${week}>`,
+            title: `${material.bom.item.name} <Week ${week}>`,
             priorityId,
+            requestingUserId,
 
         }
     });

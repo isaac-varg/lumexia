@@ -1,12 +1,15 @@
 model PurchasingRequest {
     id                        String                     @id @default(uuid())
+    requestingUserId          String                     @map("requesting_user_id")
     statusId                  String                     @map("status_id")
     priorityId                String                     @map("priority_id")
+    referenceCode             Int                        @default(autoincrement()) @map("reference_code")
     itemId                    String                     @map("item_id")
     title                     String
     createdAt                 DateTime                   @default(now()) @map("created_at")
     updatedAt                 DateTime                   @updatedAt @map("updated_at")
     status                    RequestStatus              @relation(fields: [statusId], references: [id])
+    requestingUser User @relation(fields: [requestingUserId], references: [id])
     item                      Item                       @relation(fields: [itemId], references: [id])
     requestInventorySnapshots RequestInventorySnapshot[]
     priority                  RequestPriority            @relation(fields: [priorityId], references: [id])

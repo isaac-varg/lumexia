@@ -1,27 +1,19 @@
-import { Account } from "./accounts"
-import {Session }from "./sessions"
-import { Authenticator } from "./authenticators"
-import { Transaction }from "../inventory/transactions"
-import { PurchaseOrder } from "../purchasing/purchaseOrders"
-import { PurchaseOrderNote }from "../purchasing/purchaseOrderNotes"
-import { ActivityLog } from "../auxiliary/activityLogs"
-
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+    id                 String              @id @default(cuid())
+    name               String?
+    email              String?             @unique
+    emailVerified      DateTime?           @map("email_verified")
+    image              String?
+    accounts           Account[]
+    sessions           Session[]
     createdAt          DateTime            @default(now())
     updatedAt          DateTime            @updatedAt
     purchaseOrders     PurchaseOrder[]
-      transactions  Transaction[]
+    transactions       Transaction[]
     purchaseOrderNotes PurchaseOrderNote[]
     activityLogs       ActivityLog[]
-    userConfigs UserConfig[]
+    userConfigs        UserConfig[]
+    purchasingRequests PurchasingRequest[]
 
- 
-  @@map("users")
+    @@map("users")
 }

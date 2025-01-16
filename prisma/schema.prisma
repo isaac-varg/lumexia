@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jan 15 2025 10:54:41 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jan 16 2025 13:26:09 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -806,13 +806,16 @@ model PurchaseOrder {
 
 model PurchasingRequest {
   id                        String                     @id @default(uuid())
+  requestingUserId          String                     @map("requesting_user_id")
   statusId                  String                     @map("status_id")
   priorityId                String                     @map("priority_id")
+  referenceCode             Int                        @default(autoincrement()) @map("reference_code")
   itemId                    String                     @map("item_id")
   title                     String
   createdAt                 DateTime                   @default(now()) @map("created_at")
   updatedAt                 DateTime                   @updatedAt @map("updated_at")
   status                    RequestStatus              @relation(fields: [statusId], references: [id])
+  requestingUser            User                       @relation(fields: [requestingUserId], references: [id])
   item                      Item                       @relation(fields: [itemId], references: [id])
   requestInventorySnapshots RequestInventorySnapshot[]
   priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
@@ -1092,6 +1095,7 @@ model User {
   purchaseOrderNotes            PurchaseOrderNote[]
   activityLogs                  ActivityLog[]
   userConfigs                   UserConfig[]
+  purchasingRequests            PurchasingRequest[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]
