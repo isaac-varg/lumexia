@@ -1,0 +1,62 @@
+"use client"
+
+import Dialog from "@/components/Dialog"
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
+import useDialog from "@/hooks/useDialog"
+import { LinkablePo } from "../_functions/getLinkablePos"
+import { createLinkedPo } from "../_functions/createLinkedPo"
+
+const SelectPoDialog = ({ requestId, linkablePos }: { requestId: string, linkablePos: LinkablePo[] }) => {
+
+    const { resetDialogContext } = useDialog()
+
+    const handlePoSelect = async (poId: string) => {
+        await createLinkedPo({ requestId, poId, })
+
+        await createActivityLog('requestLinkPo', 'request', requestId, { context: `po ${poId} linked to request` })
+
+        resetDialogContext()
+
+
+    }
+
+    return (
+        <Dialog.Root identifier="actionLinkPosToPurchasingRequest">
+
+            <Dialog.Title>Link a Purchase Order</Dialog.Title>
+
+            <div className="flex flex-col gap-y-6">
+                <p> These are purchase orders that contain this material. Select a PO to link to this Purchasing Request</p>
+
+
+                <div className="grid grid-cols-4 gap-4 overflow-auto">
+                    {linkablePos.map((po) => {
+                        return (
+                            <div
+                                key={po.purchaseOrders.id}
+                                className="card bg-indigo-200"
+                                onClick={() => handlePoSelect(po.purchaseOrderId)}
+                            >
+                                <div className="card-body">
+                                    <span className="card-title">{po.purchaseOrders.referenceCode} - {po.purchaseOrders.supplier.name}</span>
+
+                                    <div className="flex justify-between">
+
+                                        <span>{po.quantity} {po.uom.abbreviation}  Purchased</span>
+                                        <span className="badge badge-info">{po.purchaseOrderStatus.name}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        )
+                    })}
+
+                </div>
+            </div>
+
+
+        </Dialog.Root>
+    )
+}
+
+export default SelectPoDialog

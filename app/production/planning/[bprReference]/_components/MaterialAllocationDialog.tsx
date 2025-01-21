@@ -1,6 +1,6 @@
 import Dialog from "@/components/Dialog"
 import { MaterialsBom } from "./MaterialSufficiency"
-import { useEffect, useRef, useState } from "react"
+import { useEffect,  useState } from "react"
 import { getPurchasingRequests } from "../_functions/getPurchasingRequests"
 import { PurchasingRequest } from "@/types/purchasingRequest"
 import RequestForm from "./RequestForm"

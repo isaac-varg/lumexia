@@ -9,8 +9,9 @@ import { getUserId } from "@/actions/users/getUserId";
 
 export const createRequest = async (material: MaterialsBom, priorityId: string) => {
 
+
     const requestingUserId = await getUserId()
-    const allocatedBprIds = material.allocated.map((bprBom) => bprBom.id);
+    const allocatedBprIds =  material.allocated.map((bprBom) => bprBom.bpr.id);
     const pendingPoIds = material.purchases.filter((po) => po.purchaseOrderStatusId !== staticRecords.purchasing.poStatuses.received).map((po) => po.id)
     const week = DateTime.now().toFormat("WW")
 

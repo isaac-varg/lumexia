@@ -1,13 +1,15 @@
 import Text from '@/components/Text'
+import { DateTime } from 'luxon'
 import React from 'react'
 
 type BasicDetailsPanelProps = {
     requestingUser: string
     statusName: string
     priorityName: string
+    requestDate: Date
 }
 
-const BasicDetailsPanel = ({ requestingUser, statusName , priorityName}: BasicDetailsPanelProps) => {
+const BasicDetailsPanel = ({ requestingUser, statusName , priorityName, requestDate }: BasicDetailsPanelProps) => {
     return (
         <div className='card bg-base-300'>
 
@@ -15,6 +17,9 @@ const BasicDetailsPanel = ({ requestingUser, statusName , priorityName}: BasicDe
                 <div className='card-title'>Basic Details</div>
 
                 <Text.LabelDataPair label='Requesting User' data={requestingUser} />
+
+
+                <Text.LabelDataPair label='Request On' data={DateTime.fromJSDate(requestDate).toFormat('dd MMM yyyy \'at\' hh:mm a')} />
 
                 <Text.LabelDataPair label='Status' data={statusName} displayType='badge' badgeColor='success'/>
 

@@ -4,12 +4,14 @@ type State = {
     itemDetails: string
     productionItemDetails: string
     supplierDetails: string
+    requestInventory: string
 }
 
 const panelDefaults = {
     itemDetails: "inventory",
     productionItemDetails: 'inventory',
     supplierDetails: 'purchases',
+    requestInventory: 'current',
 }
 
 export type PanelStates = keyof State
@@ -24,6 +26,7 @@ export const usePanelSelection = create<State & Actions>((set) => ({
     itemDetails: "inventory",
     productionItemDetails: "inventory",
     supplierDetails: 'purchases',
+    requestInventory: 'current',
 
     actions: {
         setPanelState: (panelStateName, value) => {

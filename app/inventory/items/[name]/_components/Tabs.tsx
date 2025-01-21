@@ -32,7 +32,7 @@ const TabsDemo = ({
 
     const purchasedAdditionalTabs = [
         { identifier: "purchasing", label: "Purchasing" },
-        { identifier: "pricing", label: "Pricing"}
+        { identifier: "pricing", label: "Pricing" }
     ]
     if (isPurchased) {
         tabs.splice(1, 0, ...purchasedAdditionalTabs);
@@ -42,7 +42,7 @@ const TabsDemo = ({
 
     return (
         <TabsPanel.Root panelStateName={panelStateName}>
-            <TabsPanel.List tabTriggers={tabs} panelStateName={panelStateName}/>
+            <TabsPanel.List tabTriggers={tabs} panelStateName={panelStateName} />
 
             <TabsPanel.Content identifier="inventory">
                 <LotsPanel item={item} lots={lots} containerTypes={containerTypes} />
@@ -53,7 +53,7 @@ const TabsDemo = ({
             </TabsPanel.Content>
 
             <TabsPanel.Content identifier="pricing">
-            <PricingTab />
+                <PricingTab />
             </TabsPanel.Content>
 
 

@@ -1,22 +1,20 @@
 import React from 'react'
-import { LinkedBatchEntryType } from '../_functions/getLinkedBatches'
 import { useRouter } from 'next/navigation'
 import { TbTrash } from 'react-icons/tb'
-import { deleteLinkedBpr } from '../_functions/deleteLinkedBpr'
+import { LinkedPos } from '../_functions/getLinkedPos'
+import { deleteLinkedPo } from '../_functions/deleteLinkedPos'
 
-const LinkedBprCard = ({ bpr }: { bpr: LinkedBatchEntryType }) => {
+const LinkedPoCard = ({ po }: { po: LinkedPos }) => {
 
     const router = useRouter()
 
     const handleDelete = async (e: any) => {
         e.stopPropagation();
-        await deleteLinkedBpr(bpr.id, bpr.requestId)
-
-
+        await deleteLinkedPo(po.id, po.requestId)
     }
 
     const handleClick = () => {
-        router.push(`/production/planning/${bpr.bpr.referenceCode}?id=${bpr.bpr.id}`)
+        router.push(`/purchasing/purchase-orders/${po.po.referenceCode}?id=${po.poId}`)
 
     }
 
@@ -24,7 +22,7 @@ const LinkedBprCard = ({ bpr }: { bpr: LinkedBatchEntryType }) => {
         <div className='card bg-indigo-200 hover:cursor-pointer hover:bg-indigo-300' onClick={handleClick}>
             <div className='card-body'>
                 <div className='flex justify-between'>
-                    <div className='card-title'>BPR# {bpr.bpr.referenceCode} - {bpr.bpr.mbpr.producesItem.name} </div>
+                    <div className='card-title'>PO# {po.po.referenceCode} - {po.po.supplier.name} </div>
                     <span className='text-2xl hover:text-red-500' onClick={(e) => handleDelete(e)}><TbTrash /></span>
                 </div>
             </div>
@@ -32,4 +30,4 @@ const LinkedBprCard = ({ bpr }: { bpr: LinkedBatchEntryType }) => {
     )
 }
 
-export default LinkedBprCard
+export default LinkedPoCard

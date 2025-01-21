@@ -1,30 +1,30 @@
 "use client"
 import React from 'react'
-import { LinkedBatchesType } from '../_functions/getLinkedBatches'
-import LinkedBprCard from './LinkedBprCard'
 import useDialog from '@/hooks/useDialog'
+import { LinkedPos } from '../_functions/getLinkedPos'
+import LinkedPoCard from './LinkedPoCard'
 
-type LinkedBprsPanelProps = {
-    bprs: LinkedBatchesType
+type LinkedPosPanelProps = {
+    pos: LinkedPos[]
 }
 
-const LinkedBatchesPanel = ({ bprs }: LinkedBprsPanelProps) => {
+const LinkedPosPanel = ({ pos }: LinkedPosPanelProps) => {
 
     const { showDialog } = useDialog()
 
     const handleAdd = () => {
-        showDialog('actionLinkBprToPurchasingRequest')
+        showDialog('actionLinkPosToPurchasingRequest')
     }
 
     return (
         <div className='card bg-base-300'>
             <div className='card-body'>
                 <div className='flex justify-between'>
-                    <div className='card-title'>For Batches</div>
+                    <div className='card-title'>Purchased Via</div>
                     <button className='btn' onClick={handleAdd}>Add</button>
                 </div>
                 <div className='grid grid-cols-2 gap-4 '>
-                    {bprs.map((bpr) => <LinkedBprCard key={bpr.id} bpr={bpr} />)}
+                    {pos.map((po) => <LinkedPoCard key={po.id} po={po} />)}
                 </div>
             </div>
 
@@ -32,4 +32,4 @@ const LinkedBatchesPanel = ({ bprs }: LinkedBprsPanelProps) => {
     )
 }
 
-export default LinkedBatchesPanel
+export default LinkedPosPanel

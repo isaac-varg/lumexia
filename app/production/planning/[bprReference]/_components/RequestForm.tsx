@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { getPurchasingPriorities } from '../_functions/getPurchasingPriorities'
 import { RequestPriority } from '@/types/requestPriority'
 import { createRequest } from '../_functions/createRequest'
-import { createActivityLog } from '@/utils/auxiliary/createActivityLog'
 
 
 type RequestFormProps = {
@@ -29,15 +28,18 @@ const RequestForm = ({
     const [requestPriorities, setRequestPriorities] = useState<RequestPriority[]>();
     const [isLoading, setIsLoading] = useState(false)
 
+
+
     const handleSubmit = async (data: Inputs) => {
-           
-       try {
-        await createRequest(material, data.priorityId); 
-       } catch (error) {
-        throw new Error("Error in creating request.") 
-       } finally {
-           location.reload()            
-       }
+
+
+        try {
+            await createRequest(material, data.priorityId);
+        } catch (error) {
+            throw new Error("Error in creating request.")
+        } finally {
+             location.reload()            
+        }
     }
 
     const handleCancel = () => {
