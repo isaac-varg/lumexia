@@ -6,8 +6,6 @@ import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActi
 import AddItemDialog from "./AddItemDialog";
 import useDialog from "@/hooks/useDialog";
 import { Item } from "@/types/item";
-import { PurchaseOrder } from "@/types/purchaseOrder";
-import { revalidatePage } from "@/actions/app/revalidatePage";
 import { useRouter } from "next/navigation";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import createColumns from "../_configs/ItemTableColumns";
@@ -15,12 +13,15 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { staticRecords } from "@/configs/staticRecords";
 import { ItemTableLockedColumns } from "../_configs/ItemTableLockedLocked";
+import { PurchaseOrderDetails } from "../_functions/getPurchaseOrder";
+import { revalidatePage } from "@/actions/app/revalidatePage";
+import Card from "@/components/Card";
 
 
 type ItemTableProps = {
     orderItems: PurchaseOrderItem[];
     items: any[];
-    purchaseOrder: PurchaseOrder;
+    purchaseOrder: PurchaseOrderDetails;
 };
 
 const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
@@ -142,9 +143,10 @@ const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
 
 
     return (
-        <div>
+        <Card.Root>
+            <Card.Title>Items</Card.Title>
             <AddItemDialog data={items} onItemSelection={handleItemSelection} />
-            {isLocked ? <DataTable.Default data={orderItems} columns={ItemTableLockedColumns} onRowClick={(row) => handleRowClick(row)}  tableStateName="poDetailsItems"/> : <DataTable.Editable
+            {isLocked ? <DataTable.Default data={orderItems} columns={ItemTableLockedColumns} onRowClick={(row) => handleRowClick(row)} tableStateName="poDetailsItems" /> : <DataTable.Editable
                 data={orderItems}
                 columns={columns}
                 onRowClick={(row) => handleRowClick(row)}
@@ -152,7 +154,7 @@ const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
                 onRowDelete={handleRowDelete}
                 onRowAdd={handleRowAdd}
             />}
-        </div>
+        </Card.Root>
     );
 };
 

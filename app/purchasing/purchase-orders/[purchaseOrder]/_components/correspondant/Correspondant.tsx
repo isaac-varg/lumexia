@@ -1,20 +1,20 @@
 import Card from "@/components/Card";
 
-import { PurchaseOrder } from "@/types/purchaseOrder";
 import { TbMail, TbPhone } from "react-icons/tb";
 import React from "react";
 import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions";
-import PaymentMethodSelector from "./PaymentMethodSelector";
+import PaymentMethodSelector from "../payment/PaymentMethodSelector";
 import supplierPaymentMethodActions from "@/actions/purchasing/supplierPaymentMethods";
-import PaymentMethodForm from "./PaymentMethodForm";
+import PaymentMethodForm from "../payment/PaymentMethodForm";
 import supplierNoteActions from "@/actions/purchasing/supplierNoteActions";
 import { SupplierNote } from "@/types/SupplierNote";
 import SupplierNameTag from "./SupplierNameTag";
+import { PurchaseOrderDetails } from "../../_functions/getPurchaseOrder";
 
 const Correspondant = async ({
   purchaseOrder,
 }: {
-  purchaseOrder: PurchaseOrder;
+  purchaseOrder: PurchaseOrderDetails;
 }) => {
   const poWithPaymentMethod = purchaseOrder.paymentMethodId
     ? await purchaseOrderActions.getOne(purchaseOrder.id, undefined, [
@@ -42,17 +42,7 @@ const Correspondant = async ({
         <SupplierNameTag supplier={purchaseOrder.supplier} />
 
 
-          <div>
-            <span className="flex flex-row gap-x-4 text-lg font-inter items-center">
-              <TbMail />
-              <p>test@gmail.com</p>
-            </span>
-            <span className="flex flex-row gap-x-4 text-lg font-inter items-center">
-              <TbPhone />
-              <p>{purchaseOrder.supplier.phone}</p>
-            </span>
-          </div>
-
+      
           <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
           <h1 className="text-xl font-poppins font-semibold">Payment Method</h1>
 

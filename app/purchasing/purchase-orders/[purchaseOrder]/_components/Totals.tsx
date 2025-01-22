@@ -6,16 +6,19 @@ import { calculateGrandTotal } from "../_functions/calculateTotal";
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 type TotalsProps = {
-  purchaseOrderItems: PurchaseOrderItem[];
+    purchaseOrderItems: PurchaseOrderItem[];
 };
 
 const Totals = ({ purchaseOrderItems }: TotalsProps) => {
 
     const total = calculateGrandTotal(purchaseOrderItems);
 
-  return <Card.Root>
-    <LabelDataPair label="Total" data={toFracitonalDigits.curreny(total)} />
-  </Card.Root>
+    return <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">
+            <div className="card-title">Total</div>
+            <LabelDataPair label="Total" data={toFracitonalDigits.curreny(total)} />
+        </div>
+    </div>
 };
 
 export default Totals;

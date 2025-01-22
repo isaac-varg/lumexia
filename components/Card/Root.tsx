@@ -6,6 +6,7 @@ interface CardRootProps {
 	borderSize?: keyof typeof classes.borderSize;
 	shadow?: keyof typeof classes.shadow;
 	bg?: keyof typeof classes.bg;
+    type?: keyof typeof classes.type;
 
 }
 
@@ -16,33 +17,49 @@ const classes = {
 		cuttySark: "border-cutty-sark-200",
 		tasman: "border-tasman-400",
 		light: "border-neutral-200",
+        base: ""
 	},
 	borderSize: {
-		base: "border-2",
+		base: "",
 		small: "border-[1px]",
+        old: "border-2"
 	},
 	shadow: {
-		base: "shadow-lg shadow-limed-spruce-200",
+		base: "shadow-xl",
 		none: "",
+		old: "shadow-lg shadow-limed-spruce-200",
 	},
 	bg: {
 		base: "",
 		cuttySark: "bg-cutty-sark-200",
 		neutral: 'bg-white',
 	},
+    type: {
+        old: 'rounded-lg p-6',
+        dasiy: 'card card-'
+    }
 };
+
+const wrapper = {
+    old: 'flex flex-col w-full gap-y-4 p-6',
+    daisy: 'card-body'
+}
 
 const Root = ({
 	children,
-	borderColor = "cuttySark",
+	borderColor = "base",
 	borderSize = "base",
 	shadow = "base",
 	bg = "base",
+    type = 'dasiy',
+
 }: CardRootProps) => (
 	<div
-		className={`flex flex-col w-full gap-y-4 p-6 rounded-lg ${classes.borderSize[borderSize]} ${classes.borderColor[borderColor]} ${classes.shadow[shadow]} ${classes.bg[bg]}  h-full`}
+		className={`  ${classes.type[type]} ${classes.borderSize[borderSize]} ${classes.borderColor[borderColor]} ${classes.shadow[shadow]} ${classes.bg[bg]}  h-full`}
 	>
+        <div className={`${wrapper.daisy}`}>
 		{children}
+        </div>
 	</div>
 );
 

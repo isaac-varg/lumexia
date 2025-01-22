@@ -1,8 +1,8 @@
 import TagLabel from '@/components/Text/TagLabel'
-import { PurchaseOrder } from '@/types/purchaseOrder'
 import React from 'react'
+import { PurchaseOrderDetails } from '../../_functions/getPurchaseOrder'
 
-const StatusTag = ({purchaseOrder}: {purchaseOrder: PurchaseOrder} ) => {
+const StatusTag = ({purchaseOrder}: {purchaseOrder: PurchaseOrderDetails} ) => {
 
 	let color = 'neutral'
 	

@@ -1,7 +1,8 @@
 "use client";
 
-import { Supplier } from "@/types/supplier";
 import { useRouter } from "next/navigation";
+import { Supplier } from "@prisma/client";
+import Image from "next/image";
 
 const SupplierNameTag = ({ supplier }: { supplier: Supplier }) => {
   const router = useRouter();
@@ -15,11 +16,18 @@ const SupplierNameTag = ({ supplier }: { supplier: Supplier }) => {
 
   return (
     <span className="flex flex-row gap-x-4 items-center hover:cursor-pointer" onClick={handleClick}>
-      <div className="bg-limed-spruce-400 rounded-full w-16 h-16" />
+      <div className="w-16 h-16">
+        <Image
+            src={'https://picsum.photos/200'}
+            width={200}
+            height={200}
+            alt="Supplier picture"
+            className="rounded-full"
+        />
+    </div>
 
       <div>
         <h2 className="font-semibold font-inter">{supplier.name}</h2>
-        <h2 className="font-medium text-slate-600">12 previous orders</h2>
       </div>
     </span>
   );

@@ -3,11 +3,11 @@
 import ActionButton from "@/components/ActionButton";
 import { PurchaseOrderStatus } from "@/types/purchaseOrderStatus";
 import React from "react";
-import { nextPOStatus } from "../_functions/nextPOStatus";
+import { nextPOStatus } from "../../_functions/nextPOStatus";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
-import { nextItemStatuses } from "../_functions/nextItemStatuses";
+import { nextItemStatuses } from "../../_functions/nextItemStatuses";
 
-const PreviousStatusButton = ({
+const NextStatusButton = ({
 	poStatuses,
 	currentStatusSequence,
 	purchaseOrderId,
@@ -20,11 +20,11 @@ const PreviousStatusButton = ({
 		poStatuses[
 		poStatuses.findIndex(
 			(status: PurchaseOrderStatus) =>
-				status.sequence === currentStatusSequence - 1,
+				status.sequence === currentStatusSequence + 1,
 		)
 		];
 
-	if ( !nextStatus || nextStatus.sequence === 0  || currentStatusSequence === 4 ) {
+	if (!nextStatus || nextStatus.sequence > 3) {
 		return false;
 	}
 
@@ -46,11 +46,11 @@ const PreviousStatusButton = ({
 
 	return (
 		<>
-			<ActionButton color="indigo" onClick={() => handleClick()}>
+			<ActionButton color="bayLeaf" onClick={() => handleClick()}>
 				Set to {nextStatus.name}
 			</ActionButton>
 		</>
 	);
 };
 
-export default PreviousStatusButton;
+export default NextStatusButton;

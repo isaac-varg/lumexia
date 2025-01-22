@@ -45,3 +45,9 @@ export const getPOItems = async (purchaseOrderId: string) => {
     return aliases      
 
 }
+
+
+type POItems = Awaited<ReturnType<typeof getPOItems>>
+
+export type POItem = POItems[number];
+
