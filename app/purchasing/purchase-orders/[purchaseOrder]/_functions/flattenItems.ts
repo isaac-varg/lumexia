@@ -10,3 +10,5 @@ export const flattenItems = (items: Item[]) => {
     };
   });
 };
+
+export type PoFlatItems = ReturnType<typeof flattenItems>

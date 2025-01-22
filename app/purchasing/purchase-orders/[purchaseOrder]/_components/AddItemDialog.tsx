@@ -1,8 +1,9 @@
 import Dialog from "@/components/Dialog";
 import React, { useEffect, useState } from "react";
 import FuzzySearch from "fuzzy-search";
+import { PoFlatItems } from "../_functions/flattenItems";
 
-const AddItemDialog = ({ data, onItemSelection }: { data: any[], onItemSelection: any }) => {
+const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSelection: any }) => {
     const [results, setResults] = useState<any[]>([]);
     const [searchInput, setSearchInput] = useState("");
 
@@ -12,7 +13,6 @@ const AddItemDialog = ({ data, onItemSelection }: { data: any[], onItemSelection
         "aliasesAll",
     ]);
 
-    console.log(data)
 
     const handleItemClick = (item: any) => {
         onItemSelection(item);

@@ -1,10 +1,6 @@
 import React from "react";
-import ItemTable from "./_components/ItemTable";
 import { flattenOrderItems } from "./_functions/flattenOrderItems";
-import itemActions from "@/actions/inventory/items";
-import purchaseOrderNoteActions from "@/actions/purchasing/purchaseOrderNoteActions";
 import purchaseOrderStatusActions from "@/actions/purchasing/purchaseOrderStatusActions";
-import activityLogActions from "@/actions/auxiliary/activityLogActions";
 import { getPOItems } from "./_functions/getPOItems";
 import { getPurchaseOrder } from "./_functions/getPurchaseOrder";
 import Header from "./_components/header/Header";
@@ -16,6 +12,7 @@ import { flattenItems } from "./_functions/flattenItems";
 import { getAllItems } from "./_functions/getAllItems";
 import { getOrderNotes } from "./_functions/getOrderNotes";
 import { getActivity } from "./_functions/getActivity";
+import ViewMode from "./_components/viewMode/ViewMode";
 
 type PurchaseOrderDetailsProps = {
     searchParams: {
@@ -34,6 +31,8 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
     const activity = await getActivity(purchaseOrder.id)
 
 
+    const flattenedOrderItems = flattenOrderItems(orderItems)
+
 
     return (
         <div className="flex flex-col gap-y-6">
@@ -43,12 +42,14 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
                 orderItems={orderItems}
             />
 
-            <ItemTable
+            <ViewMode
                 purchaseOrder={purchaseOrder}
-                orderItems={flattenOrderItems(orderItems)}
+                orderItems={flattenedOrderItems}
                 items={flattenItems(items)}
+
             />
 
+           
 
 
             <div className="grid grid-cols-2 gap-4">
@@ -57,16 +58,17 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
                     poId={purchaseOrder.id}
                 />
                 <Totals purchaseOrderItems={orderItems} />
+
+                <ActivityPanelCard activity={activity} />
+                <Correspondant purchaseOrder={purchaseOrder} />
             </div>
 
 
 
 
 
-            <Correspondant purchaseOrder={purchaseOrder} />
 
 
-            <ActivityPanelCard activity={activity} />
 
 
         </div>

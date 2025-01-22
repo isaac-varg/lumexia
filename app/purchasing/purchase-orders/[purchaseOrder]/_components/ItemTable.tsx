@@ -1,6 +1,5 @@
 "use client";
 import DataTable from "@/components/DataTable";
-import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import React, { useEffect, useState } from "react";
 import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions";
 import AddItemDialog from "./AddItemDialog";
@@ -16,11 +15,13 @@ import { ItemTableLockedColumns } from "../_configs/ItemTableLockedLocked";
 import { PurchaseOrderDetails } from "../_functions/getPurchaseOrder";
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import Card from "@/components/Card";
+import { PoFlattenedOrderItems } from "../_functions/flattenOrderItems";
+import { PoFlatItems } from "../_functions/flattenItems";
 
 
 type ItemTableProps = {
-    orderItems: PurchaseOrderItem[];
-    items: any[];
+    orderItems: PoFlattenedOrderItems;
+    items: PoFlatItems;
     purchaseOrder: PurchaseOrderDetails;
 };
 
