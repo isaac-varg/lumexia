@@ -1,24 +1,8 @@
-import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
-import { SupplierAlias } from "@/types/supplierAlias";
-
-export interface POItemWithAlias extends PurchaseOrderItem {
-    alias: SupplierAlias | null;
-}
-
-export interface FlattenedOrderItem extends PurchaseOrderItem {
-  itemName: string;
-  itemReferenceCode: string;
-  uomName: string;
-  uomAbbreviation: string;
-  status: string;
-  quantity: number
-  alias: string | null
-
-}
+import { POItem } from "./getPOItems";
 
 export const flattenOrderItems = (
-  items: POItemWithAlias[]
-): FlattenedOrderItem[] => {
+  items: POItem[]
+)  => {
   return items.map((item) => {
     
     const alias = item.alias ? item.alias.alias.name : null;
@@ -34,3 +18,6 @@ export const flattenOrderItems = (
     };
   });
 };
+
+
+export type PoFlattenedOrderItems = ReturnType<typeof flattenOrderItems>

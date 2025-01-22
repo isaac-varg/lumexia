@@ -1,3 +1,4 @@
+import { PoViewModes } from '@/app/purchasing/purchase-orders/[purchaseOrder]/_components/viewMode/ViewMode';
 import { create } from 'zustand';
 
 type State = {
@@ -5,13 +6,15 @@ type State = {
     productionItemDetails: string
     supplierDetails: string
     requestInventory: string
+    poViewMode: PoViewModes
 }
 
-const panelDefaults = {
+const panelDefaults: State = {
     itemDetails: "inventory",
     productionItemDetails: 'inventory',
     supplierDetails: 'purchases',
     requestInventory: 'current',
+    poViewMode: 'table',
 }
 
 export type PanelStates = keyof State
@@ -27,6 +30,7 @@ export const usePanelSelection = create<State & Actions>((set) => ({
     productionItemDetails: "inventory",
     supplierDetails: 'purchases',
     requestInventory: 'current',
+    poViewMode: 'table',
 
     actions: {
         setPanelState: (panelStateName, value) => {
@@ -38,6 +42,6 @@ export const usePanelSelection = create<State & Actions>((set) => ({
     }
 
 
-})) 
+}))
 
-export const usePanelActions = () => usePanelSelection((state) => state.actions ) 
+export const usePanelActions = () => usePanelSelection((state) => state.actions) 
