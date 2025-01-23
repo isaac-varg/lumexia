@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Jan 16 2025 13:26:09 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jan 23 2025 15:08:37 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -146,11 +146,12 @@ model EquipmentType {
 }
 
 model ContainerType {
-  id        String      @id @default(uuid())
-  name      String
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  Container Container[]
+  id                      String                    @id @default(uuid())
+  name                    String
+  createdAt               DateTime                  @default(now()) @map("created_at")
+  updatedAt               DateTime                  @updatedAt @map("updated_at")
+  Container               Container[]
+  PurchaseOrderItemDetail PurchaseOrderItemDetail[]
 
   @@map("container_types")
 }
@@ -245,21 +246,22 @@ model UnitOfMeasurementConversion {
 }
 
 model UnitOfMeasurement {
-  id                    String                        @id @default(uuid())
-  name                  String
-  abbreviation          String
-  uomA                  UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
-  uomB                  UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
-  createdAt             DateTime                      @default(now()) @map("created_at")
-  updatedAt             DateTime                      @updatedAt @map("updated_at")
-  lots                  Lot[]
-  transactions          Transaction[]
-  container             Container[]
-  purchaseOrderItem     PurchaseOrderItem[]
-  ItemConsumerContainer ItemConsumerContainer[]
-  BatchSize             BatchSize[]
-  BprBillOfMaterials    BprBillOfMaterials[]
-  BprStaging            BprStaging[]
+  id                      String                        @id @default(uuid())
+  name                    String
+  abbreviation            String
+  uomA                    UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+  uomB                    UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+  createdAt               DateTime                      @default(now()) @map("created_at")
+  updatedAt               DateTime                      @updatedAt @map("updated_at")
+  lots                    Lot[]
+  transactions            Transaction[]
+  container               Container[]
+  purchaseOrderItem       PurchaseOrderItem[]
+  ItemConsumerContainer   ItemConsumerContainer[]
+  BatchSize               BatchSize[]
+  BprBillOfMaterials      BprBillOfMaterials[]
+  BprStaging              BprStaging[]
+  PurchaseOrderItemDetail PurchaseOrderItemDetail[]
 
   @@map("units_of_measurement")
 }
@@ -741,20 +743,39 @@ model StepInstruction {
   @@map("step_instructions")
 }
 
+model PurchaseOrderItemDetail {
+  id                   String            @id @default(uuid())
+  poItemId             String            @map("po_item_id")
+  containerTypeId      String            @map("container_type_id")
+  weightPerContainer   Float             @map("weight_per_container")
+  weightUomId          String            @map("weight_uom_id")
+  quantityOfContainers Int               @map("quantity_of_containers")
+  expectedDateStart    DateTime?         @map("expected_date_start")
+  expectedDateEnd      DateTime?         @map("expected_date_end")
+  createdAt            DateTime          @default(now()) @map("created_at")
+  updatedAt            DateTime          @updatedAt @map("updated_at")
+  poItem               PurchaseOrderItem @relation(fields: [poItemId], references: [id])
+  containerType        ContainerType     @relation(fields: [containerTypeId], references: [id])
+  uom                  UnitOfMeasurement @relation(fields: [weightUomId], references: [id])
+
+  @@map("purchase_order_item_details")
+}
+
 model PurchaseOrderItem {
-  id                    String              @id @default(uuid())
-  purchaseOrderId       String              @map("purchase_order_id")
-  itemId                String              @map("item_id")
+  id                    String                    @id @default(uuid())
+  purchaseOrderId       String                    @map("purchase_order_id")
+  itemId                String                    @map("item_id")
   quantity              Float
-  pricePerUnit          Float               @map("price_per_unit")
-  uomId                 String              @map("uom_id")
-  purchaseOrderStatusId String              @map("purchase_order_status_id")
-  createdAt             DateTime            @default(now()) @map("created_at")
-  updatedAt             DateTime            @updatedAt @map("updated_at")
-  purchaseOrders        PurchaseOrder       @relation(fields: [purchaseOrderId], references: [id])
-  item                  Item                @relation(fields: [itemId], references: [id])
-  uom                   UnitOfMeasurement   @relation(fields: [uomId], references: [id])
-  purchaseOrderStatus   PurchaseOrderStatus @relation(fields: [purchaseOrderStatusId], references: [id])
+  pricePerUnit          Float                     @map("price_per_unit")
+  uomId                 String                    @map("uom_id")
+  purchaseOrderStatusId String                    @map("purchase_order_status_id")
+  createdAt             DateTime                  @default(now()) @map("created_at")
+  updatedAt             DateTime                  @updatedAt @map("updated_at")
+  purchaseOrders        PurchaseOrder             @relation(fields: [purchaseOrderId], references: [id])
+  item                  Item                      @relation(fields: [itemId], references: [id])
+  uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
+  purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
+  details               PurchaseOrderItemDetail[]
 
   @@map("purchase_order_items")
 }
@@ -823,6 +844,7 @@ model PurchasingRequest {
   pos                       RequestPurchaseOrder[]
   notionRequests            NotionPurchasingRequest[]
   notionBprs                NotionBpr[]
+  RequestNote               RequestNote[]
 
   @@map("purchasing_requests")
 }
@@ -857,6 +879,19 @@ model RequestInventorySnapshot {
   request           PurchasingRequest @relation(fields: [requestId], references: [id])
 
   @@map("request_inventory_snapshots")
+}
+
+model RequestNote {
+  id        String            @id @default(uuid())
+  requestId String            @map("request_id")
+  userId    String            @map("user_id")
+  content   String
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime          @updatedAt @map("updated_at")
+  request   PurchasingRequest @relation(fields: [requestId], references: [id])
+  user      User              @relation(fields: [userId], references: [id])
+
+  @@map("request_notes")
 }
 
 model RequestPriority {
@@ -1096,6 +1131,7 @@ model User {
   activityLogs                  ActivityLog[]
   userConfigs                   UserConfig[]
   purchasingRequests            PurchasingRequest[]
+  requestNotes                  RequestNote[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]

@@ -28,7 +28,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
 
     const request = await getRequest(searchParams.id)
     const linkedBprs = await getLinkedBatches(searchParams.id)
-    const linkedPos = await getLinkedPos(searchParams.id)
+    const linkedPos = await getLinkedPos(searchParams.id, request.itemId)
     const linkableBprs = await getLinkableBprs(request.itemId);
     const linkablePos = await getLinkablePos(request.itemId);
     const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)

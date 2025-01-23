@@ -17,6 +17,7 @@ model PurchaseOrderItem {
     item                  Item                @relation(fields: [itemId], references: [id])
     uom                   UnitOfMeasurement   @relation(fields: [uomId], references: [id])
     purchaseOrderStatus   PurchaseOrderStatus @relation(fields: [purchaseOrderStatusId], references: [id])
+    details PurchaseOrderItemDetail[]
 
     @@map("purchase_order_items")
 }

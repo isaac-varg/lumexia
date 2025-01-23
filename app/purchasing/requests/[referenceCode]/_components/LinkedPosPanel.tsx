@@ -8,9 +8,10 @@ type LinkedPosPanelProps = {
     pos: LinkedPos[]
 }
 
-const LinkedPosPanel = ({ pos }: LinkedPosPanelProps) => {
+const LinkedPosPanel = ({ pos  }: LinkedPosPanelProps) => {
 
     const { showDialog } = useDialog()
+
 
     const handleAdd = () => {
         showDialog('actionLinkPosToPurchasingRequest')

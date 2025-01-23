@@ -2,7 +2,8 @@
 
 import prisma from "@/lib/prisma"
 
-export const getLinkedPos = async (requestId: string) => {
+
+export const getLinkedPos = async (requestId: string, itemId: string) => {
 
     const linkedPos = await prisma.requestPurchaseOrder.findMany({
         where: {
@@ -12,23 +13,24 @@ export const getLinkedPos = async (requestId: string) => {
             po: {
                 include: {
                     purchaseOrderItems: {
+                        where: {
+                            itemId,
+                        },
                         include: {
-                            item: true
-                        }
+                            item: true,
+                            details: true,
+                        },
                     },
                     status: true,
-                    supplier: true
-                }
-            }
-        }
-    })
+                    supplier: true,
+                },
+            },
+        },
+    });
 
+    return linkedPos;
+};
 
-    
-
-
-    return linkedPos 
-}
 
 type LinkedPosType = Awaited<ReturnType<typeof getLinkedPos>>;
 
