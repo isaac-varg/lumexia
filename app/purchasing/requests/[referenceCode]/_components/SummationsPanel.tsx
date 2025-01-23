@@ -18,8 +18,8 @@ const SummationsPanel = ({
             <div className='card-body'>
                 <div className='card-title'>Summations</div>
 
-                <Text.LabelDataPair label='Needed For Linked BPRs' data={`${toFracitonalDigits.weight(linkedBprsAmounts.totalNeeded)} lbs`} />
-                <Text.LabelDataPair label='Purhased via Linked POs' data={`${toFracitonalDigits.weight(linkedPosAmounts.totalPurchased)} lbs`} />
+                <Text.LabelDataPair label='Linked BPRs' data={`${toFracitonalDigits.weight(linkedBprsAmounts.totalNeeded)} lbs`} />
+                <Text.LabelDataPair label='Linked POs' data={`${toFracitonalDigits.weight(linkedPosAmounts.totalPurchased)} lbs`} />
             </div>
         </div>
     )

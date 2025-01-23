@@ -19,6 +19,19 @@ const config: Config = {
                 poppins: ["var(--font-poppins)"],
             },
             colors: {
+                'lilac': {
+                    '50': '#f9f6f9',
+                    '100': '#f5eef5',
+                    '200': '#eddded',
+                    '300': '#dec3de',
+                    '400': '#d0a9cf',
+                    '500': '#b67eb3',
+                    '600': '#a0629a',
+                    '700': '#874f7f',
+                    '800': '#71436b',
+                    '900': '#603b5b',
+                    '950': '#381f34',
+                },
                 tasman: {
                     "50": "#f6f8f5",
                     "100": "#ebefe9",

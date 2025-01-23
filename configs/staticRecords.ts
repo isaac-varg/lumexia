@@ -92,6 +92,28 @@ export const staticRecords = {
         poStatuses: {
             confirmedSlashAwaitingDelivery: 'd1c6bb97-a554-49b5-9a6a-0261405dc2cc',
             received: 'db907b0f-4aac-42d7-9118-ee35e178d9b3'
+        },
+        requestPriorities: {
+            neededForBatch: "88d4f46b-72ba-44b8-b01c-d9a849f3b227",
+            runningLow: "bfbe26eb-3e22-4ab8-ba82-8662846d6b70",
+            outOfStock: "e19affa6-18b2-40a9-b738-f38b593480da"
+        },
+        requestStatuses: {
+            onHold: "ea9543d2-07e3-48db-b363-52e1c6604c65",
+            replacementIngredientTesting: "dac9e8ca-eb24-4422-b933-da161925e502",
+            pricingRequested: "19eda7e9-32aa-4c02-a0c2-a1779fc43eab",
+            allocatingIngredients: "fee82489-594c-4d33-9ca1-a37d01245c85",
+            poPending: "9aaafb8f-5ce8-4fb6-9513-a3f9c8273580",
+            poConfirmed: "40dcd39f-2292-4fce-9303-d2aea4c4d425",
+            expectedDeliveryDate: "50e76032-a20f-43a2-976e-e1bfeabc6776",
+            noEta: "128aa35a-e685-42f3-87b5-b2217d40bc1b",
+            deliveredIssue: "c868b528-5075-4778-a820-1044da5c2af2",
+            partialDelivery: "8ba665cb-c333-44b5-858f-6fc13fca6b43",
+            requestCancelledDuplicateRequest: "97468cdd-cf95-4a3c-b740-3384176aadfa",
+            discontinuedIngredient: "3ae592bf-acc8-43ad-be0b-3eba483d3545",
+            replacementIngredientFound: "454eceee-9597-400e-8754-f12e64a64ff9",
+            delivered: "45f46d11-af6c-43e6-b263-556a5bab3562",
+            requested: "226db3a6-2756-4a5d-a6c5-b741339baeea"
         }
     },
     configs: {

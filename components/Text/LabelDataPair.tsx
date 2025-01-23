@@ -36,7 +36,7 @@ const LabelDataPair = ({
                 </label>
             </div>
             <div className={`${classes.displayType[displayType]} ${displayType === 'badge' ? `${classes.badgeColor[badgeColor]} badge-lg`: ''}`}>
-                {data}
+                {data || children }
             </div>
         </div>
     );

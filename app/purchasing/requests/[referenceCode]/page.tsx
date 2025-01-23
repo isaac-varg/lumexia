@@ -15,6 +15,7 @@ import InventoryPanel from './_components/InventoryPanel';
 import SummationsPanel from './_components/SummationsPanel';
 import { getLinkedPosAmount } from './_functions/getLinkedPoAmounts';
 import { getLinkedBprsAmounts } from './_functions/getLinkedBprAmounts';
+import { getRequestStatuses } from './_functions/getRequestStatuses';
 
 type RequestDetailsProps = {
     searchParams: {
@@ -32,6 +33,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
     const linkablePos = await getLinkablePos(request.itemId);
     const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)
     const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId),  request.itemId)
+    const requestStatuses = await getRequestStatuses();
 
 
     if (!request) {
@@ -54,6 +56,8 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
                     statusName={request.status.name ?? ""}
                     priorityName={request.priority.name}
                     requestDate={request.createdAt}
+                    requestId={request.id}
+                    allStatuses={requestStatuses}
 
                 />
 
