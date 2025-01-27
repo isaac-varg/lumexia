@@ -21,6 +21,19 @@ export const getRequests = async () => {
             item: true,
             status: true,
             priority: true,
+            pos: {
+                include: {
+                    po: {
+                        include: {
+                            purchaseOrderItems: {
+                                include: {
+                                    details: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     });
 

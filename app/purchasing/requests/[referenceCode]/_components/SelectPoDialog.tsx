@@ -10,8 +10,8 @@ const SelectPoDialog = ({ requestId, linkablePos }: { requestId: string, linkabl
 
     const { resetDialogContext } = useDialog()
 
-    const handlePoSelect = async (poId: string) => {
-        await createLinkedPo({ requestId, poId, })
+    const handlePoSelect = async (poId: string, poItemId: string) => {
+        await createLinkedPo({ requestId, poId}, poItemId)
 
         await createActivityLog('requestLinkPo', 'request', requestId, { context: `po ${poId} linked to request` })
 
@@ -35,7 +35,7 @@ const SelectPoDialog = ({ requestId, linkablePos }: { requestId: string, linkabl
                             <div
                                 key={po.purchaseOrders.id}
                                 className="card bg-indigo-200"
-                                onClick={() => handlePoSelect(po.purchaseOrderId)}
+                                onClick={() => handlePoSelect(po.purchaseOrderId, po.id)}
                             >
                                 <div className="card-body">
                                     <span className="card-title">{po.purchaseOrders.referenceCode} - {po.purchaseOrders.supplier.name}</span>

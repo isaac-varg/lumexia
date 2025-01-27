@@ -36,7 +36,7 @@ const restructureAs = [
 const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) => {
 
     const isNewDetailsEntry = purchaseOrder.po.purchaseOrderItems.length === 0 && purchaseOrder.po.purchaseOrderItems[0].details.length === 0
-    const detailId = isNewDetailsEntry ? purchaseOrder.po.purchaseOrderItems[0].details[0].id : '';
+    const detailId = purchaseOrder.po.purchaseOrderItems[0].details[0].id
 
     const { expectedDateStart, expectedDateEnd, weightPerContainer, containerTypeId, quantityOfContainers } = purchaseOrder.po.purchaseOrderItems[0].details[0] ? purchaseOrder.po.purchaseOrderItems[0].details[0] : { expectedDateStart: null, expectedDateEnd: null, weightPerContainer: 0, containerTypeId: '', quantityOfContainers: 0 }
 
@@ -88,6 +88,8 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
             quantityOfContainers: data.quantityOfContainers,
         }
 
+        if (!detailId) { throw new Error('No detail id was passed.') }
+
         await updatePoItemDetails(detailId, payload)
         resetDialogContext()
 
@@ -101,7 +103,6 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
         if (!value) { return }
 
         setExpectedDate(value)
-
 
         const { startDate, endDate } = value;
 
