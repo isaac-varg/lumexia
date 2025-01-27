@@ -14,6 +14,8 @@ import { createPoItemDetails } from "../_functions/createPoItemDetail"
 import { staticRecords } from "@/configs/staticRecords"
 import { DateTime } from "luxon"
 import { updatePoItemDetails } from "../_functions/updatePoItemDetails"
+import useDialog from "@/hooks/useDialog"
+import { useRouter } from "next/navigation"
 
 type LinkedPoDialogProps = {
     containerTypes: Containers[]
@@ -33,13 +35,21 @@ const restructureAs = [
 
 const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) => {
 
-    const isNewDetailsEntry = purchaseOrder.po.purchaseOrderItems[0].details.length === 0
-    const detailId = purchaseOrder.po.purchaseOrderItems[0].details[0].id;
-    const expectedDateStart = isNewDetailsEntry ? null : purchaseOrder.po.purchaseOrderItems[0].details[0].expectedDateStart
-    const expectedDateEnd = isNewDetailsEntry ? null : purchaseOrder.po.purchaseOrderItems[0].details[0].expectedDateEnd
+    const isNewDetailsEntry = purchaseOrder.po.purchaseOrderItems.length === 0 && purchaseOrder.po.purchaseOrderItems[0].details.length === 0
+    const detailId = isNewDetailsEntry ? purchaseOrder.po.purchaseOrderItems[0].details[0].id : '';
+
+    const { expectedDateStart, expectedDateEnd, weightPerContainer, containerTypeId, quantityOfContainers } = purchaseOrder.po.purchaseOrderItems[0].details[0] ? purchaseOrder.po.purchaseOrderItems[0].details[0] : { expectedDateStart: null, expectedDateEnd: null, weightPerContainer: 0, containerTypeId: '', quantityOfContainers: 0 }
+
+    const defaultFormValues: Inputs = {
+        weightPerContainer,
+        containerTypeId,
+        quantityOfContainers,
+    }
 
 
-    const form = useForm<Inputs>()
+    const form = useForm<Inputs>({ defaultValues: defaultFormValues })
+    const router = useRouter()
+    const { resetDialogContext } = useDialog()
     const [expectedDate, setExpectedDate] = useState({
         startDate: expectedDateStart,
         endDate: expectedDateEnd,
@@ -47,7 +57,7 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
     const [isDateActive, setIsDateActive] = useState(false);
 
 
-    const dateString = expectedDate.startDate && expectedDate.endDate ? `${DateTime.fromJSDate(expectedDate.startDate).toFormat('MMM DD YYYY') || ''} to ${DateTime.fromJSDate(expectedDate.endDate).toFormat('MMM DD YYYY')}` : 'None Set'
+    const dateString = expectedDate.startDate && expectedDate.endDate ? `${DateTime.fromJSDate(expectedDate.startDate).toFormat('DDDD') || ''} to ${DateTime.fromJSDate(expectedDate.endDate).toFormat('DDDD')}` : 'None Set'
 
 
     const containerTypeOptions = restructureData(containerTypes, restructureAs) as SelectOption[]
@@ -68,7 +78,7 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
             }
 
             await createPoItemDetails(payload);
-
+            resetDialogContext()
             return;
         }
 
@@ -79,8 +89,12 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
         }
 
         await updatePoItemDetails(detailId, payload)
+        resetDialogContext()
 
+    }
 
+    const handlePoTitleClick = () => {
+        router.push(`/purchasing/purchase-orders/${purchaseOrder.po.referenceCode}?id=${purchaseOrder.poId}`)
     }
 
     const handleDateSelection = async (value: DateValueType | null) => {
@@ -99,7 +113,10 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
 
     return (
         <Dialog.Root identifier={`linkedPoDialog-${purchaseOrder.po.purchaseOrderItems[0].id}`}>
-            <Dialog.Title>Purchase Order Item Details</Dialog.Title>
+            <Dialog.Title>
+                <span>Details for PO# </span>
+                <span onClick={() => handlePoTitleClick()} className="underline decoration-wavy hover:cursor-pointer hover:text-sky-900 ">{`${purchaseOrder.po.referenceCode} - ${purchaseOrder.po.supplier.name}`}</span>
+            </Dialog.Title>
             <p>You can specify pack sizes for the order item and expected delivery date range</p>
 
 

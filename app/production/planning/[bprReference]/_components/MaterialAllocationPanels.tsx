@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 import { PurchasingRequest } from '@/types/purchasingRequest'
 import { TbPlus } from 'react-icons/tb'
+import { PurchasingRequestForPlanning } from '../_functions/getPurchasingRequests'
+import { DateTime } from 'luxon'
 
 const MaterialAllocationPanels = ({
     material,
@@ -16,16 +18,12 @@ const MaterialAllocationPanels = ({
 
 }: {
     material: MaterialsBom
-    requests: PurchasingRequest[]
+    requests: PurchasingRequestForPlanning[]
     isLoading: boolean
     setMode: Dispatch<SetStateAction<"default" | "request">>
 }) => {
 
-
     const router = useRouter()
-
-
-
 
     const handleProductClick = () => {
         const formattedName = getSlug(material.bom.item.name);
@@ -33,11 +31,13 @@ const MaterialAllocationPanels = ({
         router.push(path)
     }
 
-    const handleRequestClick = () => {
-
+    const handleNewRequest = () => {
         setMode('request')
-
     }
+
+    const handleRequestClick = (request: PurchasingRequestForPlanning) => {
+        router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`) 
+    } 
 
     return (
         <div>
@@ -58,17 +58,21 @@ const MaterialAllocationPanels = ({
                 <div className="flex flex-col gap-y-6">
                     <div className="flex justify-between">
                         <Text.SectionTitle size="small">Active Purchasing Requests</Text.SectionTitle>
-                        <button className="btn bg-success" onClick={() => handleRequestClick()}><TbPlus /></button>
+                        <button className="btn bg-success" onClick={() => handleNewRequest()}><TbPlus /></button>
                     </div>
 
                     {isLoading ? <div className="skeleton h-32 w-32"></div> : null}
 
                     {requests.length > 0 ? (<div className='grid grid-cols-3 gap-4'>
                         {requests.map((request) => {
+
+                            const { expectedDateStart, expectedDateEnd } = request.pos.length !== 0 && request.pos[0].po.purchaseOrderItems[0].details.length !== 0 ? request.pos[0].po.purchaseOrderItems[0].details[0] : { expectedDateEnd: null, expectedDateStart: null }
+                            const expectedDateLabel = expectedDateStart && expectedDateEnd ? `${DateTime.fromJSDate(expectedDateStart).toFormat('DDDD')} to ${DateTime.fromJSDate(expectedDateEnd).toFormat('DDDD')} ` : 'No Expected Date Set';
                             return (
-                                <div key={request.id} className="card bg-base-300 ">
+                                <div key={request.id} className="card bg-base-300 hover:cursor-pointer hover:bg-lilac-200 " onClick={() => handleRequestClick(request)}>
                                     <div className="card-body">
-                                        {request.title}
+                                        <div className='card-title'>{request.title}</div>
+                                        <div>{expectedDateLabel}</div>
                                     </div>
                                 </div>
                             )

@@ -7,7 +7,7 @@ import { staticRecords } from "@/configs/staticRecords";
 import { DateTime } from "luxon";
 import { getUserId } from "@/actions/users/getUserId";
 
-export const createRequest = async (material: MaterialsBom, priorityId: string) => {
+export const createRequest = async (material: MaterialsBom, priorityId: string, wasOverridden: boolean) => {
 
 
     const requestingUserId = await getUserId()
@@ -35,8 +35,8 @@ export const createRequest = async (material: MaterialsBom, priorityId: string) 
             availableQuantity: material.totalQuantityAvailable,
             allocatedBprIds,
             pendingPoIds,
-            warningOverridden: false,
-            warningShown: false,
+            warningOverridden: wasOverridden,
+            warningShown: wasOverridden,
         }
     });
 
