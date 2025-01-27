@@ -16,6 +16,7 @@ import SummationsPanel from './_components/SummationsPanel';
 import { getLinkedPosAmount } from './_functions/getLinkedPoAmounts';
 import { getLinkedBprsAmounts } from './_functions/getLinkedBprAmounts';
 import { getRequestStatuses } from './_functions/getRequestStatuses';
+import { getContainerTypes } from './_functions/getContainerTypes';
 
 type RequestDetailsProps = {
     searchParams: {
@@ -34,6 +35,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
     const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)
     const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId),  request.itemId)
     const requestStatuses = await getRequestStatuses();
+    const containerTypes = await getContainerTypes();
 
 
     if (!request) {
@@ -67,7 +69,8 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
                 />
 
                 <LinkedBatchesPanel bprs={linkedBprs} />
-                <LinkedPosPanel pos={linkedPos} />
+                
+                <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} />
 
                 <InventoryPanel requestId={searchParams.id} itemId={request.itemId} />
 

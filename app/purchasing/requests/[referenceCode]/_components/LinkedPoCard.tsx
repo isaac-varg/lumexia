@@ -4,8 +4,9 @@ import { LinkedPos } from '../_functions/getLinkedPos'
 import { deleteLinkedPo } from '../_functions/deleteLinkedPos'
 import LinkedPoDialog from './LinkedPoDialog'
 import useDialog from '@/hooks/useDialog'
+import { Containers } from '../_functions/getContainerTypes'
 
-const LinkedPoCard = ({ po }: { po: LinkedPos }) => {
+const LinkedPoCard = ({ po, containerTypes }: { po: LinkedPos, containerTypes: Containers[] }) => {
 
     const { showDialog } = useDialog()
 
@@ -21,7 +22,7 @@ const LinkedPoCard = ({ po }: { po: LinkedPos }) => {
 
     return (
         <div className='card bg-indigo-200 hover:cursor-pointer hover:bg-indigo-300' onClick={handleClick}>
-            <LinkedPoDialog purchaseOrder={po} />
+            <LinkedPoDialog purchaseOrder={po} containerTypes={containerTypes} />
             <div className='card-body'>
                 <div className='flex justify-between'>
                     <div className='card-title'>PO# {po.po.referenceCode} - {po.po.supplier.name} </div>
