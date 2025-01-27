@@ -20,7 +20,7 @@ const RequestsPage = async () => {
             <div className='grid grid-cols-2 gap-x-4'>
                 <NewRequestsPanel requests={requests} />
 
-                <InfographicPanel />
+                <InfographicPanel  requests={requests}/>
             </div>
 
 

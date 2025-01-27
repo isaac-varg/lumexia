@@ -36,3 +36,5 @@ export const getRequests = async () => {
 
     return workedUp 
 }
+
+export type RequestForDashboard =  Awaited<ReturnType<typeof getRequests>>[number]
