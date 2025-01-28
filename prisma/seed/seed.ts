@@ -1,4 +1,5 @@
 "use server";
+import { setEnvironmentData } from "worker_threads";
 import { seedAction } from "./seedAction";
 
 const main = async () => {
@@ -72,6 +73,21 @@ const main = async () => {
     await seedAction("lotOrigin");
     await seedAction("config")
     await seedAction("microSubmission");
+
+    await seedAction("purchaseOrderItemDetail")
+
+
+    await seedAction("requestStatus")
+    await seedAction("requestPriority")
+    await seedAction("purchasingRequest")
+    await seedAction("requestBpr")
+    await seedAction("requestPurchaseOrder")
+    await seedAction("requestInventorySnapshot")
+    await seedAction("requestNote")
+
+    await seedAction("userConfigGroup")
+    await seedAction("userConfig")
+    
 };
 
 main()

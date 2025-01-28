@@ -1,14 +1,13 @@
 "use client";
 import ActionButton from "@/components/ActionButton";
 import { PurchaseOrder } from "@/types/purchaseOrder";
-import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import { createPurchaseOrder } from "@/utils/pdf/generators/purchaseOrder";
 import { TbCloudDownload } from "react-icons/tb";import React from "react";
 import Layout from "@/components/Layout";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
-import { POItemWithAlias } from "../../_functions/flattenOrderItems";
+import {  PoFlattenedOrderItems } from "../../_functions/flattenOrderItems";
 
-const PrintButton = ({ purchaseOrder, orderItems}: { purchaseOrder: PurchaseOrder, orderItems: POItemWithAlias[] }) => {
+const PrintButton = ({ purchaseOrder, orderItems}: { purchaseOrder: PurchaseOrder, orderItems: PoFlattenedOrderItems }) => {
 
   const handleClick = async () => {
 

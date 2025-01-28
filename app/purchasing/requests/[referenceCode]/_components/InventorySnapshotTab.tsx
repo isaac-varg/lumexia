@@ -39,7 +39,7 @@ const InventorySnapshotTab = ({ snapshot, bprs , pos}: { snapshot: InventorySnap
                         <div className='grid grid-cols-2'>
                             {bprs.map((bpr) => {
                                 return (
-                                    <div className='card bg-limed-spruce-300'>
+                                    <div key={bpr?.id} className='card bg-limed-spruce-300'>
                                         <div className='card-body'>
                                             <h2 className='font-semibold'>{bpr?.referenceCode}</h2>
                                             <h2 className=''>{bpr?.mbpr.producesItem.name}</h2>
@@ -62,7 +62,7 @@ const InventorySnapshotTab = ({ snapshot, bprs , pos}: { snapshot: InventorySnap
                         <div className='grid grid-cols-2'>
                             {pos.map((po) => {
                                 return (
-                                    <div className='card bg-limed-spruce-300'>
+                                    <div key={po?.id} className='card bg-limed-spruce-300'>
                                         <div className='card-body'>
                                             <h2 className='font-semibold'>{po?.referenceCode}</h2>
                                             <h2 className=''>{po?.supplier.name}</h2>

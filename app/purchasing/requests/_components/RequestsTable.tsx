@@ -8,9 +8,11 @@ import { useRouter } from 'next/navigation'
 
 const RequestsTable = ({ requests }: { requests: IPurchasingRequest[] }) => {
 
-    if (!requests) { return false }
 
     const router = useRouter()
+
+    if (!requests) { return false }
+
 
     const filters: Filter[] = [
         {

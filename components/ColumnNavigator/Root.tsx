@@ -27,8 +27,6 @@ const Root = <T,>({ data, columns }: ColumnNavigatorProps<T>) => {
     };
   });
 
-  console.log(columnData);
-
   return (
     <div>
       <div className="flex h-screen overflow-hidden">

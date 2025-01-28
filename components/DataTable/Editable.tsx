@@ -4,9 +4,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { FlattenedOrderItem } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/flattenOrderItems";
 import { FooterCell } from "./FooterCell";
-import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions";
+import { PoFlattenedOrderItems } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/flattenOrderItems";
 
 type EditableProps = {
   data: any;
@@ -66,7 +65,7 @@ const Editable = ({
 
       },
       removeRow: (rowIndex: number) => {
-        const setter = (old: FlattenedOrderItem[]) =>
+        const setter = (old: PoFlattenedOrderItems) =>
           old.filter((_row: any, index: number) => index !== rowIndex);
         setTableData(setter);
         setOriginalData(setter);

@@ -21,3 +21,6 @@ export const flattenOrderItems = (
 
 
 export type PoFlattenedOrderItems = ReturnType<typeof flattenOrderItems>
+
+
+export type FlattenedOrderItem =  PoFlattenedOrderItems[number]

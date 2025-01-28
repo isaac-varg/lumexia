@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 import ModeMenu from './ModeMenu'
 import RequestsTable from './RequestsTable'
 import RequestsCalendar from './RequestsCalendar'
-import { IPurchasingRequest } from '../_functions/getRequests'
+import { RequestForDashboard } from '../_functions/getRequests'
 
 
 type MainPanelProps = {
-    requests: IPurchasingRequest[]
+    requests: RequestForDashboard[]
 }
 
 const MainPanel = ({ requests }: MainPanelProps) => {

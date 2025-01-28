@@ -13,7 +13,7 @@ import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import { getAutoTableEnd } from "../functions/getAutoTableEnd";
 import { DateTime } from "luxon";
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
-import { POItemWithAlias } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/flattenOrderItems";
+import { FlattenedOrderItem } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/flattenOrderItems";
 
 export const calculateGrandTotal = (items: PurchaseOrderItem[]) => {
     return items.reduce((total, item) => {
@@ -25,7 +25,7 @@ export const createPurchaseOrder = async (
     poNumber: number,
     timestamp: Date,
     supplier: Supplier,
-    poItems: POItemWithAlias[]
+    poItems: FlattenedOrderItem[]
 ) => {
     // data
     const logoDimensions = await getImageDimensions(company.logo);
@@ -41,7 +41,7 @@ export const createPurchaseOrder = async (
     let tableItems: any[] = [];
     poItems.forEach((item) => {
 
-        const itemName = item.alias ? item.alias.alias.name : item.item.name;
+        const itemName = item.alias ? item.alias : item.item.name;
 
         tableItems.push([
             itemName,
