@@ -1,19 +1,6 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { Item } from "@/types/item";
-import { PurchasingRequest } from "@/types/purchasingRequest";
-import { RequestPriority } from "@/types/requestPriority";
-import { RequestStatus } from "@/types/requestStatus";
-
-export interface IPurchasingRequest extends PurchasingRequest {
-    item: Item
-    status: RequestStatus
-    priority: RequestPriority
-    requestedItemName: string
-    statusName: string
-    priorityName: string
-}
 
 export const getRequests = async () => {
     const requests = await prisma.purchasingRequest.findMany({
@@ -50,4 +37,9 @@ export const getRequests = async () => {
     return workedUp 
 }
 
+
 export type RequestForDashboard =  Awaited<ReturnType<typeof getRequests>>[number]
+
+// alias for some other types I made to match the one above 
+export type IPurchasingRequest = RequestForDashboard
+

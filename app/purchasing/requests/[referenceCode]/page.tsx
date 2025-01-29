@@ -1,7 +1,5 @@
-import PageTitle from '@/components/Text/PageTitle';
 import React from 'react'
 import { getRequest } from './_functions/getRequest';
-import PageBreadcrumbs from '@/components/App/PageBreadcrumbs';
 import BasicDetailsPanel from './_components/BasicDetailsPanel';
 import { getLinkedBatches } from './_functions/getLinkedBatches';
 import LinkedBatchesPanel from './_components/LinkedBatchesPanel';
@@ -17,6 +15,10 @@ import { getLinkedPosAmount } from './_functions/getLinkedPoAmounts';
 import { getLinkedBprsAmounts } from './_functions/getLinkedBprAmounts';
 import { getRequestStatuses } from './_functions/getRequestStatuses';
 import { getContainerTypes } from './_functions/getContainerTypes';
+import PageBreadcrumbs from '@/components/App/PageBreadcrumbs';
+import NewPurchaseOrderDialog from './_components/NewPurchaseOrderDialog';
+import { getSuppliers } from './_functions/getSuppliers';
+import RequestDetailsPageTitle from './_components/PageTitle';
 
 type RequestDetailsProps = {
     searchParams: {
@@ -33,10 +35,12 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
     const linkableBprs = await getLinkableBprs(request.itemId);
     const linkablePos = await getLinkablePos(request.itemId);
     const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)
-    const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId),  request.itemId)
+    const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId), request.itemId)
     const requestStatuses = await getRequestStatuses();
     const containerTypes = await getContainerTypes();
+    const suppliers = await getSuppliers();
 
+   
 
     if (!request) {
         return null
@@ -47,8 +51,9 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
 
             <SelectBprDialog requestId={request.id} linkableBprs={linkableBprs} />
             <SelectPoDialog requestId={request.id} linkablePos={linkablePos} />
+            <NewPurchaseOrderDialog requestId={request.id} suppliers={suppliers} linkablePOs={linkablePos} itemId={request.itemId} />
 
-            <PageTitle>{`${request.title} <REQ# ${request.referenceCode}>`}</PageTitle>
+            <RequestDetailsPageTitle request={request} />
             <PageBreadcrumbs />
 
             <div className='grid grid-cols-2 gap-4'>
@@ -69,7 +74,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
                 />
 
                 <LinkedBatchesPanel bprs={linkedBprs} />
-                
+
                 <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} />
 
                 <InventoryPanel requestId={searchParams.id} itemId={request.itemId} />

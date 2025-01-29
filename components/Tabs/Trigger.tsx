@@ -1,7 +1,7 @@
 import React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import ContextMenu from "../ContextMenu";
-import { PanelStates, usePanelActions  } from "@/store/panelSelectionSlice";
+import { PanelStates, usePanelActions } from "@/store/panelSelectionSlice";
 import { updateUserConfig } from "@/actions/users/updateUserConfig";
 import { staticRecords } from "@/configs/staticRecords";
 
@@ -9,10 +9,13 @@ const TabTrigger = ({
     identifier,
     label,
     panelStateName,
+    tab
 }: {
     identifier: string;
     label: string;
     panelStateName: PanelStates;
+    tab: { identifier: string; label: string, badge?: string | number }
+
 }) => {
 
     const { setPanelState } = usePanelActions()
@@ -20,7 +23,7 @@ const TabTrigger = ({
 
         setPanelState(panelStateName, identifier)
 
-        updateUserConfig(panelStateName, identifier, staticRecords.app.userConfigGroups.panelSelections )
+        updateUserConfig(panelStateName, identifier, staticRecords.app.userConfigGroups.panelSelections)
 
     }
 
@@ -34,8 +37,10 @@ const TabTrigger = ({
             >
 
                 <ContextMenu.Trigger>
-
-                    {label}
+                    <div className="flex flex-row gap-x-6 items-center justify-center">
+                        <div>{label}</div>
+                        {tab.badge && <div className="rounded-full h-6 w-6 bg-red-400 text-white text-sm flex items-center justify-center">{tab.badge}</div>}
+                    </div>
 
                 </ContextMenu.Trigger>
             </Tabs.Trigger>

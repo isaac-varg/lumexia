@@ -11,17 +11,19 @@ const InventoryCurrentTab = ({ inventory, otherRequests, }: { inventory: ItemInv
 
     const router = useRouter();
 
-const handleAllocatedClick = (bpr: typeof inventory.allocated[number]) => {
-    router.push(`/production/planning/${bpr.bpr.referenceCode}?id=${bpr.bprId}`)
-}
+    const handleAllocatedClick = (bpr: typeof inventory.allocated[number]) => {
+        router.push(`/production/planning/${bpr.bpr.referenceCode}?id=${bpr.bprId}`)
+    }
 
-const handlePoClick = (po: typeof inventory.purchases[number]) => {
-   router.push(`/purchasing/purchase-orders/${po.purchaseOrders.referenceCode}?id=${po.purchaseOrderId}`) 
-}
+    const handlePoClick = (po: typeof inventory.purchases[number]) => {
+        router.push(`/purchasing/purchase-orders/${po.purchaseOrders.referenceCode}?id=${po.purchaseOrderId}`)
+    }
 
-const handleRequestClick = (request: typeof otherRequests[number]) => {
-    router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`)
-}
+    const handleRequestClick = (request: typeof otherRequests[number]) => {
+        router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`)
+    }
+
+    console.log(inventory)
 
     return (
         <div>
@@ -40,29 +42,79 @@ const handleRequestClick = (request: typeof otherRequests[number]) => {
 
                 </div>
 
+
+
                 <div className='card bg-slate-50'>
                     <div className=" card-body flex flex-col gap-y-4">
-                        <div className='card-title'>Other Active Requests</div>
+                        <div className='card-title'>Pending BPRs</div>
 
 
-                        {otherRequests.length > 0 ? (<div className='grid grid-cols-3 gap-4'>
-                            {otherRequests.map((request) => {
-                                return (
-                                    <div key={request.id} className="card bg-purple-300 hover:cursor-pointer hover:bg-purple-400" onClick={() => handleRequestClick(request)}>
-                                        <div className="card-body">
-                                            <span className='font-bold font-xl'>REQ# {request.referenceCode}</span>
-                                            <span className='font-semibold font-xl'>{request.title}</span>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>) : <span>None currently active</span>
-                        }
+                        <div className="overflow-x-auto">
+                            <table className="table">
+
+                                <thead>
+                                    <tr>
+                                        <th>BPR #</th>
+                                        <th>Product</th>
+                                        <th>Status</th>
+                                        <th>Needed</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {inventory.needed.map((bprBom) => {
+                                        return (
+                                            <tr key={bprBom.id} onClick={() => handleAllocatedClick(bprBom)} className='hover:bg-lilac-300 hover:cursor-pointer'>
+                                                <th>{bprBom.bpr.referenceCode}</th>
+                                                <td>{bprBom.bpr.mbpr.producesItem.name}</td>
+                                                <td>{bprBom.bpr.status.name}</td>
+                                                <td>{toFracitonalDigits.weight(bprBom.quantity)} lbs</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
 
 
 
                     </div>
                 </div>
+
+                <div className='card bg-slate-50'>
+
+                    <div className=" card-body flex flex-col gap-y-4">
+                        <div className='card-title'>Purchases</div>
+
+
+                        <div className="overflow-x-auto">
+                            <table className="table">
+
+                                <thead>
+                                    <tr>
+                                        <th>PO #</th>
+                                        <th>Quantity Ordered</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {inventory.purchases.map((po) => {
+                                        return (
+                                            <tr key={po.id} onClick={() => handlePoClick(po)} className='hover:bg-lilac-300 hover:cursor-pointer'>
+                                                <th>{po.purchaseOrders.referenceCode}</th>
+                                                <td>{po.quantity}</td>
+                                                <td>{po.purchaseOrders.status.name}</td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <div className='card bg-slate-50'>
@@ -86,7 +138,7 @@ const handleRequestClick = (request: typeof otherRequests[number]) => {
                                 <tbody>
                                     {inventory.allocated.map((bprBom) => {
                                         return (
-                                            <tr key={bprBom.id} onClick={() => handleAllocatedClick(bprBom)}>
+                                            <tr key={bprBom.id} onClick={() => handleAllocatedClick(bprBom)} className='hover:bg-lilac-300 hover:cursor-pointer'>
                                                 <th>{bprBom.bpr.referenceCode}</th>
                                                 <td>{bprBom.bpr.mbpr.producesItem.name}</td>
                                                 <td>{bprBom.bpr.status.name}</td>
@@ -101,38 +153,6 @@ const handleRequestClick = (request: typeof otherRequests[number]) => {
                 </div>
 
 
-                <div className='card bg-slate-50'>
-
-                    <div className=" card-body flex flex-col gap-y-4">
-                        <div className='card-title'>Purchases</div>
-
-
-                        <div className="overflow-x-auto">
-                            <table className="table">
-
-                                <thead>
-                                    <tr>
-                                        <th>PO #</th>
-                                        <th>Quantity Ordered</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {inventory.purchases.map((po) => {
-                                        return (
-                                            <tr key={po.id} onClick={() => handlePoClick(po)}>
-                                                <th>{po.purchaseOrders.referenceCode}</th>
-                                                <td>{po.quantity}</td>
-                                                <td>{po.purchaseOrders.status.name}</td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div >
 
 

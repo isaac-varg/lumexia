@@ -1,4 +1,5 @@
 import { PoViewModes } from '@/app/purchasing/purchase-orders/[purchaseOrder]/_components/viewMode/ViewMode';
+import { RequestDashboardTabs } from '@/app/purchasing/requests/_components/RequestTabs';
 import { create } from 'zustand';
 
 type State = {
@@ -7,6 +8,7 @@ type State = {
     supplierDetails: string
     requestInventory: string
     poViewMode: PoViewModes
+    requestDashboard: 'all' | 'new' 
 }
 
 const panelDefaults: State = {
@@ -15,6 +17,7 @@ const panelDefaults: State = {
     supplierDetails: 'purchases',
     requestInventory: 'current',
     poViewMode: 'table',
+    requestDashboard: 'all',
 }
 
 export type PanelStates = keyof State
@@ -31,6 +34,7 @@ export const usePanelSelection = create<State & Actions>((set) => ({
     supplierDetails: 'purchases',
     requestInventory: 'current',
     poViewMode: 'table',
+    requestDashboard: 'all',
 
     actions: {
         setPanelState: (panelStateName, value) => {

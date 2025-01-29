@@ -4,7 +4,7 @@ import TabsPanel from ".";
 import { PanelStates } from "@/store/panelSelectionSlice";
 
 type TabsListProps = {
-  tabTriggers: { identifier: string; label: string }[];
+  tabTriggers: { identifier: string; label: string, badge?: string | number }[];
   panelStateName: PanelStates
 };
 
@@ -20,6 +20,7 @@ const TabList = ({ tabTriggers , panelStateName }: TabsListProps) => {
           panelStateName={panelStateName}
           identifier={tab.identifier}
           label={tab.label}
+          tab={tab}
         />
       ))}
     </Tabs.List>

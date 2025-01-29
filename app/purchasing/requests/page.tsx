@@ -5,6 +5,8 @@ import { getRequests } from './_functions/getRequests'
 import NewRequestsPanel from './_components/NewRequestsPanel'
 import InfographicPanel from './_components/InfographicPanel'
 import MainPanel from './_components/MainPanel'
+import RequestTabs from './_components/RequestTabs'
+import { staticRecords } from '@/configs/staticRecords'
 
 const RequestsPage = async () => {
 
@@ -16,12 +18,10 @@ const RequestsPage = async () => {
             <PageTitle>Request Dashboard</PageTitle>
             <PageBreadcrumbs />
 
+            <RequestTabs requests={requests}/>
 
-            <div className='grid grid-cols-2 gap-x-4'>
-                <NewRequestsPanel requests={requests} />
-
-                <InfographicPanel  requests={requests}/>
-            </div>
+           
+            
 
 
             <MainPanel requests={requests} />

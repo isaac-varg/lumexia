@@ -1,12 +1,6 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { PurchasingRequest } from "@/types/purchasingRequest"
-import { User } from "@/types/user"
-
-export interface RequestDetails extends PurchasingRequest {
-    requestingUser: User 
-}
 
 export const getRequest = async (id: string) => {
 
@@ -24,3 +18,5 @@ export const getRequest = async (id: string) => {
 
     return response
 }
+
+export type RequestDetails = Awaited<ReturnType<typeof getRequest>>

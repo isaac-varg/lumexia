@@ -12,11 +12,11 @@ export const getLinkableBprs = async (itemId: string) => {
             },
             bpr: {
                 OR: [
-                    { bprStatusId: staticRecords.production.bprStatuses.draft},
-                    { bprStatusId: staticRecords.production.bprStatuses.allocatedMaterials},
-                    { bprStatusId: staticRecords.production.bprStatuses.awaitingMaterials},
-                    { bprStatusId: staticRecords.production.bprStatuses.verifyingBomFulfillment}, 
-                    { bprStatusId: staticRecords.production.bprStatuses.knownMaterialArrival}, 
+                    { bprStatusId: staticRecords.production.bprStatuses.draft },
+                    { bprStatusId: staticRecords.production.bprStatuses.allocatedMaterials },
+                    { bprStatusId: staticRecords.production.bprStatuses.awaitingMaterials },
+                    { bprStatusId: staticRecords.production.bprStatuses.verifyingBomFulfillment },
+                    { bprStatusId: staticRecords.production.bprStatuses.knownMaterialArrival },
                 ]
             }
         },
@@ -31,9 +31,15 @@ export const getLinkableBprs = async (itemId: string) => {
                     status: true,
                     batchSize: true
                 }
-            }, 
+            },
             bom: true,
-        }
+        },
+        orderBy: {
+            bpr: {
+                referenceCode: 'desc'
+            }
+        },
+        take: 8
     })
 
     return linkables

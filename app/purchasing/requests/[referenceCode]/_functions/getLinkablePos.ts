@@ -22,7 +22,7 @@ export const getLinkablePos = async (itemId: string) => {
                 referenceCode: 'desc'
             }
         },
-        take: 15,
+        take: 8,
     })
 
     return linkables

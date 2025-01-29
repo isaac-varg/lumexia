@@ -91,6 +91,7 @@ export const staticRecords = {
     purchasing: {
         poStatuses: {
             confirmedSlashAwaitingDelivery: 'd1c6bb97-a554-49b5-9a6a-0261405dc2cc',
+            draft: '51ef134e-f6f5-4117-a4c4-4a3df087471a',
             received: 'db907b0f-4aac-42d7-9118-ee35e178d9b3'
         },
         requestPriorities: {

@@ -117,6 +117,7 @@ export const getInventory = async (itemId: string) => {
         ...item,
         totalQuantityOnHand: totalOnHand,
         allocated,
+        needed,
         totalQuantityAllocated,
         totalQuantityAvailable,
         purchases,
