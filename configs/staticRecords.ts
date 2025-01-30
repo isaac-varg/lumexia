@@ -99,6 +99,9 @@ export const staticRecords = {
             runningLow: "bfbe26eb-3e22-4ab8-ba82-8662846d6b70",
             outOfStock: "e19affa6-18b2-40a9-b738-f38b593480da"
         },
+        requestTypes: {
+            'default': 'f9307d16-1a26-49c8-b2a4-ffa441d96f45'
+        },
         requestStatuses: {
             onHold: "ea9543d2-07e3-48db-b363-52e1c6604c65",
             replacementIngredientTesting: "dac9e8ca-eb24-4422-b933-da161925e502",

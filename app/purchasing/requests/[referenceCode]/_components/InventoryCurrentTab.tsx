@@ -19,11 +19,6 @@ const InventoryCurrentTab = ({ inventory, otherRequests, }: { inventory: ItemInv
         router.push(`/purchasing/purchase-orders/${po.purchaseOrders.referenceCode}?id=${po.purchaseOrderId}`)
     }
 
-    const handleRequestClick = (request: typeof otherRequests[number]) => {
-        router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`)
-    }
-
-    console.log(inventory)
 
     return (
         <div>

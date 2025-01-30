@@ -8,6 +8,10 @@ import { SnapshotPo } from '../_functions/getSnapshotPos'
 import { ItemInventory } from '../_functions/getInventory'
 import InventoryCurrentTab from './InventoryCurrentTab'
 import { OtherRequest } from '../_functions/getOtherRequests'
+import { RequestNote } from '../_functions/getRequestNotes'
+import NotesPanel from './NotesPanel'
+import { RequestNoteType } from '../_functions/getNoteTypes'
+import RequestNotesTab from './RequestNotesTab'
 
 const InventoryTabs = ({
     snapshot,
@@ -15,12 +19,16 @@ const InventoryTabs = ({
     snapshotPos,
     inventory,
     otherRequests,
+    noteTypes,
+    notes,
 }: {
     snapshot: InventorySnapshot
     snapshotBprs: SnapshotBpr[]
     snapshotPos: SnapshotPo[]
     inventory: ItemInventory
     otherRequests: OtherRequest[]
+    notes: RequestNote[]
+    noteTypes: RequestNoteType[]
 }) => {
 
     const tabs = [
@@ -29,34 +37,41 @@ const InventoryTabs = ({
             label: 'Current',
         },
         {
+            identifier: 'notes',
+            label: 'Notes',
+            badge: notes.length
+
+        },
+        {
             identifier: 'snapshot',
             label: 'Snapshot',
         }
     ]
 
     return (
-        <div className='card bg-base-300 '>
-            <div className='card-body'>
-                <div className='flex justify-between'>
-                    <div className='card-title'>Invetory of Material</div>
-                </div>
+        <div >
 
-                <TabsPanel.Root panelStateName='requestInventory'>
+            <TabsPanel.Root panelStateName='requestInventory'>
 
-                    <TabsPanel.List tabTriggers={tabs} panelStateName='requestInventory' />
+                <TabsPanel.List tabTriggers={tabs} panelStateName='requestInventory' />
 
-                    <TabsPanel.Content identifier='current' >
+                <TabsPanel.Content identifier='current' >
 
-                        <InventoryCurrentTab inventory={inventory} otherRequests={otherRequests} />
-                    </TabsPanel.Content>
+                    <InventoryCurrentTab inventory={inventory} otherRequests={otherRequests} />
+                </TabsPanel.Content>
 
-                    <TabsPanel.Content identifier='snapshot'>
-                        <InventorySnapshotTab snapshot={snapshot} bprs={snapshotBprs} pos={snapshotPos} />
-                    </TabsPanel.Content>
+                <TabsPanel.Content identifier='notes'>
+
+                    <RequestNotesTab notes={notes} noteTypes={noteTypes} />
+
+                </TabsPanel.Content>
+
+                <TabsPanel.Content identifier='snapshot'>
+                    <InventorySnapshotTab snapshot={snapshot} bprs={snapshotBprs} pos={snapshotPos} />
+                </TabsPanel.Content>
 
 
-                </TabsPanel.Root>
-            </div>
+            </TabsPanel.Root>
         </div>
     )
 }

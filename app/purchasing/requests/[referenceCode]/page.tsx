@@ -10,7 +10,6 @@ import { getLinkedPos } from './_functions/getLinkedPos';
 import { getLinkablePos } from './_functions/getLinkablePos';
 import SelectPoDialog from './_components/SelectPoDialog';
 import InventoryPanel from './_components/InventoryPanel';
-import SummationsPanel from './_components/SummationsPanel';
 import { getLinkedPosAmount } from './_functions/getLinkedPoAmounts';
 import { getLinkedBprsAmounts } from './_functions/getLinkedBprAmounts';
 import { getRequestStatuses } from './_functions/getRequestStatuses';
@@ -19,6 +18,10 @@ import PageBreadcrumbs from '@/components/App/PageBreadcrumbs';
 import NewPurchaseOrderDialog from './_components/NewPurchaseOrderDialog';
 import { getSuppliers } from './_functions/getSuppliers';
 import RequestDetailsPageTitle from './_components/PageTitle';
+import NotesPanel from './_components/NotesPanel';
+import NewNoteDialog from './_components/NewNoteDialog';
+import { getNoteTypes } from './_functions/getNoteTypes';
+import { getRequestNotes } from './_functions/getRequestNotes';
 
 type RequestDetailsProps = {
     searchParams: {
@@ -39,8 +42,10 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
     const requestStatuses = await getRequestStatuses();
     const containerTypes = await getContainerTypes();
     const suppliers = await getSuppliers();
+    const noteTypes = await getNoteTypes()
+    const requestNotes = await getRequestNotes(request.id)
 
-   
+
 
     if (!request) {
         return null
@@ -52,6 +57,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
             <SelectBprDialog requestId={request.id} linkableBprs={linkableBprs} />
             <SelectPoDialog requestId={request.id} linkablePos={linkablePos} />
             <NewPurchaseOrderDialog requestId={request.id} suppliers={suppliers} linkablePOs={linkablePos} itemId={request.itemId} />
+            <NewNoteDialog types={noteTypes} requestId={request.id} />
 
             <RequestDetailsPageTitle request={request} />
             <PageBreadcrumbs />
@@ -68,16 +74,13 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
 
                 />
 
-                <SummationsPanel
-                    linkedBprsAmounts={linkedBprAmounts}
-                    linkedPosAmounts={linkedPoAmounts}
-                />
+                <NotesPanel notes={requestNotes} noteTypes={noteTypes} />
 
-                <LinkedBatchesPanel bprs={linkedBprs} />
+                <LinkedBatchesPanel bprs={linkedBprs} linkedBprAmounts={linkedBprAmounts} />
 
-                <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} />
+                <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} linkedPosAmounts={linkedPoAmounts} />
 
-                <InventoryPanel requestId={searchParams.id} itemId={request.itemId} />
+                <InventoryPanel notes={requestNotes} noteTypes={noteTypes} requestId={searchParams.id} itemId={request.itemId} />
 
             </div>
 
