@@ -5,14 +5,16 @@ import { RequestForDashboard } from "../_functions/getRequests"
 import { staticRecords } from "@/configs/staticRecords"
 import NewRequestsPanel from "./NewRequestsPanel"
 import InfographicPanel from "./InfographicPanel"
-
-
+import ByStatusPanel from "./ByStatusPanel"
+import { RequestStatus } from "../[referenceCode]/_functions/getRequestStatuses"
 
 type RequestTabsProps = {
     requests: RequestForDashboard[]
+    statuses: RequestStatus[]
 }
 
-const RequestTabs = ({ requests }: RequestTabsProps) => {
+
+const RequestTabs = ({ requests , statuses}: RequestTabsProps) => {
 
     const newRequests = requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)
 
@@ -20,11 +22,11 @@ const RequestTabs = ({ requests }: RequestTabsProps) => {
         {
             identifier: 'new',
             label: 'New',
-            badge: newRequests.length 
+            badge: newRequests.length
         },
         {
-            identifier: 'all',
-            label: 'All'
+            identifier: 'byStatus',
+            label: 'Grouped by Status'
         }
     ]
 
@@ -42,8 +44,8 @@ const RequestTabs = ({ requests }: RequestTabsProps) => {
             </TabsPanel.Content>
 
 
-            <TabsPanel.Content identifier="all">
-                cxc
+            <TabsPanel.Content identifier="byStatus">
+                <ByStatusPanel statuses={statuses} requests={requests} />
             </TabsPanel.Content>
 
 

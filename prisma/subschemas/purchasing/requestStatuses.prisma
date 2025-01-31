@@ -1,11 +1,14 @@
 model RequestStatus {
-    id          String   @id @default(uuid())
+    id          String              @id @default(uuid())
     name        String
+    bgColor     String              @map("bg_color") @default("#c4b5fd")
+    textColor   String              @map("text_color") @default("#FFFFFF")
+
     description String
     sequence    Int
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @updatedAt @map("updated_at")
-    requests PurchasingRequest[]
+    createdAt   DateTime            @default(now()) @map("created_at")
+    updatedAt   DateTime            @updatedAt @map("updated_at")
+    requests    PurchasingRequest[]
 
     @@map("request_statuses")
 }

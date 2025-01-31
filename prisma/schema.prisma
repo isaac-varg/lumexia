@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jan 29 2025 14:45:09 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jan 30 2025 11:40:23 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -934,8 +934,11 @@ model RequestPurchaseOrder {
 }
 
 model RequestStatus {
-  id          String              @id @default(uuid())
-  name        String
+  id        String @id @default(uuid())
+  name      String
+  bgColor   String @default("#c4b5fd") @map("bg_color")
+  textColor String @default("#FFFFFF") @map("text_color")
+
   description String
   sequence    Int
   createdAt   DateTime            @default(now()) @map("created_at")
