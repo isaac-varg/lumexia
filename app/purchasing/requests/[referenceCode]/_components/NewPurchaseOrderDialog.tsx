@@ -70,6 +70,7 @@ const NewPurchaseOrderDialog = ({ suppliers, requestId, itemId, linkablePOs }: N
                             return (
                                 <div
                                     onClick={() => handleSubmit(supplier.id)}
+                                    key={supplier.id}
                                     className="rounded-xl bg-lilac-200 py-2 px-4 text-lg font-medium  text-lilac-900 font-poppins hover:cursor-pointer hover:bg-lilac-300">
                                     {supplier.name}
                                 </div>

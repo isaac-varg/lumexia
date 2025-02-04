@@ -58,6 +58,7 @@ const Badge = ({
                     {options.map((o) => {
                         return (
                             <li
+                                key={o.value}
                                 style={{ backgroundColor: o.bgColor, color: o.textColor, }}
                                 onClick={(e) => handleClick(e, o.value)}
                                 className='font-poppins text-base px-2 py-1 rounded-xl font-medium hover:opacity-50 hover:cursor-pointer'

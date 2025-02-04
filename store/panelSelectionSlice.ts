@@ -1,5 +1,4 @@
 import { PoViewModes } from '@/app/purchasing/purchase-orders/[purchaseOrder]/_components/viewMode/ViewMode';
-import { RequestDashboardTabs } from '@/app/purchasing/requests/_components/RequestTabs';
 import { create } from 'zustand';
 
 type State = {
