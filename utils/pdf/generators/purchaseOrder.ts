@@ -39,7 +39,8 @@ export const createPurchaseOrder = async (
     });
 
     let tableItems: any[] = [];
-    poItems.forEach((item) => {
+    poItems.forEach((item: FlattenedOrderItem) => {
+
 
         const itemName = item.alias ? item.alias : item.item.name;
 

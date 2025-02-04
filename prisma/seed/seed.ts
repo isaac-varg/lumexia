@@ -42,6 +42,7 @@ const main = async () => {
     await seedAction("supplierPaymentMethod");
 
     await seedAction("userRole");
+    await seedAction("userRoleAssignment")
 
     await seedAction("bprStatus");
     await seedAction("bprStagingStatus");

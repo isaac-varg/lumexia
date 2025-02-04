@@ -33,7 +33,6 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
         }
     })
 
-    console.log(events)
 
     return (
         <div>

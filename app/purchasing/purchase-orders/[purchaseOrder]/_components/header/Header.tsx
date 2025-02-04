@@ -4,10 +4,11 @@ import StatusTag from './StatusTag'
 import ActionButtons from './ActionButtons'
 import { PurchaseOrderDetails } from '../../_functions/getPurchaseOrder'
 import { PurchaseOrderStatus } from '@/types/purchaseOrderStatus'
+import { FlattenedOrderItem } from '../../_functions/flattenOrderItems'
 
 type HeaderProps = {
     purchaseOrder: PurchaseOrderDetails,
-    orderItems: any,
+    orderItems: FlattenedOrderItem[],
     poStatuses: PurchaseOrderStatus[]
 }
 

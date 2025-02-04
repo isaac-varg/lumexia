@@ -5,11 +5,12 @@ import Separator from '@/components/Separator/Separator'
 import GoToReceivingButton from './GoToReceivingButton'
 import PrintButton from './PrintButton'
 import { PurchaseOrderStatus } from '@/types/purchaseOrderStatus'
+import { FlattenedOrderItem } from '../../_functions/flattenOrderItems'
 
 type ActionButtonsProps = {
     poStatuses: PurchaseOrderStatus[]
     purchaseOrder: any
-    orderItems: any
+    orderItems: FlattenedOrderItem[] 
 }
 
 const ActionButtons = ({ poStatuses, purchaseOrder, orderItems }: ActionButtonsProps) => {

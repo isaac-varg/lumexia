@@ -5,11 +5,12 @@ import { createPurchaseOrder } from "@/utils/pdf/generators/purchaseOrder";
 import { TbCloudDownload } from "react-icons/tb";import React from "react";
 import Layout from "@/components/Layout";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
-import {  PoFlattenedOrderItems } from "../../_functions/flattenOrderItems";
+import {  FlattenedOrderItem  } from "../../_functions/flattenOrderItems";
 
-const PrintButton = ({ purchaseOrder, orderItems}: { purchaseOrder: PurchaseOrder, orderItems: PoFlattenedOrderItems }) => {
+const PrintButton = ({ purchaseOrder, orderItems}: { purchaseOrder: PurchaseOrder, orderItems: FlattenedOrderItem[] }) => {
 
   const handleClick = async () => {
+
 
     await createPurchaseOrder(purchaseOrder.referenceCode, purchaseOrder.updatedAt, purchaseOrder.supplier, orderItems);
 

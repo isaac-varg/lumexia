@@ -3,8 +3,9 @@ import { RequestForDashboard } from '../_functions/getRequests'
 import { groupByProperty } from '@/utils/data/groupByProperty'
 import { RequestStatus } from '../[referenceCode]/_functions/getRequestStatuses';
 import RequestCard from './RequestCard';
+import { RequestPriority } from '../_functions/getPriorities';
 
-const ByStatusPanel = ({ requests, statuses }: { requests: RequestForDashboard[], statuses: RequestStatus[] }) => {
+const ByStatusPanel = ({ requests, statuses , priorities}: { requests: RequestForDashboard[], statuses: RequestStatus[], priorities: RequestPriority[] }) => {
 
     const grouped = groupByProperty(requests, 'statusName');
 
@@ -24,16 +25,18 @@ const ByStatusPanel = ({ requests, statuses }: { requests: RequestForDashboard[]
                         <div
                             key={status.id}
                             style={{ backgroundColor: status.bgColor }}
-                            className='p-4 rounded-lg shadow-xl'
+                            className='p-6 rounded-lg shadow-xl'
                         >
-                            <div
-                                style={{ color: status.textColor }}
-                                className='font-poppins text-xl font-semibold'>
-                                {status.name}
-                            </div>
+                            <div className='flex flex-col gap-y-6'>
+                                <div
+                                    style={{ color: status.textColor }}
+                                    className='font-poppins text-xl font-semibold'>
+                                    {status.name}
+                                </div>
 
-                            <div className='grid grid-cols-4 max-h-80 overflow-y-auto gap-4'>
-                                {requests.filter((req) => req.status.id === status.id).map((req) => <RequestCard key={req.id} statuses={statuses} request={req} />)}
+                                <div className='grid grid-cols-4 max-h-80 overflow-y-auto gap-6'>
+                                    {requests.filter((req) => req.status.id === status.id).map((req) => <RequestCard key={req.id} statuses={statuses} priorities={priorities} request={req} />)}
+                                </div>
                             </div>
 
                         </div>

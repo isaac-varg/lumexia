@@ -5,11 +5,13 @@ import { getRequests } from './_functions/getRequests'
 import MainPanel from './_components/MainPanel'
 import RequestTabs from './_components/RequestTabs'
 import { getRequestStatuses } from './[referenceCode]/_functions/getRequestStatuses'
+import { getPriorities } from './_functions/getPriorities'
 
 const RequestsPage = async () => {
 
     const requests = await getRequests()
     const statuses = await getRequestStatuses();
+    const priorities = await getPriorities(); 
 
 
     return (
@@ -17,7 +19,7 @@ const RequestsPage = async () => {
             <PageTitle>Request Dashboard</PageTitle>
             <PageBreadcrumbs />
 
-            <RequestTabs requests={requests} statuses={statuses}/>
+            <RequestTabs requests={requests} statuses={statuses} priorities={priorities}/>
 
             <MainPanel requests={requests} />
 

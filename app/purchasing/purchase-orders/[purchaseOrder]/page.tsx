@@ -39,7 +39,7 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
             <Header
                 purchaseOrder={purchaseOrder}
                 poStatuses={poStatuses}
-                orderItems={orderItems}
+                orderItems={flattenedOrderItems}
             />
 
             <ViewMode

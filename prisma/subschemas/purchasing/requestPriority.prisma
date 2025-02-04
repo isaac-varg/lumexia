@@ -1,6 +1,8 @@
 model RequestPriority {
     id          String   @id @default(uuid())
     name        String
+    bgColor     String              @map("bg_color") @default("#c4b5fd")
+    textColor   String              @map("text_color") @default("#FFFFFF")
     description String
     sequence    Int
     createdAt   DateTime @default(now()) @map("created_at")

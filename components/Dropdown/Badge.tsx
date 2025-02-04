@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useFloating} from '@floating-ui/react';
+import { useFloating, FloatingPortal } from '@floating-ui/react';
 
 
 type DropdownOptions = {
@@ -26,30 +26,48 @@ const Badge = ({
 }: BadgeProps) => {
     const [isActive, setIsActive] = useState(false);
 
+    const { refs, floatingStyles } = useFloating({});
+
+    const handleClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, value: string) => {
+        e.stopPropagation()
+        setIsActive(false)
+        onClick(value)
+    }
+
+    const handleLabelClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+        setIsActive((prev) => !prev)
+    }
+
     return (
-        <div className="relative">
+        <div className='flex'>
             <div
-                onClick={() => setIsActive((prev) => !prev)}
+                ref={refs.setReference}
+                onClick={(e) => handleLabelClick(e)}
                 style={{ backgroundColor: bgColor, color: textColor }}
                 className="py-2 px-2 rounded-xl text-sm font-poppins font-semibold cursor-pointer"
             >
                 {label}
             </div>
-            <ul
-                className={`${isActive ? '' : 'hidden'
-                    } absolute bg-base-100 rounded-box z-[9999] w-52 p-2 shadow mt-2`}
-            >
-                {options.map((o) => {
-                    return (
-                        <li
-                            style={{ backgroundColor: o.bgColor, color: o.textColor }}
-                            onClick={() => onClick(o.value)}
-                        >
-                            {o.label}
-                        </li>
-                    )
-                })}
-            </ul>
+            <FloatingPortal>
+                <ul
+                    ref={refs.setFloating} style={floatingStyles}
+                    className={`${isActive ? '' : 'hidden'
+                        }  bg-base-100 rounded-box w-52 p-2 shadow mt-2 flex flex-col gap-y-1`}
+                >
+                    {options.map((o) => {
+                        return (
+                            <li
+                                style={{ backgroundColor: o.bgColor, color: o.textColor, }}
+                                onClick={(e) => handleClick(e, o.value)}
+                                className='font-poppins text-base px-2 py-1 rounded-xl font-medium hover:opacity-50 hover:cursor-pointer'
+                            >
+                                {o.label}
+                            </li>
+                        )
+                    })}
+                </ul>
+            </FloatingPortal>
         </div>
     );
 };

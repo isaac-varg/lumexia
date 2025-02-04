@@ -7,3 +7,7 @@
     text-wrap: balance;
   }
 }
+
+.react-datepicker__input-container input {
+    @apply bg-transparent 
+}
