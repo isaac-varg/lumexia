@@ -1,76 +1,64 @@
-import React, { useState } from 'react'
-import { IPurchasingRequest } from '../_functions/getRequests'
-import { DateTime } from 'luxon'
-import Dropdown from '@/components/Dropdown'
-import { updateRequest } from '../_functions/updateRequest'
-import { Prisma } from '@prisma/client'
-import { staticRecords } from '@/configs/staticRecords'
-import { updatePoItemDetails } from '../_functions/updatePoItemDetails'
-import { DatepickerRange } from '@/components/Dropdown/DateSelector'
 
+import React, { useState, useEffect } from 'react';
+import { IPurchasingRequest } from '../_functions/getRequests';
+import Dropdown from '@/components/Dropdown';
+import { staticRecords } from '@/configs/staticRecords';
+import { updatePoItemDetails } from '../_functions/updatePoItemDetails';
+import { DatepickerRange } from '@/components/Dropdown/DateSelector';
 
 const DateBadge = ({ request }: { request: IPurchasingRequest }) => {
+    const [hasPO, setHasPO] = useState(true);
 
+    const relevantPoItems = request.relevantPoItems?.filter(
+        (i) => i.purchaseOrderStatus.id !== staticRecords.purchasing.poStatuses.received
+    ); // exclude already received for split arrivals
 
-    const hasMultiplePos = request.pos.length > 1;
-    const hasExpectedDate = request.relevantPoItems ? request.relevantPoItems[0].details[0].expectedDateStart : false;
-    const relevantPoItems = request.relevantPoItems?.filter((i) => i.purchaseOrderStatus.id !== staticRecords.purchasing.poStatuses.received) // exlude already received for split arrivals
+    const poItemDetails = relevantPoItems ? relevantPoItems[0]?.details[0] : null;
 
-    let labelText = 'No Date Yet';
+    useEffect(() => {
+        if (!relevantPoItems || !poItemDetails) {
+            setHasPO(false);
+            if (!relevantPoItems) console.error('No relevant po items');
+            if (!poItemDetails) console.error('No PO Item Details');
+        }
+    }, [relevantPoItems, poItemDetails]);
 
-    let date: { start: Date | null, end: Date | null } = {
+    let date: { start: Date | null; end: Date | null } = {
         start: null,
         end: null,
-    }
+    };
 
-    if (hasExpectedDate) {
-
-        const { expectedDateStart, expectedDateEnd } = request.pos[0].po.purchaseOrderItems[0].details[0]
-        if (!expectedDateStart || !expectedDateEnd) {
-            return
-        }
-
-        const start = DateTime.fromJSDate(expectedDateStart).toFormat('DDDD');
-        const end = DateTime.fromJSDate(expectedDateEnd).toFormat('DDDD');
-        date = {
-            start: expectedDateStart,
-            end: expectedDateEnd,
-        }
-
-        labelText = `${start} to ${end} `
-    }
-
-    if (hasMultiplePos) {
-        labelText = 'Multiple Connected POs'
+    if (poItemDetails) {
+        const { expectedDateStart, expectedDateEnd } = poItemDetails;
+        date = { start: expectedDateStart, end: expectedDateEnd };
     }
 
     const handleDateSelection = async (value: DatepickerRange) => {
-
         if (relevantPoItems?.length !== 1) {
             // too many poitems
-            return;     
+            return;
         }
-       
+
         await updatePoItemDetails(relevantPoItems[0].details[0].id, {
             expectedDateStart: value.start,
             expectedDateEnd: value.end,
-        }) 
-
-        
-    }
+        });
+    };
 
     return (
-
         <div>
-            
-            <Dropdown.Date
-                onClick={handleDateSelection}
-                value={date}
-            />
+            {!hasPO && (
+                <div className="bg-neutral-300 px-2 py-1 rounded-xl font-poppins font-medium text-base">
+                    No Connected PO
+                </div>
+            )}
 
-
+            {hasPO && (
+                <Dropdown.Date onClick={handleDateSelection} value={date} />
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default DateBadge
+export default DateBadge;
+

@@ -32,7 +32,6 @@ const RequestCard = ({ request, statuses, priorities }: RequestCardProps) => {
     }));
 
 
-    console.log('req', request)
     const handleClick = () => {
         router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`)
     }
@@ -77,12 +76,10 @@ const RequestCard = ({ request, statuses, priorities }: RequestCardProps) => {
                     label={request.priority.name}
                     options={priorityOptions}
                 />
+                <div className='flex'>
+                    <DateBadge request={request} />
+                </div>
 
-                {(request.pos.length !== 0 && request.pos[0].po) &&
-                    <div className='flex'>
-                        <DateBadge request={request} />
-                    </div>
-                }
             </div>
 
         </div>
