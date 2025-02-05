@@ -6,20 +6,29 @@ import MainPanel from './_components/MainPanel'
 import RequestTabs from './_components/RequestTabs'
 import { getRequestStatuses } from './[referenceCode]/_functions/getRequestStatuses'
 import { getPriorities } from './_functions/getPriorities'
+import CreateRequestButton from './_components/CreateRequestButton'
 
 const RequestsPage = async () => {
 
     const requests = await getRequests()
     const statuses = await getRequestStatuses();
-    const priorities = await getPriorities(); 
+    const priorities = await getPriorities();
 
 
     return (
         <div className='flex flex-col gap-y-4'>
-            <PageTitle>Request Dashboard</PageTitle>
-            <PageBreadcrumbs />
+            <div className='flex justify-between items-center'>
 
-            <RequestTabs requests={requests} statuses={statuses} priorities={priorities}/>
+                <div className='flex flex-col gap-y-4'>
+                    <PageTitle>Request Dashboard</PageTitle>
+                    <PageBreadcrumbs />
+                </div>
+                <div>
+                   <CreateRequestButton />  
+                </div>
+            </div>
+
+            <RequestTabs requests={requests} statuses={statuses} priorities={priorities} />
 
             <MainPanel requests={requests} />
 

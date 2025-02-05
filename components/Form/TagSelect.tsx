@@ -16,6 +16,7 @@ type TagSelectFieldProps = {
     fieldName: string;
     options: TagSelectOptions[];
     gridColumns?: keyof typeof classes.gridColumns
+    onAddNew?: () => void
 };
 
 const classes = {
@@ -24,8 +25,8 @@ const classes = {
     }
 }
 
-const TagSelectField = ({ form, label, fieldName, options, gridColumns = 5 }: TagSelectFieldProps) => {
-    const { register, setValue, watch } = form;
+const TagSelectField = ({ form, label, fieldName, options, gridColumns = 5 ,onAddNew = () => console.log('Clicked')}: TagSelectFieldProps) => {
+    const { setValue, watch } = form;
     const selectedValue = watch(fieldName);
 
     return (
@@ -34,6 +35,11 @@ const TagSelectField = ({ form, label, fieldName, options, gridColumns = 5 }: Ta
 
             <div className={`grid ${classes.gridColumns[gridColumns]} gap-4`}>
 
+                <div className="p-2 border-2 border-white">
+                    <div onClick={onAddNew} className="font-poppins font-medium text-sm  rounded-xl py-2 px-4 hover:cursor-pointer hover:bg-lilac-400 bg-lilac-300">
+                        Add New
+                    </div>
+                </div>
                 {options.map((option) => {
                     const isSelected = selectedValue === option.value;
 
@@ -44,7 +50,7 @@ const TagSelectField = ({ form, label, fieldName, options, gridColumns = 5 }: Ta
                             <div
                                 onClick={() => setValue(fieldName, option.value, {shouldValidate: true})}
                                 style={{ backgroundColor: option.bgColor, color: option.textColor }}
-                                className={`font-poppins font-medium text-sm rounded-xl py-2 px-4 `}
+                                className={`hover:cursor-pointer hover:opacity-85 font-poppins font-medium text-sm rounded-xl py-2 px-4 `}
                             >
                                 <h3 className='font-poppins font-medium text-sm'>{option.label}</h3>
                             </div>

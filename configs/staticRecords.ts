@@ -7,6 +7,10 @@ export const staticRecords = {
         transactionTypes: {
             bprConsumption: '098a21b2-3101-46a3-b3fe-ca81bb109a4a',
         },
+        procurementTypes: {
+            purchased: 'a3580517-22ca-419c-89d1-f30cbd4c1b4e',
+            produced: '82aca833-c8e4-42c8-8488-a2bb15088f8e'
+        },
         producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
         uom: {
             lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b'
@@ -97,7 +101,11 @@ export const staticRecords = {
         requestPriorities: {
             neededForBatch: "88d4f46b-72ba-44b8-b01c-d9a849f3b227",
             runningLow: "bfbe26eb-3e22-4ab8-ba82-8662846d6b70",
-            outOfStock: "e19affa6-18b2-40a9-b738-f38b593480da"
+            outOfStock: "e19affa6-18b2-40a9-b738-f38b593480da",
+            high: "88d4f46b-72ba-44b8-b01c-d9a849f3b227",
+            normal: "bfbe26eb-3e22-4ab8-ba82-8662846d6b70",
+            low: "e19affa6-18b2-40a9-b738-f38b593480da"
+
         },
         requestTypes: {
             'default': 'f9307d16-1a26-49c8-b2a4-ffa441d96f45'

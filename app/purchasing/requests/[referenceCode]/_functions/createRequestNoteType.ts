@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache";
 
 export const createRequestNoteType = async (payload: Prisma.RequestNoteTypeUncheckedCreateInput) => {
-        
+
     const response = await prisma.requestNoteType.create({
         data: payload,
     });
