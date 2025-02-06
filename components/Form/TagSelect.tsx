@@ -36,7 +36,7 @@ const TagSelectField = ({ form, label, fieldName, options, gridColumns = 5 ,onAd
             <div className={`grid ${classes.gridColumns[gridColumns]} gap-4`}>
 
                 <div className="p-2 border-2 border-white">
-                    <div onClick={onAddNew} className="font-poppins font-medium text-sm  rounded-xl py-2 px-4 hover:cursor-pointer hover:bg-lilac-400 bg-lilac-300">
+                    <div onClick={onAddNew} className="font-poppins font-medium text-sm  rounded-xl py-2 px-4 hover:cursor-pointer border-2 border-neutral-800 border-dashed text-neutral-900">
                         Add New
                     </div>
                 </div>
