@@ -26,15 +26,15 @@ const CompletedAlert = ({
 
     const handleCompletion = async () => {
 
-            await purchaseOrderActions.update(
-                { id: purchaseOrder.id },
-                { statusId: "db907b0f-4aac-42d7-9118-ee35e178d9b3" },
-            );
+        await purchaseOrderActions.update(
+            { id: purchaseOrder.id },
+            { statusId: "db907b0f-4aac-42d7-9118-ee35e178d9b3" },
+        );
 
-            await createActivityLog('modifyPurchaseOrder', 'purchaseOrder', purchaseOrder.id, { context: `Purchase Order completed and received` })
-            revalidatePage('/receiving/');
-            router.push('/receiving/');
-            toast('Received!', `Successfully finished receiving PO# ${purchaseOrder.referenceCode}`, 'success');
+        await createActivityLog('modifyPurchaseOrder', 'purchaseOrder', purchaseOrder.id, { context: `Purchase Order completed and received` })
+        revalidatePage('/receiving/');
+        router.push('/receiving/');
+        toast('Received!', `Successfully finished receiving PO# ${purchaseOrder.referenceCode}`, 'success');
 
     }
 
@@ -50,7 +50,11 @@ const CompletedAlert = ({
             return;
         }
 
-        showDialog('completedDialog')
+        //instead just doing it automatically
+        //
+
+        handleCompletion()
+
 
     }, [showAlert])
 
@@ -66,7 +70,7 @@ const CompletedAlert = ({
                 cancelAction={() => console.log('Cancelled')}
 
             >
-                It looks like everything on this PO was received. Would you like to mark the reception as completed?
+                It looks like everything on this PO was received, so it is being automatically marked as Received.
 
             </Alert.Content>
 
