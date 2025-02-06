@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePage } from "@/actions/app/revalidatePage"
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 

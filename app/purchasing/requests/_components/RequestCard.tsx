@@ -6,8 +6,8 @@ import Dropdown from '@/components/Dropdown'
 import { RequestStatus } from '../[referenceCode]/_functions/getRequestStatuses'
 import { RequestPriority } from '../_functions/getPriorities'
 import { Prisma } from '@prisma/client'
-import { updateRequest } from '../[referenceCode]/_functions/updateRequest'
 import DateBadge from './DateBadge'
+import { updateRequest } from '../_functions/updateRequest'
 
 type RequestCardProps = {
     request: IPurchasingRequest
@@ -76,9 +76,8 @@ const RequestCard = ({ request, statuses, priorities }: RequestCardProps) => {
                     label={request.priority.name}
                     options={priorityOptions}
                 />
-                <div className='flex'>
-                    <DateBadge request={request} />
-                </div>
+
+                <DateBadge request={request} />
 
             </div>
 

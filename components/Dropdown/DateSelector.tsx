@@ -31,7 +31,7 @@ const DateSelector = ({ onClick, value }: DateSelectProps) => {
     const formatDate = (start: Date | null, end: Date | null) => {
 
         if (!start || !end) {
-            return;
+            return 'Expected Date Not Set'
         }
 
         const formatString = "ccc, LLL dd yyyy"
@@ -40,7 +40,6 @@ const DateSelector = ({ onClick, value }: DateSelectProps) => {
         const luxEnd = DateTime.fromJSDate(end);
         const equalDates = +luxStart === +luxEnd;
 
-        console.log(`${luxStart} - ${luxEnd} - ${equalDates}`)
         
         if (equalDates) {
             return luxStart.toFormat(formatString);
@@ -66,7 +65,7 @@ const DateSelector = ({ onClick, value }: DateSelectProps) => {
                 popperPlacement="bottom-start" // Position the calendar below the input
                 popperContainer={FloatingPortal}
                 customInput={
-                    <div className='font-poppins font-medium text-base bg-neutral-300 hover:bg-neutral-400 rounded-xl px-2 py-1 text-neutral-900'>
+                    <div className='font-poppins font-medium text-base bg-neutral-300 hover:bg-neutral-400 rounded-xl px-2 py-1 text-neutral-900 '>
                         {formatDate(startDate, endDate)}
                     </div>
                 }

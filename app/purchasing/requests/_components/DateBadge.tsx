@@ -9,11 +9,10 @@ import { DatepickerRange } from '@/components/Dropdown/DateSelector';
 const DateBadge = ({ request }: { request: IPurchasingRequest }) => {
     const [hasPO, setHasPO] = useState(true);
 
-    const relevantPoItems = request.relevantPoItems?.filter(
-        (i) => i.purchaseOrderStatus.id !== staticRecords.purchasing.poStatuses.received
-    ); // exclude already received for split arrivals
+    const relevantPoItems = request.relevantPoItems
 
     const poItemDetails = relevantPoItems ? relevantPoItems[0]?.details[0] : null;
+
 
     useEffect(() => {
         if (!relevantPoItems || !poItemDetails) {
@@ -34,19 +33,21 @@ const DateBadge = ({ request }: { request: IPurchasingRequest }) => {
     }
 
     const handleDateSelection = async (value: DatepickerRange) => {
+
         if (relevantPoItems?.length !== 1) {
             // too many poitems
             return;
         }
 
-        await updatePoItemDetails(relevantPoItems[0].details[0].id, {
+        const update = await updatePoItemDetails(relevantPoItems[0].details[0].id, {
             expectedDateStart: value.start,
             expectedDateEnd: value.end,
         });
+
     };
 
     return (
-        <div>
+        <div className='flex'>
             {!hasPO && (
                 <div className="bg-neutral-300 px-2 py-1 rounded-xl font-poppins font-medium text-base">
                     No Connected PO
@@ -54,7 +55,10 @@ const DateBadge = ({ request }: { request: IPurchasingRequest }) => {
             )}
 
             {hasPO && (
-                <Dropdown.Date onClick={handleDateSelection} value={date} />
+
+                <div className="bg-neutral-300 px-2 py-1 rounded-xl font-poppins font-medium text-base">
+                    <Dropdown.Date onClick={handleDateSelection} value={date} />
+                </div>
             )}
         </div>
     );

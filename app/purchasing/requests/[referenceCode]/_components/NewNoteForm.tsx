@@ -7,13 +7,14 @@ import { createRequestNote } from "../_functions/createRequestNote"
 import useDialog from "@/hooks/useDialog"
 import { TagSelectOptions } from "@/components/Form/TagSelect"
 import { staticRecords } from "@/configs/staticRecords"
+import { Dispatch, SetStateAction } from "react"
 
 type Inputs = {
     noteTypeId: string
     content: string
 }
-const NewNoteForm = ({ types, requestId  }: {
-    types: RequestNoteType[], requestId: string,
+const NewNoteForm = ({ types, requestId, setMode  }: {
+    types: RequestNoteType[], requestId: string, setMode: Dispatch<SetStateAction<'addNoteType' | 'default'>>
 }) => {
 
     const form = useForm<Inputs>({defaultValues: {noteTypeId: staticRecords.purchasing.requestTypes.default}});
@@ -39,7 +40,7 @@ const NewNoteForm = ({ types, requestId  }: {
 
                 <Form.TextArea form={form} fieldName="content" label="Note" required />
 
-                <Form.TagSelect form={form} fieldName="noteTypeId" label="Type" options={typeOptions} />
+                <Form.TagSelect form={form} fieldName="noteTypeId" label="Type" options={typeOptions} onAddNew={() => setMode('addNoteType')} />
 
                 <Form.ActionRow form={form} />
             </Form.Root>

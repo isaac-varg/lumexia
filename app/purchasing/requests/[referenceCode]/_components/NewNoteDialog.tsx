@@ -19,12 +19,10 @@ const NewNoteDialog = ({ types, requestId }: NewNoteDialogProps) => {
         <Dialog.Root identifier="newrequestnotedialog">
             <div className="flex justify-between items-center">
                 <Dialog.Title>{mode === 'default' ? 'Add Note' : 'Create Note Type'}</Dialog.Title>
-                <button className="btn"
-                    onClick={() => setMode("addNoteType")}>New Note Type</button>
             </div>
 
 
-            {mode === 'default' && <NewNoteForm types={types} requestId={requestId} />}
+            {mode === 'default' && <NewNoteForm types={types} requestId={requestId} setMode={setMode} />}
 
             {mode === 'addNoteType' && <CreateNoteTypeForm setMode={setMode} />}
 

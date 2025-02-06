@@ -108,7 +108,7 @@ export const staticRecords = {
 
         },
         requestTypes: {
-            'default': 'f9307d16-1a26-49c8-b2a4-ffa441d96f45'
+            default: 'e65a9b8c-8cf9-44d2-916e-95ef14b9720d'
         },
         requestStatuses: {
             onHold: "ea9543d2-07e3-48db-b363-52e1c6604c65",

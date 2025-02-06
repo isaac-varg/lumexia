@@ -2,15 +2,15 @@
 
 import { useState } from "react"
 import ItemStep from "./ItemStep"
-import { Item } from "@/actions/inventory/getItems"
 import ActiveRequestsStep from "./ActiveRequestsStep"
 import StepLabel from "./StepLabel"
 import NotesStep from "./NotesStep"
 import Card from "@/components/Card"
 import CompleteStep from "./CompleteStep"
+import { PurchasedItem } from "@/actions/inventory/getPurchasedItems"
 
 type MainPanelProps = {
-    items: Item[],
+    items: PurchasedItem[],
 }
 
 export type InterimNote = {

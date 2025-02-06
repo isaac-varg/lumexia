@@ -1,9 +1,10 @@
 import { Item } from '@/actions/inventory/getItems'
+import { PurchasedItem } from '@/actions/inventory/getPurchasedItems';
 import Search from '@/components/Search/Search'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 
 type ItemStepProps = {
-    items: Item[];
+    items: PurchasedItem[];
     nextStep: () => void;
     setItem: Dispatch<SetStateAction<string>>
     currentStep: number
@@ -11,7 +12,6 @@ type ItemStepProps = {
 const ItemStep = ({ items, nextStep, currentStep, setItem }: ItemStepProps) => {
 
     const [mode, setMode] = useState<'find' | 'add'>('find')
-
 
     const handleItemSelection = (value: string) => {
         setItem(value);
@@ -25,7 +25,7 @@ const ItemStep = ({ items, nextStep, currentStep, setItem }: ItemStepProps) => {
         <div>
             <Search
                 data={items}
-                keys={['name']}
+                keys={['name', 'aliases']}
                 onClick={handleItemSelection}
             />
         </div>

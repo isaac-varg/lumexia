@@ -42,7 +42,7 @@ const SelectPoDialog = ({ requestId, linkablePos }: { requestId: string, linkabl
 
                                     <div className="flex justify-between">
 
-                                        <span>{po.quantity} {po.uom.abbreviation}  Purchased</span>
+                                        <span>{po.quantity} {po.uom.abbreviation}</span>
                                         <span className="badge badge-info">{po.purchaseOrderStatus.name}</span>
                                     </div>
 

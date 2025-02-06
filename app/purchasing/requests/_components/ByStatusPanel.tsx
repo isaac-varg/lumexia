@@ -7,13 +7,11 @@ import { RequestPriority } from '../_functions/getPriorities';
 
 const ByStatusPanel = ({ requests, statuses , priorities}: { requests: RequestForDashboard[], statuses: RequestStatus[], priorities: RequestPriority[] }) => {
 
-    const grouped = groupByProperty(requests, 'statusName');
 
     const statusCounts = statuses.map((status) => ({
         ...status,
         count: requests.filter((req) => req.status.name === status.name).length
     }));
-
 
 
     return (

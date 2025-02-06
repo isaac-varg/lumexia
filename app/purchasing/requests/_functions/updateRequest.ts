@@ -14,7 +14,7 @@ export const updateRequest = async (requestId: string, data: Prisma.PurchasingRe
         data,
     })
 
-    revalidatePath('/purchasing/requests/[referenceCode]');
+    revalidatePath('/purchasing/requests');
 
     await createActivityLog('updatePurchasingRequest', 'purchasingRequest', requestId, {context: `the purchasing request was updated by changing either the status , dates or priority`})
 

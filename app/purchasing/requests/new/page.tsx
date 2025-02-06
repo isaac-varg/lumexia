@@ -2,11 +2,11 @@ import PageBreadcrumbs from '@/components/App/PageBreadcrumbs'
 import PageTitle from '@/components/Text/PageTitle'
 import React from 'react'
 import MainPanel from './_components/MainPanel'
-import { getItems } from '@/actions/inventory/getItems'
+import { inventoryActions } from '@/actions/inventory'
 
 const NewRequestPage = async () => {
 
-    const items = await getItems() 
+    const items = await inventoryActions.getPurchasedItems(); 
 
     return (
         <div className='flex flex-col gap-y-6'>

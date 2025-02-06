@@ -12,9 +12,9 @@ type Inputs = {
     textColor: string
 }
 
-const CreateNoteTypeForm = ({ setMode }: { setMode: Dispatch<SetStateAction<'addNoteType' | 'default'>>}) => {
+const CreateNoteTypeForm = ({ setMode }: { setMode: Dispatch<SetStateAction<'addNoteType' | 'default'>> }) => {
 
-    const form = useForm<Inputs>({defaultValues: {name: 'Name', description: '', bgColor: "#9a4573" , textColor: '#ffffff'}});
+    const form = useForm<Inputs>({ defaultValues: { name: 'Name', description: '', bgColor: "#9a4573", textColor: '#ffffff' } });
     const bgColor = form.watch('bgColor');
     const textColor = form.watch('textColor');
     const name = form.watch('name')
@@ -51,8 +51,13 @@ const CreateNoteTypeForm = ({ setMode }: { setMode: Dispatch<SetStateAction<'add
                     <Form.Color fieldName="textColor" label="Text Color" form={form} />
                 </div>
 
+                <div className='flex flex-row justify-end gap-x-2'>
+                    <button className='btn btn-warning' onClick={() => setMode('default')}>Cancel</button>
 
-                <Form.ActionRow form={form} />
+                    <button className='btn btn-success' type='submit'>Submit</button>
+                </div>
+
+
             </Form.Root>
         </div>
     )
