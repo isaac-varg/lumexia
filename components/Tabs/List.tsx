@@ -2,9 +2,10 @@ import React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import TabsPanel from ".";
 import { PanelStates } from "@/store/panelSelectionSlice";
+import { Tab } from "./Trigger";
 
 type TabsListProps = {
-  tabTriggers: { identifier: string; label: string, badge?: string | number }[];
+  tabTriggers: Tab[];
   panelStateName: PanelStates
 };
 

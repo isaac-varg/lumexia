@@ -5,6 +5,21 @@ import { PanelStates, usePanelActions } from "@/store/panelSelectionSlice";
 import { updateUserConfig } from "@/actions/users/updateUserConfig";
 import { staticRecords } from "@/configs/staticRecords";
 
+export type Tab = {
+    identifier: string;
+    label: string
+    badge?: string | number
+    badgeColor?: keyof typeof classes.badgeColor
+
+}
+
+const classes = {
+    badgeColor: {
+        red: 'bg-red-400',
+        neutral: 'bg-neutral-400'
+    }
+}
+
 const TabTrigger = ({
     identifier,
     label,
@@ -14,8 +29,7 @@ const TabTrigger = ({
     identifier: string;
     label: string;
     panelStateName: PanelStates;
-    tab: { identifier: string; label: string, badge?: string | number }
-
+    tab: Tab 
 }) => {
 
     const { setPanelState } = usePanelActions()
@@ -39,7 +53,7 @@ const TabTrigger = ({
                 <ContextMenu.Trigger>
                     <div className="flex flex-row gap-x-6 items-center justify-center">
                         <div>{label}</div>
-                        {tab.badge && <div className="rounded-full h-6 w-6 bg-red-400 text-white text-sm flex items-center justify-center">{tab.badge}</div>}
+                        {tab.badge && <div className={`rounded-full h-6 w-6 ${tab.badgeColor ? classes.badgeColor[tab.badgeColor] : classes.badgeColor.red}  text-white text-sm flex items-center justify-center`}>{tab.badge}</div>}
                     </div>
 
                 </ContextMenu.Trigger>

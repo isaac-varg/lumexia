@@ -12,6 +12,7 @@ import { RequestNote } from '../_functions/getRequestNotes'
 import NotesPanel from './NotesPanel'
 import { RequestNoteType } from '../_functions/getNoteTypes'
 import RequestNotesTab from './RequestNotesTab'
+import { Tab } from '@/components/Tabs/Trigger'
 
 const InventoryTabs = ({
     snapshot,
@@ -31,7 +32,7 @@ const InventoryTabs = ({
     noteTypes: RequestNoteType[]
 }) => {
 
-    const tabs = [
+    const tabs: Tab[] = [
         {
             identifier: 'current',
             label: 'Current',
@@ -39,7 +40,8 @@ const InventoryTabs = ({
         {
             identifier: 'notes',
             label: 'Notes',
-            badge: notes.length
+            badge: notes.length,
+            badgeColor: 'neutral'
 
         },
         {
