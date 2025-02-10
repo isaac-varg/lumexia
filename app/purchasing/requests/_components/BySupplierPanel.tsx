@@ -8,7 +8,7 @@ import { RequestPriority } from '../_functions/getPriorities';
 const BySupplierPanel = ({ requests, statuses, priorities }: { requests: RequestForDashboard[], statuses: RequestStatus[], priorities: RequestPriority[] }) => {
 
     const grouped: GroupByProperty[] = groupByProperty(requests, 'connectedPoSuppliers');
-    const supplierKeys = Object.keys(grouped);
+    const supplierKeys = Object.keys(grouped).sort();
 
     return (
         <div className='flex items-center justify-center text-9xl font-bold font-poppins text-lilac-800'>
@@ -43,7 +43,7 @@ const BySupplierPanel = ({ requests, statuses, priorities }: { requests: Request
                         <div className='flex flex-col gap-y-6'>
                             <div
                                 className='font-poppins text-xl font-semibold'>
-                                    No Connected Purchase Orders 
+                                    No Connected Supplier 
                             </div>
 
                             <div className='grid grid-cols-4 max-h-80 overflow-y-auto gap-6'>

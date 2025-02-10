@@ -3,6 +3,7 @@ import React from 'react'
 import { RequestDetails } from '../_functions/getRequest'
 import { DateTime } from 'luxon'
 import { useRouter } from 'next/navigation'
+import { getSlug } from '@/utils/general/getSlug'
 
 type PageTitleProps = {
     request: RequestDetails
@@ -12,7 +13,7 @@ type PageTitleProps = {
 const RequestDetailsPageTitle = ({ request }: PageTitleProps) => {
 
     const router = useRouter()
-    const path = `/inventory/items/${request.item.name}?id=${request.item.id}`
+    const path = `/inventory/items/${getSlug(request.item.name)}?id=${request.item.id}`
 
     return (
         <div className='flex justify-start items-center gap-x-4'>

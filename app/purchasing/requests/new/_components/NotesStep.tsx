@@ -14,7 +14,7 @@ type NotesStepProps = {
 
 
 const NotesStep = ({ nextStep, currentStep, setNotes, notes }: NotesStepProps) => {
-    const [mode, setMode] = useState<'addNoteType' | 'default' | 'show'>('default');
+    const [mode, setMode] = useState<'addNoteType' | 'default' | 'show'>('show');
 
     const isCurrent = currentStep === 2
 
