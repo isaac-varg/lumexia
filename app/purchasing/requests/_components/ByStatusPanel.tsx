@@ -17,7 +17,7 @@ const ByStatusPanel = ({ requests, statuses , priorities}: { requests: RequestFo
     return (
         <div className='flex flex-col gap-y-6'>
 
-            <div className='grid grid-cols-1 gap-6'>
+            <div className='grid grid-cols-2 gap-6'>
                 {statusCounts.filter((s) => s.count !== 0).map((status) => {
                     return (
                         <div
@@ -32,7 +32,7 @@ const ByStatusPanel = ({ requests, statuses , priorities}: { requests: RequestFo
                                     {status.name}
                                 </div>
 
-                                <div className='grid grid-cols-4 max-h-80 overflow-y-auto gap-6'>
+                                <div className='grid grid-cols-3 max-h-80 overflow-y-auto gap-6'>
                                     {requests.filter((req) => req.status.id === status.id).map((req) => <RequestCard key={req.id} statuses={statuses} priorities={priorities} request={req} />)}
                                 </div>
                             </div>

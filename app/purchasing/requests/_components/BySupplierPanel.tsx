@@ -12,7 +12,7 @@ const BySupplierPanel = ({ requests, statuses, priorities }: { requests: Request
 
     return (
         <div className='flex items-center justify-center text-9xl font-bold font-poppins text-lilac-800'>
-            <div className='grid grid-cols-1 gap-6'>
+            <div className='grid grid-cols-2 gap-6'>
                 {supplierKeys.map((supplierKey) => {
                     if (supplierKey === "") { return }
                     return (
@@ -26,7 +26,7 @@ const BySupplierPanel = ({ requests, statuses, priorities }: { requests: Request
                                     {supplierKey}
                                 </div>
 
-                                <div className='grid grid-cols-4 max-h-80 overflow-y-auto gap-6'>
+                                <div className='grid grid-cols-3 max-h-80 overflow-y-auto gap-6'>
                                     {requests.filter((req) => req.connectedPoSuppliers.some((supplier: string) => supplier === supplierKey)).map((req) => <RequestCard key={req.id} statuses={statuses} priorities={priorities} request={req} />)}
                                 </div>
                             </div>
