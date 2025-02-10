@@ -22,6 +22,7 @@ import NotesPanel from './_components/NotesPanel';
 import NewNoteDialog from './_components/NewNoteDialog';
 import { getNoteTypes } from './_functions/getNoteTypes';
 import { getRequestNotes } from './_functions/getRequestNotes';
+import { getRequestPriorities } from './_functions/getRequestPriorities';
 
 type RequestDetailsProps = {
     searchParams: {
@@ -40,6 +41,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
     const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)
     const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId), request.itemId)
     const requestStatuses = await getRequestStatuses();
+    const requestPriorities = await getRequestPriorities();
     const containerTypes = await getContainerTypes();
     const suppliers = await getSuppliers();
     const noteTypes = await getNoteTypes()
@@ -71,6 +73,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
                     requestDate={request.createdAt}
                     requestId={request.id}
                     allStatuses={requestStatuses}
+                    allPriorities={requestPriorities}
 
                 />
 

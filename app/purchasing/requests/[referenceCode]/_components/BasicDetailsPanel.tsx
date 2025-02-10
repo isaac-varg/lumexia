@@ -6,6 +6,8 @@ import { DateTime } from 'luxon'
 import React from 'react'
 import { updateRequest } from '../_functions/updateRequest'
 import { RequestStatus } from '../_functions/getRequestStatuses'
+import { DropdownOptions } from '@/components/Dropdown/Badge'
+import { RequestPriority } from '../../_functions/getPriorities'
 
 type BasicDetailsPanelProps = {
     requestingUser: string
@@ -13,27 +15,31 @@ type BasicDetailsPanelProps = {
     priorityName: string
     requestDate: Date
     requestId: string
-    allStatuses: RequestStatus[] 
+    allStatuses: RequestStatus[]
+    allPriorities: RequestPriority[]
 }
 
 
-const BasicDetailsPanel = ({ requestingUser, statusName, priorityName, requestDate, requestId , allStatuses}: BasicDetailsPanelProps) => {
-
-    const prioritiesArray = Object.entries(staticRecords.purchasing.requestPriorities).map(([key, value]) => ({ [key]: value }));
+const BasicDetailsPanel = ({ requestingUser, statusName, priorityName, requestDate, requestId, allStatuses, allPriorities }: BasicDetailsPanelProps) => {
 
 
-    const priorityOptions = prioritiesArray.map((p: any ) => {
+
+    const priorityOptions = allPriorities.map((p) => {
         return {
-            value: Object.values(p)[0] as string,
-            label: camelToTitleCase(Object.keys(p)[0]),
+            value: p.id, 
+            label: p.name, 
+            bgColor: p.bgColor,
+            textColor: p.textColor,
+
         }
     });
 
-    const statusOptions = allStatuses.map((s) => {
-
+    const statusOptions: DropdownOptions[] = allStatuses.map((s) => {
         return {
             value: s.id,
-            label: s.name , 
+            label: s.name,
+            bgColor: s.bgColor,
+            textColor: s.textColor,
         }
     });
 
@@ -59,10 +65,10 @@ const BasicDetailsPanel = ({ requestingUser, statusName, priorityName, requestDa
                 <Text.LabelDataPair label='Request On' data={DateTime.fromJSDate(requestDate).toFormat('dd MMM yyyy \'at\' hh:mm a')} />
 
 
-                <Text.LabelDataDropdown label='Status' displayType='badge' options={statusOptions} onOptionClick={handleStatusOptions}>{statusName}</Text.LabelDataDropdown>
+                <Text.LabelDataDropdown label='Status' currentSelectionName={statusName} badgeColor={allStatuses.filter((s) => s.name === statusName)[0].bgColor} textColor={allStatuses.filter((s) => s.name === statusName)[0].textColor} options={statusOptions} onOptionClick={handleStatusOptions}>{statusName}</Text.LabelDataDropdown>
 
 
-                <Text.LabelDataDropdown label='Priority' displayType='badge' options={priorityOptions} onOptionClick={handlePriorityOption}>{priorityName}</Text.LabelDataDropdown>
+                <Text.LabelDataDropdown label='Priority' currentSelectionName={priorityName} badgeColor={allPriorities.filter((p) => p.name === priorityName)[0].bgColor} options={priorityOptions} onOptionClick={handlePriorityOption}>{priorityName}</Text.LabelDataDropdown>
 
 
             </div>

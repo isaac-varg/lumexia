@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFloating, FloatingPortal } from '@floating-ui/react';
 
 
-type DropdownOptions = {
+export type DropdownOptions = {
     label: string
     value: string
     bgColor: string
