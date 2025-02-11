@@ -2,11 +2,11 @@
 import Dialog from "@/components/Dialog"
 import { RequestSupplier } from "../_functions/getSuppliers"
 import { LinkablePo } from "../_functions/getLinkablePos"
-import FuzzySearch from "fuzzy-search"
 import { useEffect, useRef, useState } from "react"
 import { TbSearch } from "react-icons/tb"
 import { createNewPO } from "../_functions/createNewPO"
 import useDialog from "@/hooks/useDialog"
+import Fuse from "fuse.js"
 
 type NewPurchaseOrderDialogProps = {
     suppliers: RequestSupplier[]
@@ -22,7 +22,13 @@ const NewPurchaseOrderDialog = ({ suppliers, requestId, itemId, linkablePOs }: N
     const [searchInput, setSearchInput] = useState("");
     const [queryResults, setQueryResults] = useState<RequestSupplier[]>([])
 
-    const searcher = new FuzzySearch(suppliers, ["name"], { sort: true })
+    const searchOptions = {
+        keys: [[
+            'name'
+        ]]
+    }
+
+    const searcher = new Fuse(suppliers, searchOptions)
 
     const uniqueSuggestedSuppliers = linkablePOs
         .map((po) => po.purchaseOrders.supplier) // Extract the supplier object
@@ -45,8 +51,9 @@ const NewPurchaseOrderDialog = ({ suppliers, requestId, itemId, linkablePOs }: N
         }
 
         debounceTimeout.current = setTimeout(() => {
-            const searchResults = searcher.search(searchInput);
-            setQueryResults(searchResults);
+            const searchResults = searcher.search(searchInput );
+            const mappedResults = searchResults.map((s) => s.item);
+            setQueryResults(mappedResults);
         }, 500);
 
         return () => {

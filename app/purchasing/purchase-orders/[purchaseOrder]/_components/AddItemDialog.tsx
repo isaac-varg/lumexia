@@ -1,18 +1,20 @@
 import Dialog from "@/components/Dialog";
 import React, { useEffect, useState } from "react";
-import FuzzySearch from "fuzzy-search";
 import { PoFlatItems } from "../_functions/flattenItems";
+import Fuse from "fuse.js";
 
 const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSelection: any }) => {
     const [results, setResults] = useState<any[]>([]);
     const [searchInput, setSearchInput] = useState("");
 
-    const searcher = new FuzzySearch(data, [
-        "referenceCode",
-        "name",
-        "aliasesAll",
-    ]);
+    const searchOptions = {
+        keys: [["referenceCode",
+            "name",
+            "mergedAliases"
+        ]],
+    }
 
+    const searcher = new Fuse(data, searchOptions)
 
     const handleItemClick = (item: any) => {
         onItemSelection(item);
@@ -27,7 +29,8 @@ const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSel
 
     useEffect(() => {
         const searchResults = searcher.search(searchInput);
-        setResults(searchResults);
+        const mappedResults = searchResults.map((s) => s.item);
+        setResults(mappedResults);
     }, [searchInput]);
 
     return (
@@ -43,7 +46,7 @@ const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSel
                     className="w-full bg-slate-200 py-2 px-4 rounded-lg text-poppins text-lg mb-6"
                 />
 
-                
+
                 <ul>
                     <div className="flex flex-col overflow-y-auto  max-h-[600px] gap-y-4">
                         {results.map((item) => (

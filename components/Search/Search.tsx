@@ -1,8 +1,8 @@
 "use client"
 
-import FuzzySearch from "fuzzy-search";
 import { useEffect, useRef, useState } from "react";
 import { TbSearch } from "react-icons/tb";
+import Fuse from 'fuse.js'
 
 type SearchProps = {
     data: any[],
@@ -16,7 +16,11 @@ const Search = ({ data, keys, onClick }: SearchProps) => {
     const [queryResults, setQueryResults] = useState<any[]>([])
 
 
-    const searcher = new FuzzySearch(data, keys, { sort: true })
+    const searchOptions = {
+        keys: [...keys],
+    }
+
+    const fuse = new Fuse(data, searchOptions)
 
 
     useEffect(() => {
@@ -25,9 +29,10 @@ const Search = ({ data, keys, onClick }: SearchProps) => {
         }
 
         debounceTimeout.current = setTimeout(() => {
-            const searchResults = searcher.search(searchInput);
-            setQueryResults(searchResults);
-        }, 500);
+            const searchResults = fuse.search(searchInput, {limit: 9});
+            const mappedResults = searchResults.map((s) => s.item);
+            setQueryResults(mappedResults);
+        }, 400);
 
         return () => {
             if (debounceTimeout.current) {
@@ -49,7 +54,7 @@ const Search = ({ data, keys, onClick }: SearchProps) => {
 
 
 
-            <ul className="flex flex-col gap-y-2 max-h-40 overflow-y-auto">
+            <ul className="flex flex-col gap-y-2 max-h-80 overflow-y-auto">
 
                 {queryResults.length < 10 && queryResults.map((result) => {
                     return (

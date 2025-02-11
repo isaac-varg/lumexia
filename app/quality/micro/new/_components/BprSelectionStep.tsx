@@ -2,26 +2,30 @@
 
 import React, { useEffect, useState } from 'react'
 import { IBprForSSF } from '../_functions/getBprs'
-import FuzzySearch from 'fuzzy-search'
 import Text from '@/components/Text'
 import { useWizard } from 'react-use-wizard'
+import Fuse from 'fuse.js'
 
-const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelection: (bpr: IBprForSSF) => void  }) => {
+const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelection: (bpr: IBprForSSF) => void }) => {
     const [searchInput, setSearchInput] = useState('')
     const [results, setResults] = useState<IBprForSSF[]>([])
     const { nextStep } = useWizard()
 
-    const searcher = new FuzzySearch(bprs, [
-        "referenceCode",
-        "producedItemIID",
-        "producedItemName"
-    ]);
+    const searchOptions = {
+        keys: [[
+            "referenceCode",
+            "producedItemIID",
+            "producedItemName"
 
+        ]]
+    }
 
-    const handleItemClick = (bpr: IBprForSSF ) => {
+    const searcher = new Fuse(bprs, searchOptions)
+
+    const handleItemClick = (bpr: IBprForSSF) => {
         onSelection(bpr);
         nextStep()
-        
+
     }
 
     const handleKeydown = (event: any) => {
@@ -33,7 +37,8 @@ const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelecti
 
     useEffect(() => {
         const searchResults = searcher.search(searchInput);
-        setResults(searchResults);
+        const mappedResults = searchResults.map((s) => s.item);
+        setResults(mappedResults);
     }, [searchInput]);
 
 
