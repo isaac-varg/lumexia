@@ -13,10 +13,10 @@ const ItemSearch = ({ items, onSelection }: { items: ItemDataForSearch[], onSele
     const [results, setResults] = useState<ItemDataForSearch[]>([])
 
     const searchOptions = {
-        keys: [["referenceCode",
+        keys: ["referenceCode",
             "name",
             "mergedAliases"
-        ]],
+        ],
     }
 
 
@@ -36,6 +36,7 @@ const ItemSearch = ({ items, onSelection }: { items: ItemDataForSearch[], onSele
 
     useEffect(() => {
         const searchResults = searcher.search(searchInput);
+        console.log(searchResults)
         const mappedResults = searchResults.map((s) => s.item);
         setResults(mappedResults);
     }, [searchInput]);

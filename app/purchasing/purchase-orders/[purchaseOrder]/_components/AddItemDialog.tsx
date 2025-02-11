@@ -8,10 +8,10 @@ const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSel
     const [searchInput, setSearchInput] = useState("");
 
     const searchOptions = {
-        keys: [["referenceCode",
+        keys: ["referenceCode",
             "name",
             "mergedAliases"
-        ]],
+        ],
     }
 
     const searcher = new Fuse(data, searchOptions)

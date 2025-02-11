@@ -20,7 +20,7 @@ const NewPurchaseOrderForm = ({ suppliers }: NewPurchaseOrderFormProps) => {
     const router = useRouter();
 
     const searchOptions = {
-        keys: [['name']]
+        keys: ['name']
     }
 
     const searcher = new Fuse(suppliers, searchOptions);

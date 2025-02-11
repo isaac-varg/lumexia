@@ -12,12 +12,12 @@ const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelecti
     const { nextStep } = useWizard()
 
     const searchOptions = {
-        keys: [[
+        keys: [
             "referenceCode",
             "producedItemIID",
             "producedItemName"
 
-        ]]
+        ]
     }
 
     const searcher = new Fuse(bprs, searchOptions)

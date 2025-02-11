@@ -13,10 +13,10 @@ const ItemSearch = ({ items }: { items: IItemSearchData[] }) => {
     const router = useRouter()
 
     const searchOptions = {
-        keys: [["referenceCode",
+        keys: ["referenceCode",
             "name",
             "mergedAliases"
-        ]],
+        ],
     }
 
 

@@ -23,9 +23,9 @@ const NewPurchaseOrderDialog = ({ suppliers, requestId, itemId, linkablePOs }: N
     const [queryResults, setQueryResults] = useState<RequestSupplier[]>([])
 
     const searchOptions = {
-        keys: [[
+        keys: [
             'name'
-        ]]
+        ]
     }
 
     const searcher = new Fuse(suppliers, searchOptions)
