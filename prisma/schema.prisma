@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Feb 03 2025 11:41:11 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Feb 11 2025 11:42:48 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -145,6 +145,66 @@ model EquipmentType {
   @@map("equipment_types")
 }
 
+model AuditRequestNoteType {
+  id                String             @id @default(uuid())
+  name              String
+  description       String?
+  bgColor           String             @map("bg_color")
+  textColor         String             @map("text_color")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  auditRequestNotes AuditRequestNote[]
+
+  @@map("audit_request_note_types")
+}
+
+model AuditRequestNote {
+  id         String               @id @default(uuid())
+  requestId  String               @map("request_id")
+  noteTypeId String               @map("note_type_id")
+  userId     String               @map("user_id")
+  content    String
+  createdAt  DateTime             @default(now()) @map("created_at")
+  updatedAt  DateTime             @updatedAt @map("updated_at")
+  request    AuditRequest         @relation(fields: [requestId], references: [id])
+  user       User                 @relation(fields: [userId], references: [id])
+  noteType   AuditRequestNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("audit_request_notes")
+}
+
+model AuditRequestStatus {
+  id          String         @id @default(uuid())
+  name        String
+  description String?
+  sequence    Int            @unique
+  bgColor     String         @default("#333333") @map("bg_color")
+  textColor   String         @default("#ffffff") @map("text_color")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  requests    AuditRequest[]
+
+  @@map("audit_request_statuses")
+}
+
+model AuditRequest {
+  id               String             @id @default(uuid())
+  requestById      String             @map("request_by_id")
+  inventoryAuditId String?            @map("inventory_audit_id")
+  statusId         String             @map("status_id")
+  itemId           String             @map("item_id")
+  note             String
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+  requestedBy      User               @relation(fields: [requestById], references: [id])
+  item             Item               @relation(fields: [itemId], references: [id])
+  inventoryAudit   InventoryAudit?    @relation(fields: [inventoryAuditId], references: [id])
+  status           AuditRequestStatus @relation(fields: [statusId], references: [id])
+  notes            AuditRequestNote[]
+
+  @@map("audit_requests")
+}
+
 model ContainerType {
   id                      String                    @id @default(uuid())
   name                    String
@@ -169,6 +229,19 @@ model Container {
   lot             Lot               @relation(fields: [lotId], references: [id])
 
   @@map("containers")
+}
+
+model InventoryAudit {
+  id            String         @id @default(uuid())
+  itemId        String         @map("item_id")
+  conductedById String         @map("conducted_by_id")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  item          Item           @relation(fields: [itemId], references: [id])
+  user          User           @relation(fields: [conductedById], references: [id])
+  requests      AuditRequest[]
+
+  @@map("inventory_audits")
 }
 
 model LotOrigin {
@@ -328,6 +401,8 @@ model Item {
   itemPricingData             ItemPricingData[]
   itemCostDeterminations      ItemCostDetermination[]
   requests                    PurchasingRequest[]
+  audits                      InventoryAudit[]
+  auditRequests               AuditRequest[]
   ItemConsumerContainer       ItemConsumerContainer[]
   BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
@@ -1152,6 +1227,9 @@ model User {
   userConfigs                   UserConfig[]
   purchasingRequests            PurchasingRequest[]
   requestNotes                  RequestNote[]
+  auditRequests                 AuditRequest[]
+  auditRequestNotes             AuditRequestNote[]
+  InventoryAudit                InventoryAudit[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]

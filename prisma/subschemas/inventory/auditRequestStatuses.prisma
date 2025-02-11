@@ -1,0 +1,14 @@
+model AuditRequestStatus {
+    id          String         @id @default(uuid())
+    name        String
+    description String?
+    sequence    Int            @unique
+    bgColor     String         @default("#333333") @map("bg_color")
+    textColor   String         @default("#ffffff") @map("text_color")
+    createdAt   DateTime       @default(now()) @map("created_at")
+    updatedAt   DateTime       @updatedAt @map("updated_at")
+    requests    AuditRequest[]
+
+    @@map("audit_request_statuses")
+}
+

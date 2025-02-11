@@ -1,9 +1,10 @@
 import Dialog from "@/components/Dialog"
 import { MaterialsBom } from "./MaterialSufficiency"
-import { useEffect,  useState } from "react"
+import { useEffect, useState } from "react"
 import { PurchasingRequestForPlanning, getPurchasingRequests } from "../_functions/getPurchasingRequests"
 import RequestForm from "./RequestForm"
 import MaterialAllocationPanels from "./MaterialAllocationPanels"
+import AuditRequest from "./AuditRequest"
 
 const MaterialAllocationDialog = ({
     material,
@@ -13,7 +14,7 @@ const MaterialAllocationDialog = ({
 
     const allocationDialogIdentifier = `allocation${material.id}`
     const [isLoading, setIsLoading] = useState(false);
-    const [mode, setMode] = useState<"default" | "request">("default")
+    const [mode, setMode] = useState<"default" | "request" | "audit">("default")
     const [requests, setRequests] = useState<PurchasingRequestForPlanning[]>([])
     const hasRequests = requests.length !== 0
 
@@ -38,7 +39,7 @@ const MaterialAllocationDialog = ({
 
     }, [])
 
-    
+
 
 
     return (
@@ -48,6 +49,8 @@ const MaterialAllocationDialog = ({
                 {mode === 'default' && <MaterialAllocationPanels material={material} isLoading={isLoading} requests={requests} setMode={setMode} />}
 
                 {mode === 'request' && <RequestForm material={material} setMode={setMode} hasRequests={hasRequests} />}
+
+                {mode === 'audit' && <AuditRequest setMode={setMode} />}
 
             </Dialog.Root>
         </>

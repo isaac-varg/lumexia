@@ -1,0 +1,17 @@
+model AuditRequest {
+    id               String             @id @default(uuid())
+    requestById      String             @map("request_by_id")
+    inventoryAuditId String?            @map("inventory_audit_id")
+    statusId         String             @map("status_id")
+    itemId           String             @map("item_id")
+    note             String
+    createdAt        DateTime           @default(now()) @map("created_at")
+    updatedAt        DateTime           @updatedAt @map("updated_at")
+    requestedBy      User               @relation(fields: [requestById], references: [id])
+    item             Item               @relation(fields: [itemId], references: [id])
+    inventoryAudit   InventoryAudit?    @relation(fields: [inventoryAuditId], references: [id])
+    status           AuditRequestStatus @relation(fields: [statusId], references: [id])
+    notes            AuditRequestNote[]
+
+    @@map("audit_requests")
+}

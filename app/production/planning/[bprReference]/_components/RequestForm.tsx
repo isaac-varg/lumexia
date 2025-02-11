@@ -9,7 +9,7 @@ import { createRequest } from '../_functions/createRequest'
 
 
 type RequestFormProps = {
-    setMode: Dispatch<SetStateAction<"default" | "request">>
+    setMode: Dispatch<SetStateAction<"default" | "request" | "audit">>
     material: MaterialsBom
     hasRequests: boolean
 }

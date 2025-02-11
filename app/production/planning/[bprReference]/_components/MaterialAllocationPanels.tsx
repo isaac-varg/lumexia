@@ -5,7 +5,6 @@ import Dialog from '@/components/Dialog'
 import { getSlug } from '@/utils/general/getSlug'
 import { useRouter } from 'next/navigation'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
-import { PurchasingRequest } from '@/types/purchasingRequest'
 import { TbPlus } from 'react-icons/tb'
 import { PurchasingRequestForPlanning } from '../_functions/getPurchasingRequests'
 import { DateTime } from 'luxon'
@@ -20,7 +19,7 @@ const MaterialAllocationPanels = ({
     material: MaterialsBom
     requests: PurchasingRequestForPlanning[]
     isLoading: boolean
-    setMode: Dispatch<SetStateAction<"default" | "request">>
+    setMode: Dispatch<SetStateAction<"default" | "request" | "audit">>
 }) => {
 
     const router = useRouter()
