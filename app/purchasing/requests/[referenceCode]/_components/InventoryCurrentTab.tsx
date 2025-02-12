@@ -5,11 +5,14 @@ import React from 'react'
 import { ItemInventory } from '../_functions/getInventory'
 import { OtherRequest } from '../_functions/getOtherRequests'
 import { useRouter } from 'next/navigation'
+import useDialog from '@/hooks/useDialog'
+import RequestInventoryAuditDialog from './RequestInventoryAuditDialog'
 
 const InventoryCurrentTab = ({ inventory, otherRequests, }: { inventory: ItemInventory, otherRequests: OtherRequest[] }) => {
 
 
     const router = useRouter();
+    const { showDialog } = useDialog()
 
     const handleAllocatedClick = (bpr: typeof inventory.allocated[number]) => {
         router.push(`/production/planning/${bpr.bpr.referenceCode}?id=${bpr.bprId}`)
@@ -22,12 +25,16 @@ const InventoryCurrentTab = ({ inventory, otherRequests, }: { inventory: ItemInv
 
     return (
         <div>
+        <RequestInventoryAuditDialog itemId={inventory.id || ''} />
             <div className="grid grid-cols-2 gap-4" >
 
 
                 <div className='card bg-slate-50'>
                     <div className=" card-body flex flex-col gap-y-4">
-                        <div className='card-title'>Current Inventory</div>
+                        <div className='flex justify-between items-center'>
+                            <div className='card-title'>Current Inventory</div>
+                            <button className='btn' onClick={() => showDialog('requestnewinventoryaudit') }>Request Inventory Audit</button>
+                        </div>
                         <Text.SectionTitle size="small">General</Text.SectionTitle>
                         <Text.LabelDataPair label="On Hand" data={`${toFracitonalDigits.weight(inventory.totalQuantityOnHand)} lbs`} />
                         <Text.LabelDataPair label="Allocated" data={`${toFracitonalDigits.weight(inventory.totalQuantityAllocated)} lbs`} />

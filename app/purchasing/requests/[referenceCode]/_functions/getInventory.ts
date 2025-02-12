@@ -103,6 +103,25 @@ export const getInventory = async (itemId: string) => {
         take: 5
     })
 
+    const auditRequests = await prisma.auditRequest.findMany({
+        where: {
+            itemId,
+        },
+        include: {
+            status: true,
+            inventoryAudit: {
+                include: {
+                    user: true
+                }
+            },
+            notes: {
+                include: {
+                    noteType: true
+                }
+            }
+        }
+    })
+
     const totalOnHand = lots.reduce(
         (accumulator: number, current: any) => accumulator + current.totalQuantityOnHand, 0
     );
@@ -118,6 +137,7 @@ export const getInventory = async (itemId: string) => {
         totalQuantityOnHand: totalOnHand,
         allocated,
         needed,
+        auditRequests,
         totalQuantityAllocated,
         totalQuantityAvailable,
         purchases,

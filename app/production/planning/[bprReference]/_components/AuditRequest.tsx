@@ -5,7 +5,7 @@ import { createAuditRequest } from '../_functions/createAuditRequest'
 import useToast from '@/hooks/useToast'
 
 type AuditRequestProps = {
-    setMode: Dispatch<SetStateAction<"default" | "request" | "audit">>
+    setMode?: Dispatch<SetStateAction<"default" | "request" | "audit">>
     itemId: string
 }
 
@@ -29,7 +29,9 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
     const handleCompleteAuditRequest = async () => {
         await createAuditRequest(notes, itemId);
 
-        setMode('default')
+        if (setMode) {
+            setMode('default')
+        }
         toast('Audit Request Created', 'Production staff with be alerted to conduct an inventory request.', 'success')
 
     }
@@ -74,7 +76,8 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
 
             {reqMode === 'view' && (
                 <div className='flex gap-x-2 justify-end'>
-                    <button className='btn btn-warning' onClick={() => setMode('default')}>Cancel</button>
+                    <button className='btn btn-warning' onClick={() => setMode && setMode('default')}>Cancel</button>
+
                     <button className='btn btn-success' onClick={() => handleCompleteAuditRequest()}>Submit</button>
                 </div>
             )}
