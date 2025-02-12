@@ -78,6 +78,7 @@ const main = async () => {
     await seedAction("purchaseOrderItemDetail")
 
 
+    await seedAction('requestNoteType')
     await seedAction("requestStatus")
     await seedAction("requestPriority")
     await seedAction("purchasingRequest")
