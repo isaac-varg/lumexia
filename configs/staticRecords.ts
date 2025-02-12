@@ -28,6 +28,16 @@ export const staticRecords = {
             types: {
                 supplier: '7173f88e-057a-43a7-aa37-6b9b97707b08'
             }
+        },
+        auditRequests: {
+            requestNoteTypes: {
+                default: '33a6124d-2b9a-4d9a-9e40-bdbe2dea23be',
+                automated: 'd6806129-6afe-43a9-a27b-7b114fd8558b'
+            },
+            statuses: {
+                open: '2aae48ee-101a-4fe6-a849-99e10783b505',
+                completed: 'e90cbff4-a490-460e-af62-d72fe78710eb'
+            }
         }
     },
     app: {

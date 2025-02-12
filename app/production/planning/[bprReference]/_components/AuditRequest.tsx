@@ -1,10 +1,15 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import AuditRequestForm from './AuditRequestForm'
+import { AuditRequestNoteType, getAuditRequestNoteTypes } from '../_functions/getAuditRequestNoteTypes'
+import { createAuditRequest } from '../_functions/createAuditRequest'
+import useToast from '@/hooks/useToast'
 
 type AuditRequestProps = {
     setMode: Dispatch<SetStateAction<"default" | "request" | "audit">>
+    itemId: string
 }
 
-type InterimNote = {
+export type InterimAuditRequestNote = {
     requestNoteTypeId: string
     requestNoteType: {
         bgColor: string
@@ -13,16 +18,38 @@ type InterimNote = {
     content: string
 }
 
-const AuditRequest = ({ setMode }: AuditRequestProps) => {
+const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
 
     const [reqMode, setReqMode] = useState<'view' | 'add'>('view')
-    const [notes, setNotes] = useState<InterimNote[]>([])
+    const [notes, setNotes] = useState<InterimAuditRequestNote[]>([])
+    const [auditRequestNoteTypes, setAuditRequestNoteTypes] = useState<AuditRequestNoteType[]>([])
+    const [reval, setReval] = useState<string>('')
+    const { toast } = useToast()
+
+    const handleCompleteAuditRequest = async () => {
+        await createAuditRequest(notes, itemId);
+
+        setMode('default')
+        toast('Audit Request Created', 'Production staff with be alerted to conduct an inventory request.', 'success')
+
+    }
+
+    useEffect(() => {
+        const getter = async () => {
+            const types = await getAuditRequestNoteTypes();
+
+            setAuditRequestNoteTypes(types)
+        }
+
+        getter()
+    }, [reqMode, reval],)
 
     return (
-        <div>
+        <div className='flex flex-col gap-y-6'>
 
-                {reqMode === 'view' && (<div className='flex flex-col gap-y-6'>
+            {reqMode === 'add' && (<AuditRequestForm setReqMode={setReqMode} setNotes={setNotes} setReval={setReval} types={auditRequestNoteTypes} />)}
 
+            {reqMode === 'view' && (<div className='flex flex-col gap-y-6'>
                 <div className='flex'>
                     <button className='btn' onClick={() => setReqMode('add')} >Add Note</button>
                 </div>
@@ -44,6 +71,14 @@ const AuditRequest = ({ setMode }: AuditRequestProps) => {
             </div>
             )
             }
+
+            {reqMode === 'view' && (
+                <div className='flex gap-x-2 justify-end'>
+                    <button className='btn btn-warning' onClick={() => setMode('default')}>Cancel</button>
+                    <button className='btn btn-success' onClick={() => handleCompleteAuditRequest()}>Submit</button>
+                </div>
+            )}
+
 
 
         </div>

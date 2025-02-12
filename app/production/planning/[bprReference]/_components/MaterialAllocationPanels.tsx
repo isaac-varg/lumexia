@@ -35,8 +35,8 @@ const MaterialAllocationPanels = ({
     }
 
     const handleRequestClick = (request: PurchasingRequestForPlanning) => {
-        router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`) 
-    } 
+        router.push(`/purchasing/requests/${request.referenceCode}?id=${request.id}`)
+    }
 
     return (
         <div>
@@ -46,6 +46,10 @@ const MaterialAllocationPanels = ({
             </Dialog.Title>
 
             <div className="flex flex-col gap-y-6" >
+                <div className='flex gap-x-2'>
+                    <button className='btn btn-accent' onClick={() => setMode('audit')}>Request Inventory Audit</button>
+                </div>
+
                 <div className="flex flex-col gap-y-4">
                     <Text.SectionTitle size="small">General</Text.SectionTitle>
                     <Text.LabelDataPair label="On Hand" data={`${toFracitonalDigits.weight(material.totalQuantityOnHand)} lbs`} />

@@ -50,7 +50,7 @@ const MaterialAllocationDialog = ({
 
                 {mode === 'request' && <RequestForm material={material} setMode={setMode} hasRequests={hasRequests} />}
 
-                {mode === 'audit' && <AuditRequest setMode={setMode} />}
+                {mode === 'audit' && <AuditRequest setMode={setMode} itemId={material.bom.itemId}/>}
 
             </Dialog.Root>
         </>

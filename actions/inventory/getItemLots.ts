@@ -1,8 +1,6 @@
-"use server";
-
 import prisma from "@/lib/prisma";
 
-export const getLotsByItem = async (itemId: string) => {
+export const getItemLots = async (itemId: string) => {
   const results = await prisma.lot.findMany({
     where: { itemId }, // Simplified where clause
     include: {
@@ -32,4 +30,4 @@ export const getLotsByItem = async (itemId: string) => {
   return lotsWithTotals;
 }; 
 
-
+export type ItemLot = Awaited<ReturnType<typeof getItemLots>>[number]

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Feb 11 2025 11:42:48 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Feb 11 2025 14:29:15 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -193,7 +193,6 @@ model AuditRequest {
   inventoryAuditId String?            @map("inventory_audit_id")
   statusId         String             @map("status_id")
   itemId           String             @map("item_id")
-  note             String
   createdAt        DateTime           @default(now()) @map("created_at")
   updatedAt        DateTime           @updatedAt @map("updated_at")
   requestedBy      User               @relation(fields: [requestById], references: [id])
