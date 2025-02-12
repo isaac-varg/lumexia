@@ -1,11 +1,11 @@
 import { TbBook2, TbClipboardCheck, TbShoppingBag, TbShoppingBagPlus, TbSmartHome, TbTruck } from "react-icons/tb";
-import { BsBox2Heart, BsBoxSeam, BsFillJournalBookmarkFill } from "react-icons/bs";
+import { BsBox2Heart  } from "react-icons/bs";
 import { TbScale, TbCreditCard, TbClipboardHeart } from "react-icons/tb";
 import { BiBuildings } from "react-icons/bi";
-import { SlNotebook } from "react-icons/sl";
 import { MdOilBarrel } from "react-icons/md";
 import { FaBacteria } from "react-icons/fa";
-import { Label } from "@radix-ui/react-context-menu";
+
+
 
 export const sidebar = [
     {

@@ -4,6 +4,7 @@ import { InterimAuditRequestNote } from "../_components/AuditRequest"
 import prisma from "@/lib/prisma"
 import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
+import { revalidatePath } from "next/cache"
 
 export const createAuditRequest = async (notes: InterimAuditRequestNote[], itemId: string) => {
 
@@ -39,6 +40,7 @@ export const createAuditRequest = async (notes: InterimAuditRequestNote[], itemI
     // log the creation
 
     await createActivityLog('addAuditRequest', 'auditRequest', auditRequest.id, {context: `Audit Request added for ${auditRequest.item.name}`} )
+    revalidatePath('/')
 
     return auditRequest;
 }

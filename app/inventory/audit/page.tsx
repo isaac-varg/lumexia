@@ -7,7 +7,8 @@ import { inventoryActions } from "@/actions/inventory";
 const ScanPage  = async () => {
 
 
-    const requests = await inventoryActions.auditReqests.getAll();
+const requests = await inventoryActions.auditReqests.getAll();
+
 	return (
 		<div>
 			<PageTitle>Inventory Audit</PageTitle>

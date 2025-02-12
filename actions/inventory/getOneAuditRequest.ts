@@ -2,11 +2,11 @@
 
 import prisma from "@/lib/prisma"
 
-export const getOneAuditRequest = async (requestId: string) => {
+export const getOneAuditRequest = async (id: string) => {
 
-    const request = await prisma.auditRequest.findFirstOrThrow({
+    const request = await prisma.auditRequest.findUniqueOrThrow({
         where: {
-            id: requestId,
+            id,
         },
         include: {
             item: true,

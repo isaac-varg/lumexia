@@ -8,11 +8,12 @@ import { TbCalendar, TbGhost } from 'react-icons/tb'
 const RequestCard = ({ request }: { request: AuditRequest }) => {
 
 
-    const formatString = "ccc, LLL dd yyyy"
     const router = useRouter();
+    const formatString = "ccc, LLL dd yyyy"
+    const requestId = request.id
 
     const handleClick = () => {
-        router.push(`/inventory/audit/request?auditRequestId=${request.id}`)
+        router.push(`/inventory/audit/request?id=${requestId}`)
     }
     return (
         <div
@@ -20,7 +21,6 @@ const RequestCard = ({ request }: { request: AuditRequest }) => {
             className='card bg-rose-200  hover:cursor-pointer hover:bg-rose-300' >
             <div className='card-body flex flex-col gap-y-2'>
                 <div className='card-title'>{request.item.name}</div>
-
                 <div className='flex gap-x-2'>
                     <div className='flex gap-y-2 bg-pink-400 items-center rounded-xl px-2 py-1'>
                         <span className='text-2xl'><TbGhost /></span>
