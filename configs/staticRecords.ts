@@ -51,8 +51,10 @@ export const staticRecords = {
         },
         userConfigGroups: {
             panelSelections: '579091aa-13e9-4c0c-86a0-983f07a93ad7',
+            homeDashToggles: '87ff1037-9315-4680-94da-45ad19f5ef67',
             general: '879f6a09-8308-4215-8572-18489e028cc8',
         },
+        lumexia: '85c3a4f8-99e4-4fff-a6b6-c07f998d376a',
     },
     production: {
         bprStatuses: {
@@ -117,8 +119,11 @@ export const staticRecords = {
             low: "e19affa6-18b2-40a9-b738-f38b593480da"
 
         },
+        // ugh, this is supposed to be request note types :facepalm:
         requestTypes: {
-            default: 'e65a9b8c-8cf9-44d2-916e-95ef14b9720d'
+            default: 'e65a9b8c-8cf9-44d2-916e-95ef14b9720d',
+            automated: 'bdf7c7b0-3524-4f2c-a43b-b9a6c8c77322'
+
         },
         requestStatuses: {
             onHold: "ea9543d2-07e3-48db-b363-52e1c6604c65",

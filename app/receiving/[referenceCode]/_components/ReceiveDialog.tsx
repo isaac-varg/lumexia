@@ -14,6 +14,7 @@ import lotOriginActions from "@/actions/inventory/lotOriginActions";
 import { Lot } from "@/types/lot";
 import { staticRecords } from "@/configs/staticRecords";
 import { toInventoryUom } from "@/utils/uom/toInventoryUom";
+import { updateConnectedRequests } from "../_functions/updateConnectedRequests";
 
 type ReceiveDialogProps = {
 	item: ExPurchaseOrderItem;
@@ -73,6 +74,7 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
 			originType: 'purchaseOrderReceiving'
 		}
 		await lotOriginActions.createNew(originCreateData)	
+        await updateConnectedRequests(item.purchaseOrderId, item.item.id)
 
 		revalidatePage("/receiving/[referenceCode]");
 		resetDialogContext();

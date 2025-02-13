@@ -14,6 +14,7 @@ import { splitPOItem } from "../_functions/splitPOItem";
 import lotOriginActions from "@/actions/inventory/lotOriginActions";
 import { staticRecords } from "@/configs/staticRecords";
 import { toInventoryUom } from "@/utils/uom/toInventoryUom";
+import { updateConnectedRequests } from "../_functions/updateConnectedRequests";
 
 type PartialDialogProps = {
     item: ExPurchaseOrderItem;
@@ -70,6 +71,7 @@ const PartialDialog = ({ item, containerTypes }: PartialDialogProps) => {
             originType: "purchaseOrderReceiving",
         };
         await lotOriginActions.createNew(originCreateData);
+        await updateConnectedRequests(item.purchaseOrderId, item.item.id, true);
 
         revalidatePage("/receiving/[referenceCode]");
         resetDialogContext();
