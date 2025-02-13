@@ -10,6 +10,7 @@ import {
     SortingState,
     getSortedRowModel,
     getPaginationRowModel,
+    Updater,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import FilterBar from "./FilterBar";
@@ -19,6 +20,7 @@ import { RowSelectionHandlerMethod } from "@/utils/auxiliary/rowSelectionHandler
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
 import { useTableFilter } from "@/store/tableFilterSlice";
 import { TableStateName, useTableFacets } from "@/store/tableFacetsSlice";
+import { useTablePagination } from "@/store/tablePaginationSlice";
 
 type DataTableDefaultProps = {
     data: any;
@@ -30,8 +32,7 @@ type DataTableDefaultProps = {
     onRowClick: (row: any, method: RowSelectionHandlerMethod) => void;
     onEnter?: (row: any) => any;
     initialSortBy?: { id: string, desc: boolean }[];
-    // initial states from zustand store
-    tableStateName: TableStateName
+    tableStateName: TableStateName;
 };
 
 const Default = ({
@@ -45,22 +46,26 @@ const Default = ({
     onEnter,
     initialSortBy,
     tableStateName,
-
 }: DataTableDefaultProps) => {
 
-    const tableFilterState = useTableFilter()
-    const tableFacetsState = useTableFacets()
-
+    const tableFilterState = useTableFilter();
+    const tableFacetsState = useTableFacets();
+    const tablePaginationSlice = useTablePagination();
 
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<SortingState>(initialSortBy || []);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(tableFacetsState[tableStateName]);
     const [globalFilter, setGlobalFilter] = useState(tableFilterState[tableStateName] ?? "");
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 10,
-    });
+    const [pagination, setPagination] = useState<PaginationState>(tablePaginationSlice[tableStateName]);
 
+    const handlePaginationChange = (updater: Updater<PaginationState>) => {
+
+        const newValue =
+            updater instanceof Function ? updater(pagination) : updater;
+        setPagination(newValue);
+
+        tablePaginationSlice.setPagination(tableStateName, newValue);
+    };
 
     const table = useReactTable({
         data,
@@ -85,12 +90,11 @@ const Default = ({
         onGlobalFilterChange: setGlobalFilter,
         onColumnFiltersChange: setColumnFilters,
         getPaginationRowModel: getPaginationRowModel(),
-        onPaginationChange: setPagination,
+        onPaginationChange: handlePaginationChange,
     });
 
     return (
         <div className="flex flex-col gap-y-6">
-
             <FilterBar
                 table={table}
                 filters={filters}

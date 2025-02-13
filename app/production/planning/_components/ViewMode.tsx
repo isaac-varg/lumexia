@@ -7,6 +7,7 @@ import ListMode from "./list/ListMode"
 import { PlanningIBpr } from "../_functions/getBprs"
 import ViewModeButton from "./ViewModeButton"
 import CalendarMode from "./calendar/CalendarMode"
+import { usePanelSelection } from "@/store/panelSelectionSlice"
 
 type ViewModeProps = {
     bprs: PlanningIBpr[]
@@ -18,7 +19,9 @@ export type BprPlanningViewMode = "statusBoard" | "list" | "calendar"
 
 const ViewMode = ({ bprs, statuses }: ViewModeProps) => {
 
-    const [viewMode, setViewMode] = useState<BprPlanningViewMode>("list")
+    const { planningDashboard } = usePanelSelection()
+    const [viewMode, setViewMode] = useState<BprPlanningViewMode>(planningDashboard)
+
 
     return (
         <div className="flex flex-col gap-y-6">

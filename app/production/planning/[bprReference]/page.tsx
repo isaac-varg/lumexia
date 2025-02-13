@@ -11,6 +11,7 @@ import ActionsPanel from './_components/ActionsPanel';
 import ChangeStatusDialog from './_components/ChangeStatusDialog';
 import { getBprStatuses } from './_functions/getBprStatuses';
 import { getPurchasingRequests } from './_functions/getPurchasingRequests';
+import { staticRecords } from '@/configs/staticRecords';
 
 type PlanningBprPage = {
     searchParams: {
@@ -37,7 +38,7 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <ChangeStatusDialog statuses={statuses} bprId={bpr.id}/>
+            <ChangeStatusDialog statuses={statuses} bprId={bpr.id} />
 
             <Title bpr={bpr as any} />
 
@@ -50,7 +51,9 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
 
             </Layout.Grid>
 
-            <MaterialSufficiency materials={sortedMaterialInventory as any} />
+            {bpr.status.id === staticRecords.production.bprStatuses.draft && (
+                <MaterialSufficiency materials={sortedMaterialInventory as any} />
+            )}
 
         </div>
     )
