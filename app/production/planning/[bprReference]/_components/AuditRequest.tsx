@@ -3,6 +3,7 @@ import AuditRequestForm from './AuditRequestForm'
 import { AuditRequestNoteType, getAuditRequestNoteTypes } from '../_functions/getAuditRequestNoteTypes'
 import { createAuditRequest } from '../_functions/createAuditRequest'
 import useToast from '@/hooks/useToast'
+import useDialog from '@/hooks/useDialog'
 
 type AuditRequestProps = {
     setMode?: Dispatch<SetStateAction<"default" | "request" | "audit">>
@@ -25,12 +26,16 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
     const [auditRequestNoteTypes, setAuditRequestNoteTypes] = useState<AuditRequestNoteType[]>([])
     const [reval, setReval] = useState<string>('')
     const { toast } = useToast()
+    const { resetDialogContext } = useDialog()
 
     const handleCompleteAuditRequest = async () => {
         await createAuditRequest(notes, itemId);
 
         if (setMode) {
             setMode('default')
+        }
+        if (!setMode) {
+            resetDialogContext()
         }
         toast('Audit Request Created', 'Production staff with be alerted to conduct an inventory request.', 'success')
 

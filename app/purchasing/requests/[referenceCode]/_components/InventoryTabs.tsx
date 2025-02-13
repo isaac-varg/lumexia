@@ -13,6 +13,7 @@ import NotesPanel from './NotesPanel'
 import { RequestNoteType } from '../_functions/getNoteTypes'
 import RequestNotesTab from './RequestNotesTab'
 import { Tab } from '@/components/Tabs/Trigger'
+import { LastAuditRequest } from '../_functions/getAuditRequests'
 
 const InventoryTabs = ({
     snapshot,
@@ -22,6 +23,7 @@ const InventoryTabs = ({
     otherRequests,
     noteTypes,
     notes,
+    lastAuditRequests,
 }: {
     snapshot: InventorySnapshot
     snapshotBprs: SnapshotBpr[]
@@ -30,6 +32,7 @@ const InventoryTabs = ({
     otherRequests: OtherRequest[]
     notes: RequestNote[]
     noteTypes: RequestNoteType[]
+    lastAuditRequests: LastAuditRequest[]
 }) => {
 
     const tabs: Tab[] = [
@@ -59,7 +62,7 @@ const InventoryTabs = ({
 
                 <TabsPanel.Content identifier='current' >
 
-                    <InventoryCurrentTab inventory={inventory} otherRequests={otherRequests} />
+                    <InventoryCurrentTab inventory={inventory} otherRequests={otherRequests} lastAuditRequests={lastAuditRequests} />
                 </TabsPanel.Content>
 
                 <TabsPanel.Content identifier='notes'>
@@ -71,7 +74,6 @@ const InventoryTabs = ({
                 <TabsPanel.Content identifier='snapshot'>
                     <InventorySnapshotTab snapshot={snapshot} bprs={snapshotBprs} pos={snapshotPos} />
                 </TabsPanel.Content>
-
 
             </TabsPanel.Root>
         </div>

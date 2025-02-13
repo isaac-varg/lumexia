@@ -7,12 +7,20 @@ import { OtherRequest } from '../_functions/getOtherRequests'
 import { useRouter } from 'next/navigation'
 import useDialog from '@/hooks/useDialog'
 import RequestInventoryAuditDialog from './RequestInventoryAuditDialog'
+import { LastAuditRequest } from '../_functions/getAuditRequests'
+import { staticRecords } from '@/configs/staticRecords'
+import { DateTime } from 'luxon'
+import { dateFormatString } from '@/configs/data/dateFormatString'
 
-const InventoryCurrentTab = ({ inventory, otherRequests, }: { inventory: ItemInventory, otherRequests: OtherRequest[] }) => {
+const InventoryCurrentTab = ({ inventory, otherRequests,lastAuditRequests }: { inventory: ItemInventory, otherRequests: OtherRequest[], lastAuditRequests: LastAuditRequest[] }) => {
 
 
     const router = useRouter();
     const { showDialog } = useDialog()
+    const hasPendingAuditRequest = lastAuditRequests.filter((audit) => audit.statusId === staticRecords.inventory.auditRequests.statuses.open).length !== 0; 
+    const lastAuditRequestCompleted = lastAuditRequests.filter((audit) => audit.statusId === staticRecords.inventory.auditRequests.statuses.completed);
+    const lastInventoryAuditDate = (lastAuditRequestCompleted.length !== 0 && lastAuditRequestCompleted[0].inventoryAudit )? DateTime.fromJSDate(lastAuditRequestCompleted[0].inventoryAudit.createdAt).toFormat(dateFormatString) : 'None';
+
 
     const handleAllocatedClick = (bpr: typeof inventory.allocated[number]) => {
         router.push(`/production/planning/${bpr.bpr.referenceCode}?id=${bpr.bprId}`)
@@ -36,6 +44,8 @@ const InventoryCurrentTab = ({ inventory, otherRequests, }: { inventory: ItemInv
                             <button className='btn' onClick={() => showDialog('requestnewinventoryaudit') }>Request Inventory Audit</button>
                         </div>
                         <Text.SectionTitle size="small">General</Text.SectionTitle>
+                        <Text.LabelDataPair label="Has Pending Audit" data={hasPendingAuditRequest ? 'Yes' : 'No'} />
+                        <Text.LabelDataPair label="Last Completed Audit" data={lastInventoryAuditDate} />
                         <Text.LabelDataPair label="On Hand" data={`${toFracitonalDigits.weight(inventory.totalQuantityOnHand)} lbs`} />
                         <Text.LabelDataPair label="Allocated" data={`${toFracitonalDigits.weight(inventory.totalQuantityAllocated)} lbs`} />
                         <Text.LabelDataPair label="Available" data={`${toFracitonalDigits.weight(inventory.totalQuantityAvailable)} lbs`} />
