@@ -89,7 +89,14 @@ const main = async () => {
 
     await seedAction("userConfigGroup")
     await seedAction("userConfig")
-    
+
+
+    await seedAction("auditRequestNoteType")
+    await seedAction("auditRequestStatus")
+    await seedAction('inventoryAudit')
+    await seedAction('auditRequest')
+    await seedAction('auditRequestNote')
+
 };
 
 main()
