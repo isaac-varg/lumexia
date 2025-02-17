@@ -46,6 +46,7 @@ export const staticRecords = {
         },
         userRoles: {
             productionQuality: 'ea83900a-24fa-448c-9737-02c98bfaa193',
+            purchasing: '87c90c88-67b8-49e4-91e4-7df67c411bb8',
             production: 'ef88a45c-3114-4eed-90fb-d76e25b6782c',
             systemAdmin: '95e34f0a-0b52-40e4-a48d-0643f3b1a8f4',
         },

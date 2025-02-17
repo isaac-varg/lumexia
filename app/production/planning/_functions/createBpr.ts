@@ -13,6 +13,7 @@ import lotOriginActions from "@/actions/inventory/lotOriginActions"
 import { BatchProductionRecord } from "@/types/batchProductionRecord"
 import containerActions from "@/actions/inventory/containerActions"
 import { initiateNotionBpr } from "./createNotionBpr"
+import { createNotionNotification } from "./createNotionNotification"
 
 interface BprWizardData {
     size: BatchSize,
@@ -63,6 +64,8 @@ export const createBpr = async (wizardData: BprWizardData) => {
     await generateBprBatchStepEntries(bpr.id)
 
     await initiateNotionBpr(bpr.id)
+
+    await createNotionNotification(`${bpr.referenceCode}`, wizardData.selectedItem.name)
 
     await createActivityLog('createBpr', 'bpr', bpr.id, { context: `BPR #${bpr.referenceCode} created` })
     await createActivityLog('createLot', 'lot', lot.id, { context: `Lot was created from bpr #${bpr.referenceCode}` })
