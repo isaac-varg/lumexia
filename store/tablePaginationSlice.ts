@@ -21,6 +21,7 @@ type State = {
     itemDetailsTransactons: StateData
     itemDetailsPurchasesTab: StateData
     receivingRecentlyCompleted: StateData
+    requestArchive: StateData
 }
 
 
@@ -43,6 +44,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
     itemDetailsTransactons: { pageSize: 50, pageIndex: 0 },
     itemDetailsPurchasesTab: { pageSize: 50, pageIndex: 0 },
     receivingRecentlyCompleted: { pageSize: 50, pageIndex: 0 },
+    requestArchive: { pageSize: 50, pageIndex: 0 },
 
     setPagination: (filterName, value) =>
         set((state) => ({

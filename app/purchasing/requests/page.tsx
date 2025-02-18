@@ -7,6 +7,7 @@ import RequestTabs from './_components/RequestTabs'
 import { getRequestStatuses } from './[referenceCode]/_functions/getRequestStatuses'
 import { getPriorities } from './_functions/getPriorities'
 import CreateRequestButton from './_components/CreateRequestButton'
+import ArchiveButton from './_components/ArchiveButton'
 
 const RequestsPage = async () => {
 
@@ -23,8 +24,9 @@ const RequestsPage = async () => {
                     <PageTitle>Request Dashboard</PageTitle>
                     <PageBreadcrumbs />
                 </div>
-                <div>
+                <div className='flex gap-x-2'>
                    <CreateRequestButton />  
+                   <ArchiveButton />
                 </div>
             </div>
 
