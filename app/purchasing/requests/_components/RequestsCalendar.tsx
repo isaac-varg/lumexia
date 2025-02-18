@@ -45,12 +45,10 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
                 views={{
                     "multiMonth": {
                         type: 'multiMonth',
-                        title: 'Multi Month',
                         duration: { months: 6 }
                     },
                     "month": {
                         type: 'dayGridMonth',
-                        title: 'Month'
                     }
                 }}
                 headerToolbar={{

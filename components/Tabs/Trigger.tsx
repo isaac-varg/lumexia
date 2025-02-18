@@ -46,7 +46,7 @@ const TabTrigger = ({
         <ContextMenu.Root>
 
             <Tabs.Trigger
-                className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-md leading-none text-limed-spruce-900 font-poppins font-bold select-none first:rounded-tl-md last:rounded-tr-md hover:text-limed-spruce-300  data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:bg-limed-spruce-800 data-[state=active]:text-white outline-none cursor-default"
+                className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-md leading-none text-neutral-800 font-poppins font-bold select-none first:rounded-tl-md last:rounded-tr-md  hover:cursor-pointer hover:bg-lilac-200  data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:bg-lilac-400 data-[state=active]:text-white outline-none cursor-default"
                 value={identifier}
             >
 
