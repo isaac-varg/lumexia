@@ -1,6 +1,5 @@
 import React from 'react'
 import { RequestForDashboard } from '../_functions/getRequests'
-import { groupByProperty } from '@/utils/data/groupByProperty'
 import { RequestStatus } from '../[referenceCode]/_functions/getRequestStatuses';
 import RequestCard from './RequestCard';
 import { RequestPriority } from '../_functions/getPriorities';

@@ -9,6 +9,7 @@ import ByStatusPanel from "./ByStatusPanel"
 import { RequestStatus } from "../[referenceCode]/_functions/getRequestStatuses"
 import { RequestPriority } from "../_functions/getPriorities"
 import BySupplierPanel from "./BySupplierPanel"
+import RequestsCalendar from "./RequestsCalendar"
 
 type RequestTabsProps = {
     requests: RequestForDashboard[]
@@ -34,7 +35,11 @@ const RequestTabs = ({ requests, statuses, priorities }: RequestTabsProps) => {
         {
             identifier: 'bySupplier',
             label: 'Grouped by Supplier'
-        }
+        },
+        {
+            identifier: 'calendar',
+            label: 'Calendar'
+        },
 
     ]
 
@@ -58,6 +63,10 @@ const RequestTabs = ({ requests, statuses, priorities }: RequestTabsProps) => {
 
             <TabsPanel.Content identifier="bySupplier">
                 <BySupplierPanel statuses={statuses} priorities={priorities} requests={requests} />
+            </TabsPanel.Content>
+
+            <TabsPanel.Content identifier="calendar">
+                <RequestsCalendar requests={requests} />
             </TabsPanel.Content>
 
 

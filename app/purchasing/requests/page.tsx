@@ -2,7 +2,6 @@ import PageBreadcrumbs from '@/components/App/PageBreadcrumbs'
 import PageTitle from '@/components/Text/PageTitle'
 import React from 'react'
 import { getRequests } from './_functions/getRequests'
-import MainPanel from './_components/MainPanel'
 import RequestTabs from './_components/RequestTabs'
 import { getRequestStatuses } from './[referenceCode]/_functions/getRequestStatuses'
 import { getPriorities } from './_functions/getPriorities'
@@ -32,7 +31,6 @@ const RequestsPage = async () => {
 
             <RequestTabs requests={requests} statuses={statuses} priorities={priorities} />
 
-            <MainPanel requests={requests} />
 
         </div>
     )
