@@ -43,18 +43,24 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
                 events={events as any}
                 initialView='month'
                 views={{
-                    "multiMonthFour": {
+                    "multiMonth": {
                         type: 'multiMonth',
+                        title: 'Multi Month',
                         duration: { months: 6 }
                     },
                     "month": {
                         type: 'dayGridMonth',
+                        title: 'Month'
                     }
                 }}
                 headerToolbar={{
                     right: 'prev,next today',
                     center: 'title',
-                    left: 'month,multiMonthFour' // Add buttons for switching views
+                    left: 'month,multiMonth'
+                }}
+                buttonText={{
+                    month: 'Month', 
+                    multiMonth: 'Multi Month' 
                 }}
 
             />
