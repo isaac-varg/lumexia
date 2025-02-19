@@ -17,10 +17,16 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
     const events = filtered.map((request) => {
         if (!request.pos[0].po.purchaseOrderItems[0].details[0].expectedDateStart || !request.pos[0].po.purchaseOrderItems[0].details[0].expectedDateEnd) {
             // no dates therefore do not add event
-            console.log('22 ran')
             return
         }
         const { expectedDateStart, expectedDateEnd } = request.pos[0].po.purchaseOrderItems[0].details[0]
+
+        const luxStart = DateTime.fromJSDate(expectedDateStart)
+        const luxEnd = DateTime.fromJSDate(expectedDateEnd);
+        const equalDates = +luxStart === +luxEnd;
+
+
+
 
         // has details
         return {
@@ -29,7 +35,10 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
             end: DateTime.fromJSDate(expectedDateEnd).toISO(),
             backgroundColor: request.status.bgColor,
             textColor: request.status.textColor,
-            classNames: "hover:opacity-80 hover:cursor-pointer",
+            classNames: [
+                "hover:opacity-80 hover:cursor-pointer rounded-xl px-2",
+                equalDates ? "rounded-xl px-2 bg-neutral-300 " : ""
+            ].join(" "),
             url: `/purchasing/requests/${request.referenceCode}?id=${request.id}`
         }
     })
@@ -57,8 +66,8 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
                     left: 'month,multiMonth'
                 }}
                 buttonText={{
-                    month: 'Month', 
-                    multiMonth: 'Multi Month' 
+                    month: 'Month',
+                    multiMonth: 'Multi Month'
                 }}
 
             />

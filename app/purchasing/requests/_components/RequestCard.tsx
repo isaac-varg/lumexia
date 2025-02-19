@@ -58,24 +58,29 @@ const RequestCard = ({ request, statuses, priorities }: RequestCardProps) => {
             onClick={() => handleClick()}
             className='card bg-white bg-opacity-70 border-neutral-800/50 border-2 hover:cursor-pointer hover:bg-lilac-300' >
             <div className='card-body flex flex-col gap-y-2'>
-                <div className='card-title'>{request.item.name}</div>
+                <div className='card-title'>{`${request.item.name}`}</div>
 
+                <div className='flex flex-row flex-wrap gap-1 '>
+                    <div className='flex items-center justify-center px-2 py-2   bg-neutral-300 rounded-xl '>
+                        <p className='font-poppins w-8 text-center font-semibold text-sm text-neutral-800'>{`${request.referenceCode}`}</p>
+                    </div>
+                    <Dropdown.Badge
+                        onClick={(value) => handleDropdownClick(value, 'status')}
+                        bgColor={request.status.bgColor}
+                        textColor={request.status.textColor}
+                        label={request.status.name}
+                        options={statusOptions}
+                    />
 
-                <Dropdown.Badge
-                    onClick={(value) => handleDropdownClick(value, 'status')}
-                    bgColor={request.status.bgColor}
-                    textColor={request.status.textColor}
-                    label={request.status.name}
-                    options={statusOptions}
-                />
+                    <Dropdown.Badge
+                        onClick={(value) => handleDropdownClick(value, 'priority')}
+                        bgColor={request.priority.bgColor}
+                        textColor={request.priority.textColor}
+                        label={request.priority.name}
+                        options={priorityOptions}
+                    />
 
-                <Dropdown.Badge
-                    onClick={(value) => handleDropdownClick(value, 'priority')}
-                    bgColor={request.priority.bgColor}
-                    textColor={request.priority.textColor}
-                    label={request.priority.name}
-                    options={priorityOptions}
-                />
+                </div>
 
                 <DateBadge request={request} />
 
