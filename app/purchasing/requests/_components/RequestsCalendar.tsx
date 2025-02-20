@@ -25,9 +25,6 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
         const luxEnd = DateTime.fromJSDate(expectedDateEnd);
         const equalDates = +luxStart === +luxEnd;
 
-
-
-
         // has details
         return {
             title: request.title,
@@ -36,7 +33,7 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
             backgroundColor: request.status.bgColor,
             textColor: request.status.textColor,
             classNames: [
-                "hover:opacity-80 hover:cursor-pointer rounded-xl px-2",
+                "hover:opacity-80 font-poppins text-sm hover:cursor-pointer rounded-xl px-2",
                 equalDates ? "rounded-xl px-2 bg-neutral-300 " : ""
             ].join(" "),
             url: `/purchasing/requests/${request.referenceCode}?id=${request.id}`
@@ -57,6 +54,8 @@ const RequestsCalendar = ({ requests }: { requests: RequestForDashboard[] }) => 
                         duration: { months: 6 }
                     },
                     "month": {
+                        defaultAllDay: true,
+                        displayEventTime: false,
                         type: 'dayGridMonth',
                     }
                 }}
