@@ -10,6 +10,8 @@ import { RequestStatus } from "../[referenceCode]/_functions/getRequestStatuses"
 import { RequestPriority } from "../_functions/getPriorities"
 import BySupplierPanel from "./BySupplierPanel"
 import RequestsCalendar from "./RequestsCalendar"
+import { useState } from "react"
+import Searchbar from "@/components/App/Searchbar"
 
 type RequestTabsProps = {
     requests: RequestForDashboard[]

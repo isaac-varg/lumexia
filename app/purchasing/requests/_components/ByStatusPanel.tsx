@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RequestForDashboard } from '../_functions/getRequests'
 import { RequestStatus } from '../[referenceCode]/_functions/getRequestStatuses';
 import RequestCard from './RequestCard';
 import { RequestPriority } from '../_functions/getPriorities';
 import { staticRecords } from '@/configs/staticRecords';
+import { Search } from '@/components/Search';
 
 const ByStatusPanel = ({ requests, statuses, priorities }: { requests: RequestForDashboard[], statuses: RequestStatus[], priorities: RequestPriority[] }) => {
 
@@ -14,19 +15,23 @@ const ByStatusPanel = ({ requests, statuses, priorities }: { requests: RequestFo
     }));
 
 
-    
+    const [searchResults, setSearchResults] = useState<RequestForDashboard[]>(requests)
+
     const canceledStatus = statusCounts[statusCounts.findIndex((s) => s.id === staticRecords.purchasing.requestStatuses.requestCancelledDuplicateRequest)]
-
-
-
 
     return (
         <div className='flex flex-col gap-y-6'>
 
+            <Search.Searcher
+                data={requests}
+                keys={["requestedItemName", "connectedPoSuppliers", "referenceCode"]}
+                onQueryComplete={setSearchResults}
+            />
+
             <div className='grid grid-cols-2 gap-6'>
                 {statusCounts.filter((s) => s.count !== 0).map((status) => {
 
-                    let requestsForStatus = requests.filter((req) => req.status.id === status.id);
+                    let requestsForStatus = searchResults.filter((req) => req.status.id === status.id);
                     const isDelivered = status.id === staticRecords.purchasing.requestStatuses.delivered
                     const isCancelled = status.id === staticRecords.purchasing.requestStatuses.requestCancelledDuplicateRequest
 

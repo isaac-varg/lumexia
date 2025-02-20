@@ -1,20 +1,22 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+// this component differs from search in that the results are output to the component
+// rather than displayed
+
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import Fuse from 'fuse.js'
 
-type SearchProps = {
-    data: any[],
+type SearchProps<T> = {
+    data: T[],
     keys: string[]
-    onClick: (value: string) => void;
+    onQueryComplete: Dispatch<SetStateAction<T[]>>
 }
 
-const SearchWithResults = ({ data, keys, onClick }: SearchProps) => {
+const Searcher = <T,>({ data, keys, onQueryComplete }: SearchProps<T>) => {
+
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
     const [searchInput, setSearchInput] = useState("");
-    const [queryResults, setQueryResults] = useState<any[]>([])
-
 
     const searchOptions = {
         keys: [...keys],
@@ -46,37 +48,22 @@ const SearchWithResults = ({ data, keys, onClick }: SearchProps) => {
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [searchInput, data, keys, onQueryComplete]);
+    }, [searchInput]);
+
+
 
 
     return (
         <div className="flex flex-col gap-y-4">
-            <span className="text-xl font-poppins text-neutral-600">Search</span>
-
             <label className="input input-bordered flex items-center gap-2">
                 <input type="text" className="grow" placeholder="Search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
                 <span className="text-2xl"><TbSearch /></span>
             </label>
 
 
-
-            <ul className="flex flex-col gap-y-2 max-h-80 overflow-y-auto">
-
-                {queryResults.length < 10 && queryResults.map((result) => {
-                    return (
-                        <li key={result.id} className="font-poppins text-lg  bg-lilac-200 rounded-xl py-2 px-4 hover:cursor-pointer hover:bg-lilac-300" onClick={() => onClick(result.id)}>
-                            <span>{result.name}</span>
-                        </li>
-
-                    )
-                })}
-
-                {queryResults.length > 10 && <p className="font-poppins text-lg ">Try refining your search.</p>}
-            </ul>
-
         </div>
 
     )
 }
 
-export default SearchWithResults
+export default Searcher

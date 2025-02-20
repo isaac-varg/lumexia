@@ -23,6 +23,9 @@ export const getRequests = async () => {
                     }
                 }
             }
+        },
+        orderBy: {
+            updatedAt: 'desc'
         }
     });
 
