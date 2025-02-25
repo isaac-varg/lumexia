@@ -51,6 +51,7 @@ const RequestCard = ({ request, statuses, priorities }: RequestCardProps) => {
 
 
         await updateRequest(request.id, payload)
+        location.reload()
     }
 
     return (

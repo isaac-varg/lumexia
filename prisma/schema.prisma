@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Feb 11 2025 14:29:15 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Feb 25 2025 12:48:37 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
   id                    String                  @id @default(uuid())
   name                  String
@@ -636,6 +636,8 @@ model BprStatus {
   id                    String                  @id @default(uuid())
   name                  String
   description           String
+  textColor             String                  @default("#000000") @map("text_color")
+  bgColor               String                  @default("#077202") @map("bg_color")
   sequence              Int                     @unique
   createdAt             DateTime                @default(now()) @map("created_at")
   updatedAt             DateTime                @updatedAt @map("updated_at")

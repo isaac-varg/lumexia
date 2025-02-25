@@ -3,14 +3,14 @@ import { Filter } from '@/types/filter'
 import { toFacetFilter } from '@/utils/data/toFacetFilter'
 import React from 'react'
 import { columns } from './Columns'
-import { PlanningIBpr } from '../../_functions/getBprs'
+import { PlanningIBpr } from '../_functions/getBprs'
 import { useRouter } from 'next/navigation'
 
 type ListModeProps = {
     bprs: PlanningIBpr[]
 }
 
-const ListMode = ({ bprs }: ListModeProps) => {
+const ByTablePanel = ({ bprs }: ListModeProps) => {
 
     const router = useRouter()
     const handleClick = (row: PlanningIBpr) => {
@@ -42,10 +42,11 @@ const ListMode = ({ bprs }: ListModeProps) => {
                 columns={columns}
                 onRowClick={(row) => handleClick(row.original)}
                 tableStateName='productionPlanningList'
+                initialSortBy={[{id: 'referenceCode', desc: true}]}
 
             />
         </div>
     )
 }
 
-export default ListMode
+export default  ByTablePanel

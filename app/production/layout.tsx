@@ -7,7 +7,6 @@ const PurchasingLayout = ({
   }>) => {
   return (
     <>
-        <PageBreadcrumbs />
         {children}
     </>
   )

@@ -8,7 +8,7 @@ type State = {
     requestInventory: string
     poViewMode: PoViewModes
     requestDashboard: 'all' | 'new' 
-    planningDashboard: 'statusBoard' | 'calendar' | 'list'
+    planningDashboard: 'byStatus' | 'byTable' 
 }
 
 const panelDefaults: State = {
@@ -18,7 +18,7 @@ const panelDefaults: State = {
     requestInventory: 'current',
     poViewMode: 'table',
     requestDashboard: 'all',
-    planningDashboard: 'statusBoard'
+    planningDashboard: 'byStatus' 
 }
 
 export type PanelStates = keyof State
@@ -36,7 +36,7 @@ export const usePanelSelection = create<State & Actions>((set) => ({
     requestInventory: 'current',
     poViewMode: 'table',
     requestDashboard: 'all',
-    planningDashboard: 'statusBoard',
+    planningDashboard: 'byStatus',
 
     actions: {
         setPanelState: (panelStateName, value) => {

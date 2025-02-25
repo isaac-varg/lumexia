@@ -1,10 +1,12 @@
 model BprStatus {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  sequence    Int      @unique
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+    id          String   @id @default(uuid())
+    name        String
+    description String
+    textColor   String   @default("#000000") @map("text_color")
+    bgColor     String   @default("#077202") @map("bg_color")
+    sequence    Int      @unique
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  @@map("bpr_statuses")
+    @@map("bpr_statuses")
 }
