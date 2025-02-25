@@ -10,7 +10,7 @@ type SearchProps = {
     onClick: (value: string) => void;
 }
 
-const SearchWithResults = ({ data, keys, onClick }: SearchProps) => {
+const Search = ({ data, keys, onClick }: SearchProps) => {
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
     const [searchInput, setSearchInput] = useState("");
     const [queryResults, setQueryResults] = useState<any[]>([])
@@ -29,16 +29,9 @@ const SearchWithResults = ({ data, keys, onClick }: SearchProps) => {
         }
 
         debounceTimeout.current = setTimeout(() => {
-            let results: T[];
-            if (searchInput.trim() === "") {
-                // If search input is empty, return all data
-                results = data;
-            } else {
-                // Otherwise, perform the search
-                const searchResults = fuse.search(searchInput);
-                results = searchResults.map((result) => result.item);
-            }
-            onQueryComplete(results);
+            const searchResults = fuse.search(searchInput, {limit: 9});
+            const mappedResults = searchResults.map((s) => s.item);
+            setQueryResults(mappedResults);
         }, 400);
 
         return () => {
@@ -46,7 +39,8 @@ const SearchWithResults = ({ data, keys, onClick }: SearchProps) => {
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [searchInput, data, keys, onQueryComplete]);
+    }, [searchInput]);
+
 
 
     return (
@@ -79,4 +73,4 @@ const SearchWithResults = ({ data, keys, onClick }: SearchProps) => {
     )
 }
 
-export default SearchWithResults
+export default Search
