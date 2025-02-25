@@ -7,6 +7,7 @@ import Providers from "@/context/Providers";
 import { auth } from "@/auth";
 import { AuthProvider } from "@/components/App/AuthProvider";
 import Toast from "@/components/Toast";
+import CommandPallet from "@/components/CommandPallet/CommandPallet";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -39,6 +40,7 @@ export default async function RootLayout({
 
               <div className="flex flex-col w-full px-8 py-8 gap-y-8">
                 <Searchbar />
+                <CommandPallet />
                 {children}
               </div>
               <Toast.Toast />
