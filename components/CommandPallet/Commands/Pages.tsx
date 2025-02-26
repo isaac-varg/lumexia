@@ -1,25 +1,15 @@
 import { TbCircle } from "react-icons/tb"
-import { CommandType } from "../CommandCenter";
+import { Command } from "../CommandType";
 
-export type CommandPalletPage = {
-       id: string;
-       type: CommandType; 
-       shortcut: string;
-       icon: JSX.Element;
-       label: string;
-    }
-
-const useCommandPalletPages = (): CommandPalletPage[] => {
-    
-
-    const pages: CommandPalletPage[] = [
+const useCommandPalletPages = (): Command[] => {
+    const pages: Command[] = [
         {
             id: 'inventory',
-            type: 'page',
+            commandType: 'page',
             shortcut: 'i',
             icon: <TbCircle />,
             label: 'Inventory',
-        }
+        },
     ]
 
     return pages

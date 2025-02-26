@@ -1,3 +1,4 @@
+import { getAllItems } from "./getAllItems";
 import { getAuditRequests } from "./getAuditRequests";
 import { getInventory } from "./getInventory";
 import { getItemLots } from "./getItemLots";
@@ -12,6 +13,9 @@ export const inventoryActions = {
         getOne: getOneAuditRequest,
     },
     getItemLots: getItemLots,
+    items: {
+        getAll: getAllItems
+    }
 }
 
 

@@ -1,34 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useCommandPalletPages from './Commands/Pages'
+import CommandButton from './CommandButton'
 import { Search } from '../Search'
+import useCommandPalletItems from './Commands/Items'
+import { Command } from './CommandType'
 
-export type CommandType = "page"
+export type MergedCommandData = Command[]//(Command | Item)[]
+
 
 const CommandCenter = () => {
 
     const pages = useCommandPalletPages()
-    const dummyArray = [{ cat: 'calico', name: 'liv' }, { cat: 'domestic long hair', name: 'holdito' }]
-
-    const mergedData = [...pages, ...dummyArray]
+    const items = useCommandPalletItems()
+    const [input, setInput] = useState('');
+    const mergedData = [...pages, ...items]
+    const [results, setResults] = useState<Command[]>([])
 
     return (
         <div className='flex flex-col gap-y-2'>
 
-            <Search.Searcher
+            <Search.SearcherUnmanaged
                 data={mergedData}
-                keys={['cat', 'label']}
-                onQueryComplete={(value) => console.log(value)}
+                keys={['label', 'terms']}
+                onQueryComplete={setResults}
+                input={input}
+                setInput={setInput}
+
             />
 
-            
+            {!input && (
+                pages.map((page, index) => {
+                    return (
+                        <CommandButton command={page} index={index} />
+                    )
+                })
 
-            {pages.map((page) => {
-                return (
-                    <div key={page.id}>
-                        {page.label}
-                    </div>
-                )
-            })}
+            )}
+
+            {results && results.map((result, index) => <CommandButton command={result} index={index} />)}
 
         </div>
     )
