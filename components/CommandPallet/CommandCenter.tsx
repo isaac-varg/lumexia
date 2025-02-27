@@ -27,6 +27,7 @@ const CommandCenter = () => {
                 setInput={setInput}
 
             />
+            <div className='flex flex-col gap-y-1 max-h-[575px] overflow-y-auto'>
 
             {!input && (
                 pages.map((page, index) => {
@@ -38,6 +39,7 @@ const CommandCenter = () => {
             )}
 
             {results && results.map((result, index) => <CommandButton command={result} index={index} />)}
+            </div>
 
         </div>
     )

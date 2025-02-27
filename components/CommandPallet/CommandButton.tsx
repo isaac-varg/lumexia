@@ -5,6 +5,8 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { useRouter } from 'next/navigation'
 import { useCommandPalletActions } from '@/store/commandPalletSlice'
 
+// i am sure this is a really expensive component. 
+// perhaps I should change this up
 
 const CommandButton = ({ command, index }: { command: Command, index: number }) => {
     const isFirst = index === 0
@@ -24,13 +26,27 @@ const CommandButton = ({ command, index }: { command: Command, index: number }) 
         console.log('no path set')
     }
 
-    useHotkeys('ctrl+', (e) => {
-        e.preventDefault
-        e.stopPropagation
-        if (isFirst) {
+    useHotkeys(
+        'space',
+        (event) => {
+            if (isFirst) {
+                event.preventDefault()
+                handleSelect()
+
+            }
+        },
+        { enableOnFormTags: true, preventDefault: true }
+    )
+
+    useHotkeys(
+        command.shortcut || '',
+        (event) => {
+            event.preventDefault()
             handleSelect()
-        }
-    }, { enableOnFormTags: ['input', 'INPUT'] })
+        },
+        { enableOnFormTags: true, preventDefault: true },
+        [command.shortcut]
+    )
 
 
     return (
@@ -43,7 +59,7 @@ const CommandButton = ({ command, index }: { command: Command, index: number }) 
                 <h2 className='font-poppins text-base text-slate-800 '>{command.label}</h2>
             </div>
 
-            <kbd className="kbd kbd-sm">{command.shortcut}</kbd>
+            <kbd className="kbd kbd-sm">{(isFirst && !command.shortcut) ? 'space' : command.shortcut}</kbd>
 
         </div>
     )

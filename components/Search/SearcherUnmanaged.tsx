@@ -6,6 +6,8 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { TbSearch } from "react-icons/tb";
 import Fuse from 'fuse.js'
+import { useCommandPalletActions } from "@/store/commandPalletSlice";
+import { useHotkeys } from "react-hotkeys-hook";
 
 type SearchProps<T> = {
     data: T[],
@@ -53,12 +55,12 @@ const SearcherUnmanaged = <T,>({ data, keys, input, setInput, onQueryComplete, l
     }, [input]);
 
 
-
-
     return (
         <div className="flex flex-col gap-y-4">
             <label className="input input-bordered flex items-center gap-2">
-                <input type="text" className="grow" placeholder="Search" value={input} onChange={(e) => setInput(e.target.value)} />
+                <input type="text" className="grow" placeholder="Search" value={input} onChange={(e) => {
+                    setInput(e.target.value)
+                }} />
                 <span className="text-2xl"><TbSearch /></span>
             </label>
 

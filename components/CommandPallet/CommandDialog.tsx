@@ -54,7 +54,7 @@ const CommandDialog = () => {
                             aria-describedby={descriptionId}
                             {...getFloatingProps()}
                         >
-                        <CommandCenter />
+                            <CommandCenter />
                         </div>
 
                     </FloatingFocusManager>

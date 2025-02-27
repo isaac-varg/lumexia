@@ -13,7 +13,7 @@ export type commandPalletStates = keyof State
 type Actions = {
     actions: {
         togglePallet: () => void;
-        getItems: () => void
+        getItems: () => void;
     }
 }
 
@@ -27,7 +27,7 @@ export const useCommandPalletSelection = create<State & Actions>((set) => ({
                 isOpen: !state.isOpen
             }))
         },
-        getItems: async () => {
+               getItems: async () => {
             try {
                 const items = await inventoryActions.items.getAll(true);
                 set(() => ({
