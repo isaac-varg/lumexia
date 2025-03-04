@@ -1,14 +1,15 @@
-//🧩Don't Edit this file.✨Generated in Tue Feb 25 2025 12:48:37 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Mar 04 2025 11:46:24 GMT-0800 (Pacific Standard Time)✨
 model ConsumerContainer {
-  id                    String                  @id @default(uuid())
-  name                  String
-  containerCost         Float                   @map("container_cost")
-  fillLaborCost         Float                   @map("fill_labor_cost")
-  shippingCost          Float                   @map("shipping_cost")
-  freeShippingCost      Float                   @map("free_shipping_cost")
-  createdAt             DateTime                @default(now()) @map("created_at")
-  updatedAt             DateTime                @updatedAt @map("updated_at")
-  ItemConsumerContainer ItemConsumerContainer[]
+  id                      String                  @id @default(uuid())
+  containerItemId         String                  @map("container_item_id")
+  containerCost           Float                   @map("container_cost")
+  fillLaborCost           Float                   @map("fill_labor_cost")
+  shippingCost            Float                   @map("shipping_cost")
+  freeShippingCost        Float                   @map("free_shipping_cost")
+  createdAt               DateTime                @default(now()) @map("created_at")
+  updatedAt               DateTime                @updatedAt @map("updated_at")
+  containerItem           Item                    @relation(fields: [containerItemId], references: [id])
+  filledConsumerContainer ItemConsumerContainer[]
 
   @@map("consumer_containers")
 }
@@ -19,6 +20,7 @@ model ItemConsumerContainer {
   consumerContainerId String            @map("consumer_container_id")
   fillQuantity        Float             @map("fill_quantity")
   declaredQuantity    Float             @map("declared_quantity")
+  difficultiesCost    Float             @map("difficulties_cost")
   uomId               String            @map("uom_id")
   createdAt           DateTime          @default(now()) @map("created_at")
   updatedAt           DateTime          @updatedAt @map("updated_at")
@@ -51,9 +53,11 @@ model ItemPricingData {
   unforeseenDifficultiesCost Float                   @map("unforeseen_difficulties_cost")
   isUpcomingPriceActive      Boolean                 @map("isUpcomingPriceActive")
   upcomingPrice              Float                   @map("upcomingPrice")
+  upcomingPriceUomId         String                  @map("upcoming_price_uom_id")
   createdAt                  DateTime                @default(now()) @map("created_at")
   updatedAt                  DateTime                @updatedAt @map("updated_at")
   item                       Item                    @relation(fields: [itemId], references: [id])
+  upcomingPriceUom           UnitOfMeasurement       @relation(fields: [upcomingPriceUomId], references: [id])
   ItemCostDetermination      ItemCostDetermination[]
 
   @@map("item_pricing_data")
@@ -330,6 +334,7 @@ model UnitOfMeasurement {
   container               Container[]
   purchaseOrderItem       PurchaseOrderItem[]
   ItemConsumerContainer   ItemConsumerContainer[]
+  ItemPricingData         ItemPricingData[]
   BatchSize               BatchSize[]
   BprBillOfMaterials      BprBillOfMaterials[]
   BprStaging              BprStaging[]
@@ -402,6 +407,7 @@ model Item {
   requests                    PurchasingRequest[]
   audits                      InventoryAudit[]
   auditRequests               AuditRequest[]
+  consumerContainers          ConsumerContainer[]
   ItemConsumerContainer       ItemConsumerContainer[]
   BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]

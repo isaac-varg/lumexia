@@ -4,6 +4,7 @@ model ItemConsumerContainer {
     consumerContainerId String            @map("consumer_container_id")
     fillQuantity        Float             @map("fill_quantity")
     declaredQuantity    Float             @map("declared_quantity")
+    difficultiesCost    Float             @map("difficulties_cost")
     uomId               String            @map("uom_id")
     createdAt           DateTime          @default(now()) @map("created_at")
     updatedAt           DateTime          @updatedAt @map("updated_at")

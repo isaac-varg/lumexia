@@ -1,4 +1,5 @@
 import { getAllItems } from "./getAllItems";
+import { getAllUom } from "./getAllUom";
 import { getAuditRequests } from "./getAuditRequests";
 import { getInventory } from "./getInventory";
 import { getInventoryOfLot } from "./getInventoryOfLot";
@@ -21,6 +22,9 @@ export const inventoryActions = {
         getByItem: getInventory,
         getByLot: getInventoryOfLot,
     },
+    uom: {
+        getAll: getAllUom,
+    }
 }
 
 

@@ -1,12 +1,14 @@
 model ConsumerContainer {
-    id               String   @id @default(uuid())
-    name             String
-    containerCost    Float    @map("container_cost")
-    fillLaborCost    Float    @map("fill_labor_cost")
-    shippingCost     Float    @map("shipping_cost")
-    freeShippingCost Float    @map("free_shipping_cost")
-    createdAt        DateTime @default(now()) @map("created_at")
-    updatedAt        DateTime @updatedAt @map("updated_at")
+    id                      String                  @id @default(uuid())
+    containerItemId         String                  @map("container_item_id")
+    containerCost           Float                   @map("container_cost")
+    fillLaborCost           Float                   @map("fill_labor_cost")
+    shippingCost            Float                   @map("shipping_cost")
+    freeShippingCost        Float                   @map("free_shipping_cost")
+    createdAt               DateTime                @default(now()) @map("created_at")
+    updatedAt               DateTime                @updatedAt @map("updated_at")
+    containerItem           Item                    @relation(fields: [containerItemId], references: [id])
+    filledConsumerContainer ItemConsumerContainer[]
 
     @@map("consumer_containers")
 }

@@ -25,6 +25,7 @@ model Item {
     requests               PurchasingRequest[]
     audits                 InventoryAudit[]
     auditRequests          AuditRequest[]
+    consumerContainers     ConsumerContainer[]
 
     @@map("items")
 }
