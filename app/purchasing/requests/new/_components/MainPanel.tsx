@@ -25,7 +25,7 @@ export type InterimSnapshotWarnings = {
 
 const MainPanel = ({ items }: MainPanelProps) => {
 
-    const [step, setStep] = useState(0)
+    const [step, setStep] = useState(0);
     const [item, setItem] = useState('');
     const [snapshotWarnings, setSnapshotWarnings] = useState({ warningShown: false, warningOverridden: false });
     const [notes, setNotes] = useState<InterimNote[]>([])

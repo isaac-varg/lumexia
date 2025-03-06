@@ -1,6 +1,6 @@
+import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem';
 import { LastItemPrice } from '@/actions/accounting/pricing/getLastItemPrice';
 import { Uom } from '@/actions/inventory/getAllUom';
-import { ItemConsumerContainer } from '@prisma/client';
 import { create } from 'zustand';
 
 type State = {
@@ -11,7 +11,7 @@ type State = {
     upcomingPriceActive: boolean
     lastPrice: LastItemPrice | null
     itemCost: number,
-    consumerContainers: ItemConsumerContainer[]
+    consumerContainers: FilledConsumerContainer[]
 }
 
 export type pricingPurchasedStates = keyof State

@@ -8,9 +8,10 @@ type SearchProps = {
     data: any[],
     keys: string[]
     onClick: (value: string) => void;
+    title?: boolean
 }
 
-const Search = ({ data, keys, onClick }: SearchProps) => {
+const Search = ({ data, keys, onClick, title = true }: SearchProps) => {
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
     const [searchInput, setSearchInput] = useState("");
     const [queryResults, setQueryResults] = useState<any[]>([])
@@ -45,7 +46,7 @@ const Search = ({ data, keys, onClick }: SearchProps) => {
 
     return (
         <div className="flex flex-col gap-y-4">
-            <span className="text-xl font-poppins text-neutral-600">Search</span>
+        {title && <span className="text-xl font-poppins text-neutral-600">Search</span>}
 
             <label className="input input-bordered flex items-center gap-2">
                 <input type="text" className="grow" placeholder="Search" value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
