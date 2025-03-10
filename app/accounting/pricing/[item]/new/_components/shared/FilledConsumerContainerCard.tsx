@@ -19,7 +19,7 @@ const FilledConsumerContainerCard = ({ onSelect, filledConsumerContainer, select
     return (
         <div
             className={`${isSelected ? 'bg-emerald-300' : 'bg-slate-200'} w-full hover:bg-slate-300 hover:text-slate-800 hover:cursor-pointer text-slate-900 p-4 rounded-lg flex items-center justify-center`}
-            onClick={handleClick}
+            onClick={() => handleClick()}
         >
             <div className='font-poppins font-semibold text-lg'>{filledConsumerContainer.consumerContainer.containerItem.name}</div>
         </div>
