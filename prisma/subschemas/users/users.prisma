@@ -1,23 +1,23 @@
 model User {
-    id                 String              @id @default(cuid())
-    name               String?
-    email              String?             @unique
-    emailVerified      DateTime?           @map("email_verified")
-    image              String?
-    accounts           Account[]
-    sessions           Session[]
-    createdAt          DateTime            @default(now())
-    updatedAt          DateTime            @updatedAt
-    purchaseOrders     PurchaseOrder[]
-    transactions       Transaction[]
-    purchaseOrderNotes PurchaseOrderNote[]
-    activityLogs       ActivityLog[]
-    userConfigs        UserConfig[]
-    purchasingRequests PurchasingRequest[]
-    requestNotes       RequestNote[]
-    auditRequests      AuditRequest[]
-    auditRequestNotes  AuditRequestNote[]
-
+    id                  String               @id @default(cuid())
+    name                String?
+    email               String?              @unique
+    emailVerified       DateTime?            @map("email_verified")
+    image               String?
+    accounts            Account[]
+    sessions            Session[]
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    purchaseOrders      PurchaseOrder[]
+    transactions        Transaction[]
+    purchaseOrderNotes  PurchaseOrderNote[]
+    activityLogs        ActivityLog[]
+    userConfigs         UserConfig[]
+    purchasingRequests  PurchasingRequest[]
+    requestNotes        RequestNote[]
+    auditRequests       AuditRequest[]
+    auditRequestNotes   AuditRequestNote[]
+    pricingExaminations PricingExamination[]
 
     @@map("users")
 }

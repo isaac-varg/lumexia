@@ -1,4 +1,4 @@
-import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem';
+import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { LastItemPrice } from '@/actions/accounting/pricing/getLastItemPrice';
 import { Uom } from '@/actions/inventory/getAllUom';
 import { create } from 'zustand';
@@ -6,15 +6,14 @@ import { create } from 'zustand';
 export type InterimConsumerContainerData = {
     filledConsumerContainerId: string
     consumerPrice: number
-    markup: number
-    profit: number
-    profitPercentage: number
 
 }
 
 type State = {
     arrivalCost: number
     unforeseenDifficultiesCost: number
+    isCalculationsPanelShown: boolean
+    isContainerParametersPanelShown: boolean
     upcomingPrice: number
     upcomingPriceUom: Uom | null
     upcomingPriceActive: boolean
@@ -30,8 +29,13 @@ type Actions = {
     actions: {
         setState: (data: { arrivalCost: number, unforeseenDifficultiesCost: number, upcomingPrice: number, upcomingPriceUom: Uom | null, upcomingPriceActive: boolean, lastPrice: LastItemPrice | null }) => void;
         setItemCost: (cost: number) => void;
+        toggleCalculations: () => void;
+        toggleContainerParameters: () => void;
         setConsumercontainers: (consumerContainers: FilledConsumerContainer[]) => void
-        updateInterimConsumerContainers: (filledConsumerContainerId: string, data: InterimConsumerContainerData) => void;
+        updateInterimConsumerContainer: (
+            containerId: string,
+            consumerPrice: number,
+        ) => void;
         getInterimConsumerContainer: (filledConsumerContainerId: string) => InterimConsumerContainerData | null;
     }
 }
@@ -40,6 +44,8 @@ type Actions = {
 export const usePricingPurchasedSelection = create<State & Actions>((set, get) => ({
     arrivalCost: 0,
     unforeseenDifficultiesCost: 0,
+    isCalculationsPanelShown: false,
+    isContainerParametersPanelShown: false,
     upcomingPrice: 0,
     upcomingPriceUom: null,
     upcomingPriceActive: false,
@@ -66,25 +72,27 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
         setConsumercontainers: (consumerContainers) => {
             set(() => ({ consumerContainers }));
         },
-        updateInterimConsumerContainers: (filledConsumerContainerId, data) => {
+
+        updateInterimConsumerContainer: (containerId, consumerPrice) => {
             set((state) => {
                 const existingIndex = state.interimConsumerContainers.findIndex(
-                    (c) => c.filledConsumerContainerId === filledConsumerContainerId
+                    (c) => c.filledConsumerContainerId === containerId
                 );
 
                 if (existingIndex !== -1) {
-                    // Update existing entry
-                    return {
-                        interimConsumerContainers: state.interimConsumerContainers.map((c, index) =>
-                            index === existingIndex ? { ...c, ...data } : c
-                        ),
+                    // Update existing container
+                    const updatedContainers = [...state.interimConsumerContainers];
+                    updatedContainers[existingIndex] = {
+                        ...updatedContainers[existingIndex],
+                        consumerPrice,
                     };
+                    return { interimConsumerContainers: updatedContainers };
                 } else {
-                    // Add new entry
+                    // Add new container
                     return {
                         interimConsumerContainers: [
                             ...state.interimConsumerContainers,
-                            { ...data, filledConsumerContainerId },
+                            { filledConsumerContainerId: containerId, consumerPrice },
                         ],
                     };
                 }
@@ -98,6 +106,12 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
                 ) || null
             );
         },
+        toggleCalculations: () => {
+            set((state) => ({ isCalculationsPanelShown: !state.isCalculationsPanelShown }))
+        },
+        toggleContainerParameters: () => {
+            set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))
+        }
     },
 }));
 

@@ -1,16 +1,16 @@
 'use client'
 
+import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers/getAllByFillItem"
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData"
 import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice"
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost"
 import { usePricingPurchasedActions } from "@/store/pricingPurchasedSlice"
-import { ItemConsumerContainer } from "@prisma/client"
-import { useEffect, useState } from "react"
+import { useEffect  } from "react"
 
 type InitialStateSetterProps = {
     lastPrice: LastItemPrice,
     pricingData: ItemPricingData,
-    consumerContainers: ItemConsumerContainer[]
+    consumerContainers: FilledConsumerContainer[]
 
 }
 

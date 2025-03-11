@@ -1,12 +1,18 @@
 
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { getContainerCost } from '@/app/accounting/pricing/_calculations/getContainerCost';
-import { usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice';
-import React, { useState } from 'react'
+import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice';
+import React, { useEffect, useState } from 'react'
 import DataCard from '../shared/DataCard';
 import DataCardText from '../shared/DataCardText';
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits';
 import AlterModeButton, { AlterMode } from '../shared/AlterModeButton';
+import { getMarkup } from '@/app/accounting/pricing/_calculations/getMarkup';
+import { getProfit } from '@/app/accounting/pricing/_calculations/getProfit';
+import { getProfitPercentage } from '@/app/accounting/pricing/_calculations/getProfitPercentage';
+import { getConsumerPrice } from '@/app/accounting/pricing/_calculations/getConsumerPrice';
+import validator from 'validator';
+import Text from '@/components/Text';
 
 type Props = {
     selectedConsumerContainer: FilledConsumerContainer | null;
@@ -16,76 +22,89 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
     if (!selectedConsumerContainer) return null;
 
 
-    const { itemCost } = usePricingPurchasedSelection();
+    const { itemCost, isContainerParametersPanelShown } = usePricingPurchasedSelection();
+    const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingPurchasedActions()
     const containerCost = getContainerCost(selectedConsumerContainer, itemCost);
 
     const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
-    // this is soo friggin messy. not sure why is use  zustand and react state...
+
+    const [consumerPrice, setConsumerPrice] = useState<number>(0);
+    const [markup, setMarkup] = useState<number>(0);
+    const [profit, setProfit] = useState<number>(0);
+    const [profitPercentage, setProfitPercentage] = useState<number>(0);
+
+    const updatePricingCalculations = (event: any) => {
+
+        const value = validator.isEmpty(event.target.value) ? 0 : parseFloat(event.target.value);
+
+        let cp = 0; // consumer price
+        let m = 0; // markup
+        let p = 0; // profit
+        let pp = 0; // profit percentage
+
+        switch (alterMode) {
+            case 'consumerPrice': {
+                cp = value;
+                m = getMarkup(containerCost, cp);
+                p = getProfit(containerCost, cp);
+                pp = getProfitPercentage(p, containerCost);
+                break;
+            }
+            case 'markup': {
+                m = value;
+                cp = getConsumerPrice(containerCost, m);
+                p = getProfit(containerCost, cp);
+                pp = getProfitPercentage(p, containerCost);
+                break;
+            }
+            case 'profit': {
+                p = value;
+                cp = p + containerCost;
+                pp = getProfitPercentage(p, containerCost);
+                m = getMarkup(containerCost, cp);
+                break;
+            }
+            case 'profitPercentage': {
+                pp = value;
+                p = (pp / 100) * containerCost
+                cp = p + containerCost;
+                m = getMarkup(containerCost, cp);
+                break;
+            }
+            default:
+                break;
+        }
+
+        // update states
+        setConsumerPrice(cp)
+        setMarkup(m)
+        setProfit(p)
+        setProfitPercentage(pp)
+
+        // safe to zustand for rentention between container switches
+        updateInterimConsumerContainer(selectedConsumerContainer.id, cp)
+    }
+
+    useEffect(() => {
+
+        const interimData = getInterimConsumerContainer(selectedConsumerContainer.id);
+
+        const consumerPrice = interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice
+
+        const markup = getMarkup(containerCost, consumerPrice);
+        const profit = getProfit(containerCost, consumerPrice);
+        const profitPercentage = getProfitPercentage(profit, containerCost);
+
+        // set state
+        setConsumerPrice(consumerPrice);
+        setMarkup(markup)
+        setProfit(profit)
+        setProfitPercentage(profitPercentage)
+
+    }, [selectedConsumerContainer])
 
 
 
-    //    const handleInterimUpdate = (updateType: 'consumerPrice' | 'markup' | 'profit', value: string) => {
-    //
-    //        if (value === "") {
-    //            setConsumerPrice('')
-    //            setMarkup("");
-    //            updateInterimConsumerContainers(selectedConsumerContainer.id, 0, 0, 0, 0);
-    //            return;
-    //        }
-    //
-    //        const isFloat = validator.isFloat(value, { locale: 'en-US' });
-    //
-    //        if (!isFloat) {
-    //            console.log('not considrerd float')
-    //            return;
-    //        };
-    //
-    //        const floatValue = parseFloat(value)
-    //
-    //
-    //        switch (updateType) {
-    //            case 'consumerPrice': {
-    //                // value is consumerprice in this case 
-    //                const markup = getMarkup(containerCost, floatValue);
-    //                const profit = getProfit(containerCost, floatValue);
-    //                const profitPercentrage = getProfitPercentage(profit, containerCost)
-    //                setConsumerPrice(value)
-    //                updateInterimConsumerContainers(selectedConsumerContainer.id, floatValue, markup, profit, profitPercentrage);
-    //                break;
-    //            }
-    //            case 'markup': {
-    //                // value is markup
-    //                const consumerPrice = getConsumerPrice(containerCost, floatValue);
-    //                const profit = getProfit(containerCost, consumerPrice)
-    //                const profitPercentrage = getProfitPercentage(profit, containerCost)
-    //                setMarkup(value);
-    //                updateInterimConsumerContainers(selectedConsumerContainer.id, consumerPrice, floatValue, profit, profitPercentrage)
-    //                break;
-    //            }
-    //            case 'profit': {
-    //                // value is profit
-    //                const consumerPrice = containerCost + floatValue
-    //                const markup = getMarkup(containerCost, consumerPrice);
-    //                const profitPercentage = getProfitPercentage(floatValue, containerCost);
-    //                updateInterimConsumerContainers(selectedConsumerContainer.id, consumerPrice, markup, floatValue, profitPercentage)
-    //                break;
-    //            }
-    //            default:
-    //                console.error('Update type not valid.')
-    //                break;
-    //        }
-    //    }
-    //
-    //    useEffect(() => {
-    //        if (!interimData) {
-    //            const consumerPrice = selectedConsumerContainer.consumerPrice
-    //            const markup = getMarkup(containerCost, consumerPrice);
-    //            const profit = getProfit(containerCost, consumerPrice)
-    //            const profitPercentrage = getProfitPercentage(profit, containerCost)
-    //            updateInterimConsumerContainers(selectedConsumerContainer.id, consumerPrice, markup, profit, profitPercentrage)
-    //        }
-    //    }, [interimData])
-    //
 
     return (
         <div className='flex flex-col gap-y-6'>
@@ -96,20 +115,24 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
             <div className='grid grid-cols-3 gap-4'>
                 <DataCard>
                     <DataCardText size='small' color='light'>Filled Container Cost</DataCardText>
-                    <DataCardText>{toFracitonalDigits.curreny(containerCost)}</DataCardText>
-                    <DataCardText size='tiny' color='light'>$ / container</DataCardText>
+                    <div className="tooltip" data-tip="You can see more details on how this number was calculated by using the toggle below.">
+                        <DataCardText>{toFracitonalDigits.curreny(containerCost)}</DataCardText>
+                        <DataCardText size='tiny' color='light'>$ / container</DataCardText>
+                    </div>
                 </DataCard>
 
                 <DataCard>
-                    <DataCardText size='small' color='light'>Consumer Price</DataCardText>
-                    <DataCardText>$ {0}</DataCardText>
-                    <DataCardText size='tiny' color='light'>{0} % markup</DataCardText>
+                    <div className='tooltip' data-tip="Markup % = [(Consumer Price - Overall Container Cost )/ Overall Container Cost ] * 100">
+                        <DataCardText size='small' color='light'>Consumer Price</DataCardText>
+                        <DataCardText>$ {consumerPrice}</DataCardText>
+                        <DataCardText size='tiny' color='light'>{markup} % markup</DataCardText>
+                    </div>
                 </DataCard>
 
                 <DataCard>
                     <DataCardText size='small' color='light'>Profit</DataCardText>
-                    <DataCardText>{0}</DataCardText>
-                    <DataCardText size='tiny' color='light'>{0} % profit</DataCardText>
+                    <DataCardText>{profit}</DataCardText>
+                    <DataCardText size='tiny' color='light'>{profitPercentage} % profit</DataCardText>
                 </DataCard>
             </div>
 
@@ -138,6 +161,8 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                     {alterMode === 'consumerPrice' && (
                         <input
                             type='text'
+                            value={consumerPrice}
+                            onChange={updatePricingCalculations}
                             className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
                         />
                     )}
@@ -145,6 +170,26 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                     {alterMode === 'markup' && (
                         <input
                             type='text'
+                            value={markup}
+                            onChange={updatePricingCalculations}
+                            className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
+                        />
+                    )}
+
+                    {alterMode === 'profit' && (
+                        <input
+                            type='text'
+                            value={profit}
+                            onChange={updatePricingCalculations}
+                            className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
+                        />
+                    )}
+
+                    {alterMode === 'profitPercentage' && (
+                        <input
+                            type='text'
+                            value={profitPercentage}
+                            onChange={updatePricingCalculations}
                             className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
                         />
                     )}
@@ -152,8 +197,76 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                 </div>
             </div>
 
+            {isContainerParametersPanelShown && (
+                <div className='flex flex-col gap-y-6'>
 
-        </div>
+                    <div className='flex flex-col gap-y-4'>
+                        <h1 className='font-poppins text-xl font-semibold'>
+                            Filled Container Costs
+                        </h1>
+
+                        <p className='font-poppins text-xl font-normal'>
+                            These are are parameters are unique this product filled into this container.
+                        </p>
+
+                        <div className='flex flex-col gap-y-1'>
+                            <Text.LabelDataPair
+                                label='Fill Quantity'
+                                data={selectedConsumerContainer.fillQuantity}
+                            />
+                            <Text.LabelDataPair
+                                label='Declared Fill Quantity'
+                                data={selectedConsumerContainer.declaredQuantity}
+                            />
+
+                            <Text.LabelDataPair
+                                label='UOM'
+                                data={selectedConsumerContainer.uom.abbreviation}
+                            />
+
+                            <Text.LabelDataPair
+                                label='Difficulties Cost'
+                                data={selectedConsumerContainer.difficultiesCost}
+                            />
+
+                        </div>
+                    </div>
+
+
+                    <div className='flex flex-col gap-y-4'>
+                        <h1 className='font-poppins text-xl font-semibold'>
+                            Global Container Costs
+                        </h1>
+
+                        <p className='font-poppins text-xl font-normal'>
+                            These are are parameters that affect all products that use this same container.
+                        </p>
+
+
+                        <div className='flex flex-col gap-y-1'>
+                            <Text.LabelDataPair
+                                label='Container Cost'
+                                data={selectedConsumerContainer.consumerContainer.containerCost}
+                            />
+
+                            <Text.LabelDataPair
+                                label='Fill Labor'
+                                data={selectedConsumerContainer.consumerContainer.fillLaborCost}
+                            />
+                            <Text.LabelDataPair
+                                label='Shipping'
+                                data={selectedConsumerContainer.consumerContainer.shippingCost}
+                            />
+                            <Text.LabelDataPair
+                                label='Free Shipping'
+                                data={selectedConsumerContainer.consumerContainer.freeShippingCost}
+                            />
+                        </div>
+                    </div>
+
+                </div >
+            )}
+        </div >
     );
 };
 

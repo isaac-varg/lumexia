@@ -6,6 +6,7 @@ import { Item } from "@/types/item"
 import InitialStateSetter from "./InitialStateSetter"
 import Basics from "./Basics"
 import ConsumerContainers from "./ConsumerContainers"
+import ActionsPanel from "./ActionsPanel"
 
 
 const PurchasedMain = async ({ item }: { item: Item }) => {
@@ -16,19 +17,14 @@ const PurchasedMain = async ({ item }: { item: Item }) => {
 
     return (
         <div className='flex flex-col gap-y-4'>
-            <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} consumerContainers={consumerContainers}/>
+            <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} consumerContainers={consumerContainers} />
             <PageTitle>Pricing Determination - {item.name}</PageTitle>
             <PageBreadcrumbs />
             <div className="grid grid-cols-2 gap-4">
                 <Basics />
+                <ActionsPanel />
 
-                <Card.Root>
-                    <Card.Title>another</Card.Title>
-                    asdf
-
-                </Card.Root>
-
-                <ConsumerContainers fillItemId={item.id}  />
+                <ConsumerContainers fillItemId={item.id} />
             </div>
         </div>
     )
