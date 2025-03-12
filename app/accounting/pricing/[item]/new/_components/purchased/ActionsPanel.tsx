@@ -1,12 +1,27 @@
 'use client'
+import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import Card from '@/components/Card'
 import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice'
 import React from 'react'
+import { validatePurchasedCommit } from '../../_functions/validatePurchasedCommit'
 
-const ActionsPanel = () => {
+const ActionsPanel = ({
+    consumerContainers
+}: {
+    consumerContainers: FilledConsumerContainer[]
+}) => {
 
-    const { toggleCalculations, toggleContainerParameters } = usePricingPurchasedActions()
-    const { isCalculationsPanelShown, isContainerParametersPanelShown } = usePricingPurchasedSelection();
+    const { toggleContainerParameters } = usePricingPurchasedActions()
+    const { isContainerParametersPanelShown, interimConsumerContainers } = usePricingPurchasedSelection();
+
+    // show warning that it is invalid and log if it bypassed
+
+    const handleCommit = async () => {
+
+        const validation = validatePurchasedCommit(consumerContainers.length, interimConsumerContainers);
+
+
+    }
     return (
         <Card.Root>
 
@@ -15,13 +30,8 @@ const ActionsPanel = () => {
 
             <div className='grid grid-cols-2 gap-4'>
 
-                <button className='btn btn-accent'>Commit</button>
-                <button
-                    className={`btn ${isCalculationsPanelShown ? 'btn-active' : ''}`}
-                    onClick={toggleCalculations}
-                >
-                    {`${isCalculationsPanelShown ? 'Hide' : "Show"} Calculations Panel`}
-                </button>
+                <button className='btn btn-accent' onClick={handleCommit}>Commit</button>
+
 
                 <button
                     className={`btn ${isContainerParametersPanelShown ? 'btn-active' : ''}`}

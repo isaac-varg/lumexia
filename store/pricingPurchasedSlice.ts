@@ -6,13 +6,14 @@ import { create } from 'zustand';
 export type InterimConsumerContainerData = {
     filledConsumerContainerId: string
     consumerPrice: number
+    wasViewed: boolean
+    profitPercentage: number
 
 }
 
 type State = {
     arrivalCost: number
     unforeseenDifficultiesCost: number
-    isCalculationsPanelShown: boolean
     isContainerParametersPanelShown: boolean
     upcomingPrice: number
     upcomingPriceUom: Uom | null
@@ -29,12 +30,13 @@ type Actions = {
     actions: {
         setState: (data: { arrivalCost: number, unforeseenDifficultiesCost: number, upcomingPrice: number, upcomingPriceUom: Uom | null, upcomingPriceActive: boolean, lastPrice: LastItemPrice | null }) => void;
         setItemCost: (cost: number) => void;
-        toggleCalculations: () => void;
         toggleContainerParameters: () => void;
         setConsumercontainers: (consumerContainers: FilledConsumerContainer[]) => void
         updateInterimConsumerContainer: (
             containerId: string,
             consumerPrice: number,
+            wasViewed: boolean,
+            profitPercentage: number,
         ) => void;
         getInterimConsumerContainer: (filledConsumerContainerId: string) => InterimConsumerContainerData | null;
     }
@@ -73,7 +75,7 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
             set(() => ({ consumerContainers }));
         },
 
-        updateInterimConsumerContainer: (containerId, consumerPrice) => {
+        updateInterimConsumerContainer: (containerId, consumerPrice, wasViewed, profitPercentage) => {
             set((state) => {
                 const existingIndex = state.interimConsumerContainers.findIndex(
                     (c) => c.filledConsumerContainerId === containerId
@@ -85,6 +87,8 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
                     updatedContainers[existingIndex] = {
                         ...updatedContainers[existingIndex],
                         consumerPrice,
+                        wasViewed,
+                        profitPercentage
                     };
                     return { interimConsumerContainers: updatedContainers };
                 } else {
@@ -92,7 +96,7 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
                     return {
                         interimConsumerContainers: [
                             ...state.interimConsumerContainers,
-                            { filledConsumerContainerId: containerId, consumerPrice },
+                            { filledConsumerContainerId: containerId, consumerPrice, wasViewed, profitPercentage },
                         ],
                     };
                 }
@@ -105,9 +109,6 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
                     (c) => c.filledConsumerContainerId === filledConsumerContainerId
                 ) || null
             );
-        },
-        toggleCalculations: () => {
-            set((state) => ({ isCalculationsPanelShown: !state.isCalculationsPanelShown }))
         },
         toggleContainerParameters: () => {
             set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))

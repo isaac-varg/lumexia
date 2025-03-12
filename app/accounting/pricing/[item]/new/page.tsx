@@ -3,6 +3,7 @@ import { getItem } from './_functions/getItem'
 import { staticRecords } from '@/configs/staticRecords'
 import PurchasedMain from './_components/purchased/PurchasedMain'
 import ProducedMain from './_components/produced/ProducedMain'
+import { accountingActions } from '@/actions/accounting'
 
 interface NewPricingEntryProps {
     searchParams: {
@@ -13,10 +14,11 @@ interface NewPricingEntryProps {
 const NewPricingEntry = async ({ searchParams }: NewPricingEntryProps) => {
 
     const item = await getItem(searchParams.id)
+    const noteTypes = await accountingActions.examinations.notes.getAllNoteTypes();
 
     if (item.procurementType.id !== staticRecords.inventory.producedProcurementId) {
         return (
-            <PurchasedMain item={item} />
+            <PurchasedMain item={item} noteTypes={noteTypes} />
         )
     }
 

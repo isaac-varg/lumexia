@@ -13,6 +13,10 @@ import { getProfitPercentage } from '@/app/accounting/pricing/_calculations/getP
 import { getConsumerPrice } from '@/app/accounting/pricing/_calculations/getConsumerPrice';
 import validator from 'validator';
 import Text from '@/components/Text';
+import { TbEdit, TbTrash } from 'react-icons/tb';
+import useDialog from '@/hooks/useDialog';
+import EditFilledConsumerContainerDialog from '../shared/EditFilledConsumerContainerDialog';
+import DeleteFilledConsumerContainerAlert from '../shared/DeleteFilledConsumerContainerAlert';
 
 type Props = {
     selectedConsumerContainer: FilledConsumerContainer | null;
@@ -25,13 +29,16 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
     const { itemCost, isContainerParametersPanelShown } = usePricingPurchasedSelection();
     const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingPurchasedActions()
     const containerCost = getContainerCost(selectedConsumerContainer, itemCost);
+    const { showDialog } = useDialog()
 
     const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
+
 
     const [consumerPrice, setConsumerPrice] = useState<number>(0);
     const [markup, setMarkup] = useState<number>(0);
     const [profit, setProfit] = useState<number>(0);
     const [profitPercentage, setProfitPercentage] = useState<number>(0);
+
 
     const updatePricingCalculations = (event: any) => {
 
@@ -82,7 +89,7 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
         setProfitPercentage(pp)
 
         // safe to zustand for rentention between container switches
-        updateInterimConsumerContainer(selectedConsumerContainer.id, cp)
+        updateInterimConsumerContainer(selectedConsumerContainer.id, cp, true, pp)
     }
 
     useEffect(() => {
@@ -91,10 +98,15 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
 
         const consumerPrice = interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice
 
+
+
         const markup = getMarkup(containerCost, consumerPrice);
         const profit = getProfit(containerCost, consumerPrice);
         const profitPercentage = getProfitPercentage(profit, containerCost);
 
+        if (!interimData) {
+            updateInterimConsumerContainer(selectedConsumerContainer.id, selectedConsumerContainer.consumerPrice, true, profitPercentage)
+        }
         // set state
         setConsumerPrice(consumerPrice);
         setMarkup(markup)
@@ -108,8 +120,13 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <div className='text-center'>
+
+            <EditFilledConsumerContainerDialog selectedConsumerContainer={selectedConsumerContainer} />
+            <DeleteFilledConsumerContainerAlert selectedConsumerContainerId={selectedConsumerContainer.id} />
+
+            <div className='flex justify-between items-center'>
                 <h1 className='font-poppins text-3xl font-semibold'>{selectedConsumerContainer.consumerContainer.containerItem.name}</h1>
+                <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}><span className='text-xl'><TbTrash /></span></button>
             </div>
 
             <div className='grid grid-cols-3 gap-4'>
@@ -201,9 +218,14 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                 <div className='flex flex-col gap-y-6'>
 
                     <div className='flex flex-col gap-y-4'>
-                        <h1 className='font-poppins text-xl font-semibold'>
-                            Filled Container Costs
-                        </h1>
+
+                        <div className='flex items-center justify-between'>
+                            <h1 className='font-poppins text-xl font-semibold'>
+                                Filled Container Costs
+                            </h1>
+
+                            <button className='btn ' onClick={() => showDialog('editFilledConsumerContainer')}><span className='text-xl flex items-center gap-x-1'><TbEdit /><p> Edit</p></span></button>
+                        </div>
 
                         <p className='font-poppins text-xl font-normal'>
                             These are are parameters are unique this product filled into this container.

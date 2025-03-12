@@ -1,6 +1,7 @@
 import { accountingActions } from '@/actions/accounting';
 import { ConsumerContainer } from '@/actions/accounting/consumerContainers/getAll';
 import { PackagingItem } from '@/actions/accounting/consumerContainers/getPackagingItems';
+import { PricingExaminationNote } from '@/actions/accounting/examinations/notes/getAllByExamId';
 import { inventoryActions } from '@/actions/inventory';
 import { Uom } from '@/types/uom';
 import { create } from 'zustand';
@@ -9,6 +10,7 @@ type State = {
     consumerContainers: ConsumerContainer[];
     packagingItems: PackagingItem[];
     uoms: Uom[]
+    examinationNotes: PricingExaminationNote[];
 
 }
 
@@ -19,6 +21,7 @@ type Actions = {
         getAllConsumerContainers: () => void;
         getPackagingItems: () => void;
         getUoms: () => void;
+        getExaminationNotes: (pricingExaminationId: string) => void;
     }
 }
 
@@ -26,6 +29,7 @@ export const usePricingSharedSelection = create<State & Actions>((set) => ({
     consumerContainers: [],
     packagingItems: [],
     uoms: [],
+    examinationNotes: [],
 
     actions: {
         getAllConsumerContainers: async () => {
@@ -51,9 +55,17 @@ export const usePricingSharedSelection = create<State & Actions>((set) => ({
         getUoms: async () => {
             try {
                 const uoms = await inventoryActions.uom.getAll();
-                set(() => ({uoms,}))
+                set(() => ({ uoms, }))
             } catch (error) {
                 console.error("There was an error fetching uoms", error)
+            }
+        },
+        getExaminationNotes: async (pricingExaminationId) => {
+            try {
+                const examinationNotes = await accountingActions.examinations.notes.getAll(pricingExaminationId)
+                set(() => ({ examinationNotes, }))
+            } catch (error) {
+                console.error("There was an issue fetching the notes", error);
             }
         }
     }

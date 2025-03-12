@@ -1,9 +1,10 @@
 model RecordStatus {
-    id         String   @id @default(uuid())
-    name       String
-    description String
-    createdAt  DateTime @default(now()) @map("created_at")
-    updatedAt  DateTime @updatedAt @map("updated_at")
+    id                     String                  @id @default(uuid())
+    name                   String
+    description            String
+    createdAt              DateTime                @default(now()) @map("created_at")
+    updatedAt              DateTime                @updatedAt @map("updated_at")
+    itemConsumerContainers ItemConsumerContainer[]
 
     @@map("record_statuses")
 }
