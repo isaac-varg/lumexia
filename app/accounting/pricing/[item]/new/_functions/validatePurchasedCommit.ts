@@ -7,7 +7,6 @@ export const validatePurchasedCommit = (
 
 
     const profitPercentageThreshold = 25;
-    console.log(interimConsumerContainers)
 
     const checks = {
         examinedConsumerContainerCountsMatch: serverFilledContainersCount === interimConsumerContainers.length,
@@ -23,3 +22,5 @@ export const validatePurchasedCommit = (
    
     return { allValid, checks };
 };
+
+export type PurchasedValidation = ReturnType<typeof validatePurchasedCommit>;

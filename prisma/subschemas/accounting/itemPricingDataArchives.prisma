@@ -1,0 +1,18 @@
+model ItemPricingDataArchive {
+    id                         String             @id @default(uuid())
+    examinationId              String             @map("examination_id")
+    currentItemPricingDataId   String?            @map("current_item_pricing_data_id")
+    arrivalCost                Float              @map("arrival_cost")
+    productionUsageCost        Float              @map("productionUsageCost")
+    unforeseenDifficultiesCost Float              @map("unforeseen_difficulties_cost")
+    isUpcomingPriceActive      Boolean            @map("isUpcomingPriceActive")
+    upcomingPrice              Float              @map("upcomingPrice")
+    upcomingPriceUomId         String             @map("upcoming_price_uom_id")
+    createdAt                  DateTime           @default(now()) @map("created_at")
+    updatedAt                  DateTime           @updatedAt @map("updated_at")
+    upcomingPriceUom           UnitOfMeasurement  @relation(fields: [upcomingPriceUomId], references: [id])
+    examination                PricingExamination @relation(fields: [examinationId], references: [id])
+    currentItemPricingData     ItemPricingData?   @relation(fields: [currentItemPricingDataId], references: [id])
+
+    @@map("item_pricing_data_archives")
+}

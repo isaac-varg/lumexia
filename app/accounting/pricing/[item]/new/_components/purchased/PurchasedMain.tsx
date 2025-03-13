@@ -26,7 +26,7 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
             <PageBreadcrumbs />
             <div className="grid grid-cols-2 gap-4">
                 <Basics />
-                <ActionsPanel consumerContainers={consumerContainers} />
+                <ActionsPanel consumerContainers={consumerContainers} examinationId={examinationId} examinedItemId={item.id} pricingData={pricingData} />
 
                 <ConsumerContainers fillItemId={item.id} />
 

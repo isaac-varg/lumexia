@@ -5,7 +5,7 @@ import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData
 import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice"
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost"
 import { usePricingPurchasedActions } from "@/store/pricingPurchasedSlice"
-import { useEffect  } from "react"
+import { useEffect } from "react"
 
 type InitialStateSetterProps = {
     lastPrice: LastItemPrice,
@@ -14,7 +14,7 @@ type InitialStateSetterProps = {
 
 }
 
-const InitialStateSetter = ({ lastPrice, pricingData , consumerContainers }: InitialStateSetterProps) => {
+const InitialStateSetter = ({ lastPrice, pricingData, consumerContainers }: InitialStateSetterProps) => {
 
     const { setState, setItemCost, setConsumercontainers } = usePricingPurchasedActions()
 
@@ -23,11 +23,13 @@ const InitialStateSetter = ({ lastPrice, pricingData , consumerContainers }: Ini
             arrivalCost: pricingData?.arrivalCost || 0,
             unforeseenDifficultiesCost: pricingData?.unforeseenDifficultiesCost || 0,
             upcomingPrice: pricingData?.upcomingPrice || 0,
-            upcomingPriceUom: pricingData?.upcomingPriceUom  || null,
+            upcomingPriceUom: pricingData?.upcomingPriceUom || null,
             upcomingPriceActive: pricingData?.isUpcomingPriceActive || false,
             lastPrice: lastPrice,
+            productionUsageCost: pricingData?.productionUsageCost || 0,
+
         })
-    }, [pricingData, lastPrice ])
+    }, [pricingData, lastPrice])
 
     useEffect(() => {
         setConsumercontainers(consumerContainers);

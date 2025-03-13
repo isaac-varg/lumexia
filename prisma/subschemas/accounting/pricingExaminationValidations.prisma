@@ -1,0 +1,11 @@
+model PricingExaminationValidation {
+    id                                 String             @id @default(uuid())
+    examinationId                      String             @map("examination_id")
+    allContainersReviewed              Boolean            @map("all_containers_reviewed")
+    allContainersExceedProfitThreshold Boolean            @map("all_containers_exceed_profit_threshold")
+    createdAt                          DateTime           @default(now()) @map("created_at")
+    updatedAt                          DateTime           @updatedAt @map("updated_at")
+    examination                        PricingExamination @relation(fields: [examinationId], references: [id])
+
+    @@map("pricing_examination_validations")
+}

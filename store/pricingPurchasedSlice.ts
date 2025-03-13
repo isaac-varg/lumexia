@@ -22,13 +22,15 @@ type State = {
     itemCost: number,
     consumerContainers: FilledConsumerContainer[]
     interimConsumerContainers: InterimConsumerContainerData[]
+    productionUsageCost: number
 }
 
-export type pricingPurchasedStates = keyof State
+//export type pricingPurchasedStates = keyof State
+export type PricingPurchasedState = State; // alias for this state
 
 type Actions = {
     actions: {
-        setState: (data: { arrivalCost: number, unforeseenDifficultiesCost: number, upcomingPrice: number, upcomingPriceUom: Uom | null, upcomingPriceActive: boolean, lastPrice: LastItemPrice | null }) => void;
+        setState: (data: { arrivalCost: number, unforeseenDifficultiesCost: number, upcomingPrice: number, upcomingPriceUom: Uom | null, upcomingPriceActive: boolean, lastPrice: LastItemPrice | null, productionUsageCost: number }) => void;
         setItemCost: (cost: number) => void;
         toggleContainerParameters: () => void;
         setConsumercontainers: (consumerContainers: FilledConsumerContainer[]) => void
@@ -55,10 +57,11 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
     itemCost: 0,
     consumerContainers: [],
     interimConsumerContainers: [],
+    productionUsageCost: 0,
 
     actions: {
         setState: (data) => {
-            const { arrivalCost, unforeseenDifficultiesCost, upcomingPriceActive, upcomingPrice, upcomingPriceUom, lastPrice } = data;
+            const { arrivalCost, unforeseenDifficultiesCost, upcomingPriceActive, upcomingPrice, upcomingPriceUom, lastPrice, productionUsageCost } = data;
             set(() => ({
                 arrivalCost,
                 unforeseenDifficultiesCost,
@@ -66,6 +69,7 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
                 upcomingPriceUom,
                 upcomingPriceActive,
                 lastPrice,
+                productionUsageCost,
             }));
         },
         setItemCost: (cost) => {

@@ -1,0 +1,19 @@
+model ItemConsumerContainerArchive {
+    id                             String                   @id @default(uuid())
+    examinationId                  String                   @map("examination_id")
+    currentItemConsumerContainerId String                   @map("current_item_consumer_container_id")
+    consumerContainerArchiveId     String                   @map("consumer_container_archive_id")
+    fillQuantity                   Float                    @map("fill_quantity")
+    declaredQuantity               Float                    @map("declared_quantity")
+    difficultiesCost               Float                    @map("difficulties_cost")
+    uomId                          String                   @map("uom_id")
+    consumerPrice                  Float                    @default(0) @map("consumer_price")
+    createdAt                      DateTime                 @default(now()) @map("created_at")
+    updatedAt                      DateTime                 @updatedAt @map("updated_at")
+    consumerContainerArchive       ConsumerContainerArchive @relation(fields: [consumerContainerArchiveId], references: [id])
+    uom                            UnitOfMeasurement        @relation(fields: [uomId], references: [id])
+    examination                    PricingExamination       @relation(fields: [examinationId], references: [id])
+    currentItemConsumerContainer   ItemConsumerContainer    @relation(fields: [currentItemConsumerContainerId], references: [id])
+
+    @@map("item_consumer_container_archives")
+}

@@ -1,11 +1,15 @@
 model PricingExamination {
-    id             String   @id @default(uuid())
-    examinedItemId String   @map("examined_item_id")
-    userId         String   @map("user_id")
-    createdAt      DateTime @default(now()) @map("created_at")
-    updatedAt      DateTime @updatedAt @map("updated_at")
-    examinedItem   Item     @relation(fields: [examinedItemId], references: [id])
-    user           User     @relation(fields: [userId], references: [id])
+    id                     String                   @id @default(uuid())
+    examinedItemId         String                   @map("examined_item_id")
+    userId                 String                   @map("user_id")
+    createdAt              DateTime                 @default(now()) @map("created_at")
+    updatedAt              DateTime                 @updatedAt @map("updated_at")
+    examinedItem           Item                     @relation(fields: [examinedItemId], references: [id])
+    user                   User                     @relation(fields: [userId], references: [id])
+    itemPricingDataArchive ItemPricingDataArchive[]
+    consumerContainerArchive ConsumerContainerArchive[]
+    filledConsumerContainerArchives ItemConsumerContainerArchive[]
+    validation PricingExaminationValidation[]
 
     @@map("pricing_examinations")
 }
