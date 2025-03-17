@@ -4,17 +4,29 @@ import prisma from "@/lib/prisma"
 
 export const getAllPricingExaminationsByItem = async (examinedItemId: string) => {
 
-    const examinations = prisma.pricingExamination.findMany({
+    const examinations = await prisma.pricingExamination.findMany({
         where: {
             examinedItemId,
         },
         include: {
             user: true,
+            itemPricingDataArchive: true,
+            filledConsumerContainerArchives: {
+                include: {
+                    consumerContainerArchive: {
+                        include: {
+                            containerItem: true
+                        }
+                    },
+                }
+            },
         },
         orderBy: {
             createdAt: 'desc'
         }
     });
+
+
 
     return examinations;
 }

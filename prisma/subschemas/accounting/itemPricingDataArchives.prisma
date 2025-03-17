@@ -10,6 +10,7 @@ model ItemPricingDataArchive {
     upcomingPriceUomId         String             @map("upcoming_price_uom_id")
     createdAt                  DateTime           @default(now()) @map("created_at")
     updatedAt                  DateTime           @updatedAt @map("updated_at")
+    overallItemCost            Float              @default(0) @map("overall_item_cost")
     upcomingPriceUom           UnitOfMeasurement  @relation(fields: [upcomingPriceUomId], references: [id])
     examination                PricingExamination @relation(fields: [examinationId], references: [id])
     currentItemPricingData     ItemPricingData?   @relation(fields: [currentItemPricingDataId], references: [id])

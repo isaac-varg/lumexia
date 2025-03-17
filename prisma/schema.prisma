@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Mar 13 2025 15:10:29 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Mar 17 2025 10:50:10 GMT-0700 (Pacific Daylight Time)✨
 model ConsumerContainerArchive {
   id                           String                         @id @default(uuid())
   examinationId                String                         @map("examination_id")
@@ -123,6 +123,7 @@ model ItemPricingDataArchive {
   upcomingPriceUomId         String             @map("upcoming_price_uom_id")
   createdAt                  DateTime           @default(now()) @map("created_at")
   updatedAt                  DateTime           @updatedAt @map("updated_at")
+  overallItemCost            Float              @default(0) @map("overall_item_cost")
   upcomingPriceUom           UnitOfMeasurement  @relation(fields: [upcomingPriceUomId], references: [id])
   examination                PricingExamination @relation(fields: [examinationId], references: [id])
   currentItemPricingData     ItemPricingData?   @relation(fields: [currentItemPricingDataId], references: [id])

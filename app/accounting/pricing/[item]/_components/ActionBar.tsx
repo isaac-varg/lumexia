@@ -14,11 +14,15 @@ const ActionBar = ({
     const handleNew = () => {
         router.push(`/accounting/pricing/${itemName}/new?id=${itemId}`)
     }
-  return (
-    <div>
-        <button className='btn' onClick={() => handleNew()}>New</button>
-    </div>
-  )
+    return (
+        <div className='flex justify-between'>
+            <div>
+                <button className='btn' onClick={() => handleNew()}>New</button>
+            </div>
+            <div className=''>
+            </div>
+        </div>
+    )
 }
 
 export default ActionBar

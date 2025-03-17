@@ -2,6 +2,7 @@ import { PricingExamination } from "@/actions/accounting/examinations/getAllByIt
 import Card from "@/components/Card"
 import { dateFormatString } from "@/configs/data/dateFormatString"
 import { DateTime } from "luxon"
+import { TbGhost2 } from "react-icons/tb"
 
 const LastExaminedPanel = ({ lastExamination }: { lastExamination?: PricingExamination }) => {
     return (
@@ -11,10 +12,16 @@ const LastExaminedPanel = ({ lastExamination }: { lastExamination?: PricingExami
             {!lastExamination && <p>This item has yet to be examined</p>}
 
             {lastExamination && (
-                <div>
+                <div className="flex flex-col p-6 rounded-xl bg-indigo-100">
+
+                    <div className="flex gap-x-2 justify-start items-center text-neutral-800">
+                        <span className="text-2xl"><TbGhost2 /></span>
+                        <p className="font-poppins text-xl font-semibold">
+                            {lastExamination.user.name}
+                        </p>
+                    </div>
                     <h1 className="font-poppins text-xl font-semibold">{DateTime.fromJSDate(lastExamination.createdAt).toFormat(dateFormatString)} </h1>
 
-                    <div className="px-4 py-2 bg-lilac-400 rounded-xl">{lastExamination.user.name}</div>
                 </div>
             )}
         </Card.Root>

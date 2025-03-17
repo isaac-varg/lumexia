@@ -27,6 +27,7 @@ export const commitPricingExamination = async (
         arrivalCost,
         productionUsageCost,
         unforeseenDifficultiesCost,
+        overallItemCost: pricingState.itemCost,
         upcomingPrice,
         upcomingPriceUomId: upcomingPriceUom?.id || staticRecords.inventory.uom.lb,
         isUpcomingPriceActive: upcomingPriceActive,
