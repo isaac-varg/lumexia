@@ -23,6 +23,7 @@ type State = {
     receivingRecentlyCompleted: StateData
     requestArchive: StateData
     itemPricingExamiantions: StateData
+    latestPricingExaminationsAll: StateData
 }
 
 
@@ -47,6 +48,8 @@ export const useTablePagination = create<State & Actions>((set) => ({
     receivingRecentlyCompleted: { pageSize: 50, pageIndex: 0 },
     requestArchive: { pageSize: 50, pageIndex: 0 },
     itemPricingExamiantions: { pageSize: 50, pageIndex: 0 },
+    latestPricingExaminationsAll: { pageSize: 50, pageIndex: 0 },
+
 
     setPagination: (filterName, value) =>
         set((state) => ({

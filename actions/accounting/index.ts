@@ -10,6 +10,7 @@ import { createItemPricingDataArchive } from "./examinations/archives/createItem
 import { createManyConsumerContainerArchives } from "./examinations/archives/createManyConsumerContainerArchives";
 import { createManyFilledConsumerContainerArchive } from "./examinations/archives/createManyFilledConsumerContainerArchives";
 import { createExamination } from "./examinations/create";
+import { getAllPricingExaminations } from "./examinations/getAll";
 import { getAllPricingExaminationsByItem } from "./examinations/getAllByItem";
 import { createExaminationNote } from "./examinations/notes/createExaminationNote";
 import { createExaminationNoteType } from "./examinations/notes/createExaminationNoteType";
@@ -61,6 +62,7 @@ export const accountingActions = {
         },
         create: createExamination,
         getAllByItem: getAllPricingExaminationsByItem,
+        getAll: getAllPricingExaminations,
         upsert: upsertPricingExamination,
     }
 }
