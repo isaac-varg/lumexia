@@ -20,6 +20,7 @@ type State = {
     requestArchive: FilterArray
     itemPricingExamiantions: FilterArray
     latestPricingExaminationsAll: FilterArray
+    mbpr: FilterArray
 
 };
 
@@ -50,6 +51,7 @@ export const useTableFacets = create<State & Actions>((set) => ({
     requestArchive: [],
     itemPricingExamiantions: [],
     latestPricingExaminationsAll: [],
+    mbpr: [], 
 
 
     setFilter: (tableState, value) =>

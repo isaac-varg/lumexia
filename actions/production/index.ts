@@ -1,3 +1,4 @@
+import { getAllMbprs } from "./getAllMbprs";
 import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
 import { getPlanningBprs } from "./getPlanningBprs";
@@ -15,5 +16,6 @@ export const productionActions = {
     },
     mbprs: {
         getByItem: getMbprsByItem,
+        getAll: getAllMbprs,
     }
 };

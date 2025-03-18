@@ -2,7 +2,6 @@
 
 import batchStepActions from "@/actions/production/batchSteps"
 import { groupByProperty } from "@/utils/data/groupByProperty";
-import { sortByProperty } from "@/utils/data/sortByProperty";
 
 export const getBatchSteps = async (mbprId: string) => {
 
