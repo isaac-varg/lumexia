@@ -18,7 +18,8 @@ type State = {
     requestArchive: string
     itemPricingExamiantions: string
     latestPricingExaminationsAll: string
-    mbpr: string,
+    mbpr: string
+    equipment: string
 }
 
 
@@ -45,6 +46,7 @@ export const useTableFilter = create<State & Actions>((set) => ({
     itemPricingExamiantions: "",
     latestPricingExaminationsAll: "",
     mbpr: "",
+    equipment: "",
 
     setFilter: (filterName, value) => set((state) => ({
         ...state,

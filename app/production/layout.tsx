@@ -1,4 +1,3 @@
-import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
 
 const PurchasingLayout = ({
     children,
@@ -6,9 +5,9 @@ const PurchasingLayout = ({
     children: React.ReactNode;
   }>) => {
   return (
-    <>
+    <div>
         {children}
-    </>
+    </div>
   )
 }
 
