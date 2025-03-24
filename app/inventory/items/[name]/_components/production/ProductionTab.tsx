@@ -12,55 +12,55 @@ type ProductionTabProps = {
     item: Item
     usage: BomUsage
 }
-const ProductionTab = ( { item, usage } : ProductionTabProps) => {
+const ProductionTab = ({ item, usage }: ProductionTabProps) => {
 
 
     const chartOptions: ApexOptions = {
-    chart: {
-      type: 'donut',
-    },
-    labels: usage.charts.seriesLabel,
-    plotOptions: {
-        pie: {
-            donut: {
-                labels: { 
-                    show: true,
-                    name: { show: true},
-                    value: { show: true},
-                    total: { show: true}
-                },
-            
+        chart: {
+            type: 'donut',
+        },
+        labels: usage.charts.seriesLabel,
+        plotOptions: {
+            pie: {
+                donut: {
+                    labels: {
+                        show: true,
+                        name: { show: true },
+                        value: { show: true },
+                        total: { show: true }
+                    },
+
+                }
             }
         }
     }
-  }
 
-  if (!usage) { return null}
+    if (!usage) { return null }
 
-  return (
-    <div>
+    return (
+        <div>
 
-    <Layout.Grid>
-       <Panels.Root>
-            <Text.SectionTitle>Component Of</Text.SectionTitle>
-            <UsageTable usage={usage} />
-       </Panels.Root>
+            <Layout.Grid>
+                <Panels.Root>
+                    <Text.SectionTitle>Component Of</Text.SectionTitle>
+                    <UsageTable usage={usage} />
+                </Panels.Root>
 
-       <Panels.Root>
+                <Panels.Root>
 
-            <Text.SectionTitle>Usage</Text.SectionTitle>
+                    <Text.SectionTitle>Usage</Text.SectionTitle>
 
-            <Chart 
-                options={chartOptions}
-                type="donut"
-                series={usage.charts.series}
-                height={500}
-            />
-       </Panels.Root>
-       </Layout.Grid>
+                    <Chart
+                        options={chartOptions}
+                        type="donut"
+                        series={usage.charts.series}
+                        height={500}
+                    />
+                </Panels.Root>
+            </Layout.Grid>
 
-    </div>
-  )
+        </div>
+    )
 }
 
 export default ProductionTab

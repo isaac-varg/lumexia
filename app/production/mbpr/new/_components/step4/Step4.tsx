@@ -11,42 +11,43 @@ import BatchSizeForm from './BatchSizeForm'
 
 const Step4 = () => {
 
-  const { showDialog } = useDialog()
+    const { showDialog } = useDialog()
 
-  const { selectedMbpr, revalidateTrigger } = useProductionWizard()
+    const { selectedMbpr, revalidateTrigger } = useProductionWizard()
 
-  const [sizes, setSizes] = useState<BatchSize[]>([])
+    const [sizes, setSizes] = useState<BatchSize[]>([])
 
-  useEffect(() => {
-    const getBatchSizes = async () => {
+    useEffect(() => {
+        const getBatchSizes = async () => {
 
-      if (!selectedMbpr) { return }
+            if (!selectedMbpr) { return }
 
-      const data = await batchSizeActions.getAll({ mbprId: selectedMbpr.id })
-      setSizes(data);
+            const data = await batchSizeActions.getAll({ mbprId: selectedMbpr.id })
+            setSizes(data);
 
-    }
+        }
 
-    getBatchSizes();
-  }, [revalidateTrigger])
+        getBatchSizes();
+    }, [revalidateTrigger])
 
 
-  return (
-    <Card.Root>
+    return (
+        <Card.Root>
 
-    <BatchSizeForm />
+            <BatchSizeForm />
 
-      <Layout.Row>
-        <Card.Title>Batch Sizes</Card.Title>
-        <ActionButton onClick={() => showDialog('createBatchSize')}>New</ActionButton>
-      </Layout.Row>
+            <Layout.Row>
+                <Card.Title>Batch Sizes</Card.Title>
+                <ActionButton onClick={() => showDialog('createBatchSize')}>New</ActionButton>
+            </Layout.Row>
 
-      <div className="grid grid-cols-4 gap-4">
-        {sizes.map((size) => <SizeCard key={size.id} size={size} />)}
-      </div>
-    </Card.Root>
+            <div className="grid grid-cols-4 gap-4">
+                {sizes.map((size) => <SizeCard key={size.id} size={size} />)}
 
-  )
+            </div>
+        </Card.Root>
+
+    )
 }
 
 export default Step4

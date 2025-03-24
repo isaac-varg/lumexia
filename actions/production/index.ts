@@ -2,6 +2,7 @@ import { update } from "../classes/update";
 import { createCompoundingVessel } from "./compoundingVessels/createCompoundingVessel";
 import { getAllCompoundingVessels } from "./compoundingVessels/getAllCompoundinVessels";
 import { updateCompoundingVessel } from "./compoundingVessels/updateCompoundingVessel";
+import { getActiveMbpr } from "./getActiveMbpr";
 import { getAllMbprs } from "./getAllMbprs";
 import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
@@ -22,6 +23,7 @@ export const productionActions = {
         update: updateBpr,
     },
     mbprs: {
+        getActive: getActiveMbpr,
         getByItem: getMbprsByItem,
         getAll: getAllMbprs,
         getOne: getOneMbpr,
