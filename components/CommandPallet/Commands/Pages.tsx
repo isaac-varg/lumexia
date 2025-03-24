@@ -1,4 +1,4 @@
-import { TbBook2, TbCircle, TbClipboardCheck, TbClipboardHeart, TbCreditCard, TbShoppingBagPlus } from "react-icons/tb"
+import { TbBook2, TbCircle, TbClipboardCheck, TbClipboardHeart, TbCreditCard, TbShoppingBagCheck, TbShoppingBagPlus } from "react-icons/tb"
 import { Command } from "../CommandType";
 import { BsBox2Heart } from "react-icons/bs";
 import { BiGhost } from "react-icons/bi";
@@ -61,6 +61,15 @@ const useCommandPalletPages = (): Command[] => {
             label: 'Quality',
             path: "/production/quality"
         },
+        {
+            id: 'pricing',
+            commandType: 'page',
+            shortcut: 'c',
+            icon: <TbShoppingBagCheck />,
+            label: 'Pricing',
+            path: "/accounting/pricing"
+        },
+
 
 
 
