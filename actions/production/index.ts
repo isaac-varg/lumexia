@@ -6,6 +6,9 @@ import { getAllMbprs } from "./getAllMbprs";
 import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
 import { getPlanningBprs } from "./getPlanningBprs";
+import { updateBatchSize } from "./mbpr/batchSizes/updateBatchSize";
+import { getOneMbpr } from "./mbpr/getOneMbpr";
+import { updateMbpr } from "./mbpr/updateMbpr";
 import { updateBpr } from "./updateBpr";
 
 export const productionActions = {
@@ -21,6 +24,11 @@ export const productionActions = {
     mbprs: {
         getByItem: getMbprsByItem,
         getAll: getAllMbprs,
+        getOne: getOneMbpr,
+        update: updateMbpr,
+        batchSizes: {
+            update: updateBatchSize,
+        }
     },
     compoundingVessels: {
         getAll: getAllCompoundingVessels,

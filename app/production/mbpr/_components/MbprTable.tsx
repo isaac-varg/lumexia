@@ -6,8 +6,11 @@ import { toFacetFilter } from '@/utils/data/toFacetFilter'
 import React from 'react'
 import { MbprColumns } from './MbprColumns'
 import Card from '@/components/Card'
+import { useRouter } from 'next/navigation'
 
 const MbprTable = ({ mbprs }: { mbprs: Mbpr[] }) => {
+
+    const router = useRouter()
 
     const filters: Filter[] = [
         {
@@ -35,7 +38,7 @@ const MbprTable = ({ mbprs }: { mbprs: Mbpr[] }) => {
                 columns={MbprColumns}
                 data={mbprs}
                 filters={filters}
-                onRowClick={(row) => console.log(row)}
+                onRowClick={(row) => router.push(`/production/mbpr/${row.original.producesItem.name}?id=${row.original.id}`)}
             />
         </Card.Root>
     )

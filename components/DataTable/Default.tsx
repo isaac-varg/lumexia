@@ -33,6 +33,8 @@ type DataTableDefaultProps = {
     onEnter?: (row: any) => any;
     initialSortBy?: { id: string, desc: boolean }[];
     tableStateName: TableStateName;
+    disableFilters?: boolean
+    disablePagination?: boolean
 };
 
 const Default = ({
@@ -46,6 +48,8 @@ const Default = ({
     onEnter,
     initialSortBy,
     tableStateName,
+    disableFilters = false,
+    disablePagination = false,
 }: DataTableDefaultProps) => {
 
     const tableFilterState = useTableFilter();
@@ -95,7 +99,7 @@ const Default = ({
 
     return (
         <div className="flex flex-col gap-y-6">
-            <FilterBar
+            {!disableFilters && <FilterBar
                 table={table}
                 filters={filters}
                 actionButtonTitle={actionButtonTitle}
@@ -103,7 +107,7 @@ const Default = ({
                 linkPath={linkPath}
                 onEnter={onEnter}
                 tableStateName={tableStateName}
-            />
+            />}
             <div className="w-full">
                 <table className="min-w-full text-left text-lg font-light">
                     <thead className="border-b font-medium dark:border-neutral-500">
@@ -151,7 +155,7 @@ const Default = ({
                         ))}
                     </tbody>
                 </table>
-                <div className="flex flex-row justify-between mt-6">
+                {!disablePagination && <div className="flex flex-row justify-between mt-6">
                     <div>
                         <span className="flex text-neutral-700 font-inter font-semibold items-center gap-1">
                             Jump To Page:
@@ -217,7 +221,7 @@ const Default = ({
                             </option>
                         ))}
                     </select>
-                </div>
+                </div>}
                 <div className="flex items-center gap-2 mt-4"></div>
             </div>
         </div>
