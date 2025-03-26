@@ -8,7 +8,9 @@ import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
 import { getPlanningBprs } from "./getPlanningBprs";
 import { updateBatchSize } from "./mbpr/batchSizes/updateBatchSize";
+import { getAllByProducedItem } from "./mbpr/getAllByProducedItem";
 import { getOneMbpr } from "./mbpr/getOneMbpr";
+import { getAllByMbpr } from "./mbpr/steps/getAllByMbpr";
 import { updateMbpr } from "./mbpr/updateMbpr";
 import { updateBpr } from "./updateBpr";
 
@@ -24,12 +26,16 @@ export const productionActions = {
     },
     mbprs: {
         getActive: getActiveMbpr,
+        getAllByProducedItem: getAllByProducedItem, //same as below really, not sure why these are separate
         getByItem: getMbprsByItem,
         getAll: getAllMbprs,
         getOne: getOneMbpr,
         update: updateMbpr,
         batchSizes: {
             update: updateBatchSize,
+        },
+        steps: {
+            getAllByMbpr: getAllByMbpr,
         }
     },
     compoundingVessels: {
