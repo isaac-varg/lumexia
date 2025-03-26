@@ -4,10 +4,11 @@ import { PurchasedValidation } from '../../_functions/validatePurchasedCommit'
 
 const ValidationErrorAlert = ({ validation, onProceed }: { validation: PurchasedValidation | undefined, onProceed: () => void }) => {
 
-    if (!validation) return false;
 
     const { resetDialogContext } = useDialog()
-    
+
+
+    if (!validation) return false;
 
     const handleContinue = async () => {
         if (!validation.checks.examinedConsumerContainerCountsMatch || !validation.checks.allInterimViewed) return;

@@ -29,16 +29,16 @@ const CommandCenter = () => {
             />
             <div className='flex flex-col gap-y-1 max-h-[575px] overflow-y-auto'>
 
-            {!input && (
-                pages.map((page, index) => {
-                    return (
-                        <CommandButton command={page} index={index} />
-                    )
-                })
+                {!input && (
+                    pages.map((page, index) => {
+                        return (
+                            <CommandButton key={index} command={page} index={index} />
+                        )
+                    })
 
-            )}
+                )}
 
-            {results && results.map((result, index) => <CommandButton command={result} index={index} />)}
+                {results && results.map((result, index) => <CommandButton key={index} command={result} index={index} />)}
             </div>
 
         </div>

@@ -15,12 +15,15 @@ type Inputs = {
 
 const EditFilledConsumerContainerDialog = ({ selectedConsumerContainer }: { selectedConsumerContainer: FilledConsumerContainer | null }) => {
 
-    if (!selectedConsumerContainer) return false;
 
     const { resetDialogContext } = useDialog()
 
-    const form = useForm<Inputs>({ defaultValues: { fillQuantity: selectedConsumerContainer.fillQuantity, declaredQuantity: selectedConsumerContainer.declaredQuantity, difficultiesCost: selectedConsumerContainer.difficultiesCost } })
 
+    const form = useForm<Inputs>({ defaultValues: { fillQuantity: selectedConsumerContainer?.fillQuantity, declaredQuantity: selectedConsumerContainer?.declaredQuantity, difficultiesCost: selectedConsumerContainer?.difficultiesCost } })
+
+
+
+    if (!selectedConsumerContainer) return false;
 
     const handleSubmit = async (data: Inputs) => {
 
@@ -31,6 +34,8 @@ const EditFilledConsumerContainerDialog = ({ selectedConsumerContainer }: { sele
         location.reload()
 
     }
+
+
 
     return (
         <Dialog.Root identifier='editFilledConsumerContainer'>

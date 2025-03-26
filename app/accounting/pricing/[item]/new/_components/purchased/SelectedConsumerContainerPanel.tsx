@@ -1,8 +1,7 @@
-
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { getContainerCost } from '@/app/accounting/pricing/_calculations/getContainerCost';
 import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import DataCard from '../shared/DataCard';
 import DataCardText from '../shared/DataCardText';
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits';
@@ -23,25 +22,31 @@ type Props = {
 }
 
 const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) => {
-    if (!selectedConsumerContainer) return null;
-
-
+    // Early return moved after hooks to maintain hook order
     const { itemCost, isContainerParametersPanelShown } = usePricingPurchasedSelection();
     const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingPurchasedActions()
-    const containerCost = getContainerCost(selectedConsumerContainer, itemCost);
     const { showDialog } = useDialog()
 
     const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
 
+    // Calculate initial values
+    const containerCost = selectedConsumerContainer ? getContainerCost(selectedConsumerContainer, itemCost) : 0;
+    const interimData = selectedConsumerContainer ? getInterimConsumerContainer(selectedConsumerContainer.id) : null;
 
-    const [consumerPrice, setConsumerPrice] = useState<number>(0);
-    const [markup, setMarkup] = useState<number>(0);
-    const [profit, setProfit] = useState<number>(0);
-    const [profitPercentage, setProfitPercentage] = useState<number>(0);
+    const initialConsumerPrice = selectedConsumerContainer
+        ? (interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice)
+        : 0;
+    const initialMarkup = selectedConsumerContainer ? getMarkup(containerCost, initialConsumerPrice) : 0;
+    const initialProfit = selectedConsumerContainer ? getProfit(containerCost, initialConsumerPrice) : 0;
+    const initialProfitPercentage = selectedConsumerContainer ? getProfitPercentage(initialProfit, containerCost) : 0;
 
+    const [consumerPrice, setConsumerPrice] = useState<number>(initialConsumerPrice);
+    const [markup, setMarkup] = useState<number>(initialMarkup);
+    const [profit, setProfit] = useState<number>(initialProfit);
+    const [profitPercentage, setProfitPercentage] = useState<number>(initialProfitPercentage);
 
-    const updatePricingCalculations = (event: any) => {
-
+    // Memoize the update function to prevent unnecessary recreations
+    const updatePricingCalculations = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const value = validator.isEmpty(event.target.value) ? 0 : parseFloat(event.target.value);
 
         let cp = 0; // consumer price
@@ -73,7 +78,7 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
             }
             case 'profitPercentage': {
                 pp = value;
-                p = (pp / 100) * containerCost
+                p = (pp / 100) * containerCost;
                 cp = p + containerCost;
                 m = getMarkup(containerCost, cp);
                 break;
@@ -82,51 +87,59 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                 break;
         }
 
-        // update states
-        setConsumerPrice(cp)
-        setMarkup(m)
-        setProfit(p)
-        setProfitPercentage(pp)
+        // Update states
+        setConsumerPrice(cp);
+        setMarkup(m);
+        setProfit(p);
+        setProfitPercentage(pp);
 
-        // safe to zustand for rentention between container switches
-        updateInterimConsumerContainer(selectedConsumerContainer.id, cp, true, pp)
-    }
+        // Update zustand store if container exists
+        if (selectedConsumerContainer) {
+            updateInterimConsumerContainer(selectedConsumerContainer.id, cp, true, pp);
+        }
+    }, [alterMode, containerCost, selectedConsumerContainer, updateInterimConsumerContainer]);
 
     useEffect(() => {
+        if (!selectedConsumerContainer) return;
 
         const interimData = getInterimConsumerContainer(selectedConsumerContainer.id);
-
-        const consumerPrice = interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice
-
-
-
+        const consumerPrice = interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice;
         const markup = getMarkup(containerCost, consumerPrice);
         const profit = getProfit(containerCost, consumerPrice);
         const profitPercentage = getProfitPercentage(profit, containerCost);
 
         if (!interimData) {
-            updateInterimConsumerContainer(selectedConsumerContainer.id, selectedConsumerContainer.consumerPrice, true, profitPercentage)
+            updateInterimConsumerContainer(
+                selectedConsumerContainer.id,
+                selectedConsumerContainer.consumerPrice,
+                true,
+                profitPercentage
+            );
         }
-        // set state
+
         setConsumerPrice(consumerPrice);
-        setMarkup(markup)
-        setProfit(profit)
-        setProfitPercentage(profitPercentage)
+        setMarkup(markup);
+        setProfit(profit);
+        setProfitPercentage(profitPercentage);
+    }, [
+        selectedConsumerContainer,
+        containerCost,
+        getInterimConsumerContainer,
+        updateInterimConsumerContainer
+    ]);
 
-    }, [selectedConsumerContainer])
-
-
-
+    if (!selectedConsumerContainer) return null;
 
     return (
         <div className='flex flex-col gap-y-6'>
-
             <EditFilledConsumerContainerDialog selectedConsumerContainer={selectedConsumerContainer} />
             <DeleteFilledConsumerContainerAlert selectedConsumerContainerId={selectedConsumerContainer.id} />
 
             <div className='flex justify-between items-center'>
                 <h1 className='font-poppins text-3xl font-semibold'>{selectedConsumerContainer.consumerContainer.containerItem.name}</h1>
-                <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}><span className='text-xl'><TbTrash /></span></button>
+                <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}>
+                    <span className='text-xl'><TbTrash /></span>
+                </button>
             </div>
 
             <div className='grid grid-cols-3 gap-4'>
@@ -141,19 +154,17 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                 <DataCard>
                     <div className='tooltip' data-tip="Markup % = [(Consumer Price - Overall Container Cost )/ Overall Container Cost ] * 100">
                         <DataCardText size='small' color='light'>Consumer Price</DataCardText>
-                        <DataCardText>$ {consumerPrice}</DataCardText>
-                        <DataCardText size='tiny' color='light'>{markup} % markup</DataCardText>
+                        <DataCardText>$ {toFracitonalDigits.curreny(consumerPrice)}</DataCardText>
+                        <DataCardText size='tiny' color='light'>{toFracitonalDigits.digits(markup, 2)} % markup</DataCardText>
                     </div>
                 </DataCard>
 
                 <DataCard>
                     <DataCardText size='small' color='light'>Profit</DataCardText>
-                    <DataCardText>{profit}</DataCardText>
-                    <DataCardText size='tiny' color='light'>{profitPercentage} % profit</DataCardText>
+                    <DataCardText>{toFracitonalDigits.curreny(profit)}</DataCardText>
+                    <DataCardText size='tiny' color='light'>{toFracitonalDigits.curreny(profitPercentage)} % profit</DataCardText>
                 </DataCard>
             </div>
-
-
 
             <div className='grid grid-cols-2 gap-6'>
                 <div className='flex flex-col gap-4'>
@@ -169,62 +180,33 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                     </div>
                 </div>
 
-
                 <div className='flex flex-col gap-4'>
                     <h1 className='font-poppins text-xl font-semibold'>
                         Value
                     </h1>
 
-                    {alterMode === 'consumerPrice' && (
-                        <input
-                            type='text'
-                            value={consumerPrice}
-                            onChange={updatePricingCalculations}
-                            className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
-                        />
-                    )}
-
-                    {alterMode === 'markup' && (
-                        <input
-                            type='text'
-                            value={markup}
-                            onChange={updatePricingCalculations}
-                            className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
-                        />
-                    )}
-
-                    {alterMode === 'profit' && (
-                        <input
-                            type='text'
-                            value={profit}
-                            onChange={updatePricingCalculations}
-                            className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
-                        />
-                    )}
-
-                    {alterMode === 'profitPercentage' && (
-                        <input
-                            type='text'
-                            value={profitPercentage}
-                            onChange={updatePricingCalculations}
-                            className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
-                        />
-                    )}
-
+                    <input
+                        type='number'
+                        value={alterMode === 'consumerPrice' ? consumerPrice :
+                            alterMode === 'markup' ? markup :
+                                alterMode === 'profit' ? profit : profitPercentage}
+                        onChange={updatePricingCalculations}
+                        className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
+                        step={alterMode === 'consumerPrice' || alterMode === 'profit' ? '0.01' : '0.1'}
+                    />
                 </div>
             </div>
 
             {isContainerParametersPanelShown && (
                 <div className='flex flex-col gap-y-6'>
-
                     <div className='flex flex-col gap-y-4'>
-
                         <div className='flex items-center justify-between'>
                             <h1 className='font-poppins text-xl font-semibold'>
                                 Filled Container Costs
                             </h1>
-
-                            <button className='btn ' onClick={() => showDialog('editFilledConsumerContainer')}><span className='text-xl flex items-center gap-x-1'><TbEdit /><p> Edit</p></span></button>
+                            <button className='btn' onClick={() => showDialog('editFilledConsumerContainer')}>
+                                <span className='text-xl flex items-center gap-x-1'><TbEdit /><p> Edit</p></span>
+                            </button>
                         </div>
 
                         <p className='font-poppins text-xl font-normal'>
@@ -240,20 +222,16 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                                 label='Declared Fill Quantity'
                                 data={selectedConsumerContainer.declaredQuantity}
                             />
-
                             <Text.LabelDataPair
                                 label='UOM'
                                 data={selectedConsumerContainer.uom.abbreviation}
                             />
-
                             <Text.LabelDataPair
                                 label='Difficulties Cost'
                                 data={selectedConsumerContainer.difficultiesCost}
                             />
-
                         </div>
                     </div>
-
 
                     <div className='flex flex-col gap-y-4'>
                         <h1 className='font-poppins text-xl font-semibold'>
@@ -264,13 +242,11 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                             These are are parameters that affect all products that use this same container.
                         </p>
 
-
                         <div className='flex flex-col gap-y-1'>
                             <Text.LabelDataPair
                                 label='Container Cost'
                                 data={selectedConsumerContainer.consumerContainer.containerCost}
                             />
-
                             <Text.LabelDataPair
                                 label='Fill Labor'
                                 data={selectedConsumerContainer.consumerContainer.fillLaborCost}
@@ -285,12 +261,10 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                             />
                         </div>
                     </div>
-
-                </div >
+                </div>
             )}
-        </div >
+        </div>
     );
 };
 
 export default SelectedConsumerContainerPanel;
-

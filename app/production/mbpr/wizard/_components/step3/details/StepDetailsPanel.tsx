@@ -44,7 +44,7 @@ const StepDetailsPanel = () => {
                         <span className='text-xl'><TbPlus /></span>
                         <Text.Normal>Add Material</Text.Normal>
                     </div>
-                    {selectedStep?.BillOfMaterial.map((material) => <MaterialCard material={material} />)}
+                    {selectedStep?.BillOfMaterial.map((material) => <MaterialCard key={material.id} material={material} />)}
                 </div>
 
 

@@ -1,4 +1,4 @@
-import ItemSearch, { ItemDataForSearch } from '@/app/production/mbpr/_components/ItemSearch'
+import ItemSearch, { ItemDataForSearch } from '@/app/production/mbpr/new/_components/ItemSearch'
 import React from 'react'
 import { useWizard } from 'react-use-wizard'
 

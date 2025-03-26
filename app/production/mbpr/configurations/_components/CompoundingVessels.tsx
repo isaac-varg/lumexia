@@ -29,7 +29,7 @@ const CompoundingVessels = ({ vessels, equipment }: Props) => {
 
             {vessels.map((vessel) => {
                 return (
-                    <div className='flex flex-col gap-y-4 bg-lilac-100 p-8 rounded-xl hover:cursor-pointer hover:bg-lilac-200' onClick={() => {
+                    <div key={vessel.id} className='flex flex-col gap-y-4 bg-lilac-100 p-8 rounded-xl hover:cursor-pointer hover:bg-lilac-200' onClick={() => {
                         setSelectedVessel(vessel)
                         showDialog("addCompoundingVessel")
                     }}>
