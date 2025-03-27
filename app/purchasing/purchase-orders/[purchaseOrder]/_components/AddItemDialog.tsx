@@ -10,7 +10,7 @@ const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSel
     const searchOptions = {
         keys: ["referenceCode",
             "name",
-            "mergedAliases"
+            "aliasesAll"
         ],
     }
 

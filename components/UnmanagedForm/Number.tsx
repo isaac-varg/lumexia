@@ -5,23 +5,23 @@ import validator from 'validator'
 
 type UFNumberProps = {
     placeholder: string
-    onChangeOutput: Dispatch<SetStateAction<number>>
+    onChangeOutput: Dispatch<SetStateAction<string>>
+    input: string;
 }
 
-const UFNumber = ({ onChangeOutput, placeholder }: UFNumberProps) => {
+const UFNumber = ({ onChangeOutput, placeholder, input }: UFNumberProps) => {
 
-    const [input, setInput] = useState<string>()
+
 
     const handleChange = (value: string) => {
         const isNumber = validator.isFloat(value);
 
         if (value === "") {
-            setInput("")
+            onChangeOutput("")
         }
 
         if (!isNumber) return;
-        setInput(value)
-        onChangeOutput(parseFloat(value))
+        onChangeOutput((value))
     }
 
     return (

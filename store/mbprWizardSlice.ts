@@ -2,6 +2,7 @@ import { inventoryActions } from "@/actions/inventory";
 import { Item } from "@/actions/inventory/getAllItems";
 import { SingleItem } from "@/actions/inventory/getOneItem";
 import { productionActions } from "@/actions/production";
+import { BomMaterialByMbpr } from "@/actions/production/mbpr/bom/getAllByMbpr";
 import { MbprFromItem } from "@/actions/production/mbpr/getAllByProducedItem";
 import { Step } from "@/actions/production/mbpr/steps/getAllByMbpr";
 import { create } from "zustand";
@@ -25,6 +26,10 @@ type State = {
     isNewForFormPanel: boolean
     selectedMaterial: MbprWizardMaterial | null
     materialItems: Item[]
+    materialFormSeletedBomItem: Item | null
+    isMaterialFormEdited: boolean
+    materialIdentifierSequence: number
+    selectedMbprBomItems: BomMaterialByMbpr[];
 }
 
 
@@ -38,17 +43,22 @@ type Actions = {
         setSelectedStep: (step: Step) => void;
         setFormPanelMode: (mode: FormPanelMode) => void;
         setIsNewForFormPanel: (isNew: boolean) => void;
-        setSelectedMaterial: (material: MbprWizardMaterial) => void;
+        setSelectedMaterial: (material: MbprWizardMaterial | null) => void;
+        setMaterialFormSelectedBomItem: (material: Item | null) => void;
+        addSelectedMbprBomItem: (material: BomMaterialByMbpr) => void;
+        setIsMaterialFormEdited: (edited: boolean) => void;
+        incrementMaterialIdentifierSequence: () => void;
         getMbprs: (itemId: string) => void;
         getSteps: (mbprId: string) => void;
         getMaterialItems: () => void;
+        updateSelectedMbprBomItem: (id: string, material: BomMaterialByMbpr) => void;
         revalidate: () => void;
     },
 
 };
 
 
-export const useMbprWizardSelection = create<State & Actions>((set) => ({
+export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
     step: 0,
     producesItemId: '',
     producesItem: null,
@@ -63,6 +73,10 @@ export const useMbprWizardSelection = create<State & Actions>((set) => ({
     isNewForFormPanel: true,
     selectedMaterial: null,
     materialItems: [],
+    materialFormSeletedBomItem: null,
+    isMaterialFormEdited: false,
+    materialIdentifierSequence: 0,
+    selectedMbprBomItems: [],
 
     actions: {
         nextStep: () => {
@@ -110,6 +124,34 @@ export const useMbprWizardSelection = create<State & Actions>((set) => ({
             }
         },
 
+        incrementMaterialIdentifierSequence: () => {
+            set((state) => ({ materialIdentifierSequence: state.materialIdentifierSequence + 1 }))
+        },
+        addSelectedMbprBomItem: (material) => {
+            set((state) => ({
+                selectedMbprBomItems: [...state.selectedMbprBomItems, material]
+            }))
+        },
+
+        updateSelectedMbprBomItem: (id, material) => {
+
+            const state = get()
+            const interimSeletedMbprBomItems = state.selectedMbprBomItems;
+
+            const updated = interimSeletedMbprBomItems.map((bom) => {
+                if (bom.id === id) {
+                    return { ...bom, ...material };
+                }
+
+                return bom
+            });
+
+            set(() => ({
+                selectedMbprBomItems: updated,
+            }))
+
+        },
+
         getMaterialItems: async () => {
 
             try {
@@ -118,6 +160,18 @@ export const useMbprWizardSelection = create<State & Actions>((set) => ({
             } catch (error) {
                 console.error("There was an error fetching the items:", error)
             }
+        },
+
+        setIsMaterialFormEdited: (edited) => {
+            set(() => ({ isMaterialFormEdited: false }))
+        },
+
+        setMaterialFormSelectedBomItem: (material) => {
+            if (!material) {
+                set(() => ({ materialFormSeletedBomItem: null }))
+                return;
+            }
+            set(() => ({ materialFormSeletedBomItem: material }))
         },
 
         setSelectedMaterial: (material) => {
@@ -154,10 +208,25 @@ export const useMbprWizardSelection = create<State & Actions>((set) => ({
 
         setSelectedMbpr: (mbpr) => {
             set(() => ({ selectedMbpr: mbpr }))
+
+            set(() => ({ materialIdentifierSequence: mbpr.BillOfMaterial.length }))
+
         },
 
-        setSelectedStep: (step) => {
+        setSelectedStep: async (step) => {
+
+            // set selected step
             set(() => ({ selectedStep: step }))
+
+            // get bom
+            try {
+                const bomMaterials = await productionActions.mbprs.bom.getAllByMbpr(step.mbprId);
+                set(() => ({
+                    selectedMbprBomItems: bomMaterials,
+                }))
+            } catch (error) {
+                console.error(error)
+            }
         }
     },
 }))

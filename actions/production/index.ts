@@ -1,4 +1,3 @@
-import { update } from "../classes/update";
 import { createCompoundingVessel } from "./compoundingVessels/createCompoundingVessel";
 import { getAllCompoundingVessels } from "./compoundingVessels/getAllCompoundinVessels";
 import { updateCompoundingVessel } from "./compoundingVessels/updateCompoundingVessel";
@@ -8,6 +7,9 @@ import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
 import { getPlanningBprs } from "./getPlanningBprs";
 import { updateBatchSize } from "./mbpr/batchSizes/updateBatchSize";
+import { createMbprBOM } from "./mbpr/bom/create";
+import { getAllBomMaterialsByMbpr } from "./mbpr/bom/getAllByMbpr";
+import { updateMbprBOM } from "./mbpr/bom/update";
 import { getAllByProducedItem } from "./mbpr/getAllByProducedItem";
 import { getOneMbpr } from "./mbpr/getOneMbpr";
 import { getAllByMbpr } from "./mbpr/steps/getAllByMbpr";
@@ -36,6 +38,11 @@ export const productionActions = {
         },
         steps: {
             getAllByMbpr: getAllByMbpr,
+        },
+        bom: {
+            update: updateMbprBOM,
+            create: createMbprBOM,
+            getAllByMbpr: getAllBomMaterialsByMbpr,
         }
     },
     compoundingVessels: {

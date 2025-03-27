@@ -7,14 +7,14 @@ import StepDetailsPanel from "./details/StepDetailsPanel"
 import FormPanel from "./forms/FormPanel"
 
 const ProductionStep = () => {
-    const { step, selectedMbpr, steps, isNewlyCreated } = useMbprWizardSelection()
+    const { isRevalidating, step, selectedMbpr, steps, isNewlyCreated } = useMbprWizardSelection()
     const { getSteps } = useMbprWizardActions()
 
     useEffect(() => {
         if (steps.length === 0 && !isNewlyCreated && selectedMbpr) {
             getSteps(selectedMbpr.id)
         }
-    }, [steps, isNewlyCreated, selectedMbpr])
+    }, [steps, isNewlyCreated, selectedMbpr, isRevalidating])
 
     if (step !== 2 || !selectedMbpr || !steps) return null
 

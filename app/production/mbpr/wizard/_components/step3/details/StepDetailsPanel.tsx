@@ -7,8 +7,8 @@ import { TbPlus } from 'react-icons/tb'
 
 const StepDetailsPanel = () => {
 
-    const { selectedStep } = useMbprWizardSelection()
-    const { setFormPanelMode, setIsNewForFormPanel } = useMbprWizardActions()
+    const { selectedStep, selectedMbprBomItems } = useMbprWizardSelection()
+    const { setSelectedMaterial,setIsMaterialFormEdited, setMaterialFormSelectedBomItem, setFormPanelMode, setIsNewForFormPanel } = useMbprWizardActions()
 
     if (!selectedStep) {
         return (
@@ -25,6 +25,9 @@ const StepDetailsPanel = () => {
     }
 
     const handleNewMaterial = () => {
+        setIsMaterialFormEdited(false)
+        setSelectedMaterial(null)
+        setMaterialFormSelectedBomItem(null)
         setIsNewForFormPanel(true)
         setFormPanelMode('material')
     }
@@ -44,7 +47,7 @@ const StepDetailsPanel = () => {
                         <span className='text-xl'><TbPlus /></span>
                         <Text.Normal>Add Material</Text.Normal>
                     </div>
-                    {selectedStep?.BillOfMaterial.map((material) => <MaterialCard key={material.id} material={material} />)}
+                    {selectedMbprBomItems.filter((bi) => bi.stepId === selectedStep.id).map((material) => <MaterialCard key={material.id} material={material} />)}
                 </div>
 
 
