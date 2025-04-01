@@ -108,6 +108,9 @@ export const staticRecords = {
             verify: '8be63277-c4e4-4263-9665-005113941418',
             secondaryVerification: '8dd8cfcc-533a-48e6-a1e6-acb6acea0991', // as if necessary
             completed: 'bec61e3f-87f0-485b-813f-65a8bd8103df',
+        },
+        bprStepActionableTypes: {
+            completeStep: '48505c39-a0bd-4d9d-9c2e-241bb3cba10c'
         }
 
     },

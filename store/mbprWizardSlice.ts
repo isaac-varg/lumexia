@@ -2,12 +2,13 @@ import { inventoryActions } from "@/actions/inventory";
 import { Item } from "@/actions/inventory/getAllItems";
 import { SingleItem } from "@/actions/inventory/getOneItem";
 import { productionActions } from "@/actions/production";
+import { Actionable } from "@/actions/production/mbpr/actionables/getAllByMbpr";
 import { Addendum } from "@/actions/production/mbpr/addendums/getAllByMbpr";
 import { BomMaterialByMbpr } from "@/actions/production/mbpr/bom/getAllByMbpr";
 import { MbprFromItem } from "@/actions/production/mbpr/getAllByProducedItem";
 import { Instructions } from "@/actions/production/mbpr/instructions/getAllByMbpr";
 import { Step } from "@/actions/production/mbpr/steps/getAllByMbpr";
-import { StepAddendumType } from "@prisma/client";
+import { StepActionableType, StepAddendumType } from "@prisma/client";
 import { create } from "zustand";
 
 export type FormPanelMode = 'default' | 'material' | 'addendum' | 'equipment' | 'actionables' | 'instructions'
@@ -35,9 +36,12 @@ type State = {
     selectedMbprBomItems: BomMaterialByMbpr[];
     selectedMbprInstructions: Instructions[];
     selectedMbprAddendums: Addendum[];
+    selectedMbprActionables: Actionable[];
     selectedInstruction: Instructions | null;
     selectedAddendum: Addendum | null;
+    selectedActionable: Actionable | null;
     addendumTypes: StepAddendumType[];
+    actionableTypes: StepActionableType[];
 }
 
 
@@ -54,12 +58,15 @@ type Actions = {
         setSelectedMaterial: (material: MbprWizardMaterial | null) => void;
         setSelectedInstruction: (instruction: Instructions | null) => void;
         setSelectedAddendum: (addendum: Addendum | null) => void;
+        setSelectedActionable: (actionable: Actionable | null) => void;
         setMaterialFormSelectedBomItem: (material: Item | null) => void;
         addSelectedMbprBomItem: (material: BomMaterialByMbpr) => void;
         addInstruction: (instruction: Instructions) => void;
         addAddendum: (addendum: Addendum) => void;
+        addActionable: (actionable: Actionable) => void;
         updateInstruction: (id: string, content: string) => void;
         updateAddendum: (id: string, addendum: Addendum) => void;
+        updateActionable: (id: string, actionable: Actionable) => void;
         removeInstruction: (instructionId: string) => void;
         removeAddendum: (id: string) => void;
         setIsMaterialFormEdited: (edited: boolean) => void;
@@ -70,6 +77,7 @@ type Actions = {
         updateSelectedMbprBomItem: (id: string, material: BomMaterialByMbpr) => void;
         revalidate: () => void;
         setAddendumTypes: (addendums: StepAddendumType[]) => void;
+        setActionableTypes: (types: StepActionableType[]) => void;
     },
 
 };
@@ -95,10 +103,13 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
     materialIdentifierSequence: 0,
     selectedMbprBomItems: [],
     selectedMbprInstructions: [],
+    selectedMbprActionables: [],
     selectedInstruction: null,
     selectedMbprAddendums: [],
     selectedAddendum: null,
     addendumTypes: [],
+    actionableTypes: [],
+    selectedActionable: null,
 
     actions: {
         nextStep: () => {
@@ -161,6 +172,12 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
             }))
         },
 
+        addActionable: (actionable) => {
+            set((state) => ({
+                selectedMbprActionables: [...state.selectedMbprActionables, actionable]
+            }))
+        },
+
         addAddendum: (addendum) => {
             set((state) => ({
                 selectedMbprAddendums: [...state.selectedMbprAddendums, addendum]
@@ -206,6 +223,14 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
                     i.id === id ? { ...i, instructionContent: content } : i
                 ),
             }));
+        },
+
+        updateActionable: (id, actionable) => {
+            set((state) => ({
+                selectedMbprActionables: state.selectedMbprActionables.map((a) =>
+                    a.id === id ? { ...actionable } : a
+                )
+            }))
         },
 
         updateAddendum: (id, addendum) => {
@@ -279,7 +304,7 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
 
         setSelectedStep: async (step) => {
 
-          // set selected step
+            // set selected step
             set(() => ({ selectedStep: step }))
 
             // get bom
@@ -304,9 +329,9 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
 
 
             // get equipment
+            // not yet 
+
             // get addendums
-
-
             try {
                 const addendums = await productionActions.mbprs.addendums.getAllByMbpr(step.mbprId);
                 set(() => ({
@@ -317,6 +342,14 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
             }
 
             // get actionables
+            try {
+                const actionables = await productionActions.mbprs.actionables.getAllByMbpr(step.mbprId);
+                set(() => ({
+                    selectedMbprActionables: actionables,
+                }))
+            } catch (error) {
+                console.error(error)
+            }
         },
 
         setSelectedInstruction: (instruction) => {
@@ -327,9 +360,17 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
             set(() => ({ selectedAddendum: addendum }))
         },
 
+        setSelectedActionable: (actionable) => {
+            set(() => ({ selectedActionable: actionable }))
+        },
+
         setAddendumTypes: (addendums) => {
             set(() => ({ addendumTypes: addendums }))
-        }
+        },
+
+        setActionableTypes: (types) => {
+            set(() => ({ actionableTypes: types }))
+        },
     },
 
 }))

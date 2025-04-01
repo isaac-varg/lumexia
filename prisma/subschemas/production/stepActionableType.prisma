@@ -1,13 +1,15 @@
 model StepActionableType {
-  id   String @id @default(uuid())
-  name String
-  userRoleId  String   @map("user_role_id")
-  description String?
-  dataType    String   @map("data_type")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+    id          String   @id @default(uuid())
+    name        String
+    userRoleId  String   @map("user_role_id")
+    bgColor     String   @default("#333333") @map("bg_color")
+    textColor   String   @default("#ffffff") @map("text_color")
+    description String?
+    dataType    String   @map("data_type")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  userRole UserRole @relation(fields: [userRoleId], references: [id])
+    userRole UserRole @relation(fields: [userRoleId], references: [id])
 
-  @@map("step_actionable_types")
+    @@map("step_actionable_types")
 }

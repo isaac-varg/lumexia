@@ -9,6 +9,7 @@ import VersionStep from './_components/step2/VersionStep'
 import Title from './_components/Title'
 import StepNavigator from './_components/step3/ProductionStep'
 import stepAddendumTypeActions from '@/actions/production/stepAddendumTypes'
+import stepActionableTypeActions from '@/actions/production/stepActionableTypes'
 
 type MbprWizardProps = {
     searchParams: {
@@ -21,11 +22,12 @@ const MbprWizard = async ({ searchParams }: MbprWizardProps) => {
     const producibles = await getProducibles();
     const providedItemId = searchParams.itemId;
     const addendumTypes = await stepAddendumTypeActions.getAll();
+    const actionableTypes = await stepActionableTypeActions.getAll();
     
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <InitialStateSetter providedItemId={providedItemId} addendumTypes={addendumTypes} />
+            <InitialStateSetter providedItemId={providedItemId} addendumTypes={addendumTypes} actionableTypes={actionableTypes} />
             <Title />
             <PageBreadcrumbs />
 

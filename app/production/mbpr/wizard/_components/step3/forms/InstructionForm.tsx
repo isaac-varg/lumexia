@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Heading from '../details/Heading';
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice';
 import { Prisma } from '@prisma/client';
 import { productionActions } from '@/actions/production';
 import { deleteInstruction } from '@/actions/production/mbpr/instructions/delete';
+import prisma from '@/lib/prisma';
 
 const InstructionForm = () => {
 
     const { isNewForFormPanel, selectedStep, selectedInstruction, } = useMbprWizardSelection()
     const { addInstruction, updateInstruction, removeInstruction } = useMbprWizardActions()
 
-    const [content, setContent] = useState(selectedInstruction?.instructionContent);
+    const [content, setContent] = useState<string>();
 
     const submitData = () => {
 
@@ -55,11 +56,22 @@ const InstructionForm = () => {
 
         if (!selectedInstruction) return;
 
-        await productionActions.mbprs.instructions.delete(selectedInstruction.id)
+        const id = selectedInstruction.id;
+
+        await productionActions.mbprs.instructions.delete(id)
 
         deleteInstruction(selectedInstruction.id)
 
     }
+
+    useEffect(() => {
+        if (selectedInstruction) {
+            if (!selectedInstruction) return;
+            setContent(selectedInstruction.instructionContent)
+        } else {
+            setContent('');
+        }
+    }, [selectedInstruction])
 
 
 
@@ -71,7 +83,6 @@ const InstructionForm = () => {
                 <Heading>Actions</Heading>
                 <div className='flex flex-col gap-y-1'>
                     <button onClick={() => submitData()} className='btn btn-success'>Save</button>
-                    {/*<button onClick={() => handleDelete()} className='btn btn-warning'>Delete</button>*/}
                 </div>
             </div>
 

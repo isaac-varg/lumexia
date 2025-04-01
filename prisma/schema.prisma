@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Apr 01 2025 11:02:56 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 01 2025 15:43:05 GMT-0700 (Pacific Daylight Time)✨
 model ConsumerContainerArchive {
   id                           String                         @id @default(uuid())
   examinationId                String                         @map("examination_id")
@@ -896,6 +896,8 @@ model StepActionableType {
   id          String   @id @default(uuid())
   name        String
   userRoleId  String   @map("user_role_id")
+  bgColor     String   @default("#333333") @map("bg_color")
+  textColor   String   @default("#ffffff") @map("text_color")
   description String?
   dataType    String   @map("data_type")
   createdAt   DateTime @default(now()) @map("created_at")

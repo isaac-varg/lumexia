@@ -2,11 +2,11 @@
 
 import prisma from "@/lib/prisma"
 
-export const deleteInstruction = async (id: string) => {
+export const deleteInstruction = async (instructionId: string) => {
 
     const response = await prisma.stepInstruction.delete({
         where: {
-            id,
+            id: instructionId,
         }
     });
 

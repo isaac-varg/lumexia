@@ -6,6 +6,9 @@ import { getAllMbprs } from "./getAllMbprs";
 import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
 import { getPlanningBprs } from "./getPlanningBprs";
+import { createActionable } from "./mbpr/actionables/create";
+import { getAllActionablesByMbpr } from "./mbpr/actionables/getAllByMbpr";
+import { updateActionable } from "./mbpr/actionables/update";
 import { createAddedum } from "./mbpr/addendums/create";
 import { deleteAddendum } from "./mbpr/addendums/delete";
 import { getAllAddendumsByMbpr } from "./mbpr/addendums/getAllByMbpr";
@@ -63,6 +66,11 @@ export const productionActions = {
             create: createAddedum,
             update: updateAddendum,
             delete: deleteAddendum,
+        },
+        actionables: {
+            getAllByMbpr: getAllActionablesByMbpr,
+            create: createActionable,
+            update: updateActionable,
         }
     },
     compoundingVessels: {

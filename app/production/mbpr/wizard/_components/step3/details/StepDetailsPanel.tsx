@@ -5,10 +5,12 @@ import MaterialCard from './MaterialCard'
 import Text from '@/components/Text'
 import NewButton from './NewButton'
 import InstructionCard from './InstructionCard'
+import AddendumCard from './AddendumCard'
+import ActionableCard from './ActionableCard'
 
 const StepDetailsPanel = () => {
 
-    const { selectedStep, selectedMbprBomItems, selectedMbprInstructions, selectedMbprAddendums } = useMbprWizardSelection()
+    const { selectedStep, selectedMbprBomItems, selectedMbprInstructions, selectedMbprAddendums, selectedMbprActionables } = useMbprWizardSelection()
     const {
         setSelectedInstruction,
         setSelectedMaterial,
@@ -17,6 +19,8 @@ const StepDetailsPanel = () => {
         setFormPanelMode,
         setIsNewForFormPanel,
         setSelectedAddendum,
+        setSelectedActionable
+
     } = useMbprWizardActions()
 
     if (!selectedStep) {
@@ -46,11 +50,17 @@ const StepDetailsPanel = () => {
         setIsNewForFormPanel(true);
         setFormPanelMode("instructions")
     }
-    
-const handleNewAddendum = () => {
+
+    const handleNewAddendum = () => {
         setSelectedAddendum(null);
         setIsNewForFormPanel(true);
         setFormPanelMode("addendum")
+    }
+
+    const handleNewActionable = () => {
+        setSelectedActionable(null);
+        setIsNewForFormPanel(true);
+        setFormPanelMode("actionables")
     }
 
 
@@ -95,10 +105,39 @@ const handleNewAddendum = () => {
 
                         <NewButton onClick={handleNewAddendum} label='Add Addendum' />
 
-                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id).map((addendum) => <InstructionCard key={addendum.id} instruction={addendum} />)}
+                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id).map((addendum) => <AddendumCard key={addendum.id} addendum={addendum} />)}
                     </div>
 
                 </div>
+
+                <div>
+                    <Heading>Equipment</Heading>
+
+                    <div className='grid grid-cols-1 gap-2'>
+
+                        WIP
+                        {/**
+                        <NewButton onClick={handleNewAddendum} label='Add Addendum' />
+
+                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id).map((addendum) => <AddendumCard key={addendum.id} addendum={addendum} />)}
+                        **/}
+                    </div>
+
+
+                </div>
+
+                <div>
+                    <Heading>Actionables</Heading>
+
+                    <div className='grid grid-cols-1 gap-2'>
+
+                        <NewButton onClick={handleNewActionable} label='Add Actionable' />
+
+                        {selectedMbprActionables.filter((a) => a.stepId === selectedStep.id).map((actionable) => <ActionableCard key={actionable.id} actionable={actionable} />)}
+                    </div>
+
+                </div>
+
 
 
 
