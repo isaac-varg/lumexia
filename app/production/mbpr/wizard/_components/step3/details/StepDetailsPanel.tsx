@@ -3,12 +3,21 @@ import React from 'react'
 import Heading from './Heading'
 import MaterialCard from './MaterialCard'
 import Text from '@/components/Text'
-import { TbPlus } from 'react-icons/tb'
+import NewButton from './NewButton'
+import InstructionCard from './InstructionCard'
 
 const StepDetailsPanel = () => {
 
-    const { selectedStep, selectedMbprBomItems } = useMbprWizardSelection()
-    const { setSelectedMaterial,setIsMaterialFormEdited, setMaterialFormSelectedBomItem, setFormPanelMode, setIsNewForFormPanel } = useMbprWizardActions()
+    const { selectedStep, selectedMbprBomItems, selectedMbprInstructions, selectedMbprAddendums } = useMbprWizardSelection()
+    const {
+        setSelectedInstruction,
+        setSelectedMaterial,
+        setIsMaterialFormEdited,
+        setMaterialFormSelectedBomItem,
+        setFormPanelMode,
+        setIsNewForFormPanel,
+        setSelectedAddendum,
+    } = useMbprWizardActions()
 
     if (!selectedStep) {
         return (
@@ -32,23 +41,66 @@ const StepDetailsPanel = () => {
         setFormPanelMode('material')
     }
 
+    const handleNewInstruction = () => {
+        setSelectedInstruction(null)
+        setIsNewForFormPanel(true);
+        setFormPanelMode("instructions")
+    }
+    
+const handleNewAddendum = () => {
+        setSelectedAddendum(null);
+        setIsNewForFormPanel(true);
+        setFormPanelMode("addendum")
+    }
+
+
+
+
     return (
         <div className='flex flex-col gap-y-6 col-span-2'>
             <h1 className='font-poppins text-lg font-semibold'>
                 {selectedStep ? `Step ${selectedStep.sequence} - ${selectedStep.label} ` : 'Selected Step'}
             </h1>
 
-            <div className='bg-[#EDEDE9] h-full rounded-xl p-6'>
+            <div className='bg-[#EDEDE9] h-full rounded-xl p-6 flex flex-col gap-y-6'>
 
-                <Heading>Materials</Heading>
+                <div>
+                    <Heading>Materials</Heading>
 
-                <div className='grid grid-cols-2 gap-2'>
-                    <div onClick={handleNewMaterial} className='flex  items-center gap-x-4 bg-white opacity-85 hover:cursor-pointer hover:bg-lilac-200 rounded-xl p-6'>
-                        <span className='text-xl'><TbPlus /></span>
-                        <Text.Normal>Add Material</Text.Normal>
+                    <div className='grid grid-cols-2 gap-2'>
+                        <NewButton onClick={handleNewMaterial} label='Add Material' />
+
+                        {selectedMbprBomItems.filter((bi) => bi.stepId === selectedStep.id).map((material) => <MaterialCard key={material.id} material={material} />)}
                     </div>
-                    {selectedMbprBomItems.filter((bi) => bi.stepId === selectedStep.id).map((material) => <MaterialCard key={material.id} material={material} />)}
                 </div>
+
+
+                <div>
+                    <Heading>Work Instructions</Heading>
+
+                    <div className='grid grid-cols-1 gap-2'>
+
+                        <NewButton onClick={handleNewInstruction} label='Add Instruction' />
+
+                        {selectedMbprInstructions.filter((i) => i.stepId === selectedStep.id).map((instruction) => <InstructionCard key={instruction.id} instruction={instruction} />)}
+                    </div>
+
+                </div>
+
+
+                <div>
+                    <Heading>Addendums</Heading>
+
+                    <div className='grid grid-cols-1 gap-2'>
+
+                        <NewButton onClick={handleNewAddendum} label='Add Addendum' />
+
+                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id).map((addendum) => <InstructionCard key={addendum.id} instruction={addendum} />)}
+                    </div>
+
+                </div>
+
+
 
 
 

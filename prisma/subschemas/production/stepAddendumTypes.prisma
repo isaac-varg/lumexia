@@ -1,9 +1,11 @@
 model StepAddendumType {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+    id          String   @id @default(uuid())
+    name        String
+    bgColor     String   @default("#333333") @map("bg_color")
+    textColor   String   @default("#ffffff") @map("text_color")
+    description String?
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  @@map("step_addendum_types")
+    @@map("step_addendum_types")
 }
