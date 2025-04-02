@@ -26,8 +26,6 @@ const MbprWizard = async ({ searchParams }: MbprWizardProps) => {
     const addendumTypes = await stepAddendumTypeActions.getAll();
     const actionableTypes = await stepActionableTypeActions.getAll();
     const compoundingVessels = await productionActions.compoundingVessels.getAll();
-    
-    
 
     return (
         <div className='flex flex-col gap-y-6'>

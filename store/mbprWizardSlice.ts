@@ -10,6 +10,7 @@ import { SingleBatchSize } from "@/actions/production/mbpr/batchSizes/getOne";
 import { BomMaterialByMbpr } from "@/actions/production/mbpr/bom/getAllByMbpr";
 import { MbprFromItem } from "@/actions/production/mbpr/getAllByProducedItem";
 import { Instructions } from "@/actions/production/mbpr/instructions/getAllByMbpr";
+import { WizardBatchStep } from "@/actions/production/mbpr/steps/add";
 import { Step } from "@/actions/production/mbpr/steps/getAllByMbpr";
 import { StepActionableType, StepAddendumType } from "@prisma/client";
 import { create } from "zustand";
@@ -48,6 +49,7 @@ type State = {
     compoundingVessels: CompoundingVessel[];
     batchSizes: BatchSize[];
     selectedBatchSize: BatchSize | null;
+    stepSequence: number;
 }
 
 
@@ -70,6 +72,7 @@ type Actions = {
         addInstruction: (instruction: Instructions) => void;
         addAddendum: (addendum: Addendum) => void;
         addActionable: (actionable: Actionable) => void;
+        addStep: (step: Step) => void;
         updateInstruction: (id: string, content: string) => void;
         updateAddendum: (id: string, addendum: Addendum) => void;
         updateActionable: (id: string, actionable: Actionable) => void;
@@ -77,6 +80,7 @@ type Actions = {
         removeAddendum: (id: string) => void;
         setIsMaterialFormEdited: (edited: boolean) => void;
         incrementMaterialIdentifierSequence: () => void;
+        incrementStepSequence: () => void;
         getMbprs: (itemId: string) => void;
         getSteps: (mbprId: string) => void;
         getMaterialItems: () => void;
@@ -125,6 +129,7 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
     compoundingVessels: [],
     batchSizes: [],
     selectedBatchSize: null,
+    stepSequence: 0,
 
     actions: {
         nextStep: () => {
@@ -158,11 +163,11 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
                 const steps = await productionActions.mbprs.steps.getAllByMbpr(mbprId);
 
                 if (steps.length === 0) {
-                    set(() => ({ isNewlyCreated: true }))
+                    set(() => ({ isNewlyCreated: true, stepSequence: 1 }))
                 }
 
 
-                set(() => ({ steps, isNewlyCreated: false }))
+                set(() => ({ steps, isNewlyCreated: false , stepSequence: steps.length + 1}))
             } catch (error) {
                 console.error('There was an error fetching the MBPR Steps', error)
             } finally {
@@ -175,6 +180,11 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
         incrementMaterialIdentifierSequence: () => {
             set((state) => ({ materialIdentifierSequence: state.materialIdentifierSequence + 1 }))
         },
+
+        incrementStepSequence: () => {
+            set((state) => ({ stepSequence: state.stepSequence + 1 }))
+        },
+
         addSelectedMbprBomItem: (material) => {
             set((state) => ({
                 selectedMbprBomItems: [...state.selectedMbprBomItems, material]
@@ -202,6 +212,12 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
         addBatchSize: (batchSize) => {
             set((state) => ({
                 batchSizes: [...state.batchSizes, batchSize]
+            }));
+        },
+
+        addStep: (step) => {
+            set((state) => ({
+                steps: [...state.steps, step]
             }));
         },
 
@@ -422,7 +438,8 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
             } catch (error) {
                 console.error(error);
             }
-        }
+        },
+
 
     },
 

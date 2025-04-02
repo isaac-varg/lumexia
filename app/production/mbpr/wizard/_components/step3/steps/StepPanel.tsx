@@ -2,6 +2,8 @@ import { Step } from '@/actions/production/mbpr/steps/getAllByMbpr';
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice'
 import { groupByProperty } from '@/utils/data/groupByProperty'
 import React from 'react'
+import AddStepForm from './AddStepForm';
+import useDialog from '@/hooks/useDialog';
 
 const bgColors = ["#EDEDE9", "#D6CCC2", "#F5EBE0", "#E3D5CA", "#D5BDAF", "#EDEDE9", "#D6CCC2", "#F5EBE0", "#E3D5CA", "#D5BDAF"];
 
@@ -9,14 +11,21 @@ const StepPanel = () => {
 
     const { steps, selectedStep } = useMbprWizardSelection()
     const { setSelectedStep } = useMbprWizardActions()
+    const { showDialog} = useDialog()
     const groupedSteps = groupByProperty(steps, "phase")
 
 
     return (
         <div className='flex flex-col gap-y-6 col-span-1'>
-            <h1 className='font-poppins text-lg font-semibold'>
-                Steps & Phases
-            </h1>
+        <AddStepForm />
+            <div className='flex justify-between items-center'>
+                <h1 className='font-poppins text-lg font-semibold'>
+                    Steps & Phases
+                </h1>
+
+                <button className='btn' onClick={() => showDialog("addStepForm")}>Add Step</button>
+
+            </div>
 
             {Object.keys(groupedSteps).map((phase, index) => {
                 const bgColor = bgColors[index]

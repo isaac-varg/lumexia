@@ -26,6 +26,7 @@ import { createInstruction } from "./mbpr/instructions/create";
 import { deleteInstruction } from "./mbpr/instructions/delete";
 import { getAllInstructionsByMbpr } from "./mbpr/instructions/getAllByMbpr";
 import { updateInstruction } from "./mbpr/instructions/update";
+import { addBatchStep } from "./mbpr/steps/add";
 import { getAllByMbpr } from "./mbpr/steps/getAllByMbpr";
 import { updateMbpr } from "./mbpr/updateMbpr";
 import { updateBpr } from "./updateBpr";
@@ -55,6 +56,7 @@ export const productionActions = {
         },
         steps: {
             getAllByMbpr: getAllByMbpr,
+            create: addBatchStep,
         },
         bom: {
             update: updateMbprBOM,
