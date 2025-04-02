@@ -12,6 +12,7 @@ import { MbprFromItem } from "@/actions/production/mbpr/getAllByProducedItem";
 import { Instructions } from "@/actions/production/mbpr/instructions/getAllByMbpr";
 import { WizardBatchStep } from "@/actions/production/mbpr/steps/add";
 import { Step } from "@/actions/production/mbpr/steps/getAllByMbpr";
+import { staticRecords } from "@/configs/staticRecords";
 import { StepActionableType, StepAddendumType } from "@prisma/client";
 import { create } from "zustand";
 
@@ -167,7 +168,7 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
                 }
 
 
-                set(() => ({ steps, isNewlyCreated: false , stepSequence: steps.length + 1}))
+                set(() => ({ steps, isNewlyCreated: false, stepSequence: steps.length + 1 }))
             } catch (error) {
                 console.error('There was an error fetching the MBPR Steps', error)
             } finally {
@@ -320,25 +321,70 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
             set(() => ({ formPanelMode: mode }))
         },
 
+
         setProducesItem: async (itemId) => {
+            set(() => ({ producesItemId: itemId }));
 
-            set(() => ({ producesItemId: itemId }))
+            if (itemId.length === 0) return;
 
-            if (itemId.length === 0) return
+            let item;
 
             try {
-                const item = await inventoryActions.items.getOne(itemId);
-
-                set(() => ({ producesItem: item }));
-
+                item = await inventoryActions.items.getOne(itemId);
             } catch (error) {
-                console.error('There was an error fetching the selected Item', error)
-            } finally {
-                set(() => ({
-                    step: 1
-                }))
+                console.error('There was an error fetching the selected Item', error);
+                return;
             }
+
+            if (item.itemTypeId === staticRecords.inventory.itemTypes.essentialOil ||
+                item.itemTypeId === staticRecords.inventory.itemTypes.fragranceOil) {
+
+                const efo = await productionActions.templates.scent(itemId)
+
+                if (!efo) {
+                    throw new Error('There was an issue with getting the Essential or Fragrance Oil Ready.')
+                }
+                set(() => ({
+                    step: 2,
+                    selectedMbpr: efo.mbpr,
+                    selectedStep: efo.step,
+
+                }));
+
+                return;
+            }
+
+            set(() => ({ producesItem: item }));
+
+            // Finally logic (executed only if the item type check passes)
+            set(() => ({ step: 1 }));
         },
+
+        // setProducesItem: async (itemId) => {
+
+        //     set(() => ({ producesItemId: itemId }))
+
+        //     if (itemId.length === 0) return
+
+        //     try {
+        //         const item = await inventoryActions.items.getOne(itemId);
+
+        //        
+        //         if (item.itemTypeId === staticRecords.inventory.itemTypes.essentialOil || item.itemTypeId === staticRecords.inventory.itemTypes.fragranceOil) {
+        //             console.log('runme instead')
+        //             return;
+        //         }
+
+        //         set(() => ({ producesItem: item }));
+
+        //     } catch (error) {
+        //         console.error('There was an error fetching the selected Item', error)
+        //     } finally {
+        //         set(() => ({
+        //             step: 1
+        //         }))
+        //     }
+        // },
 
         setSelectedMbpr: (mbpr) => {
             set(() => ({ selectedMbpr: mbpr }))

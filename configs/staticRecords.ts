@@ -13,6 +13,8 @@ export const staticRecords = {
         },
         itemTypes: {
             packaging: '4dae8a77-150b-4ea3-9c60-237adb843179',
+            essentialOil: '2bc7af2f-741a-4f2d-93ed-73216400e214',
+            fragranceOil: '7c0cdc6b-a0c7-4c80-978d-19f89916d9ec',
         },
         producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
         uom: {
@@ -78,6 +80,11 @@ export const staticRecords = {
             released: '0ec79764-cc04-41b8-a3d6-c91e71a2f159',
             investigating: '1aecf3b0-723a-43c9-b46f-907417602210',
             failed: '7f2d60ff-ecea-415e-8ed3-e868002354ed',
+        },
+        templates: {
+            essentialFragranceOil: {
+                compoundingVessel:  '0ebe6e23-9aae-4a4c-877c-f798e36d7fce'
+            }
         },
         //really terrible naming, this is actually bprStagingStatuses... 
         bprBomStatuses: {

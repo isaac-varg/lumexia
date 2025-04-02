@@ -29,6 +29,7 @@ import { updateInstruction } from "./mbpr/instructions/update";
 import { addBatchStep } from "./mbpr/steps/add";
 import { getAllByMbpr } from "./mbpr/steps/getAllByMbpr";
 import { updateMbpr } from "./mbpr/updateMbpr";
+import { handleNewScent } from "./templates/scents/handleNewScent";
 import { updateBpr } from "./updateBpr";
 
 export const productionActions = {
@@ -85,5 +86,8 @@ export const productionActions = {
         getAll: getAllCompoundingVessels,
         create: createCompoundingVessel,
         update: updateCompoundingVessel,
+    },
+    templates: {
+        scent: handleNewScent, 
     }
 };
