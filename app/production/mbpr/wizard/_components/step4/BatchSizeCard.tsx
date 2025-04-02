@@ -35,7 +35,7 @@ const BatchSizeCard = ({ batchSize }: { batchSize: BatchSize }) => {
 
 
                     <h1 className='font-poppins font-medium text-base'>
-                        {batchSize.batchSizeCompoundingVessels[0].tankTime || 'No tank time recorded'}
+                        {batchSize.batchSizeCompoundingVessels[0]?.tankTime || 'No tank time recorded'}
                     </h1>
                 </div>
 

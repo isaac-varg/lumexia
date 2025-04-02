@@ -10,7 +10,7 @@ const CreateEditMBPR = () => {
     return (
         <button
             className='btn flex gap-x-2 items-center text-neutral-800'
-            onClick={() => router.push('/production/mbpr/new')}
+            onClick={() => router.push('/production/mbpr/wizard')}
         >
 
             <span className='text-2xl'><TbPlus /></span>
