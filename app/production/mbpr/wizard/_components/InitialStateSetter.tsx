@@ -1,15 +1,17 @@
 'use client'
+import { CompoundingVessel } from '@/actions/production/compoundingVessels/getAllCompoundinVessels'
 import { useMbprWizardActions } from '@/store/mbprWizardSlice'
 import { StepActionableType, StepAddendumType } from '@prisma/client'
 import React, { useEffect } from 'react'
 
-const InitialStateSetter = ({ providedItemId, addendumTypes, actionableTypes }: { providedItemId?: string, addendumTypes: StepAddendumType[], actionableTypes: StepActionableType[] }) => {
+const InitialStateSetter = ({ compoundingVessels, providedItemId, addendumTypes, actionableTypes }: { providedItemId?: string, addendumTypes: StepAddendumType[], actionableTypes: StepActionableType[], compoundingVessels: CompoundingVessel[]}) => {
 
-    const { setActionableTypes, setProducesItem, setAddendumTypes } = useMbprWizardActions()
+    const { setCompoundingVessels, setActionableTypes, setProducesItem, setAddendumTypes } = useMbprWizardActions()
     useEffect(() => {
         setProducesItem(providedItemId || '')
         setAddendumTypes(addendumTypes);
         setActionableTypes(actionableTypes);
+        setCompoundingVessels(compoundingVessels)
 
     }, [])
 

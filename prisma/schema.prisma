@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Apr 01 2025 15:43:05 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Apr 02 2025 10:22:55 GMT-0700 (Pacific Daylight Time)✨
 model ConsumerContainerArchive {
   id                           String                         @id @default(uuid())
   examinationId                String                         @map("examination_id")
@@ -620,6 +620,19 @@ model BatchProductionRecord {
   @@map("batch_production_records")
 }
 
+model BatchSizeCompoundingVessel {
+  id                  String            @id @default(uuid())
+  tankTime            Float             @map("tank_time")
+  compoundingVesselId String            @map("compounding_vessel_id")
+  batchSizeId         String            @map("batch_size_id")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+  compoundingVessel   CompoundingVessel @relation(fields: [compoundingVesselId], references: [id])
+  batchSize           BatchSize         @relation(fields: [batchSizeId], references: [id])
+
+  @@map("batch_size_compounding_vessels")
+}
+
 model BatchSize {
   id             String   @id @default(uuid())
   mbprId         String   @map("mbpr_id")
@@ -629,10 +642,11 @@ model BatchSize {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
-  mbpr                  MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  uom                   UnitOfMeasurement           @relation(fields: [uomId], references: [id])
-  recordStatus          RecordStatus                @relation(fields: [recordStatusId], references: [id])
-  BatchProductionRecord BatchProductionRecord[]
+  mbpr                        MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
+  uom                         UnitOfMeasurement            @relation(fields: [uomId], references: [id])
+  recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
+  batchSizeCompoundingVessels BatchSizeCompoundingVessel[]
+  BatchProductionRecord       BatchProductionRecord[]
 
   @@map("batch_sizes")
 }
@@ -845,13 +859,14 @@ model BprStepActionableVerification {
 }
 
 model CompoundingVessel {
-  id              String    @id @default(uuid())
-  equipmentId     String    @map("equipment_id")
-  capacity        Float
-  operationalCost Float     @map("operational_cost")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  equipment       Equipment @relation(fields: [equipmentId], references: [id])
+  id                          String                       @id @default(uuid())
+  equipmentId                 String                       @map("equipment_id")
+  capacity                    Float
+  operationalCost             Float                        @map("operational_cost")
+  createdAt                   DateTime                     @default(now()) @map("created_at")
+  updatedAt                   DateTime                     @updatedAt @map("updated_at")
+  equipment                   Equipment                    @relation(fields: [equipmentId], references: [id])
+  BatchSizeCompoundingVessels BatchSizeCompoundingVessel[]
 
   @@map("compounding_vessels")
 }

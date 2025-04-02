@@ -157,7 +157,7 @@ const MaterialForm = () => {
 
 
             <div className='flex flex-col gap-y-4'>
-                <Heading>Material</Heading>
+                <Heading>Concentration w/w %</Heading>
 
                 <UnmanagedForm.Number
                     placeholder='Set concentration'

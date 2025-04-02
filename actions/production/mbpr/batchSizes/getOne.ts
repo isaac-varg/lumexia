@@ -1,14 +1,13 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
 
-export const updateBatchSize = async (id: string, data: Prisma.BatchSizeUncheckedUpdateInput) => {
-    const response = await prisma.batchSize.update({
+
+export const getOneBatchSize = async (id: string) => {
+    const size = await prisma.batchSize.findFirstOrThrow({
         where: {
-            id
+            id,
         },
-        data,
         include: {
             uom: true,
             batchSizeCompoundingVessels: {
@@ -24,6 +23,7 @@ export const updateBatchSize = async (id: string, data: Prisma.BatchSizeUnchecke
         }
     })
 
-    return response;
+    return size
 }
 
+export type SingleBatchSize = Awaited<ReturnType<typeof getOneBatchSize>>

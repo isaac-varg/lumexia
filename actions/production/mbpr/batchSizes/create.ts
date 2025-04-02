@@ -1,29 +1,25 @@
-"use server"
+'use server'
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 
-export const updateBatchSize = async (id: string, data: Prisma.BatchSizeUncheckedUpdateInput) => {
-    const response = await prisma.batchSize.update({
-        where: {
-            id
-        },
+
+export const createBatchSize = async (data: Prisma.BatchSizeUncheckedCreateInput) => {
+    const response = await prisma.batchSize.create({
         data,
         include: {
             uom: true,
             batchSizeCompoundingVessels: {
                 include: {
-                    compoundingVessel: {
+                    compoundingVessel:  {
                         include: {
                             equipment: true
                         }
                     }
-
                 }
             }
         }
-    })
+    });
 
-    return response;
+    return response
 }
-

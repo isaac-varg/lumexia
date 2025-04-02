@@ -31,10 +31,6 @@ const StepLabel = ({ indicator, stepNumber, label }: StepLabelProps) => {
         bg = 'future'
     }
 
-
-
-
-
     return (
         <li
             data-content={indicator}

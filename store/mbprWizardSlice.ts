@@ -2,8 +2,11 @@ import { inventoryActions } from "@/actions/inventory";
 import { Item } from "@/actions/inventory/getAllItems";
 import { SingleItem } from "@/actions/inventory/getOneItem";
 import { productionActions } from "@/actions/production";
+import { CompoundingVessel } from "@/actions/production/compoundingVessels/getAllCompoundinVessels";
 import { Actionable } from "@/actions/production/mbpr/actionables/getAllByMbpr";
 import { Addendum } from "@/actions/production/mbpr/addendums/getAllByMbpr";
+import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr";
+import { SingleBatchSize } from "@/actions/production/mbpr/batchSizes/getOne";
 import { BomMaterialByMbpr } from "@/actions/production/mbpr/bom/getAllByMbpr";
 import { MbprFromItem } from "@/actions/production/mbpr/getAllByProducedItem";
 import { Instructions } from "@/actions/production/mbpr/instructions/getAllByMbpr";
@@ -42,6 +45,9 @@ type State = {
     selectedActionable: Actionable | null;
     addendumTypes: StepAddendumType[];
     actionableTypes: StepActionableType[];
+    compoundingVessels: CompoundingVessel[];
+    batchSizes: BatchSize[];
+    selectedBatchSize: BatchSize | null;
 }
 
 
@@ -78,6 +84,12 @@ type Actions = {
         revalidate: () => void;
         setAddendumTypes: (addendums: StepAddendumType[]) => void;
         setActionableTypes: (types: StepActionableType[]) => void;
+        setCompoundingVessels: (vessels: CompoundingVessel[]) => void;
+        setSelectedBatchSize: (batchSize: BatchSize | null) => void;
+        setBatchSizes: (batchSizes: BatchSize[]) => void;
+        getBatchSizes: (mbprId: string) => void;
+        addBatchSize: (batchSize: BatchSize) => void;
+        updateBatchSize: (id: string, batchSize: BatchSize) => void;
     },
 
 };
@@ -110,6 +122,9 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
     addendumTypes: [],
     actionableTypes: [],
     selectedActionable: null,
+    compoundingVessels: [],
+    batchSizes: [],
+    selectedBatchSize: null,
 
     actions: {
         nextStep: () => {
@@ -184,6 +199,12 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
             }))
         },
 
+        addBatchSize: (batchSize) => {
+            set((state) => ({
+                batchSizes: [...state.batchSizes, batchSize]
+            }));
+        },
+
         removeInstruction: (instructionId) => {
             set((state) => ({
                 selectedMbprInstructions: state.selectedMbprInstructions.filter((i) => i.id !== instructionId)
@@ -239,6 +260,14 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
                     a.id === id ? { ...addendum } : a
                 ),
             }));
+        },
+
+        updateBatchSize: (id, batchSize) => {
+            set((state) => ({
+                batchSizes: state.batchSizes.map((bz) =>
+                    bz.id === id ? { ...batchSize } : bz
+                )
+            }))
         },
 
         getMaterialItems: async () => {
@@ -371,6 +400,30 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
         setActionableTypes: (types) => {
             set(() => ({ actionableTypes: types }))
         },
+
+        setCompoundingVessels: (vessels) => {
+            set(() => ({ compoundingVessels: vessels, }))
+        },
+
+        setSelectedBatchSize: (batchSize) => {
+            set(() => ({ selectedBatchSize: batchSize }))
+        },
+
+        setBatchSizes: (batchSizes) => {
+            set(() => ({ batchSizes, }))
+        },
+
+        getBatchSizes: async (mbprId: string) => {
+
+            try {
+                const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(mbprId);
+
+                set(() => ({ batchSizes, }))
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
     },
 
 }))

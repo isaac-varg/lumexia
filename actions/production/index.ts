@@ -13,6 +13,9 @@ import { createAddedum } from "./mbpr/addendums/create";
 import { deleteAddendum } from "./mbpr/addendums/delete";
 import { getAllAddendumsByMbpr } from "./mbpr/addendums/getAllByMbpr";
 import { updateAddendum } from "./mbpr/addendums/update";
+import { createBatchSize } from "./mbpr/batchSizes/create";
+import { getAllBatchSizesByMbpr } from "./mbpr/batchSizes/getAllByMbpr";
+import { getOneBatchSize } from "./mbpr/batchSizes/getOne";
 import { updateBatchSize } from "./mbpr/batchSizes/updateBatchSize";
 import { createMbprBOM } from "./mbpr/bom/create";
 import { getAllBomMaterialsByMbpr } from "./mbpr/bom/getAllByMbpr";
@@ -46,6 +49,9 @@ export const productionActions = {
         update: updateMbpr,
         batchSizes: {
             update: updateBatchSize,
+            create: createBatchSize,
+            getAllByMbpr: getAllBatchSizesByMbpr,
+            getOne: getOneBatchSize,
         },
         steps: {
             getAllByMbpr: getAllByMbpr,

@@ -1,16 +1,16 @@
 model BatchSize {
-  id             String   @id @default(uuid())
-  mbprId         String   @map("mbpr_id")
-  quantity       Float
-  uomId          String   @map("uom_id")
-  recordStatusId String   @map("record_status_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+    id             String   @id @default(uuid())
+    mbprId         String   @map("mbpr_id")
+    quantity       Float
+    uomId          String   @map("uom_id")
+    recordStatusId String   @map("record_status_id")
+    createdAt      DateTime @default(now()) @map("created_at")
+    updatedAt      DateTime @updatedAt @map("updated_at")
 
-  mbpr         MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  uom          UnitOfMeasurement           @relation(fields: [uomId], references: [id])
-  recordStatus RecordStatus                @relation(fields: [recordStatusId], references: [id])
+    mbpr                        MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
+    uom                         UnitOfMeasurement            @relation(fields: [uomId], references: [id])
+    recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
+    batchSizeCompoundingVessels BatchSizeCompoundingVessel[]
 
-  @@map("batch_sizes")
+    @@map("batch_sizes")
 }
-

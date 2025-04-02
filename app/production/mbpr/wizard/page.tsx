@@ -10,6 +10,8 @@ import Title from './_components/Title'
 import StepNavigator from './_components/step3/ProductionStep'
 import stepAddendumTypeActions from '@/actions/production/stepAddendumTypes'
 import stepActionableTypeActions from '@/actions/production/stepActionableTypes'
+import BatchSizeStep from './_components/step4/BatchSizeStep'
+import { productionActions } from '@/actions/production'
 
 type MbprWizardProps = {
     searchParams: {
@@ -23,11 +25,13 @@ const MbprWizard = async ({ searchParams }: MbprWizardProps) => {
     const providedItemId = searchParams.itemId;
     const addendumTypes = await stepAddendumTypeActions.getAll();
     const actionableTypes = await stepActionableTypeActions.getAll();
+    const compoundingVessels = await productionActions.compoundingVessels.getAll();
+    
     
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <InitialStateSetter providedItemId={providedItemId} addendumTypes={addendumTypes} actionableTypes={actionableTypes} />
+            <InitialStateSetter providedItemId={providedItemId} addendumTypes={addendumTypes} actionableTypes={actionableTypes} compoundingVessels={compoundingVessels} />
             <Title />
             <PageBreadcrumbs />
 
@@ -38,6 +42,7 @@ const MbprWizard = async ({ searchParams }: MbprWizardProps) => {
                     <ItemStep producibles={producibles} />
                     <VersionStep />
                     <StepNavigator />
+                    <BatchSizeStep />
 
                 </div>
             </Card.Root>

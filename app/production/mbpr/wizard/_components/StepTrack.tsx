@@ -6,7 +6,8 @@ const StepTrack = () => {
     const steps = [
         { label: "Item" },
         { label: "Version" },
-        { label: "Production"}
+        { label: "Production"},
+        { label: "Batch Size"}
     ]
 
     return (

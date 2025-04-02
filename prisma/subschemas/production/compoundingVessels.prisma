@@ -1,11 +1,12 @@
 model CompoundingVessel {
-    id              String    @id @default(uuid())
-    equipmentId     String    @map("equipment_id")
-    capacity        Float
-    operationalCost Float     @map("operational_cost")
-    createdAt       DateTime  @default(now()) @map("created_at")
-    updatedAt       DateTime  @updatedAt @map("updated_at")
-    equipment       Equipment @relation(fields: [equipmentId], references: [id])
+    id                          String                       @id @default(uuid())
+    equipmentId                 String                       @map("equipment_id")
+    capacity                    Float
+    operationalCost             Float                        @map("operational_cost")
+    createdAt                   DateTime                     @default(now()) @map("created_at")
+    updatedAt                   DateTime                     @updatedAt @map("updated_at")
+    equipment                   Equipment                    @relation(fields: [equipmentId], references: [id])
+    BatchSizeCompoundingVessels BatchSizeCompoundingVessel[]
 
     @@map("compounding_vessels")
 }

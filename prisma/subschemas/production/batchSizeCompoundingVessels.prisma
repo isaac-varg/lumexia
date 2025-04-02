@@ -1,0 +1,12 @@
+model BatchSizeCompoundingVessel {
+    id                  String            @id @default(uuid())
+    tankTime            Float             @map("tank_time")
+    compoundingVesselId String            @map("compounding_vessel_id")
+    batchSizeId         String            @map("batch_size_id")
+    createdAt           DateTime          @default(now()) @map("created_at")
+    updatedAt           DateTime          @updatedAt @map("updated_at")
+    compoundingVessel   CompoundingVessel @relation(fields: [compoundingVesselId], references: [id])
+    batchSize           BatchSize         @relation(fields: [batchSizeId], references: [id])
+
+    @@map("batch_size_compounding_vessels")
+}
