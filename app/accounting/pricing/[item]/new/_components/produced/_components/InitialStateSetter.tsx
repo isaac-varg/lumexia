@@ -2,27 +2,47 @@
 
 import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers/getAllByFillItem"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
-import { usePricingProducedActions } from "@/store/pricingProducedSlice"
+import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
+import { usePricingProducedActions, usePricingProducedSelection } from "@/store/pricingProducedSlice"
 import { useEffect } from "react"
+import { PricingBom } from "../_functions/getBomWithPricing"
 
 type SetterProps = {
     activeMbpr: MbprByItem
     filledConsumerContainers: FilledConsumerContainer[]
+    batchSizes: BatchSize[]
+    bom: PricingBom[]
 }
 
-const InitialStateSetter = ({ activeMbpr, filledConsumerContainers }: SetterProps) => {
+const InitialStateSetter = ({
+    activeMbpr,
+    filledConsumerContainers,
+    batchSizes,
+    bom,
+}: SetterProps) => {
 
-    const { setActiveMbpr, setFilledConsumerContainers } = usePricingProducedActions()
-    console.log(filledConsumerContainers)
+    const {
+        setActiveMbpr,
+        setFilledConsumerContainers,
+        setBatchSizes,
+        setBom,
+    } = usePricingProducedActions()
+
+
+    const {
+        
+    } = usePricingProducedSelection()
 
     useEffect(() => {
-        setActiveMbpr(activeMbpr)
+        setActiveMbpr(activeMbpr);
+        setBatchSizes(batchSizes);
+        setBom(bom);
+
     }, [activeMbpr])
 
     useEffect(() => {
         setFilledConsumerContainers(filledConsumerContainers);
     }, [filledConsumerContainers])
-
 
     return false
 }
