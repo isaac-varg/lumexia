@@ -5,13 +5,13 @@ import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
 import { usePricingProducedActions, usePricingProducedSelection } from "@/store/pricingProducedSlice"
 import { useEffect } from "react"
-import { PricingBom } from "../_functions/getBomWithPricing"
+import { PricingBom, PricingBomObject } from "../_functions/getBomWithPricing"
 
 type SetterProps = {
     activeMbpr: MbprByItem
     filledConsumerContainers: FilledConsumerContainer[]
     batchSizes: BatchSize[]
-    bom: PricingBom[]
+    bom: PricingBomObject
 }
 
 const InitialStateSetter = ({
@@ -25,18 +25,18 @@ const InitialStateSetter = ({
         setActiveMbpr,
         setFilledConsumerContainers,
         setBatchSizes,
-        setBom,
+        setBomObject,
     } = usePricingProducedActions()
 
 
     const {
-        
+
     } = usePricingProducedSelection()
 
     useEffect(() => {
         setActiveMbpr(activeMbpr);
         setBatchSizes(batchSizes);
-        setBom(bom);
+        setBomObject(bom)
 
     }, [activeMbpr])
 

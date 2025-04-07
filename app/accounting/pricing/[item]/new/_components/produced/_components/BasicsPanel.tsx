@@ -1,14 +1,30 @@
+"use client"
 import Card from '@/components/Card'
 import Text from '@/components/Text'
-import React from 'react'
+import useDialog from '@/hooks/useDialog'
+import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
+import React, { useEffect } from 'react'
+import MissingBomDataAlert from './MissingBomDataAlert'
 
 const BasicsPanel = () => {
 
+    const { bomObject } = usePricingProducedSelection()
+    const { showDialog } = useDialog()
+
+    useEffect(() => {
+
+        if (!bomObject) return;
+
+        if (bomObject.missingPricingData.length !== 0) {
+            showDialog("missingBomData")
+        }
+    }, [bomObject])
+
+
     return (
         <Card.Root>
-
+            <MissingBomDataAlert />
             <Card.Title>Basics</Card.Title>
-
 
             <div className='flex justify-between gap-x-4'>
                 <div className='flex flex-col gap-y-2 w-2/3'>

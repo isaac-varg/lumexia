@@ -1,7 +1,7 @@
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { MbprByItem, getMbprsByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
-import { PricingBom } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
+import { PricingBom, PricingBomObject } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
 import { staticRecords } from '@/configs/staticRecords';
 import { abort } from 'process';
 import { create } from 'zustand';
@@ -23,7 +23,7 @@ type State = {
     activeMbpr: MbprByItem | null
     activeBatchSize: BatchSize | null
     batchSizes: BatchSize[]
-    bom: PricingBom[]
+    bomObject: PricingBomObject | null
     bomCost: number
 }
 
@@ -35,7 +35,7 @@ type Actions = {
         setActiveMbpr: (mbpr: MbprByItem) => void,
         setFilledConsumerContainers: (containers: FilledConsumerContainer[]) => void,
         setBatchSizes: (batchSizes: BatchSize[]) => void;
-        setBom: (bom: PricingBom[]) => void;
+        setBomObject: (bomObject: PricingBomObject) => void;
         setBomCost: (cost: number) => void;
     }
 }
@@ -49,7 +49,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     activeMbpr: null,
     activeBatchSize: null,
     batchSizes: [],
-    bom: [],
+    bomObject: null,
     bomCost: 0,
 
 
@@ -69,8 +69,8 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
             set(() => ({ batchSizes, }))
             set(() => ({ activeBatchSize: active[0] }))
         },
-        setBom: (bom) => {
-            set(() => ({ bom, }))
+        setBomObject: (bomObject) => {
+            set(() => ({ bomObject, }))
         },
         setBomCost: (cost) => {
             set(() => ({ bomCost: cost }))

@@ -10,19 +10,25 @@ import ProductionTab from "./production/ProductionTab";
 import { BomUsage } from "../_functions/getBomUsage";
 import PricingTab from "./pricing/PricingTab";
 import { PanelStates } from "@/store/panelSelectionSlice";
+import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
+import { Uom } from "@/actions/inventory/getAllUom";
 
 const TabsDemo = ({
     item,
     lots,
     containerTypes,
     purchaseOrders,
-    usage
+    usage,
+    pricing,
+    uom,
 }: {
     item: Item;
     lots: FlattenedLot[];
     containerTypes: ContainerType[];
     purchaseOrders: PurchaseOrderWithItems[];
     usage: BomUsage
+    pricing: ItemPricingData
+    uom: Uom[]
 }) => {
     const isPurchased = item.procurementType?.name === "Purchased"
     const tabs = [
@@ -53,7 +59,7 @@ const TabsDemo = ({
             </TabsPanel.Content>
 
             <TabsPanel.Content identifier="pricing">
-                <PricingTab />
+                <PricingTab uom={uom} itemId={item.id} pricing={pricing} />
             </TabsPanel.Content>
 
 
