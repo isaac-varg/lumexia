@@ -10,6 +10,7 @@ import InitialStateSetter from './_components/InitialStateSetter'
 import { accountingActions } from '@/actions/accounting'
 import ProductionInfo from './_components/ProductionInfo'
 import { getBomWithPricing } from './_functions/getBomWithPricing'
+import BOM from './_components/BOM'
 
 const ProducedMain = async ({ item }: { item: Item }) => {
 
@@ -26,7 +27,7 @@ const ProducedMain = async ({ item }: { item: Item }) => {
             <PageTitle>Pricing Determination - {item.name}</PageTitle>
             <PageBreadcrumbs />
 
-            <div className='grid grid-cols-3 gap-4'>
+            <div className='grid grid-cols-5 gap-4'>
 
                 <BasicsPanel />
                 <ProductionInfo />
@@ -35,6 +36,8 @@ const ProducedMain = async ({ item }: { item: Item }) => {
 
             <div className='grid grid-cols-2 gap-4'>
                 <ConsumerContainers fillItemId={activeMbpr.producesItemId} />
+
+                <BOM />
 
 
 

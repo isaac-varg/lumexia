@@ -26,6 +26,7 @@ type State = {
     latestPricingExaminationsAll: StateData
     mbpr: StateData,
     equipment: StateData,
+    pricingBom: StateData,
 }
 
 
@@ -53,6 +54,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
     latestPricingExaminationsAll: { pageSize: 50, pageIndex: 0 },
     mbpr: { pageSize: 50, pageIndex: 0 },
     equipment: { pageSize: 50, pageIndex: 0 },
+    pricingBom: { pageSize: 50, pageIndex: 0 },
 
 
     setPagination: (filterName, value) =>

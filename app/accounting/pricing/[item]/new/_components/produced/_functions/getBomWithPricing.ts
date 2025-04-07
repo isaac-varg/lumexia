@@ -47,10 +47,12 @@ export const getBomWithPricing = async (mbprId: string) => {
 
         const batchSize = b.mbpr.BatchSize[0].quantity;
 
-        if (!b.item.itemPricingData || b.item.itemPricingData.length === 0 || b.item.purchaseOrderItem.length === 0 || !batchSize) {
+        const hasPricing = !!b.item.itemPricingData || b.item.purchaseOrderItem.length > 0;
+
+        if (!hasPricing || !batchSize) {
             missingPricingData.push(b.item.name);
             return null;
-        }
+        }        
 
         const { isUpcomingPriceActive, upcomingPrice, productionUsageCost, unforeseenDifficultiesCost, upcomingPriceUomId, arrivalCost } = b.item.itemPricingData[0];
 

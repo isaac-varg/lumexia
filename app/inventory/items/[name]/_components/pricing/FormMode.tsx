@@ -7,6 +7,7 @@ import { Prisma } from '@prisma/client'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { createItemPricingData } from '../../_functions/createItemPricingData'
+import { updateItemPricingData } from '../../_functions/updateItemPricingData'
 
 type Inputs = {
     arrivalCost: number
@@ -44,12 +45,20 @@ const FormMode = ({
 
         handleUpdate(data);
 
-        
-
     }
 
     const handleUpdate = async (data: Inputs) => {
-        const payload: 
+
+        if (!pricing) {
+            return;
+        }
+        const payload: Prisma.ItemPricingDataUncheckedUpdateInput = {
+            ...data,
+        }
+
+        await updateItemPricingData(pricing.id, payload)
+
+        location.reload()
 
     }
 
