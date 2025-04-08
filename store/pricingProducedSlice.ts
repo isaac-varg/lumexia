@@ -25,6 +25,7 @@ type State = {
     batchSizes: BatchSize[]
     bomObject: PricingBomObject | null
     bomCost: number
+    selectedBomItem: PricingBom | null
 }
 
 //export type PricingProducedStates = keyof State
@@ -37,6 +38,9 @@ type Actions = {
         setBatchSizes: (batchSizes: BatchSize[]) => void;
         setBomObject: (bomObject: PricingBomObject) => void;
         setBomCost: (cost: number) => void;
+        setSelectedBomItem: (bom: PricingBom) => void;
+        addFilledConsumerContainer: (container: FilledConsumerContainer) => void;
+        updateFilledConsumercontainer: (id: string, container: FilledConsumerContainer) => void;
     }
 }
 
@@ -51,6 +55,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     batchSizes: [],
     bomObject: null,
     bomCost: 0,
+    selectedBomItem: null,
 
 
     actions: {
@@ -74,7 +79,22 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
         },
         setBomCost: (cost) => {
             set(() => ({ bomCost: cost }))
-        }
+        },
+        setSelectedBomItem: (bom) => {
+            set(() => ({ selectedBomItem: bom }))
+        },
+        addFilledConsumerContainer: (container) => {
+            set((state) => ({
+                filledConsumerContainers: [...state.filledConsumerContainers, container]
+            }))
+        },
+        updateFilledConsumerContainer: (id, container) => {
+            set((state) => ({
+                filledConsumerContainers: state.filledConsumerContainers.map((i) =>
+                    i.id === id ? { ...container } : i
+                ),
+            }));
+        },
 
     }
 }));

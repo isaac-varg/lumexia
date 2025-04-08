@@ -11,13 +11,14 @@ import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
 const ConsumerContainers = ({ fillItemId }: { fillItemId: string }) => {
 
     const { filledConsumerContainers } = usePricingProducedSelection()
+    console.log(filledConsumerContainers)
 
     // CC shorthand for consumer container
     const [selectedCC, setSelectedCC] = useState<FilledConsumerContainer | null>(null)
 
     return (
         <div className='col-span-2'>
-            <AddConsumerContainerDialog fillItemId={fillItemId} />
+            <AddConsumerContainerDialog produced={true} fillItemId={fillItemId} />
             <Card.Root>
                 <div className='flex gap-x-6'>
 
@@ -36,7 +37,6 @@ const ConsumerContainers = ({ fillItemId }: { fillItemId: string }) => {
 
                     <div className='flex flex-col w-2/3 '>
 
-                    fix this to be for produced item
                         <SelectedConsumerContainerPanel selectedConsumerContainer={selectedCC} />
 
 

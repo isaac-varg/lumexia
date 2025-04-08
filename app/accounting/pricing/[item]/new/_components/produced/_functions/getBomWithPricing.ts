@@ -21,9 +21,9 @@ export const getBomWithPricing = async (mbprId: string) => {
                 include: {
                     itemPricingData: true,
                     purchaseOrderItem: {
-                        take: 5,
+                        take: 1,
                         orderBy: {
-                            createdAt: 'desc',
+                            updatedAt: 'desc',
                         },
                     },
                 },
@@ -45,16 +45,49 @@ export const getBomWithPricing = async (mbprId: string) => {
 
     const withPricing = await Promise.all(bom.map(async (b) => {
 
+        // ensure has active batchsize
         const batchSize = b.mbpr.BatchSize[0].quantity;
 
-        const hasPricing = !!b.item.itemPricingData || b.item.purchaseOrderItem.length > 0;
+        // check if has item pricing data 
+        const hasPricingData = b.item.itemPricingData.length !== 0
 
-        if (!hasPricing || !batchSize) {
+        // check if has a purchase order
+        const hasPurchaseOrder = b.item.purchaseOrderItem.length !== 0
+
+        // make pricing data entry for future
+        if (!hasPricingData) {
+            await prisma.itemPricingData.create({
+                data: {
+                    itemId: b.itemId,
+                    isUpcomingPriceActive: false,
+                    upcomingPrice: 0,
+                    productionUsageCost: 0,
+                    unforeseenDifficultiesCost: 0,
+                    upcomingPriceUomId: lb,
+                    arrivalCost: 0,
+                }
+            });
+        }
+
+        // conditions in which pricing cannot continue
+        // there is no purchase order
+        // and there is no pricing data
+        // and there is pricing data but the upcoming price is not active and there is no po.
+        if (!hasPurchaseOrder && !hasPricingData && (hasPricingData && !b.item.itemPricingData[0].isUpcomingPriceActive &&  !hasPurchaseOrder )) {
             missingPricingData.push(b.item.name);
-            return null;
-        }        
+            return;
+        }
 
-        const { isUpcomingPriceActive, upcomingPrice, productionUsageCost, unforeseenDifficultiesCost, upcomingPriceUomId, arrivalCost } = b.item.itemPricingData[0];
+        // destructure the pricing data safely
+        const {
+            isUpcomingPriceActive,
+            upcomingPrice,
+            productionUsageCost,
+            unforeseenDifficultiesCost,
+            upcomingPriceUomId,
+            arrivalCost
+        } = b.item.itemPricingData?.[0] ?? {};
+
 
         const price = isUpcomingPriceActive ? upcomingPrice : b.item.purchaseOrderItem[0].pricePerUnit;
         const priceUom = isUpcomingPriceActive ? upcomingPriceUomId : b.item.purchaseOrderItem[0].uomId;
@@ -68,18 +101,21 @@ export const getBomWithPricing = async (mbprId: string) => {
         }
 
         const itemCost = getItemCost(priceConverted, arrivalCost, unforeseenDifficultiesCost) + productionUsageCost;
-        const itemCostPerBatch = (b.concentration / 100) * batchSize
+        const quantityInBatch = (b.concentration / 100) * batchSize
+        const itemCostPerBatch = quantityInBatch * itemCost;
         const itemCostPerPound = itemCostPerBatch / batchSize;
 
         return ({
             ...b,
             itemCost,
+            arrivalCost,
             productionUsageCost,
             unforeseenDifficultiesCost,
             isUpcomingPriceActive,
             upcomingPrice,
             priceConverted,
             priceUom,
+            quantityInBatch,
             itemCostPerBatch,
             itemCostPerPound
         });

@@ -3,6 +3,8 @@ import { FilledConsumerContainerFormParameters } from './AddConsumerContainerDia
 import { Prisma } from '@prisma/client';
 import { accountingActions } from '@/actions/accounting';
 import useDialog from '@/hooks/useDialog';
+import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem';
+import { usePricingProducedActions } from '@/store/pricingProducedSlice';
 
 type Props = {
     currentStep: number,
@@ -10,10 +12,12 @@ type Props = {
     fillItem: string;
     parameters: FilledConsumerContainerFormParameters | null;
     reset: () => void;
+    produced: boolean;
 }
-const CompleteStep = ({ currentStep, consumerContainer, fillItem, parameters, reset }: Props) => {
+const CompleteStep = ({ currentStep, consumerContainer, fillItem, parameters, reset, produced }: Props) => {
 
     const { resetDialogContext } = useDialog()
+    const { addFilledConsumerContainer } = usePricingProducedActions()
 
 
 
@@ -32,9 +36,19 @@ const CompleteStep = ({ currentStep, consumerContainer, fillItem, parameters, re
             difficultiesCost,
         }
 
-        await accountingActions.filledConsumerContainers.createOne(data);
+        const filledConsumerContainer = await accountingActions.filledConsumerContainers.createOne(data);
+        if (produced) {
+            handleProducedSubmission(filledConsumerContainer)
+        }
         resetDialogContext()
         reset();
+    }
+
+
+    const handleProducedSubmission = (filledConsumerContainer: FilledConsumerContainer) => {
+
+        addFilledConsumerContainer(filledConsumerContainer)
+
     }
 
     useEffect(() => {

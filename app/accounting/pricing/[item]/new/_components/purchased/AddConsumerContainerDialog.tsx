@@ -12,7 +12,7 @@ export type FilledConsumerContainerFormParameters = {
     uomId: string
 }
 
-const AddConsumerContainerDialog = ({ fillItemId }: { fillItemId: string }) => {
+const AddConsumerContainerDialog = ({ fillItemId, produced = false }: { fillItemId: string, produced?: boolean }) => {
 
     const [step, setStep] = useState(0)
     const [consumerContainer, setConsumerContainer] = useState<string>('')
@@ -29,6 +29,7 @@ const AddConsumerContainerDialog = ({ fillItemId }: { fillItemId: string }) => {
         setStep(0)
     }
 
+
     return (
         <Dialog.Root identifier='newconsumercontainerdialog'>
             <Dialog.Title>Lets Add A Consumer Container</Dialog.Title>
@@ -43,7 +44,7 @@ const AddConsumerContainerDialog = ({ fillItemId }: { fillItemId: string }) => {
 
                 <SelectContainerStep currentStep={step} nextStep={nextStep} setConsumerContainer={setConsumerContainer} />
                 <SpecifyParametersStep currentStep={step} nextStep={nextStep} setParameters={setParameters} reset={handleReset} />
-                <CompleteStep currentStep={step} reset={handleReset} consumerContainer={consumerContainer} parameters={parameters} fillItem={fillItemId} />
+                <CompleteStep produced={produced} currentStep={step} reset={handleReset} consumerContainer={consumerContainer} parameters={parameters} fillItem={fillItemId} />
 
 
 
