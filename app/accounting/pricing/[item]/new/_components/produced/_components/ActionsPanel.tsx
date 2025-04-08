@@ -11,8 +11,10 @@ const ActionsPanel = () => {
         <Card.Root>
 
             <Card.Title>Actions</Card.Title>
-            <button className={`btn ${isContainerParametersPanelShown ? 'btn-accent' : ''}`} onClick={() => toggleContainerParameters()}>Show Container Parameters</button>
-            <button className='btn'>Test</button>
+            <button className={`btn ${isContainerParametersPanelShown ? 'btn-accent' : ''}`} onClick={() => toggleContainerParameters()}>
+                {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
+            </button>
+            <button className='btn btn-success'>Commit</button>
         </Card.Root>
 
     )

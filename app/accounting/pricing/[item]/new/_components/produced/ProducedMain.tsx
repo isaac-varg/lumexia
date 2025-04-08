@@ -11,9 +11,14 @@ import { accountingActions } from '@/actions/accounting'
 import ProductionInfo from './_components/ProductionInfo'
 import { getBomWithPricing } from './_functions/getBomWithPricing'
 import BOM from './_components/BOM'
+import { PricingExaminationNoteType } from '@/actions/accounting/examinations/notes/getAllNoteTypes'
+import NotesPanel from '../shared/NotesPanel'
+import { v4 as uuidv4 } from 'uuid';
 
-const ProducedMain = async ({ item }: { item: Item }) => {
+const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: PricingExaminationNoteType[] }) => {
 
+
+    const examinationId = uuidv4();
     const activeMbpr = await productionActions.mbprs.getActive(item.id);
     const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(activeMbpr.id)
     const filledConsumerContainers = await accountingActions.filledConsumerContainers.getAllByFillItem(item.id);
@@ -40,6 +45,7 @@ const ProducedMain = async ({ item }: { item: Item }) => {
                 <BOM />
 
 
+                <NotesPanel noteTypes={noteTypes} examinationId={examinationId} itemId={item.id} />
 
             </div>
 
