@@ -17,7 +17,6 @@ export type InterimConsumerContainerData = {
 
 type State = {
     isContainerParametersPanelShown: boolean
-    itemCost: number,
     filledConsumerContainers: FilledConsumerContainer[]
     interimConsumerContainers: InterimConsumerContainerData[]
     activeMbpr: MbprByItem | null
@@ -29,7 +28,7 @@ type State = {
 }
 
 //export type PricingProducedStates = keyof State
-export type PricingPurchasedState = State; // alias for this state
+export type PricingProducedState = State; // alias for this state
 
 type Actions = {
     actions: {
@@ -40,14 +39,17 @@ type Actions = {
         setBomCost: (cost: number) => void;
         setSelectedBomItem: (bom: PricingBom) => void;
         addFilledConsumerContainer: (container: FilledConsumerContainer) => void;
-        updateFilledConsumercontainer: (id: string, container: FilledConsumerContainer) => void;
+        updateFilledConsumerContainer: (id: string, container: FilledConsumerContainer) => void;
+        updateInterimConsumerContainer: (id: string, data: InterimConsumerContainerData) => void;
+        getInterimConsumerContainer: (id: string) => InterimConsumerContainerData | null;
+        toggleContainerParameters: () => void;
+        removeFilledConsumerContainer: (id: string) => void;
     }
 }
 
 
 export const usePricingProducedSelection = create<State & Actions>((set, get) => ({
     isContainerParametersPanelShown: false,
-    itemCost: 0,
     filledConsumerContainers: [],
     interimConsumerContainers: [],
     activeMbpr: null,
@@ -95,7 +97,45 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
                 ),
             }));
         },
+        updateInterimConsumerContainer: (id, data) => {
 
+            const current = get()
+            const existingIndex = current.interimConsumerContainers.findIndex(
+                (c) => c.filledConsumerContainerId === id
+            )
+
+            if (existingIndex !== -1) {
+                // Update existing container
+                set((state) => ({
+                    interimConsumerContainers: state.interimConsumerContainers.map((i) =>
+                        i.filledConsumerContainerId === id ? { ...data } : i
+                    )
+                }))
+
+            } else {
+                // Add new container
+                set((state) => ({
+                    interimConsumerContainers: [...state.interimConsumerContainers, data]
+                }));
+            }
+
+        },
+        getInterimConsumerContainer: (id) => {
+            const state = get();
+            return (
+                state.interimConsumerContainers.find(
+                    (c) => c.filledConsumerContainerId === id
+                ) || null
+            );
+        },
+        toggleContainerParameters: () => {
+            set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))
+        },
+        removeFilledConsumerContainer: (id) => {
+            set((state) => ({
+                filledConsumerContainers: state.filledConsumerContainers.filter((c) => c.id !== id)
+            }))
+        }
     }
 }));
 

@@ -1,6 +1,5 @@
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { getContainerCost } from '@/app/accounting/pricing/_calculations/getContainerCost';
-import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice';
 import React, { useEffect, useState, useCallback } from 'react'
 import DataCard from '../../shared/DataCard';
 import DataCardText from '../../shared/DataCardText';
@@ -16,6 +15,7 @@ import { TbEdit, TbTrash } from 'react-icons/tb';
 import useDialog from '@/hooks/useDialog';
 import EditFilledConsumerContainerDialog from '../../shared/EditFilledConsumerContainerDialog';
 import DeleteFilledConsumerContainerAlert from '../../shared/DeleteFilledConsumerContainerAlert';
+import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice';
 
 type Props = {
     selectedConsumerContainer: FilledConsumerContainer | null;
@@ -23,14 +23,15 @@ type Props = {
 
 const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) => {
     // Early return moved after hooks to maintain hook order
-    const { itemCost, isContainerParametersPanelShown } = usePricingPurchasedSelection();
-    const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingPurchasedActions()
+    const { bomObject, isContainerParametersPanelShown } = usePricingProducedSelection();
+    const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingProducedActions()
     const { showDialog } = useDialog()
 
     const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
 
+
     // Calculate initial values
-    const containerCost = selectedConsumerContainer ? getContainerCost(selectedConsumerContainer, itemCost) : 0;
+    const containerCost = selectedConsumerContainer ? getContainerCost(selectedConsumerContainer, bomObject?.overallBomCostPerLb || 0) : 0;
     const interimData = selectedConsumerContainer ? getInterimConsumerContainer(selectedConsumerContainer.id) : null;
 
     const initialConsumerPrice = selectedConsumerContainer
@@ -95,7 +96,7 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
 
         // Update zustand store if container exists
         if (selectedConsumerContainer) {
-            updateInterimConsumerContainer(selectedConsumerContainer.id, cp, true, pp);
+            updateInterimConsumerContainer(selectedConsumerContainer.id, { filledConsumerContainerId: selectedConsumerContainer.id, consumerPrice: cp, wasViewed: true, profitPercentage: pp });
         }
     }, [alterMode, containerCost, selectedConsumerContainer, updateInterimConsumerContainer]);
 
@@ -110,10 +111,12 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
 
         if (!interimData) {
             updateInterimConsumerContainer(
-                selectedConsumerContainer.id,
-                selectedConsumerContainer.consumerPrice,
-                true,
-                profitPercentage
+                selectedConsumerContainer.id, {
+                filledConsumerContainerId: selectedConsumerContainer.id,
+                consumerPrice: selectedConsumerContainer.consumerPrice,
+                wasViewed: true,
+                profitPercentage,
+            }
             );
         }
 
@@ -130,10 +133,12 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
 
     if (!selectedConsumerContainer) return null;
 
+    if (!bomObject || !bomObject.overallBomCostPerLb) return null;
+
     return (
         <div className='flex flex-col gap-y-6'>
             <EditFilledConsumerContainerDialog selectedConsumerContainer={selectedConsumerContainer} />
-            <DeleteFilledConsumerContainerAlert selectedConsumerContainerId={selectedConsumerContainer.id} />
+            <DeleteFilledConsumerContainerAlert produced={true} selectedConsumerContainerId={selectedConsumerContainer.id} />
 
             <div className='flex justify-between items-center'>
                 <h1 className='font-poppins text-3xl font-semibold'>{selectedConsumerContainer.consumerContainer.containerItem.name}</h1>

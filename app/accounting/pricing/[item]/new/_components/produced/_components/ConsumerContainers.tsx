@@ -5,13 +5,12 @@ import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers
 import AddConsumerContainerDialog from '../../purchased/AddConsumerContainerDialog'
 import AddConsumerContainerButton from '../../purchased/AddConsumerContainerButton'
 import FilledConsumerContainerCard from '../../shared/FilledConsumerContainerCard'
-import SelectedConsumerContainerPanel from '../../purchased/SelectedConsumerContainerPanel'
 import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
+import SelectedConsumerContainerPanel from './SelectedConsumerContainerPanel'
 
 const ConsumerContainers = ({ fillItemId }: { fillItemId: string }) => {
 
     const { filledConsumerContainers } = usePricingProducedSelection()
-    console.log(filledConsumerContainers)
 
     // CC shorthand for consumer container
     const [selectedCC, setSelectedCC] = useState<FilledConsumerContainer | null>(null)
