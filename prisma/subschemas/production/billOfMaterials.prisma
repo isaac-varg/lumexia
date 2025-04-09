@@ -12,5 +12,6 @@ model BillOfMaterial {
   mbpr MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   step BatchStep                   @relation(fields: [stepId], references: [id])
 
+
   @@map("bill_of_materials")
 }

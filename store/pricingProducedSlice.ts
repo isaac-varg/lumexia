@@ -1,9 +1,8 @@
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
-import { MbprByItem, getMbprsByItem } from '@/actions/production/getMbprsByItem';
+import { MbprByItem  } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { PricingBom, PricingBomObject } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
 import { staticRecords } from '@/configs/staticRecords';
-import { abort } from 'process';
 import { create } from 'zustand';
 
 export type InterimConsumerContainerData = {
@@ -23,8 +22,16 @@ type State = {
     activeBatchSize: BatchSize | null
     batchSizes: BatchSize[]
     bomObject: PricingBomObject | null
-    bomCost: number
     selectedBomItem: PricingBom | null
+}
+
+export type StateForCommit = {
+    filledConsumerContainers: FilledConsumerContainer[]
+    interimConsumerContainers: InterimConsumerContainerData[]
+    activeMbpr: MbprByItem | null
+    activeBatchSize: BatchSize | null
+    bomObject: PricingBomObject | null
+
 }
 
 //export type PricingProducedStates = keyof State
@@ -36,7 +43,6 @@ type Actions = {
         setFilledConsumerContainers: (containers: FilledConsumerContainer[]) => void,
         setBatchSizes: (batchSizes: BatchSize[]) => void;
         setBomObject: (bomObject: PricingBomObject) => void;
-        setBomCost: (cost: number) => void;
         setSelectedBomItem: (bom: PricingBom) => void;
         addFilledConsumerContainer: (container: FilledConsumerContainer) => void;
         updateFilledConsumerContainer: (id: string, container: FilledConsumerContainer) => void;
@@ -56,7 +62,6 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     activeBatchSize: null,
     batchSizes: [],
     bomObject: null,
-    bomCost: 0,
     selectedBomItem: null,
 
 
@@ -78,9 +83,6 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
         },
         setBomObject: (bomObject) => {
             set(() => ({ bomObject, }))
-        },
-        setBomCost: (cost) => {
-            set(() => ({ bomCost: cost }))
         },
         setSelectedBomItem: (bom) => {
             set(() => ({ selectedBomItem: bom }))

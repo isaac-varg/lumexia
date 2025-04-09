@@ -1,20 +1,73 @@
 'use client'
 import Card from '@/components/Card'
-import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
-import React from 'react'
+import { StateForCommit, usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
+import React, { useState } from 'react'
+import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
+import useDialog from '@/hooks/useDialog'
+import { useRouter } from 'next/navigation'
+import ValidationErrorAlert from './ValidationErrorAlert'
+import { commitProducedPricingExamination } from '../../../_functions/commitProducedPricingExamination'
 
-const ActionsPanel = () => {
+type PanelProps = {
+    examinationId: string
+    examinatedItemId: string
+}
 
-    const { isContainerParametersPanelShown } = usePricingProducedSelection();
+const ActionsPanel = ({
+    examinationId,
+    examinatedItemId,
+}: PanelProps) => {
+
+    const { isContainerParametersPanelShown, filledConsumerContainers, interimConsumerContainers } = usePricingProducedSelection();
     const { toggleContainerParameters } = usePricingProducedActions();
+    const { showDialog } = useDialog()
+    const pricingState = usePricingProducedSelection()
+    const [validation, setValidaton] = useState<ProducedValidation>()
+    const router = useRouter()
+
+
+    const handleCommit = () => {
+
+        const validation = validateProducedCommit(filledConsumerContainers.length, interimConsumerContainers)
+        setValidaton(validation)
+
+        if (!validation.allValid) {
+            showDialog("producedValidationErrors")
+            return;
+        }
+
+        initiateCommit()
+    }
+
+    const initiateCommit = async () => {
+
+        if (!validation) return;
+
+        const serializedPricingState: StateForCommit = {
+            bomObject: pricingState.bomObject,
+            activeMbpr: pricingState.activeMbpr,
+            activeBatchSize: pricingState.activeBatchSize,
+            filledConsumerContainers: pricingState.filledConsumerContainers,
+            interimConsumerContainers: pricingState.interimConsumerContainers,
+        }
+
+        await commitProducedPricingExamination(examinationId, examinatedItemId, validation, serializedPricingState)
+
+        console.log('49')
+        router.back()
+
+    }
+
+
     return (
         <Card.Root>
+            <ValidationErrorAlert validation={validation} onProceed={initiateCommit} />
 
             <Card.Title>Actions</Card.Title>
             <button className={`btn ${isContainerParametersPanelShown ? 'btn-accent' : ''}`} onClick={() => toggleContainerParameters()}>
                 {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
             </button>
-            <button className='btn btn-success'>Commit</button>
+            <button className='btn btn-success' onClick={() => handleCommit()}>Commit</button>
         </Card.Root>
 
     )

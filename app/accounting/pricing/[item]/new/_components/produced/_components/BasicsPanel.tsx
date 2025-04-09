@@ -12,8 +12,6 @@ const BasicsPanel = () => {
     const { bomObject } = usePricingProducedSelection()
     const { showDialog } = useDialog()
 
-    console.log(bomObject)
-
     useEffect(() => {
 
         if (!bomObject) return;

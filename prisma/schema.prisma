@@ -1,4 +1,25 @@
-//🧩Don't Edit this file.✨Generated in Wed Apr 02 2025 10:22:55 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Apr 09 2025 14:44:07 GMT-0700 (Pacific Daylight Time)✨
+model BomPricingDataArchive {
+  id                           String                     @id @default(uuid())
+  producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
+  bomId                        String                     @map("bom_id")
+  itemId                       String                     @map("item_id")
+  materialCost                 Float                      @map("material_cost")
+  upcomingPriceUsed            Boolean                    @map("upcoming_price_used")
+  arrivalCost                  Float                      @map("arrival_cost")
+  unforeseenDifficultiesCost   Float                      @map("unforeseen_difficulties_cost")
+  productionUsageCost          Float                      @map("production_usage_cost")
+  overallItemCostPerLb         Float                      @map("overall_item_cost_per_lb")
+  overallItemCostPerBatch      Float                      @map("overall_item_cost_per_batch")
+  createdAt                    DateTime                   @default(now()) @map("created_at")
+  updatedAt                    DateTime                   @updatedAt @map("updated_at")
+  producedPricingDataArchive   ProducedPricingDataArchive @relation(fields: [producedPricingDataArchiveId], references: [id])
+  bom                          BillOfMaterial             @relation(fields: [bomId], references: [id])
+  item                         Item                       @relation(fields: [itemId], references: [id])
+
+  @@map("bom_pricing_data_archives")
+}
+
 model ConsumerContainerArchive {
   id                           String                         @id @default(uuid())
   examinationId                String                         @map("examination_id")
@@ -201,6 +222,25 @@ model PricingExamination {
   PricingExaminationNote          PricingExaminationNote[]
 
   @@map("pricing_examinations")
+}
+
+model ProducedPricingDataArchive {
+  id                     String                      @id @default(uuid())
+  bomCostPerBatch        Float                       @map("bom_cost_per_batch")
+  bomCostPerLb           Float                       @map("bom_cost_per_lb")
+  mbprId                 String                      @map("mbpr_id")
+  batchSizeId            String                      @map("batch_size_id")
+  batchSizeQuantity      Float                       @map("batch_size_quantity")
+  mbprVersionLabel       String                      @map("mbpr_version_label")
+  productionVesselName   String                      @map("production_vessel_name")
+  tankTime               Float                       @map("tank_time")
+  createdAt              DateTime                    @default(now()) @map("created_at")
+  updatedAt              DateTime                    @updatedAt @map("updated_at")
+  mbpr                   MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  batchSize              BatchSize                   @relation(fields: [batchSizeId], references: [id])
+  bomPricingDataArchives BomPricingDataArchive[]
+
+  @@map("produced_pricing_data_archives")
 }
 
 model Config {
@@ -540,6 +580,7 @@ model Item {
   consumerContainers          ConsumerContainer[]
   pricingExaminations         PricingExamination[]
   consumerContainerArchives   ConsumerContainerArchive[]
+  BomPricingDataArchive       BomPricingDataArchive[]
   ItemConsumerContainer       ItemConsumerContainer[]
   BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
@@ -646,6 +687,7 @@ model BatchSize {
   uom                         UnitOfMeasurement            @relation(fields: [uomId], references: [id])
   recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
   batchSizeCompoundingVessels BatchSizeCompoundingVessel[]
+  producedPricingDataArchives ProducedPricingDataArchive[]
   BatchProductionRecord       BatchProductionRecord[]
 
   @@map("batch_sizes")
@@ -681,10 +723,11 @@ model BillOfMaterial {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  item               Item                        @relation(fields: [itemId], references: [id])
-  mbpr               MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  step               BatchStep                   @relation(fields: [stepId], references: [id])
-  BprBillOfMaterials BprBillOfMaterials[]
+  item                  Item                        @relation(fields: [itemId], references: [id])
+  mbpr                  MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  step                  BatchStep                   @relation(fields: [stepId], references: [id])
+  BomPricingDataArchive BomPricingDataArchive[]
+  BprBillOfMaterials    BprBillOfMaterials[]
 
   @@map("bill_of_materials")
 }
@@ -880,12 +923,13 @@ model MasterBatchProductionRecord {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  producesItem          Item                    @relation(fields: [producesItemId], references: [id])
-  recordStatus          RecordStatus            @relation(fields: [recordStatusId], references: [id])
-  BatchProductionRecord BatchProductionRecord[]
-  BatchSize             BatchSize[]
-  BatchStep             BatchStep[]
-  BillOfMaterial        BillOfMaterial[]
+  producesItem                Item                         @relation(fields: [producesItemId], references: [id])
+  recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
+  producedPricingDataArchives ProducedPricingDataArchive[]
+  BatchProductionRecord       BatchProductionRecord[]
+  BatchSize                   BatchSize[]
+  BatchStep                   BatchStep[]
+  BillOfMaterial              BillOfMaterial[]
 
   @@map("master_batch_production_records")
 }

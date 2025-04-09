@@ -11,6 +11,7 @@ model BatchSize {
     uom                         UnitOfMeasurement            @relation(fields: [uomId], references: [id])
     recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
     batchSizeCompoundingVessels BatchSizeCompoundingVessel[]
+    producedPricingDataArchives ProducedPricingDataArchive[]
 
     @@map("batch_sizes")
 }

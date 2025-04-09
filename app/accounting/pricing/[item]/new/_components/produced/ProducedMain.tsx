@@ -36,7 +36,7 @@ const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Pricin
 
                 <BasicsPanel />
                 <ProductionInfo />
-                <ActionsPanel />
+                <ActionsPanel examinatedItemId={item.id} examinationId={examinationId} />
             </div>
 
             <div className='grid grid-cols-2 gap-4'>
