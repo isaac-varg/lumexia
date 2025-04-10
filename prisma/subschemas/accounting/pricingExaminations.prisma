@@ -1,6 +1,7 @@
 model PricingExamination {
     id                              String                         @id @default(uuid())
     approved                        Boolean                        @default(false)
+    rejected                        Boolean                        @default(false)
     examinedItemId                  String                         @map("examined_item_id")
     userId                          String                         @map("user_id")
     createdAt                       DateTime                       @default(now()) @map("created_at")

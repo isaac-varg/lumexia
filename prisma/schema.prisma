@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Apr 10 2025 10:50:09 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Apr 10 2025 15:00:15 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
@@ -210,6 +210,7 @@ model PricingExaminationValidation {
 model PricingExamination {
   id                              String                         @id @default(uuid())
   approved                        Boolean                        @default(false)
+  rejected                        Boolean                        @default(false)
   examinedItemId                  String                         @map("examined_item_id")
   userId                          String                         @map("user_id")
   createdAt                       DateTime                       @default(now()) @map("created_at")

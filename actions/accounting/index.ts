@@ -12,6 +12,7 @@ import { createManyFilledConsumerContainerArchive } from "./examinations/archive
 import { createExamination } from "./examinations/create";
 import { getAllPricingExaminations } from "./examinations/getAll";
 import { getAllPricingExaminationsByItem } from "./examinations/getAllByItem";
+import { getOnePricingExamination } from "./examinations/getOne";
 import { createExaminationNote } from "./examinations/notes/createExaminationNote";
 import { createExaminationNoteType } from "./examinations/notes/createExaminationNoteType";
 import { getAllByExamId } from "./examinations/notes/getAllByExamId";
@@ -62,6 +63,7 @@ export const accountingActions = {
         },
         create: createExamination,
         getAllByItem: getAllPricingExaminationsByItem,
+        getOne: getOnePricingExamination,
         getAll: getAllPricingExaminations,
         upsert: upsertPricingExamination,
     }

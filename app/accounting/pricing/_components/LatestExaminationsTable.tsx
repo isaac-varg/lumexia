@@ -5,9 +5,11 @@ import React from 'react'
 import { latestExaminationsColumns } from './LatestExaminationsColumns'
 import { Filter } from '@/types/filter'
 import { toFacetFilter } from '@/utils/data/toFacetFilter'
+import { useRouter } from 'next/navigation'
 
 const LatestExaminationsTable = ({ examinations }: { examinations: PricingExaminationAll[] }) => {
 
+    const router = useRouter()
     const filters: Filter[] = [
         {
             columnName: "examinedItem.id",
@@ -16,6 +18,7 @@ const LatestExaminationsTable = ({ examinations }: { examinations: PricingExamin
         },
     ]
 
+
     return (
         <div>
             <DataTable.Default
@@ -23,7 +26,7 @@ const LatestExaminationsTable = ({ examinations }: { examinations: PricingExamin
                 columns={latestExaminationsColumns}
                 data={examinations}
                 filters={filters}
-                onRowClick={(row) => console.log(row)}
+                onRowClick={(row) => router.push(`/accounting/pricing/details?id=${row.original.id}`)}
             />
         </div>
     )
