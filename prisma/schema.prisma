@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Apr 09 2025 14:44:07 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Apr 10 2025 08:53:50 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
@@ -219,6 +219,7 @@ model PricingExamination {
   consumerContainerArchive        ConsumerContainerArchive[]
   filledConsumerContainerArchives ItemConsumerContainerArchive[]
   validation                      PricingExaminationValidation[]
+  producedPricingDataArchives     ProducedPricingDataArchive[]
   PricingExaminationNote          PricingExaminationNote[]
 
   @@map("pricing_examinations")
@@ -226,6 +227,7 @@ model PricingExamination {
 
 model ProducedPricingDataArchive {
   id                     String                      @id @default(uuid())
+  examinationId          String                      @map("examination_id")
   bomCostPerBatch        Float                       @map("bom_cost_per_batch")
   bomCostPerLb           Float                       @map("bom_cost_per_lb")
   mbprId                 String                      @map("mbpr_id")
@@ -239,6 +241,7 @@ model ProducedPricingDataArchive {
   mbpr                   MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   batchSize              BatchSize                   @relation(fields: [batchSizeId], references: [id])
   bomPricingDataArchives BomPricingDataArchive[]
+  examination            PricingExamination          @relation(fields: [examinationId], references: [id])
 
   @@map("produced_pricing_data_archives")
 }

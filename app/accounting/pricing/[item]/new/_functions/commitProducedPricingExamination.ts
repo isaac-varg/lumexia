@@ -1,6 +1,6 @@
 'use server'
 
-import {  StateForCommit } from "@/store/pricingProducedSlice"
+import { StateForCommit } from "@/store/pricingProducedSlice"
 import { ProducedValidation } from "./validateProducedCommit"
 import { accountingActions } from "@/actions/accounting"
 import { Prisma } from "@prisma/client"
@@ -28,6 +28,7 @@ export const commitProducedPricingExamination = async (
     const { overallBomCostPerBatch, overallBomCostPerLb } = pricingState.bomObject
 
     const producedPricingDataArchivesPayload: Prisma.ProducedPricingDataArchiveUncheckedCreateInput = {
+        examinationId: pricingExamination.id,
         bomCostPerBatch: overallBomCostPerBatch,
         bomCostPerLb: overallBomCostPerLb,
         mbprId: pricingState.activeMbpr.id,
