@@ -21,7 +21,6 @@ const ConsumerContainers = ({ fillItemId }: { fillItemId: string }) => {
             <Card.Root>
                 <div className='flex gap-x-6'>
 
-
                     <div className='flex flex-col w-1/3 gap-y-6'>
                         <Card.Title>Consumer Containers</Card.Title>
 
