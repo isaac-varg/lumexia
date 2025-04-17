@@ -16,8 +16,8 @@ const classes = {
 const columnHelper = createColumnHelper<Mbpr>();
 
 export const MbprColumns = [
-    columnHelper.accessor("producesItem.id", {
-        id: "producesItem.id",
+    columnHelper.accessor("producesItem.name", {
+        id: "producesItemId",
         header: SortableHeaderType("Produced Item"),
         cell: (row) => {
             return row.row.original.producesItem.name

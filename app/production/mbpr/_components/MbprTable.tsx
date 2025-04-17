@@ -14,9 +14,9 @@ const MbprTable = ({ mbprs }: { mbprs: Mbpr[] }) => {
 
     const filters: Filter[] = [
         {
-            columnName: "producesItem.id",
+            columnName: "producesItemId",
             filterLabel: "Item",
-            options: toFacetFilter(mbprs, "producesItem.id", "producesItem.name"),
+            options: toFacetFilter(mbprs, "producesItem.name", "producesItem.name"),
         },
         {
             columnName: "versionLabel",
