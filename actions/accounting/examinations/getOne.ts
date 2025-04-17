@@ -23,6 +23,7 @@ export const getOnePricingExamination = async (id: string) => {
                             containerItem: true
                         }
                     },
+                    uom: true,
                 }
             },
             producedPricingDataArchives: {

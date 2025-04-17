@@ -1,16 +1,27 @@
 "use client"
 import Card from "@/components/Card";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
-
+import { updatePricingExam } from "../_functions/updatePricingExam";
+ 
 
 const ActionsPanel = ({ examId }: { examId: string }) => {
+
+    const handleVerdict = async (isApproved: boolean) => {
+        const payload = isApproved ? { approved: true, rejected: false } : { approved: true, rejected: true }
+
+        await updatePricingExam(examId, payload);
+
+        location.reload()
+    }
+
+
 
     return (
         <Card.Root>
             <Card.Title>Actions</Card.Title>
 
             <div className="grid grid-cols-1 gap-4">
-                <button className="btn btn-success">
+                <button onClick={() => handleVerdict(true)} className="btn btn-success">
                     <div className="flex gap-x-4">
 
                         <span className="text-2xl"><FaRegThumbsUp /></span>
@@ -19,7 +30,7 @@ const ActionsPanel = ({ examId }: { examId: string }) => {
 
                 </button>
 
-                <button className="btn btn-warning">
+                <button onClick={() => handleVerdict(false)} className="btn btn-warning">
                     <div className="flex gap-x-4">
 
                         <span className="text-2xl"><FaRegThumbsDown /></span>

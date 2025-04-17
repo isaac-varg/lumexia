@@ -17,6 +17,7 @@ export const getAllByFillItem = async (fillItemId: string) => {
                include: {
                     containerItem: true                   
                }
+               
            },
            uom: true
        }

@@ -12,7 +12,7 @@ const LatestExaminationsTable = ({ examinations }: { examinations: PricingExamin
     const router = useRouter()
     const filters: Filter[] = [
         {
-            columnName: "examinedItem.id",
+            columnName: "examinedItem",
             filterLabel: "Item",
             options: toFacetFilter(examinations, "examinedItem.id", "examinedItem.name"),
         },
@@ -22,7 +22,7 @@ const LatestExaminationsTable = ({ examinations }: { examinations: PricingExamin
     return (
         <div>
             <DataTable.Default
-            tableStateName='latestPricingExaminationsAll'
+                tableStateName='latestPricingExaminationsAll'
                 columns={latestExaminationsColumns}
                 data={examinations}
                 filters={filters}
