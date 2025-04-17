@@ -9,8 +9,9 @@ import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 
 const BasicsPanel = () => {
 
-    const { bomObject } = usePricingProducedSelection()
+    const { bomObject, activeBatchSize, tankLaborFixedCost  } = usePricingProducedSelection()
     const { showDialog } = useDialog()
+    
 
     useEffect(() => {
 
@@ -36,6 +37,8 @@ const BasicsPanel = () => {
                             <div className="skeleton h-4 w-full"></div>
 
                             <div className="skeleton h-4 w-full"></div>
+
+                            <div className="skeleton h-4 w-full"></div>
                         </>
                         )}
 
@@ -51,7 +54,14 @@ const BasicsPanel = () => {
                                 tooltip='The amount of items in the BOM'
                                 data={bomObject?.bom.length || 0}
 
-                            /></>)}
+                            />
+                            <Text.LabelDataPair
+                                label='Labor Cost'
+                                tooltip='The fixed labour cost times the tank time'
+                                data={(activeBatchSize?.batchSizeCompoundingVessels[0].tankTime || 0) * tankLaborFixedCost || 0}
+
+                            />
+                        </>)}
 
 
 

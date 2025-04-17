@@ -12,6 +12,7 @@ type SetterProps = {
     filledConsumerContainers: FilledConsumerContainer[]
     batchSizes: BatchSize[]
     bom: PricingBomObject
+    tankLaborCost: number
 }
 
 const InitialStateSetter = ({
@@ -19,6 +20,7 @@ const InitialStateSetter = ({
     filledConsumerContainers,
     batchSizes,
     bom,
+    tankLaborCost,
 }: SetterProps) => {
 
     const {
@@ -26,17 +28,16 @@ const InitialStateSetter = ({
         setFilledConsumerContainers,
         setBatchSizes,
         setBomObject,
+        setTankLaborFixedCost,
     } = usePricingProducedActions()
 
 
-    const {
-
-    } = usePricingProducedSelection()
 
     useEffect(() => {
         setActiveMbpr(activeMbpr);
         setBatchSizes(batchSizes);
         setBomObject(bom)
+        setTankLaborFixedCost(tankLaborCost)
 
     }, [activeMbpr])
 

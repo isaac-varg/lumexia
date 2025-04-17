@@ -23,6 +23,7 @@ type State = {
     batchSizes: BatchSize[]
     bomObject: PricingBomObject | null
     selectedBomItem: PricingBom | null
+    tankLaborFixedCost: number
 }
 
 export type StateForCommit = {
@@ -50,6 +51,7 @@ type Actions = {
         getInterimConsumerContainer: (id: string) => InterimConsumerContainerData | null;
         toggleContainerParameters: () => void;
         removeFilledConsumerContainer: (id: string) => void;
+       setTankLaborFixedCost: (cost: number) => void; 
     }
 }
 
@@ -63,6 +65,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     batchSizes: [],
     bomObject: null,
     selectedBomItem: null,
+    tankLaborFixedCost: 0,
 
 
     actions: {
@@ -136,6 +139,11 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
         removeFilledConsumerContainer: (id) => {
             set((state) => ({
                 filledConsumerContainers: state.filledConsumerContainers.filter((c) => c.id !== id)
+            }))
+        },
+        setTankLaborFixedCost: (cost) => {
+            set(() => ({
+                tankLaborFixedCost: cost
             }))
         }
     }

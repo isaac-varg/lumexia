@@ -33,6 +33,9 @@ export const getBomWithPricing = async (mbprId: string) => {
                     BatchSize: {
                         where: {
                             recordStatusId: staticRecords.app.recordStatuses.active
+                        },
+                        include: {
+                            batchSizeCompoundingVessels: true
                         }
                     }
                 }
@@ -40,6 +43,15 @@ export const getBomWithPricing = async (mbprId: string) => {
         },
     });
 
+    // get static labor cost
+    const fixedTankLaborCostResponse = await prisma.config.findFirst({
+        where: {
+            id: 'b3474654-d309-4259-9e28-f0e6fb57f593'
+        },
+    });
+    const fixedTankLaborCost = parseFloat(fixedTankLaborCostResponse?.value || '0')
+
+    // pricing 
 
     const missingPricingData: string[] = [];
 
@@ -73,7 +85,7 @@ export const getBomWithPricing = async (mbprId: string) => {
         // there is no purchase order
         // and there is no pricing data
         // and there is pricing data but the upcoming price is not active and there is no po.
-        if (!hasPurchaseOrder && !hasPricingData && (hasPricingData && !b.item.itemPricingData[0].isUpcomingPriceActive &&  !hasPurchaseOrder )) {
+        if (!hasPurchaseOrder && !hasPricingData && (hasPricingData && !b.item.itemPricingData[0].isUpcomingPriceActive && !hasPurchaseOrder)) {
             missingPricingData.push(b.item.name);
             return;
         }
@@ -100,6 +112,7 @@ export const getBomWithPricing = async (mbprId: string) => {
             priceConverted = price * conversionFactor;
         }
 
+
         const itemCost = getItemCost(priceConverted, arrivalCost, unforeseenDifficultiesCost) + productionUsageCost;
         const quantityInBatch = (b.concentration / 100) * batchSize
         const itemCostPerBatch = quantityInBatch * itemCost;
@@ -122,13 +135,21 @@ export const getBomWithPricing = async (mbprId: string) => {
 
     }));
 
+    // labourCost
+
+    // get batchsize
+    const laborCostPerBatch = bom[0].mbpr.BatchSize[0].batchSizeCompoundingVessels[0].tankTime * fixedTankLaborCost;
+    const laborCostPerLb = laborCostPerBatch / bom[0].mbpr.BatchSize[0].quantity
+
+
+
     const filteredBom = withPricing.filter(b => b !== null);
     const overallBomCostPerBatch = filteredBom.reduce((total, current) => {
         if (!current) {
             throw new Error("Something went wrong while calculating overall bom cost per batch")
         }
         return total + current.itemCostPerBatch;
-    }, 0);
+    }, 0) + laborCostPerBatch;
 
     const overallBomCostPerLb = filteredBom.reduce((total, current) => {
         if (!current) {
@@ -136,7 +157,7 @@ export const getBomWithPricing = async (mbprId: string) => {
         }
 
         return total + current.itemCostPerPound;
-    }, 0)
+    }, 0) + laborCostPerLb
 
 
     return {

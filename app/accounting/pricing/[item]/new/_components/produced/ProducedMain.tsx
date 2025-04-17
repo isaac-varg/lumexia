@@ -14,6 +14,7 @@ import BOM from './_components/BOM'
 import { PricingExaminationNoteType } from '@/actions/accounting/examinations/notes/getAllNoteTypes'
 import NotesPanel from '../shared/NotesPanel'
 import { v4 as uuidv4 } from 'uuid';
+import { getTankLaborCost } from './_functions/getTankLaborCost'
 
 const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: PricingExaminationNoteType[] }) => {
 
@@ -23,12 +24,15 @@ const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Pricin
     const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(activeMbpr.id)
     const filledConsumerContainers = await accountingActions.filledConsumerContainers.getAllByFillItem(item.id);
     const bom = await getBomWithPricing(activeMbpr.id)
+    const tankLaborCost = await getTankLaborCost();
+
+
 
 
 
     return (
         <div className='flex flex-col gap-y-4'>
-            <InitialStateSetter activeMbpr={activeMbpr} bom={bom} filledConsumerContainers={filledConsumerContainers} batchSizes={batchSizes} />
+            <InitialStateSetter activeMbpr={activeMbpr} bom={bom} filledConsumerContainers={filledConsumerContainers} batchSizes={batchSizes} tankLaborCost={parseFloat(tankLaborCost?.value || '0')} />
             <PageTitle>Pricing Determination - {item.name}</PageTitle>
             <PageBreadcrumbs />
 
