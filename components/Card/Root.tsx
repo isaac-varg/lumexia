@@ -36,13 +36,13 @@ const classes = {
 	},
     type: {
         old: 'rounded-lg p-6',
-        dasiy: 'card card-'
+        dasiy: 'card'
     }
 };
 
 const wrapper = {
     old: 'flex flex-col w-full gap-y-4 p-6',
-    daisy: 'card-body'
+    daisy: 'card-body flex flex-col gap-y-4'
 }
 
 const Root = ({
