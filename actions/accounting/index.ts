@@ -18,8 +18,10 @@ import { createExaminationNoteType } from "./examinations/notes/createExaminatio
 import { getAllByExamId } from "./examinations/notes/getAllByExamId";
 import { getAllNoteTypes } from "./examinations/notes/getAllNoteTypes";
 import { upsertPricingExamination } from "./examinations/upsert";
+import { createPricingQueue } from "./pricing/createQueue";
 import { getItemPricingData } from "./pricing/getItemPricingData";
 import { getLastItemPrice } from "./pricing/getLastItemPrice";
+import { getQueue } from "./pricing/getQueue";
 import { getReviewablePricingExams } from "./pricing/getReviewable";
 
 export const accountingActions = {
@@ -27,7 +29,9 @@ export const accountingActions = {
         item: {
             getItemPricingData: getItemPricingData,
             getLastItemPrice: getLastItemPrice,
-        }
+        },
+        createQueue: createPricingQueue,
+        getQueue: getQueue,
     },
     filledConsumerContainers: {
         getAllByFillItem: getAllByFillItem,

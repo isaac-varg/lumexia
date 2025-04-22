@@ -6,12 +6,12 @@ import BeginPricingExamDialog from './_components/BeginPricingExamDialog'
 import BeginPricingExaminationButton from './_components/BeginPricingExaminationButton'
 import { accountingActions } from '@/actions/accounting'
 import LatestExaminationsTable from './_components/LatestExaminationsTable'
+import QueueList from './_components/QueueList'
 
 const PricingPage = async () => {
 
     const items = await getItems();
     const examinations = await accountingActions.examinations.getAll(15)
-    const queue = null;
 
     return (
         <div className='flex flex-col gap-y-6'>
@@ -28,8 +28,8 @@ const PricingPage = async () => {
 
                 <Card.Root>
                     <Card.Title>Queue</Card.Title>
+                    <QueueList />
 
-                    {!queue && <p className='font-poppins text-xl text-neutral-800'>There is no pending queue</p>}
 
                 </Card.Root>
 

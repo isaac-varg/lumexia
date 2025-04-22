@@ -6,6 +6,7 @@ import { ConsumerContainerArchivePayload } from "@/actions/accounting/examinatio
 import { FilledConsumerContainerArhivePayload } from "@/actions/accounting/examinations/archives/createManyFilledConsumerContainerArchives"
 import { ExaminationValidationPayload } from "@/actions/accounting/examinations/archives/createExaminationValidationArchive"
 import { staticRecords } from "@/configs/staticRecords"
+import { completePricingQueues } from "./completePricingQueues"
 
 export const commitPricingExamination = async (
     examinationId: string,
@@ -99,6 +100,8 @@ export const commitPricingExamination = async (
     }
 
     await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
+
+    await completePricingQueues(examinedItemId)
 
 
     return pricingExamination

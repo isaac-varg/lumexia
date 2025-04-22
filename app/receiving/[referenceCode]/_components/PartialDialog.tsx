@@ -8,13 +8,13 @@ import { useForm } from "react-hook-form";
 import { createContainer } from "../_functions/createContainer";
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import useDialog from "@/hooks/useDialog";
-import { updatePOItem } from "../_functions/updatePOItem";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { splitPOItem } from "../_functions/splitPOItem";
 import lotOriginActions from "@/actions/inventory/lotOriginActions";
 import { staticRecords } from "@/configs/staticRecords";
 import { toInventoryUom } from "@/utils/uom/toInventoryUom";
 import { updateConnectedRequests } from "../_functions/updateConnectedRequests";
+import { accountingActions } from "@/actions/accounting";
 
 type PartialDialogProps = {
     item: ExPurchaseOrderItem;
@@ -72,6 +72,13 @@ const PartialDialog = ({ item, containerTypes }: PartialDialogProps) => {
         };
         await lotOriginActions.createNew(originCreateData);
         await updateConnectedRequests(item.purchaseOrderId, item.item.id, true);
+
+        // add to pricing queue
+        await accountingActions.pricing.createQueue({
+            itemId: item.item.id,
+            isCompleted: false,
+        })
+        
 
         revalidatePage("/receiving/[referenceCode]");
         resetDialogContext();

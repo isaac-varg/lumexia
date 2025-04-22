@@ -8,6 +8,7 @@ import prisma from "@/lib/prisma"
 import { ConsumerContainerArchivePayload } from "@/actions/accounting/examinations/archives/createManyConsumerContainerArchives"
 import { FilledConsumerContainerArhivePayload } from "@/actions/accounting/examinations/archives/createManyFilledConsumerContainerArchives"
 import { ExaminationValidationPayload } from "@/actions/accounting/examinations/archives/createExaminationValidationArchive"
+import { completePricingQueues } from "./completePricingQueues"
 
 export const commitProducedPricingExamination = async (
     examinationId: string,
@@ -136,6 +137,9 @@ export const commitProducedPricingExamination = async (
     }
 
     await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
+
+
+    await completePricingQueues(examinedItemId)
 
 
     return pricingExamination

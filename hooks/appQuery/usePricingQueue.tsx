@@ -1,14 +1,14 @@
 import { accountingActions } from '@/actions/accounting';
-import { ReviewablePricingExams } from '@/actions/accounting/pricing/getReviewable';
+import { PricingQueueEntry } from '@/actions/accounting/pricing/getQueue';
 import { useQuery } from '@tanstack/react-query';
 
 export const usePricingQueue = () => {
 
-    return useQuery<ReviewablePricingExams[]>({
-        queryKey: ['reviewablePricingExams'],
+    return useQuery<PricingQueueEntry[]>({
+        queryKey: ['pricingQueue'],
         queryFn: async () => {
-            const exams = await accountingActions.examinations.getReviewable();
-            return exams 
+            const queue = await accountingActions.pricing.getQueue();
+            return queue 
         },
         refetchInterval: 10000,
         refetchOnWindowFocus: true,

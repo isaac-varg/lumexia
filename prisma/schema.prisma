@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Apr 10 2025 15:00:15 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 22 2025 13:18:14 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
@@ -225,6 +225,17 @@ model PricingExamination {
   PricingExaminationNote          PricingExaminationNote[]
 
   @@map("pricing_examinations")
+}
+
+model PricingQueue {
+  id          String   @id @default(uuid())
+  itemId      String   @map("item_id")
+  isCompleted Boolean  @map("is_completed")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  item        Item     @relation(fields: [itemId], references: [id])
+
+  @@map("pricing_queue")
 }
 
 model ProducedPricingDataArchive {
@@ -587,6 +598,7 @@ model Item {
   consumerContainerArchives   ConsumerContainerArchive[]
   BomPricingDataArchive       BomPricingDataArchive[]
   ItemConsumerContainer       ItemConsumerContainer[]
+  PricingQueue                PricingQueue[]
   BillOfMaterial              BillOfMaterial[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
 
