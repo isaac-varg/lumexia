@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 
 const ReceivableOption = ({ po }: { po: Receivables }) => {
 
-    const path = `/receivables`
+    const path = `/receiving/${po.referenceCode}?id=${po.id}`
     const router = useRouter()
 
     return (

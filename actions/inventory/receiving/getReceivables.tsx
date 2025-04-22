@@ -15,6 +15,9 @@ export const getReceivables = async () => {
         include: {
             status: true,
             supplier: true,
+        },
+        orderBy: {
+            createdAt: 'desc'
         }
     });
     return pos
