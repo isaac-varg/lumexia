@@ -27,7 +27,7 @@ const CommandButton = ({ command, index }: { command: Command, index: number }) 
     }
 
     useHotkeys(
-        'space',
+        'enter',
         (event) => {
             if (isFirst) {
                 event.preventDefault()
@@ -59,7 +59,7 @@ const CommandButton = ({ command, index }: { command: Command, index: number }) 
                 <h2 className='font-poppins text-base text-slate-800 '>{command.label}</h2>
             </div>
 
-            <kbd className="kbd kbd-sm">{(isFirst && !command.shortcut) ? 'space' : command.shortcut}</kbd>
+            <kbd className="kbd kbd-sm">{(isFirst && !command.shortcut) ? 'enter' : command.shortcut}</kbd>
 
         </div>
     )

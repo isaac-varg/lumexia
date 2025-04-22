@@ -8,7 +8,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'home',
             commandType: 'page',
-            shortcut: 'h',
+            shortcut: 'shift+h',
             icon: <BiGhost />,
             label: 'Home',
             path: "/"
@@ -16,7 +16,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'items',
             commandType: 'page',
-            shortcut: 'i',
+            shortcut: 'shift+i',
             icon: <BsBox2Heart />,
             label: 'Items',
             path: "/inventory/items"
@@ -24,7 +24,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'requests',
             commandType: 'page',
-            shortcut: 'r',
+            shortcut: 'shift+r',
             icon: <TbShoppingBagPlus />,
             label: 'Requests',
             path: "/purchasing/requests"
@@ -32,7 +32,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'purchasing',
             commandType: 'page',
-            shortcut: 'p',
+            shortcut: 'shift+p',
             icon: <TbCreditCard />,
             label: 'Purchasing',
             path: "/purchasing/purchase-orders"
@@ -40,7 +40,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'planning',
             commandType: 'page',
-            shortcut: 'n',
+            shortcut: 'shift+n',
             icon: <TbClipboardHeart />,
             label: 'Planning',
             path: "/production/planning"
@@ -48,7 +48,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'mbpr',
             commandType: 'page',
-            shortcut: 'm',
+            shortcut: 'shift+m',
             icon: <TbBook2 />,
             label: 'MBPR',
             path: "/production/mbpr"
@@ -56,7 +56,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'quality',
             commandType: 'page',
-            shortcut: 'q',
+            shortcut: 'shift+q',
             icon: <TbClipboardCheck />,
             label: 'Quality',
             path: "/production/quality"
@@ -64,7 +64,7 @@ const useCommandPalletPages = (): Command[] => {
         {
             id: 'pricing',
             commandType: 'page',
-            shortcut: 'c',
+            shortcut: 'shift+c',
             icon: <TbShoppingBagCheck />,
             label: 'Pricing',
             path: "/accounting/pricing"
