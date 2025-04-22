@@ -20,6 +20,7 @@ import { getAllNoteTypes } from "./examinations/notes/getAllNoteTypes";
 import { upsertPricingExamination } from "./examinations/upsert";
 import { getItemPricingData } from "./pricing/getItemPricingData";
 import { getLastItemPrice } from "./pricing/getLastItemPrice";
+import { getReviewablePricingExams } from "./pricing/getReviewable";
 
 export const accountingActions = {
     pricing: {
@@ -62,6 +63,7 @@ export const accountingActions = {
             }
         },
         create: createExamination,
+        getReviewable: getReviewablePricingExams,
         getAllByItem: getAllPricingExaminationsByItem,
         getOne: getOnePricingExamination,
         getAll: getAllPricingExaminations,

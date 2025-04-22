@@ -7,6 +7,7 @@ import { getItemLots } from "./getItemLots";
 import { getOneAuditRequest } from "./getOneAuditRequest";
 import { getOneItem } from "./getOneItem";
 import { getPurchasedItems } from "./getPurchasedItems";
+import { getReceivables } from "./receiving/getReceivables";
 
 export const inventoryActions = {
     getInventory: getInventory,
@@ -26,6 +27,9 @@ export const inventoryActions = {
     },
     uom: {
         getAll: getAllUom,
+    },
+    receiving: {
+        getReceivables: getReceivables,
     }
 }
 

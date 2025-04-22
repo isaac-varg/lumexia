@@ -1,18 +1,17 @@
 'use client'
+
+import { usePurchasingReceivables } from "@/hooks/appQuery/usePurchasingReceivables"
 import Panel from "../Panel";
-import RequestOption from "./RequestOption";
-import { usesPurchasingRequestsPollingQuery } from "@/hooks/appQuery/usePurchasingRequestsQuery";
+import ReceivableOption from "./ReceivableOption";
+
+const Receivables = () => {
+
+    const { data: pos, isLoading } = usePurchasingReceivables()
+
+    const isComplete = pos?.length === 0;
 
 
-
-const Requests = () => {
-
-    const { data: requests, isLoading } = usesPurchasingRequestsPollingQuery();
-
-    const isComplete = requests?.length === 0;
-
-
-    if (!requests) {
+    if (!pos) {
         return (
             <Panel title="New Requests">
                 <div className="grid grid-cols-1 gap-1">
@@ -26,22 +25,24 @@ const Requests = () => {
         )
     }
 
+
+
     return (
-        <Panel title="New Requests" titlePath="/purchasing/requests">
+        <Panel span={2} title="Receivable POs" titlePath="/receiving">
 
             {isComplete && <p className="font-poppins text-lg font-medium text-neutral-800">All done 👍🏽👍🏽🫰🏽🫰🏽</p>}
 
             {!isComplete && <div className="grid grid-cols-1 gap-1 max-h-[250px] overflow-auto">
-                {requests.map((req) => {
+                {pos.map((po) => {
                     return (
-                        <RequestOption key={req.id} req={req} />
+                        <ReceivableOption key={po.id} po={po} />
                     )
                 })}
             </div>}
         </Panel>
+
+
     )
 }
 
-
-
-export default Requests
+export default Receivables

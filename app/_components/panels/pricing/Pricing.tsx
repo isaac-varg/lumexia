@@ -1,18 +1,17 @@
 'use client'
+import { usePricingQueue } from "@/hooks/appQuery/usePricingQueue"
 import Panel from "../Panel";
-import RequestOption from "./RequestOption";
-import { usesPurchasingRequestsPollingQuery } from "@/hooks/appQuery/usePurchasingRequestsQuery";
+import PricingOption from "./PricingOption";
+
+const Pricing = () => {
+
+    const { data: exams, isLoading } = usePricingQueue()
 
 
-
-const Requests = () => {
-
-    const { data: requests, isLoading } = usesPurchasingRequestsPollingQuery();
-
-    const isComplete = requests?.length === 0;
+    const isComplete = exams?.length === 0;
 
 
-    if (!requests) {
+    if (!exams) {
         return (
             <Panel title="New Requests">
                 <div className="grid grid-cols-1 gap-1">
@@ -26,22 +25,22 @@ const Requests = () => {
         )
     }
 
+
     return (
-        <Panel title="New Requests" titlePath="/purchasing/requests">
+        <Panel title="Reviewable Pricing" titlePath="/accounting/pricing">
 
             {isComplete && <p className="font-poppins text-lg font-medium text-neutral-800">All done 👍🏽👍🏽🫰🏽🫰🏽</p>}
 
             {!isComplete && <div className="grid grid-cols-1 gap-1 max-h-[250px] overflow-auto">
-                {requests.map((req) => {
+                {exams.map((exam) => {
                     return (
-                        <RequestOption key={req.id} req={req} />
+                        <PricingOption key={exam.id} exam={exam} />
                     )
                 })}
             </div>}
         </Panel>
+
     )
 }
 
-
-
-export default Requests
+export default Pricing
