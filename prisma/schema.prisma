@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Apr 22 2025 13:18:14 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 22 2025 14:50:46 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
@@ -259,14 +259,27 @@ model ProducedPricingDataArchive {
   @@map("produced_pricing_data_archives")
 }
 
-model Config {
+model AppConfigGroup {
   id          String   @id @default(uuid())
-  key         String
-  value       String
-  dataType    String   @map("data_type")
-  description String
+  name        String   @map("name")
+  description String   @map("description")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  configs     Config[]
+
+  @@map("app_config_groups")
+}
+
+model Config {
+  id            String         @id @default(uuid())
+  key           String
+  value         String
+  dataType      String         @map("data_type")
+  description   String
+  configGroupId String         @default("f8b6d7ef-672c-4751-9f08-21c7c3790136") @map("config_group_id")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  configGroup   AppConfigGroup @relation(fields: [configGroupId], references: [id])
 
   @@map("configs")
 }

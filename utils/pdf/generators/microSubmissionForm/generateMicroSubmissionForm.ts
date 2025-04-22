@@ -4,9 +4,36 @@ import { getSampleGroups } from "./functions/getSampleGroups";
 import { createMicroSubmissionPDF } from "./functions/createMicroSubmissionPDF";
 import jsPDF from "jspdf";
 import microSubmissionActions from "@/actions/quality/microSubmissionActions";
+import { Config } from "@prisma/client";
+import { createConfigLookup } from "@/utils/data/createConfigLookup";
 
-export const generateMicroSubmissionForm = async (bpr: IBprForSSF, samples: IMicroFormInputs) => {
+export interface MicroFormResponses {
+  submittedBy: string;
+  sendResultsTo: {
+    name: string;
+    telephone: string;
+    email: string;
+  };
+  testRequested: string[];
+  servingSize: string;
+  includeSignature: boolean;
+}
+
+export const generateMicroSubmissionForm = async (bpr: IBprForSSF, samples: IMicroFormInputs, microFormData: Config[]) => {
     const groupedSamples = getSampleGroups(samples);
+    const microFormResponsesLookup = createConfigLookup(microFormData);
+
+    const microFormResponses = {
+        submittedBy: microFormResponsesLookup['submittedBy'],
+        sendResultsTo: {
+            name: microFormResponsesLookup['submittedBy'],
+            telephone: microFormResponsesLookup['submittedBy'],
+            email: microFormResponsesLookup['submittedBy'],
+        },
+        testRequested: ['Total Plate Count (TPC)', 'Yeast and Mold'],
+        servingSize: '~ 60 g',
+        includeSignature: true,
+    }
 
     let pdf = new jsPDF({
         orientation: "l",
@@ -21,7 +48,7 @@ export const generateMicroSubmissionForm = async (bpr: IBprForSSF, samples: IMic
         });
         const submissionNumber = await submission.submissionNumber;
 
-        await createMicroSubmissionPDF(group, index, bpr, submissionNumber, pdf);
+        await createMicroSubmissionPDF(group, index, bpr, submissionNumber, pdf, microFormResponses);
     });
 
     // Use Promise.all to wait for all promises to resolve

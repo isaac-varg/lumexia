@@ -2,16 +2,14 @@
 import { usePricingQueue } from "@/hooks/appQuery/usePricingQueue"
 import Panel from "../Panel";
 import PricingOption from "./PricingOption";
+import { usePricingReviews } from "@/hooks/appQuery/usePricingReviews";
 
 const Pricing = () => {
 
-    const { data: exams, isLoading } = usePricingQueue()
+    const { data: exams, isLoading } = usePricingReviews()
 
 
-    const isComplete = exams?.length === 0;
-
-
-    if (!exams) {
+    if (!exams || isLoading) {
         return (
             <Panel title="New Requests">
                 <div className="grid grid-cols-1 gap-1">
@@ -24,6 +22,8 @@ const Pricing = () => {
             </Panel>
         )
     }
+    
+    const isComplete = exams.length === 0;
 
 
     return (

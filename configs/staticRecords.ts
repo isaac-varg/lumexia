@@ -2,6 +2,8 @@
 // e.g., produced procurement type should always be present in the application.
 // i didn't want to hard code these in but since they are the same and essential, i didn't want to call the db every time we used them
 
+import loadJsConfig from "next/dist/build/load-jsconfig";
+
 export const staticRecords = {
     inventory: {
         transactionTypes: {
@@ -63,6 +65,11 @@ export const staticRecords = {
             homeDashToggles: '87ff1037-9315-4680-94da-45ad19f5ef67',
             general: '879f6a09-8308-4215-8572-18489e028cc8',
         },
+        appConfigGroups: {
+            general: 'f8b6d7ef-672c-4751-9f08-21c7c3790136',
+            company: '3f98376a-68fb-4b0e-9563-ba0a5c995516',
+            microForm: '8fb8bc39-d051-4e4e-a2ed-a051f5ae2b00',
+        },
         lumexia: '85c3a4f8-99e4-4fff-a6b6-c07f998d376a',
     },
     production: {
@@ -83,7 +90,7 @@ export const staticRecords = {
         },
         templates: {
             essentialFragranceOil: {
-                compoundingVessel:  '0ebe6e23-9aae-4a4c-877c-f798e36d7fce'
+                compoundingVessel: '0ebe6e23-9aae-4a4c-877c-f798e36d7fce'
             }
         },
         //really terrible naming, this is actually bprStagingStatuses... 

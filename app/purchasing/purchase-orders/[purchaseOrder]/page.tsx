@@ -13,6 +13,7 @@ import { getAllItems } from "./_functions/getAllItems";
 import { getOrderNotes } from "./_functions/getOrderNotes";
 import { getActivity } from "./_functions/getActivity";
 import ViewMode from "./_components/viewMode/ViewMode";
+import { appActions } from "@/actions/app";
 
 type PurchaseOrderDetailsProps = {
     searchParams: {
@@ -29,7 +30,7 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
     const poStatuses = await purchaseOrderStatusActions.getAll();
     const notes = await getOrderNotes(purchaseOrder.id)
     const activity = await getActivity(purchaseOrder.id)
-
+    const company = await appActions.configs.getByGroup('company');
 
     const flattenedOrderItems = flattenOrderItems(orderItems)
 
@@ -40,6 +41,7 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
                 purchaseOrder={purchaseOrder}
                 poStatuses={poStatuses}
                 orderItems={flattenedOrderItems}
+                company={company}
             />
 
             <ViewMode

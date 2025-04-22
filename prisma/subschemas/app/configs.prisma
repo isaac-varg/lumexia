@@ -1,11 +1,13 @@
 model Config {
-    id          String   @id @default(uuid())
-    key         String
-    value       String
-    dataType    String   @map("data_type")
-    description String
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @updatedAt @map("updated_at")
+    id            String         @id @default(uuid())
+    key           String
+    value         String
+    dataType      String         @map("data_type")
+    description   String
+    configGroupId String         @default("f8b6d7ef-672c-4751-9f08-21c7c3790136") @map("config_group_id")
+    createdAt     DateTime       @default(now()) @map("created_at")
+    updatedAt     DateTime       @updatedAt @map("updated_at")
+    configGroup   AppConfigGroup @relation(fields: [configGroupId], references: [id])
 
     @@map("configs")
 }

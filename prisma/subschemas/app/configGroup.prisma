@@ -1,0 +1,10 @@
+model AppConfigGroup {
+    id          String   @id @default(uuid())
+    name        String   @map("name")
+    description String   @map("description")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    configs     Config[]
+
+    @@map("app_config_groups")
+}

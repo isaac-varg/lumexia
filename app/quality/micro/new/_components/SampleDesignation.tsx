@@ -4,6 +4,7 @@ import Text from '@/components/Text'
 import Form from '@/components/Form'
 import { useForm } from 'react-hook-form'
 import { generateMicroSubmissionForm } from '@/utils/pdf/generators/microSubmissionForm/generateMicroSubmissionForm'
+import { Config } from '@prisma/client'
 
 export interface IMicroFormInputs {
     drums: number;
@@ -12,14 +13,14 @@ export interface IMicroFormInputs {
     tank: number;
 }
 
-const SampleDesignation = ({ selectedBpr }: { selectedBpr: IBprForSSF | null }) => {
+const SampleDesignation = ({ selectedBpr, microFormData }: { selectedBpr: IBprForSSF | null , microFormData: Config[]}) => {
 
     const form = useForm<IMicroFormInputs>();
 
     const handleSubmit = async (data: IMicroFormInputs) => {
 
         if (!selectedBpr) {return}
-        generateMicroSubmissionForm(selectedBpr, data)
+        generateMicroSubmissionForm(selectedBpr, data, microFormData)
     }
 
 

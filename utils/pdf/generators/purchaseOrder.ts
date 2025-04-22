@@ -7,28 +7,60 @@ import { getImageDimensions } from "../functions/getImageDimensions";
 import "../assets/fonts/Lato-Black-normal";
 import "../assets/fonts/Lato-Regular-normal";
 import "../assets/fonts/Lato-Bold-normal";
-import { company } from "@/configs/company";
 import { Supplier } from "@/types/supplier";
 import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import { getAutoTableEnd } from "../functions/getAutoTableEnd";
 import { DateTime } from "luxon";
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 import { FlattenedOrderItem } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/flattenOrderItems";
+import logo from "@/utils/pdf/assets/images/logo";
+import { createConfigLookup } from "@/utils/data/createConfigLookup";
+import { Config } from "@prisma/client";
 
-export const calculateGrandTotal = (items: PurchaseOrderItem[]) => {
+
+const calculateGrandTotal = (items: PurchaseOrderItem[]) => {
     return items.reduce((total, item) => {
         return total + item.quantity * item.pricePerUnit;
     }, 0);
 };
 
+
+
 export const createPurchaseOrder = async (
     poNumber: number,
     timestamp: Date,
     supplier: Supplier,
-    poItems: FlattenedOrderItem[]
+    poItems: FlattenedOrderItem[],
+    companyData: Config[]
 ) => {
     // data
-    const logoDimensions = await getImageDimensions(company.logo);
+    const logoDimensions = await getImageDimensions(logo);
+ 
+
+    const companyLookup = createConfigLookup(companyData);
+
+    const company = {
+        logo,
+        name: companyLookup['name'],
+        address: {
+            street1: companyLookup['addressStreet1'],
+            street2: companyLookup['addressStreet2'],
+            city: companyLookup['addressCity'],
+            state: companyLookup['addressState'],
+            zipcode: companyLookup['addressZipcode']
+        },
+        phone: companyLookup['phone'],
+        email: companyLookup['email'],
+        mainContacts: {
+            purchasing: {
+                firstName: companyLookup['purchasingContactFirstName'],
+                lastName: companyLookup['purchasingContactLastName'],
+                email: companyLookup['purchasingContactEmail'],
+            },
+        },
+
+
+    }
     const logoResizeFactor = 0.3;
     const total = calculateGrandTotal(poItems);
 

@@ -6,11 +6,11 @@ import "../../../assets/fonts/Lato-Black-normal";
 import "../../../assets/fonts/Lato-Regular-normal";
 import "../../../assets/fonts/Lato-Bold-normal";
 import { ssfForm } from "../assets/ssfForm";
-import { microFormResponses } from "@/configs/data/microFormResponses"
 import { IBprForSSF } from "@/app/quality/micro/new/_functions/getBprs";
 import { signature } from "../assets/signature";
+import { MicroFormResponses } from "../generateMicroSubmissionForm";
 
-export const createMicroSubmissionPDF = async (group: string[], index: number, bpr: IBprForSSF, submissionNumber: number, pdf: jsPDF) => {
+export const createMicroSubmissionPDF = async (group: string[], index: number, bpr: IBprForSSF, submissionNumber: number, pdf: jsPDF, microFormResponses: MicroFormResponses) => {
 
     console.log('fixed me', submissionNumber)
     const currentDate = DateTime.now().toFormat("dd MMM yyyy");
