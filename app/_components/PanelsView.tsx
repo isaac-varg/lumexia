@@ -1,3 +1,4 @@
+import Items from "./panels/items/Items"
 import Pricing from "./panels/pricing/Pricing"
 import Receivables from "./panels/receivables/Receivables"
 import Requests from "./panels/requests/Requests"
@@ -8,9 +9,10 @@ const PanelsView = async () => {
     return (
         <div className="grid grid-cols-3 gap-8">
             <Requests />
-            <Pricing /> 
+            <Pricing />
             <Welcome />
             <Receivables />
+            <Items />
 
         </div>
     )
