@@ -1,12 +1,9 @@
 'use server'
 
-import { getItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost";
 import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
-import { convertUom } from "@/utils/uom/convertUom";
 import { getConversionFactor } from "@/utils/uom/getConversionFactor";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 const lb = staticRecords.inventory.uom.lb;
 
@@ -101,12 +98,27 @@ export const getBomWithPricing = async (mbprId: string) => {
         } = b.item.itemPricingData?.[0] ?? {};
 
 
-        const price = isUpcomingPriceActive ? upcomingPrice : b.item.purchaseOrderItem[0].pricePerUnit;
-        const priceUom = isUpcomingPriceActive ? upcomingPriceUomId : b.item.purchaseOrderItem[0].uomId;
+        let price: number | undefined;
+        let priceUom: string | undefined;
+
+        if (isUpcomingPriceActive) {
+            price = upcomingPrice;
+            priceUom = upcomingPriceUomId;
+        } else if (b.item.purchaseOrderItem && b.item.purchaseOrderItem.length > 0) {
+            price = b.item.purchaseOrderItem[0].pricePerUnit;
+            priceUom = b.item.purchaseOrderItem[0].uomId;
+        } else {
+            // Handle the case where there's no upcoming price and no purchase order
+            // You might want to set default values, log an error, or handle this differently
+            price = 0; // Or some other default value
+            priceUom = lb; // Or some other default UOM, or handle the lack of UOM
+            missingPricingData.push(b.item.name + ' (No active price or purchase order)');
+            return null; // Skip processing this item further
+        }
 
         let priceConverted = price;
 
-        if (priceUom !== lb) {
+        if (priceUom !== lb && priceUom !== undefined) {
             const conversionFactor = await getConversionFactor(priceUom, lb);
             if (!conversionFactor) throw new Error('Conversion factor not found.');
             priceConverted = price * conversionFactor;
