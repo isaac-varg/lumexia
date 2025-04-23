@@ -1,14 +1,15 @@
+'use client'
 import React from "react";
 import SidebarButton from "./SidebarButton";
 import { sidebar } from "../../configs/sidebar";
 import Image from "next/image";
 import icon from "@/configs/assets/icon.svg"
 import SidebarGroupTitle from "./SidebarGroupTitle";
-import { inventoryActions } from "@/actions/inventory";
+import { useAuditRequest } from "@/hooks/appQuery/useAuditRequest";
 
-const Sidebar = async () => {
+const Sidebar =  () => {
 
-    const auditRequests = await inventoryActions.auditReqests.getAll();
+    const {data: auditRequests, isLoading} = useAuditRequest(); 
 
     return (
         <div className="px-4 py-8 shadow-lg min-h-dvh">
@@ -37,7 +38,7 @@ const Sidebar = async () => {
 
                                     switch (sidebarItem.label) {
                                         case 'Audit':
-                                            badgeData = auditRequests.length
+                                            badgeData = auditRequests
                                             break;
                                         default:
                                             break;
