@@ -1,4 +1,5 @@
 import Items from "./panels/items/Items"
+import Links from "./panels/links/Links"
 import Pricing from "./panels/pricing/Pricing"
 import Receivables from "./panels/receivables/Receivables"
 import Requests from "./panels/requests/Requests"
@@ -13,6 +14,7 @@ const PanelsView = async () => {
             <Welcome />
             <Receivables />
             <Items />
+            <Links />
 
         </div>
     )
