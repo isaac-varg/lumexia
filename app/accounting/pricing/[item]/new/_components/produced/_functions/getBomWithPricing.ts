@@ -121,7 +121,7 @@ export const getBomWithPricing = async (mbprId: string) => {
         if (priceUom !== lb && priceUom !== undefined) {
             const conversionFactor = await getConversionFactor(priceUom, lb);
             if (!conversionFactor) throw new Error('Conversion factor not found.');
-            priceConverted = price * conversionFactor;
+            priceConverted = price / conversionFactor;
         }
 
 

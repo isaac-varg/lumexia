@@ -3,6 +3,7 @@ import { PlanningBpr } from '@/actions/production/getPlanningBprs';
 import { Search } from '@/components/Search';
 import React, { useState } from 'react'
 import BprCard from './BprCard';
+import { staticRecords } from '@/configs/staticRecords';
 
 type Props = {
     bprs: PlanningBpr[],
@@ -29,6 +30,10 @@ const ByStatusPanel = ({ statuses, bprs }: Props) => {
             <div className='grid grid-cols-2 gap-6'>
                 {statusCounts.filter((s) => s.count !== 0).map((status) => {
 
+                    if (status.id === staticRecords.production.bprStatuses.failed) {
+                        return;
+                    }
+
                     let bprsForStatus = searchResults.filter((req) => req.status.id === status.id);
 
 
@@ -36,7 +41,7 @@ const ByStatusPanel = ({ statuses, bprs }: Props) => {
                         <div
                             key={status.id}
                             style={{ backgroundColor: status.bgColor }}
-                            className='p-6 rounded-lg shadow-xl'
+                            className={`p-6 rounded-lg shadow-xl ${status.id === staticRecords.production.bprStatuses.released ? 'col-span-2' : ''}`}
                         >
                             <div className='flex flex-col gap-y-6'>
                                 <div

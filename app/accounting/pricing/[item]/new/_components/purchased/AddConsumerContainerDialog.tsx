@@ -18,7 +18,6 @@ const AddConsumerContainerDialog = ({ fillItemId, produced = false }: { fillItem
     const [consumerContainer, setConsumerContainer] = useState<string>('')
     const [parameters, setParameters] = useState<FilledConsumerContainerFormParameters | null>(null)
 
-
     const nextStep = () => {
         setStep((prev) => prev + 1);
     }
