@@ -1,0 +1,13 @@
+model FinishedProductAuxiliary {
+    id                       String          @id @default(uuid())
+    apartOfFinishedProductId String          @map("apart_of_finished_product_id")
+    auxiliaryItemId          String          @map("auxiliary_item_id")
+    quantity                 Int
+    difficultyAdjustmentCost Float           @map("difficulty_adjustment_cost")
+    createdAt                DateTime        @default(now()) @map("created_at")
+    updatedAt                DateTime        @updatedAt @map("updated_at")
+    apartOfFinishedProduct   FinishedProduct @relation(fields: [apartOfFinishedProductId], references: [id])
+    auxiliaryItem            Item            @relation(fields: [auxiliaryItemId], references: [id])
+
+    @@map("finished_product_auxiliaries")
+}

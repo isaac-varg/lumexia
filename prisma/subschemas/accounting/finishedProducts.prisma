@@ -1,0 +1,17 @@
+model FinishedProduct {
+    id                       String                     @id @default(uuid())
+    name                     String
+    filledWithItemId         String                     @map("filled_with_item_id")
+    fillQuantity             Float                      @map("fill_quantity")
+    declaredQuantity         Float                      @map("declared_quantity")
+    freeShippingCost         Float                      @map("free_shipping_cost")
+    fillUomId                String                     @map("uom_id")
+    difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+    createdAt                DateTime                   @default(now()) @map("created_at")
+    updatedAt                DateTime                   @updatedAt @map("updated_at")
+    filledWithItem           Item                       @relation(fields: [filledWithItemId], references: [id])
+    fillUom                  UnitOfMeasurement          @relation(fields: [FillUomId], references: [id])
+    auxiliaries              FinishedProductAuxiliary[]
+
+    @@map("finished_products")
+}
