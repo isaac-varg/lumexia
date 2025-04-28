@@ -47,7 +47,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
     receiving: { pageSize: 50, pageIndex: 0 },
     itemDetailsLotDialog: { pageSize: 50, pageIndex: 0 },
     itemDetailsTransactons: { pageSize: 50, pageIndex: 0 },
-    itemDetailsPurchasesTab: { pageSize: 50, pageIndex: 0 },
+    itemDetailsPurchasesTab: { pageSize: 10, pageIndex: 0 },
     receivingRecentlyCompleted: { pageSize: 50, pageIndex: 0 },
     requestArchive: { pageSize: 50, pageIndex: 0 },
     itemPricingExamiantions: { pageSize: 50, pageIndex: 0 },

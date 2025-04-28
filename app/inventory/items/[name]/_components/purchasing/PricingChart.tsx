@@ -5,15 +5,18 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
 const PricingChart = ({ data }: { data: SupplierTotals[] }) => {
-  const seriesData = getPricingChartData(data);
+    const seriesData = getPricingChartData(data);
 
-  const options: ApexOptions = {
-    chart: {
-      type: "area",
-    },
-    stroke: { curve: "smooth" },
-  };
-  return <Chart options={options} series={seriesData} type="area" height={'100%'}/>;
+    const options: ApexOptions = {
+        chart: {
+            type: "area",
+        },
+        xaxis: {
+            type: 'datetime'
+        },
+        stroke: { curve: "smooth" },
+    };
+    return <Chart options={options} series={seriesData} type="area" height={'100%'} />;
 };
 
 export default PricingChart;
