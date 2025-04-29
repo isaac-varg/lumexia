@@ -1,6 +1,7 @@
 'use client'
 
 import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers/getAllByFillItem"
+import { FinishedProduct } from "@/actions/accounting/finishedProducts/getByItem"
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData"
 import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice"
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost"
@@ -10,11 +11,11 @@ import { useEffect } from "react"
 type InitialStateSetterProps = {
     lastPrice: LastItemPrice,
     pricingData: ItemPricingData,
-    consumerContainers: FilledConsumerContainer[]
+    finishedProducts: FinishedProduct[]
 
 }
 
-const InitialStateSetter = ({ lastPrice, pricingData, consumerContainers }: InitialStateSetterProps) => {
+const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: InitialStateSetterProps) => {
 
     const { setState, setItemCost, setConsumercontainers } = usePricingPurchasedActions()
 

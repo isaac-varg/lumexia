@@ -1,3 +1,4 @@
+import { update } from "../classes/update";
 import { createFilledConsumerContainer } from "./consumerContainers/createFilledConsumerContainer";
 import { createOneConsumerContainer } from "./consumerContainers/createOne";
 import { deletedFilledConsumerContainer } from "./consumerContainers/deleteFilledConsumerContainer";
@@ -18,6 +19,10 @@ import { createExaminationNoteType } from "./examinations/notes/createExaminatio
 import { getAllByExamId } from "./examinations/notes/getAllByExamId";
 import { getAllNoteTypes } from "./examinations/notes/getAllNoteTypes";
 import { upsertPricingExamination } from "./examinations/upsert";
+import { createFinishedProduct } from "./finishedProducts/create";
+import { deleteFinishedProduct } from "./finishedProducts/delete";
+import { getFinishedProductsByItem } from "./finishedProducts/getByItem";
+import { updateFinishedProduct } from "./finishedProducts/update";
 import { createPricingQueue } from "./pricing/createQueue";
 import { getItemPricingData } from "./pricing/getItemPricingData";
 import { getLastItemPrice } from "./pricing/getLastItemPrice";
@@ -32,6 +37,12 @@ export const accountingActions = {
         },
         createQueue: createPricingQueue,
         getQueue: getQueue,
+    },
+    finishedProducts: {
+        getByItem: getFinishedProductsByItem,
+        create: createFinishedProduct,
+        delete: deleteFinishedProduct,
+        update: updateFinishedProduct,
     },
     filledConsumerContainers: {
         getAllByFillItem: getAllByFillItem,

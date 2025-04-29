@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Apr 29 2025 10:31:24 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 29 2025 11:07:45 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
@@ -124,6 +124,7 @@ model FinishedProductAuxiliaryArchive {
 
 model FinishedProduct {
   id                              String                            @id @default(uuid())
+  recordStatusId                  String                            @map("record_status_id")
   name                            String
   filledWithItemId                String                            @map("filled_with_item_id")
   fillQuantity                    Float                             @map("fill_quantity")
@@ -142,6 +143,7 @@ model FinishedProduct {
   updatedAt                       DateTime                          @updatedAt @map("updated_at")
   filledWithItem                  Item                              @relation(fields: [filledWithItemId], references: [id])
   fillUom                         UnitOfMeasurement                 @relation(fields: [fillUomId], references: [id])
+  recordStatus                    RecordStatus                      @relation(fields: [recordStatusId], references: [id])
   auxiliaries                     FinishedProductAuxiliary[]
   FinishedProductArchive          FinishedProductArchive[]
   FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
@@ -388,6 +390,7 @@ model RecordStatus {
   createdAt                   DateTime                      @default(now()) @map("created_at")
   updatedAt                   DateTime                      @updatedAt @map("updated_at")
   itemConsumerContainers      ItemConsumerContainer[]
+  FinishedProduct             FinishedProduct[]
   BatchSize                   BatchSize[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
 

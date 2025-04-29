@@ -1,5 +1,6 @@
 model FinishedProduct {
     id                       String                     @id @default(uuid())
+    recordStatusId           String                     @map("record_status_id")
     name                     String
     filledWithItemId         String                     @map("filled_with_item_id")
     fillQuantity             Float                      @map("fill_quantity")
@@ -18,6 +19,7 @@ model FinishedProduct {
     updatedAt                DateTime                   @updatedAt @map("updated_at")
     filledWithItem           Item                       @relation(fields: [filledWithItemId], references: [id])
     fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+    recordStatus             RecordStatus               @relation(fields: [recordStatusId], references: [id])
     auxiliaries              FinishedProductAuxiliary[]
 
     @@map("finished_products")
