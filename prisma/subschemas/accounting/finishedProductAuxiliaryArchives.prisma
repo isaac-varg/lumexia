@@ -1,0 +1,21 @@
+model FinishedProductAuxiliaryArchive {
+    id                            String            @id @default(uuid())
+    apartOfFinishedProductId      String            @map("apart_of_finished_product_id")
+    auxiliaryItemId               String            @map("auxiliary_item_id")
+    quantity                      Int
+    difficultyAdjustmentCost      Float             @map("difficulty_adjustment_cost")
+    ipdArrivalCost                Float             @map("ipd_arrival_cost")
+    ipdProductionUsageCost        Float             @map("ipd_production_usage_cost")
+    ipdAuxiliaryUsageCost         Float             @map("ipd_auxiliary_usage_cost")
+    ipdUnforeseenDifficultiesCost Float             @map("ipd_unforeseen_difficulties_cost")
+    ipdUpcomingPrice              Float             @map("ipd_upcoming_price")
+    ipdUpcomingPriceUomId         String            @map("ipd_upcoming_price_uom_id")
+    ipdIsUpcomingPriceActive      Boolean           @map("ipd_is_upcoming_price_active")
+    createdAt                     DateTime          @default(now()) @map("created_at")
+    updatedAt                     DateTime          @updatedAt @map("updated_at")
+    apartOfFinishedProduct        FinishedProduct   @relation(fields: [apartOfFinishedProductId], references: [id])
+    auxiliaryItem                 Item              @relation(fields: [auxiliaryItemId], references: [id])
+    ipdUpcomingPriceUom           UnitOfMeasurement @relation(fields: [ipdUpcomingPriceUomId], references: [id])
+
+    @@map("finished_product_auxiliary_archives")
+}

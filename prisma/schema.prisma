@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Apr 22 2025 14:50:46 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Apr 29 2025 10:31:24 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
@@ -45,7 +45,6 @@ model ConsumerContainer {
   containerItemId         String                     @map("container_item_id")
   containerCost           Float                      @map("container_cost")
   fillLaborCost           Float                      @map("fill_labor_cost")
-  shippingCost            Float                      @map("shipping_cost")
   freeShippingCost        Float                      @map("free_shipping_cost")
   createdAt               DateTime                   @default(now()) @map("created_at")
   updatedAt               DateTime                   @updatedAt @map("updated_at")
@@ -54,6 +53,100 @@ model ConsumerContainer {
   archives                ConsumerContainerArchive[]
 
   @@map("consumer_containers")
+}
+
+model FinishedProductArchive {
+  id                       String                     @id @default(uuid())
+  pricingExaminationId     String                     @map("pricing_examination_id")
+  currentFinishedProductId String                     @map("current_finished_product_id")
+  name                     String
+  filledWithItemId         String                     @map("filled_with_item_id")
+  fillQuantity             Float                      @map("fill_quantity")
+  declaredQuantity         Float                      @map("declared_quantity")
+  freeShippingCost         Float                      @map("free_shipping_cost")
+  fillUomId                String                     @map("fill_uom_id")
+  difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+  finishedProductTotalCost Float                      @map("finished_product_total_cost")
+  auxiliariesTotalCost     Float                      @map("auxiliaries_total_cost")
+  productFillCost          Float                      @map("product_fill_cost")
+  consumerPrice            Float                      @map("consumer_price")
+  markup                   Float                      @map("markup")
+  profit                   Float                      @map("profit")
+  profitPercentage         Float                      @map("profit_percentage")
+  createdAt                DateTime                   @default(now()) @map("created_at")
+  updatedAt                DateTime                   @updatedAt @map("updated_at")
+  filledWithItem           Item                       @relation(fields: [filledWithItemId], references: [id])
+  fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+  pricingExamination       PricingExamination         @relation(fields: [pricingExaminationId], references: [id])
+  currentFinishedProduct   FinishedProduct            @relation(fields: [currentFinishedProductId], references: [id])
+  auxiliaries              FinishedProductAuxiliary[]
+
+  @@map("finished_product_archives")
+}
+
+model FinishedProductAuxiliary {
+  id                       String                  @id @default(uuid())
+  apartOfFinishedProductId String                  @map("apart_of_finished_product_id")
+  auxiliaryItemId          String                  @map("auxiliary_item_id")
+  quantity                 Int
+  difficultyAdjustmentCost Float                   @map("difficulty_adjustment_cost")
+  createdAt                DateTime                @default(now()) @map("created_at")
+  updatedAt                DateTime                @updatedAt @map("updated_at")
+  apartOfFinishedProduct   FinishedProduct         @relation(fields: [apartOfFinishedProductId], references: [id])
+  auxiliaryItem            Item                    @relation(fields: [auxiliaryItemId], references: [id])
+  FinishedProductArchive   FinishedProductArchive? @relation(fields: [finishedProductArchiveId], references: [id])
+  finishedProductArchiveId String?
+
+  @@map("finished_product_auxiliaries")
+}
+
+model FinishedProductAuxiliaryArchive {
+  id                            String            @id @default(uuid())
+  apartOfFinishedProductId      String            @map("apart_of_finished_product_id")
+  auxiliaryItemId               String            @map("auxiliary_item_id")
+  quantity                      Int
+  difficultyAdjustmentCost      Float             @map("difficulty_adjustment_cost")
+  ipdArrivalCost                Float             @map("ipd_arrival_cost")
+  ipdProductionUsageCost        Float             @map("ipd_production_usage_cost")
+  ipdAuxiliaryUsageCost         Float             @map("ipd_auxiliary_usage_cost")
+  ipdUnforeseenDifficultiesCost Float             @map("ipd_unforeseen_difficulties_cost")
+  ipdUpcomingPrice              Float             @map("ipd_upcoming_price")
+  ipdUpcomingPriceUomId         String            @map("ipd_upcoming_price_uom_id")
+  ipdIsUpcomingPriceActive      Boolean           @map("ipd_is_upcoming_price_active")
+  createdAt                     DateTime          @default(now()) @map("created_at")
+  updatedAt                     DateTime          @updatedAt @map("updated_at")
+  apartOfFinishedProduct        FinishedProduct   @relation(fields: [apartOfFinishedProductId], references: [id])
+  auxiliaryItem                 Item              @relation(fields: [auxiliaryItemId], references: [id])
+  ipdUpcomingPriceUom           UnitOfMeasurement @relation(fields: [ipdUpcomingPriceUomId], references: [id])
+
+  @@map("finished_product_auxiliary_archives")
+}
+
+model FinishedProduct {
+  id                              String                            @id @default(uuid())
+  name                            String
+  filledWithItemId                String                            @map("filled_with_item_id")
+  fillQuantity                    Float                             @map("fill_quantity")
+  declaredQuantity                Float                             @map("declared_quantity")
+  freeShippingCost                Float                             @map("free_shipping_cost")
+  fillUomId                       String                            @map("fill_uom_id")
+  difficultyAdjustmentCost        Float                             @map("difficulty_adjustment_cost")
+  finishedProductTotalCost        Float                             @map("finished_product_total_cost")
+  auxiliariesTotalCost            Float                             @map("auxiliaries_total_cost")
+  productFillCost                 Float                             @map("product_fill_cost")
+  consumerPrice                   Float                             @map("consumer_price")
+  markup                          Float                             @map("markup")
+  profit                          Float                             @map("profit")
+  profitPercentage                Float                             @map("profit_percentage")
+  createdAt                       DateTime                          @default(now()) @map("created_at")
+  updatedAt                       DateTime                          @updatedAt @map("updated_at")
+  filledWithItem                  Item                              @relation(fields: [filledWithItemId], references: [id])
+  fillUom                         UnitOfMeasurement                 @relation(fields: [fillUomId], references: [id])
+  auxiliaries                     FinishedProductAuxiliary[]
+  FinishedProductArchive          FinishedProductArchive[]
+  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
+
+  @@map("finished_products")
 }
 
 model ItemConsumerContainerArchive {
@@ -118,6 +211,7 @@ model ItemPricingData {
   itemId                     String                   @map("item_id")
   arrivalCost                Float                    @map("arrival_cost")
   productionUsageCost        Float                    @map("productionUsageCost")
+  auxiliaryUsageCost         Float                    @default(0) @map("auxiliary_usage_cost")
   unforeseenDifficultiesCost Float                    @map("unforeseen_difficulties_cost")
   isUpcomingPriceActive      Boolean                  @map("isUpcomingPriceActive")
   upcomingPrice              Float                    @map("upcomingPrice")
@@ -222,6 +316,7 @@ model PricingExamination {
   filledConsumerContainerArchives ItemConsumerContainerArchive[]
   validation                      PricingExaminationValidation[]
   producedPricingDataArchives     ProducedPricingDataArchive[]
+  FinishedProductArchive          FinishedProductArchive[]
   PricingExaminationNote          PricingExaminationNote[]
 
   @@map("pricing_examinations")
@@ -519,25 +614,28 @@ model UnitOfMeasurementConversion {
 }
 
 model UnitOfMeasurement {
-  id                           String                         @id @default(uuid())
-  name                         String
-  abbreviation                 String
-  uomA                         UnitOfMeasurementConversion[]  @relation("UnitOfMeasurementConversionUomA")
-  uomB                         UnitOfMeasurementConversion[]  @relation("UnitOfMeasurementConversionUomB")
-  createdAt                    DateTime                       @default(now()) @map("created_at")
-  updatedAt                    DateTime                       @updatedAt @map("updated_at")
-  lots                         Lot[]
-  transactions                 Transaction[]
-  container                    Container[]
-  purchaseOrderItem            PurchaseOrderItem[]
-  ItemConsumerContainerArchive ItemConsumerContainerArchive[]
-  ItemConsumerContainer        ItemConsumerContainer[]
-  ItemPricingData              ItemPricingData[]
-  ItemPricingDataArchive       ItemPricingDataArchive[]
-  BatchSize                    BatchSize[]
-  BprBillOfMaterials           BprBillOfMaterials[]
-  BprStaging                   BprStaging[]
-  PurchaseOrderItemDetail      PurchaseOrderItemDetail[]
+  id                              String                            @id @default(uuid())
+  name                            String
+  abbreviation                    String
+  uomA                            UnitOfMeasurementConversion[]     @relation("UnitOfMeasurementConversionUomA")
+  uomB                            UnitOfMeasurementConversion[]     @relation("UnitOfMeasurementConversionUomB")
+  createdAt                       DateTime                          @default(now()) @map("created_at")
+  updatedAt                       DateTime                          @updatedAt @map("updated_at")
+  lots                            Lot[]
+  transactions                    Transaction[]
+  container                       Container[]
+  purchaseOrderItem               PurchaseOrderItem[]
+  FinishedProductArchive          FinishedProductArchive[]
+  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
+  FinishedProduct                 FinishedProduct[]
+  ItemConsumerContainerArchive    ItemConsumerContainerArchive[]
+  ItemConsumerContainer           ItemConsumerContainer[]
+  ItemPricingData                 ItemPricingData[]
+  ItemPricingDataArchive          ItemPricingDataArchive[]
+  BatchSize                       BatchSize[]
+  BprBillOfMaterials              BprBillOfMaterials[]
+  BprStaging                      BprStaging[]
+  PurchaseOrderItemDetail         PurchaseOrderItemDetail[]
 
   @@map("units_of_measurement")
 }
@@ -587,33 +685,37 @@ model ItemType {
 }
 
 model Item {
-  id                          String                        @id @default(uuid())
-  name                        String
-  referenceCode               String                        @unique @map("reference_code")
-  itemTypeId                  String                        @map("item_type_id")
-  procurementTypeId           String                        @map("procurement_type_id")
-  inventoryTypeId             String                        @map("inventory_type_id")
-  createdAt                   DateTime                      @default(now()) @map("created_at")
-  updatedAt                   DateTime                      @updatedAt @map("updated_at")
-  itemType                    ItemType                      @relation(fields: [itemTypeId], references: [id])
-  procurementType             ProcurementType               @relation(fields: [procurementTypeId], references: [id])
-  inventoryType               InventoryType                 @relation(fields: [inventoryTypeId], references: [id])
-  lot                         Lot[]
-  aliases                     Alias[]
-  purchaseOrderItem           PurchaseOrderItem[]
-  itemPricingData             ItemPricingData[]
-  itemCostDeterminations      ItemCostDetermination[]
-  requests                    PurchasingRequest[]
-  audits                      InventoryAudit[]
-  auditRequests               AuditRequest[]
-  consumerContainers          ConsumerContainer[]
-  pricingExaminations         PricingExamination[]
-  consumerContainerArchives   ConsumerContainerArchive[]
-  BomPricingDataArchive       BomPricingDataArchive[]
-  ItemConsumerContainer       ItemConsumerContainer[]
-  PricingQueue                PricingQueue[]
-  BillOfMaterial              BillOfMaterial[]
-  MasterBatchProductionRecord MasterBatchProductionRecord[]
+  id                              String                            @id @default(uuid())
+  name                            String
+  referenceCode                   String                            @unique @map("reference_code")
+  itemTypeId                      String                            @map("item_type_id")
+  procurementTypeId               String                            @map("procurement_type_id")
+  inventoryTypeId                 String                            @map("inventory_type_id")
+  createdAt                       DateTime                          @default(now()) @map("created_at")
+  updatedAt                       DateTime                          @updatedAt @map("updated_at")
+  itemType                        ItemType                          @relation(fields: [itemTypeId], references: [id])
+  procurementType                 ProcurementType                   @relation(fields: [procurementTypeId], references: [id])
+  inventoryType                   InventoryType                     @relation(fields: [inventoryTypeId], references: [id])
+  lot                             Lot[]
+  aliases                         Alias[]
+  purchaseOrderItem               PurchaseOrderItem[]
+  itemPricingData                 ItemPricingData[]
+  itemCostDeterminations          ItemCostDetermination[]
+  requests                        PurchasingRequest[]
+  audits                          InventoryAudit[]
+  auditRequests                   AuditRequest[]
+  consumerContainers              ConsumerContainer[]
+  pricingExaminations             PricingExamination[]
+  consumerContainerArchives       ConsumerContainerArchive[]
+  BomPricingDataArchive           BomPricingDataArchive[]
+  FinishedProductArchive          FinishedProductArchive[]
+  FinishedProductAuxiliary        FinishedProductAuxiliary[]
+  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
+  FinishedProduct                 FinishedProduct[]
+  ItemConsumerContainer           ItemConsumerContainer[]
+  PricingQueue                    PricingQueue[]
+  BillOfMaterial                  BillOfMaterial[]
+  MasterBatchProductionRecord     MasterBatchProductionRecord[]
 
   @@map("items")
 }
@@ -934,7 +1036,8 @@ model BprStepActionableVerification {
 model CompoundingVessel {
   id                          String                       @id @default(uuid())
   equipmentId                 String                       @map("equipment_id")
-  capacity                    Float
+  capacityMinimum             Float                        @map("capacity_minimum")
+  capacityMaximum             Float                        @map("capacity_maximum")
   operationalCost             Float                        @map("operational_cost")
   createdAt                   DateTime                     @default(now()) @map("created_at")
   updatedAt                   DateTime                     @updatedAt @map("updated_at")

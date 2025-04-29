@@ -1,7 +1,8 @@
 model CompoundingVessel {
     id                          String                       @id @default(uuid())
     equipmentId                 String                       @map("equipment_id")
-    capacity                    Float
+    capacityMinimum             Float                        @map("capacity_minimum")
+    capacityMaximum             Float                        @map("capacity_maximum")
     operationalCost             Float                        @map("operational_cost")
     createdAt                   DateTime                     @default(now()) @map("created_at")
     updatedAt                   DateTime                     @updatedAt @map("updated_at")

@@ -1,7 +1,6 @@
 model ItemConsumerContainer {
     id                  String                         @id @default(uuid())
     itemId              String                         @map("item_id")
-    label               String                         @map("label")
     recordStatusId      String                         @default("d7b0a804-52c6-4586-b4f4-0fe49895f794") @map("record_status_id")
     consumerContainerId String                         @map("consumer_container_id")
     fillQuantity        Float                          @map("fill_quantity")

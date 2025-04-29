@@ -3,6 +3,7 @@ model ItemPricingData {
     itemId                     String                   @map("item_id")
     arrivalCost                Float                    @map("arrival_cost")
     productionUsageCost        Float                    @map("productionUsageCost")
+    auxiliaryUsageCost         Float                    @default(0) @map("auxiliary_usage_cost")
     unforeseenDifficultiesCost Float                    @map("unforeseen_difficulties_cost")
     isUpcomingPriceActive      Boolean                  @map("isUpcomingPriceActive")
     upcomingPrice              Float                    @map("upcomingPrice")
