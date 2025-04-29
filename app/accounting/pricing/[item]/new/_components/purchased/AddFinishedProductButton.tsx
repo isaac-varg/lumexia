@@ -2,7 +2,7 @@ import useDialog from '@/hooks/useDialog'
 import React from 'react'
 import { TbPlus } from 'react-icons/tb'
 
-const AddConsumerContainerButton = () => {
+const AddFinishedProductButton = () => {
 
     const { showDialog } = useDialog()
 
@@ -16,11 +16,11 @@ const AddConsumerContainerButton = () => {
         >
 
             <span className='text-2xl'><TbPlus /></span>
-            <div className='font-poppins font-semibold text-lg'>Add Container</div>
+            <div className='font-poppins font-semibold text-lg'>Add Finished Product</div>
         </div>
 
 
     )
 }
 
-export default AddConsumerContainerButton
+export default AddFinishedProductButton

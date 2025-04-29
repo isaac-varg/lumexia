@@ -17,7 +17,7 @@ type InitialStateSetterProps = {
 
 const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: InitialStateSetterProps) => {
 
-    const { setState, setItemCost, setConsumercontainers } = usePricingPurchasedActions()
+    const { setState, setItemCost, setFinishedProducts } = usePricingPurchasedActions()
 
     useEffect(() => {
         setState({
@@ -33,8 +33,8 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
     }, [pricingData, lastPrice])
 
     useEffect(() => {
-        setConsumercontainers(consumerContainers);
-    }, [consumerContainers])
+        setFinishedProducts(finishedProducts);
+    }, [finishedProducts])
 
     useEffect(() => {
         const price = pricingData?.isUpcomingPriceActive ? pricingData.upcomingPrice : lastPrice?.pricePerUnit || 0

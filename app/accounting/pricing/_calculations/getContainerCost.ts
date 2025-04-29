@@ -2,14 +2,13 @@ import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers
 
 export const getContainerCost = (filledConsumerContainer: FilledConsumerContainer, itemCost: number) => {
 
-    const {fillLaborCost, freeShippingCost, shippingCost, containerCost } = filledConsumerContainer.consumerContainer;
+    const {fillLaborCost, freeShippingCost,  containerCost } = filledConsumerContainer.consumerContainer;
 
     const { fillQuantity, difficultiesCost } = filledConsumerContainer
 
     const containerCostEmpty = 
         fillLaborCost +
         freeShippingCost +
-        shippingCost +
         containerCost 
 
     const filledProductCost = (itemCost * fillQuantity) + difficultiesCost;

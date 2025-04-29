@@ -9,6 +9,17 @@ export const getFinishedProductsByItem = async (itemId: string) => {
         },
         include: {
             fillUom: true,
+            auxiliaries: {
+                include: {
+                    auxiliaryItem: {
+                        include: {
+                            itemPricingData: true,
+                            aliases: true,
+                            itemType: true,
+                        }
+                    }
+                }
+            }
         }
     })
 

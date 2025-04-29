@@ -16,29 +16,30 @@ import { TbEdit, TbTrash } from 'react-icons/tb';
 import useDialog from '@/hooks/useDialog';
 import EditFilledConsumerContainerDialog from '../shared/EditFilledConsumerContainerDialog';
 import DeleteFilledConsumerContainerAlert from '../shared/DeleteFilledConsumerContainerAlert';
+import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
 
 type Props = {
-    selectedConsumerContainer: FilledConsumerContainer | null;
+    selectedFinishedProduct: FinishedProduct | null;
 }
 
-const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) => {
-    // Early return moved after hooks to maintain hook order
+const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
+
     const { itemCost, isContainerParametersPanelShown } = usePricingPurchasedSelection();
-    const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingPurchasedActions()
+    const { getInterimFinishedProduct, updateInterimFinishedProduct } = usePricingPurchasedActions()
     const { showDialog } = useDialog()
 
     const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
 
     // Calculate initial values
-    const containerCost = selectedConsumerContainer ? getContainerCost(selectedConsumerContainer, itemCost) : 0;
-    const interimData = selectedConsumerContainer ? getInterimConsumerContainer(selectedConsumerContainer.id) : null;
+    const containerCost = selectedFinishedProduct ? getContainerCost(selectedFinishedProduct, itemCost) : 0;
+    const interimData = selectedFinishedProduct ? getInterimConsumerContainer(selectedFinishedProduct.id) : null;
 
-    const initialConsumerPrice = selectedConsumerContainer
-        ? (interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice)
+    const initialConsumerPrice = selectedFinishedProduct
+        ? (interimData ? interimData.consumerPrice : selectedFinishedProduct.consumerPrice)
         : 0;
-    const initialMarkup = selectedConsumerContainer ? getMarkup(containerCost, initialConsumerPrice) : 0;
-    const initialProfit = selectedConsumerContainer ? getProfit(containerCost, initialConsumerPrice) : 0;
-    const initialProfitPercentage = selectedConsumerContainer ? getProfitPercentage(initialProfit, containerCost) : 0;
+    const initialMarkup = selectedFinishedProduct ? getMarkup(containerCost, initialConsumerPrice) : 0;
+    const initialProfit = selectedFinishedProduct ? getProfit(containerCost, initialConsumerPrice) : 0;
+    const initialProfitPercentage = selectedFinishedProduct ? getProfitPercentage(initialProfit, containerCost) : 0;
 
     const [consumerPrice, setConsumerPrice] = useState<number>(initialConsumerPrice);
     const [markup, setMarkup] = useState<number>(initialMarkup);
@@ -94,24 +95,24 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
         setProfitPercentage(pp);
 
         // Update zustand store if container exists
-        if (selectedConsumerContainer) {
-            updateInterimConsumerContainer(selectedConsumerContainer.id, cp, true, pp);
+        if (selectedFinishedProduct) {
+            updateInterimConsumerContainer(selectedFinishedProduct.id, cp, true, pp);
         }
-    }, [alterMode, containerCost, selectedConsumerContainer, updateInterimConsumerContainer]);
+    }, [alterMode, containerCost, selectedFinishedProduct, updateInterimConsumerContainer]);
 
     useEffect(() => {
-        if (!selectedConsumerContainer) return;
+        if (!selectedFinishedProduct) return;
 
-        const interimData = getInterimConsumerContainer(selectedConsumerContainer.id);
-        const consumerPrice = interimData ? interimData.consumerPrice : selectedConsumerContainer.consumerPrice;
+        const interimData = getInterimConsumerContainer(selectedFinishedProduct.id);
+        const consumerPrice = interimData ? interimData.consumerPrice : selectedFinishedProduct.consumerPrice;
         const markup = getMarkup(containerCost, consumerPrice);
         const profit = getProfit(containerCost, consumerPrice);
         const profitPercentage = getProfitPercentage(profit, containerCost);
 
         if (!interimData) {
             updateInterimConsumerContainer(
-                selectedConsumerContainer.id,
-                selectedConsumerContainer.consumerPrice,
+                selectedFinishedProduct.id,
+                selectedFinishedProduct.consumerPrice,
                 true,
                 profitPercentage
             );
@@ -122,21 +123,21 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
         setProfit(profit);
         setProfitPercentage(profitPercentage);
     }, [
-        selectedConsumerContainer,
+        selectedFinishedProduct,
         containerCost,
         getInterimConsumerContainer,
         updateInterimConsumerContainer
     ]);
 
-    if (!selectedConsumerContainer) return null;
+    if (!selectedFinishedProduct) return null;
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <EditFilledConsumerContainerDialog selectedConsumerContainer={selectedConsumerContainer} />
-            <DeleteFilledConsumerContainerAlert selectedConsumerContainerId={selectedConsumerContainer.id} />
+            <EditFilledConsumerContainerDialog selectedFinishedProduct={selectedFinishedProduct} />
+            <DeleteFilledConsumerContainerAlert selectedFinishedProductId={selectedFinishedProduct.id} />
 
             <div className='flex justify-between items-center'>
-                <h1 className='font-poppins text-3xl font-semibold'>{selectedConsumerContainer.consumerContainer.containerItem.name}</h1>
+                <h1 className='font-poppins text-3xl font-semibold'>{selectedFinishedProduct.consumerContainer.containerItem.name}</h1>
                 <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}>
                     <span className='text-xl'><TbTrash /></span>
                 </button>
@@ -216,19 +217,19 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                         <div className='flex flex-col gap-y-1'>
                             <Text.LabelDataPair
                                 label='Fill Quantity'
-                                data={selectedConsumerContainer.fillQuantity}
+                                data={selectedFinishedProduct.fillQuantity}
                             />
                             <Text.LabelDataPair
                                 label='Declared Fill Quantity'
-                                data={selectedConsumerContainer.declaredQuantity}
+                                data={selectedFinishedProduct.declaredQuantity}
                             />
                             <Text.LabelDataPair
                                 label='UOM'
-                                data={selectedConsumerContainer.uom.abbreviation}
+                                data={selectedFinishedProduct.uom.abbreviation}
                             />
                             <Text.LabelDataPair
                                 label='Difficulties Cost'
-                                data={selectedConsumerContainer.difficultiesCost}
+                                data={selectedFinishedProduct.difficultiesCost}
                             />
                         </div>
                     </div>
@@ -245,19 +246,19 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
                         <div className='flex flex-col gap-y-1'>
                             <Text.LabelDataPair
                                 label='Container Cost'
-                                data={selectedConsumerContainer.consumerContainer.containerCost}
+                                data={selectedFinishedProduct.consumerContainer.containerCost}
                             />
                             <Text.LabelDataPair
                                 label='Fill Labor'
-                                data={selectedConsumerContainer.consumerContainer.fillLaborCost}
+                                data={selectedFinishedProduct.consumerContainer.fillLaborCost}
                             />
                             <Text.LabelDataPair
                                 label='Shipping'
-                                data={selectedConsumerContainer.consumerContainer.shippingCost}
+                                data={selectedFinishedProduct.consumerContainer.shippingCost}
                             />
                             <Text.LabelDataPair
                                 label='Free Shipping'
-                                data={selectedConsumerContainer.consumerContainer.freeShippingCost}
+                                data={selectedFinishedProduct.consumerContainer.freeShippingCost}
                             />
                         </div>
                     </div>
@@ -267,4 +268,4 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
     );
 };
 
-export default SelectedConsumerContainerPanel;
+export default SelectedFinishedProductPanel;

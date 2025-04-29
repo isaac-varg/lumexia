@@ -12,7 +12,7 @@ export type FilledConsumerContainerFormParameters = {
     uomId: string
 }
 
-const AddConsumerContainerDialog = ({ fillItemId, produced = false }: { fillItemId: string, produced?: boolean }) => {
+const AddFinishedProductDialog = ({ fillItemId, produced = false }: { fillItemId: string, produced?: boolean }) => {
 
     const [step, setStep] = useState(0)
     const [consumerContainer, setConsumerContainer] = useState<string>('')
@@ -55,4 +55,4 @@ const AddConsumerContainerDialog = ({ fillItemId, produced = false }: { fillItem
     )
 }
 
-export default AddConsumerContainerDialog
+export default AddFinishedProductDialog

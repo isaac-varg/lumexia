@@ -1,15 +1,14 @@
 import { accountingActions } from "@/actions/accounting"
 import PageBreadcrumbs from "@/components/App/PageBreadcrumbs"
-import Card from "@/components/Card"
 import PageTitle from "@/components/Text/PageTitle"
 import { Item } from "@/types/item"
 import InitialStateSetter from "./InitialStateSetter"
 import Basics from "./Basics"
-import ConsumerContainers from "./ConsumerContainers"
 import ActionsPanel from "./ActionsPanel"
 import { PricingExaminationNoteType } from "@/actions/accounting/examinations/notes/getAllNoteTypes"
 import NotesPanel from "../shared/NotesPanel"
 import { v4 as uuidv4 } from 'uuid';
+import FinishedProducts from "./FinishedProducts"
 
 const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: PricingExaminationNoteType[] }) => {
 
@@ -21,14 +20,14 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
 
     return (
         <div className='flex flex-col gap-y-4'>
-            <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} consumerContainers={consumerContainers} />
+            <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} finishedProducts={finishedProducts} />
             <PageTitle>Pricing Determination - {item.name}</PageTitle>
             <PageBreadcrumbs />
             <div className="grid grid-cols-2 gap-4">
                 <Basics />
-                <ActionsPanel consumerContainers={consumerContainers} examinationId={examinationId} examinedItemId={item.id} pricingData={pricingData} />
+                <ActionsPanel finishedProducts={finishedProducts} examinationId={examinationId} examinedItemId={item.id} pricingData={pricingData} />
 
-                <ConsumerContainers fillItemId={item.id} />
+                <FinishedProducts fillItemId={item.id} />
 
                 <NotesPanel noteTypes={noteTypes} examinationId={examinationId} itemId={item.id} />
             </div>

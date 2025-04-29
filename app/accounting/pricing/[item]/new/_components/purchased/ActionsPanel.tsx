@@ -1,5 +1,4 @@
 'use client'
-import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import Card from '@/components/Card'
 import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice'
 import React, { useState } from 'react'
@@ -9,14 +8,15 @@ import useDialog from '@/hooks/useDialog'
 import { commitPricingExamination } from '../../_functions/commitPricingExamination'
 import { ItemPricingData } from '@/actions/accounting/pricing/getItemPricingData'
 import { useRouter } from 'next/navigation'
+import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem'
 
 const ActionsPanel = ({
-    consumerContainers,
+    finishedProducts,
     examinationId,
     examinedItemId,
     pricingData,
 }: {
-    consumerContainers: FilledConsumerContainer[]
+    finishedProducts: FinishedProduct[]
     examinationId: string
     examinedItemId: string
     pricingData: ItemPricingData,
@@ -26,7 +26,7 @@ const ActionsPanel = ({
     const { toggleContainerParameters } = usePricingPurchasedActions()
     const { showDialog } = useDialog()
     const router = useRouter()
-    const { isContainerParametersPanelShown, interimConsumerContainers } = usePricingPurchasedSelection();
+    const { isContainerParametersPanelShown, interimFinishedProducts } = usePricingPurchasedSelection();
     const [validation, setValidaton] = useState<PurchasedValidation>()
     const purchasedPricingState = usePricingPurchasedSelection()
 
@@ -35,7 +35,7 @@ const ActionsPanel = ({
 
     const handleCommit = async () => {
 
-        const validation = validatePurchasedCommit(consumerContainers.length, interimConsumerContainers);
+        const validation = validatePurchasedCommit(finishedProducts.length, interimFinishedProducts);
         setValidaton(validation)
 
         if (!validation.allValid) {
