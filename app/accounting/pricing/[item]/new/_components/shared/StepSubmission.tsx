@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { InterimAuxiliaryItem } from "./StepAuxiliaries"
 import { FinishedProductDetails } from "./StepFinishedProductDetails"
 import { submitNewFinishedProduct } from "../../_functions/submitNewFinishedProduct"
+import { usePricingPurchasedActions } from "@/store/pricingPurchasedSlice"
 
 type Props = {
     currentStep: number
@@ -14,6 +15,8 @@ type Props = {
 }
 
 const StepSubmission = ({ currentStep, fillItemId, finishedProductDetails, auxiliaries, onReset }: Props) => {
+
+    const { refreshFinishedProducts } = usePricingPurchasedActions()
 
 
     useEffect(() => {
@@ -31,6 +34,7 @@ const StepSubmission = ({ currentStep, fillItemId, finishedProductDetails, auxil
             } catch (error) {
                 console.error("Error:", error)
             } finally {
+                refreshFinishedProducts(fillItemId);
                 onReset()
             }
 

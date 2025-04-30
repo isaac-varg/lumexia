@@ -32,6 +32,8 @@ export const submitNewFinishedProduct = async (fillItemId: string, finishedProdu
 
     // then handle the auxiliaries
     await Promise.all(auxiliaries.map(async (aux) => {
+
+        // create auxiliary entry
         const response = await prisma.finishedProductAuxiliary.create({
             data: {
                 apartOfFinishedProductId: finishedProduct.id,
@@ -39,7 +41,30 @@ export const submitNewFinishedProduct = async (fillItemId: string, finishedProdu
                 quantity: parseInt(aux.quantity),
                 difficultyAdjustmentCost: parseFloat(aux.difficultyAdjustmentCost)
             }
-        })
+        });
+
+        // ensure there is a pricingDataEntry
+        const pricingDataEntryCount = await prisma.itemPricingData.count({
+            where: {
+                itemId: aux.auxiliaryItemId,
+            },
+        });
+
+        if (pricingDataEntryCount === 0) {
+
+            await prisma.itemPricingData.create({
+                data: {
+                    itemId: aux.auxiliaryItemId,
+                    arrivalCost: 0,
+                    productionUsageCost: 0,
+                    auxiliaryUsageCost: 0,
+                    unforeseenDifficultiesCost: 0,
+                    upcomingPrice: 0,
+                    upcomingPriceUomId: staticRecords.inventory.uom.lb,
+                    isUpcomingPriceActive: false,
+                }
+            });
+        }
 
         return response;
     }))

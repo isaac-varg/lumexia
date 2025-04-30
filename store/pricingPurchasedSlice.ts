@@ -1,7 +1,9 @@
+import { accountingActions } from '@/actions/accounting';
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
 import { LastItemPrice } from '@/actions/accounting/pricing/getLastItemPrice';
 import { Uom } from '@/actions/inventory/getAllUom';
+import prisma from '@/lib/prisma';
 import { create } from 'zustand';
 
 export type InterimFinishedProduct = {
@@ -38,6 +40,7 @@ type Actions = {
         setFinishedProducts: (finishedProducts: FinishedProduct[]) => void
         updateInterimFinishedProduct: (interimFinishedProductPayload: InterimFinishedProduct) => void;
         getInterimFinishedProduct: (finishedProductId: string) => InterimFinishedProduct | null;
+        refreshFinishedProducts: (fillItemId: string) => void;
     }
 }
 
@@ -109,6 +112,19 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
         },
         toggleContainerParameters: () => {
             set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))
+        },
+        refreshFinishedProducts: async (fillItemId) => {
+            try {
+
+                const finishedProducts = await accountingActions.finishedProducts.getByItem(fillItemId);
+                set(() => ({
+                    finishedProducts,
+                }))
+
+            } catch (error) {
+
+                console.error('There was an issue retrieving the finished products', error)
+            }
         }
     },
 }));
