@@ -12,6 +12,7 @@ import { updateItemPricingData } from '../../_functions/updateItemPricingData'
 type Inputs = {
     arrivalCost: number
     productionUsageCost: number
+    auxiliaryUsageCost: number
     unforeseenDifficultiesCost: number
     isUpcomingPriceActive: boolean
     upcomingPrice: number
@@ -27,7 +28,7 @@ const FormMode = ({
     uom: Uom[]
 }) => {
 
-    const defaults: Inputs = pricing ? { arrivalCost: pricing.arrivalCost, productionUsageCost: pricing.productionUsageCost, unforeseenDifficultiesCost: pricing.unforeseenDifficultiesCost, isUpcomingPriceActive: pricing.isUpcomingPriceActive, upcomingPrice: pricing.upcomingPrice, upcomingPriceUomId: pricing.upcomingPriceUomId } : { arrivalCost: 0, productionUsageCost: 0, unforeseenDifficultiesCost: 0, isUpcomingPriceActive: false, upcomingPrice: 0, upcomingPriceUomId: staticRecords.inventory.uom.lb }
+    const defaults: Inputs = pricing ? { arrivalCost: pricing.arrivalCost, productionUsageCost: pricing.productionUsageCost, auxiliaryUsageCost: pricing.auxiliaryUsageCost, unforeseenDifficultiesCost: pricing.unforeseenDifficultiesCost, isUpcomingPriceActive: pricing.isUpcomingPriceActive, upcomingPrice: pricing.upcomingPrice, upcomingPriceUomId: pricing.upcomingPriceUomId } : { arrivalCost: 0, productionUsageCost: 0, auxiliaryUsageCost: 0, unforeseenDifficultiesCost: 0, isUpcomingPriceActive: false, upcomingPrice: 0, upcomingPriceUomId: staticRecords.inventory.uom.lb }
 
     const form = useForm<Inputs>({ defaultValues: defaults })
 
@@ -88,6 +89,13 @@ const FormMode = ({
                 form={form}
                 fieldName='productionUsageCost'
                 label='Production Usage Cost'
+                required
+            />
+
+            <Form.Number
+                form={form}
+                fieldName='auxiliaryUsageCost'
+                label='Auxiliary Usage Cost'
                 required
             />
 

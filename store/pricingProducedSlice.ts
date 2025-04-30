@@ -1,5 +1,5 @@
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
-import { MbprByItem  } from '@/actions/production/getMbprsByItem';
+import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { PricingBom, PricingBomObject } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
 import { staticRecords } from '@/configs/staticRecords';
@@ -50,8 +50,8 @@ type Actions = {
         updateInterimConsumerContainer: (id: string, data: InterimConsumerContainerData) => void;
         getInterimConsumerContainer: (id: string) => InterimConsumerContainerData | null;
         toggleContainerParameters: () => void;
-        removeFilledConsumerContainer: (id: string) => void;
-       setTankLaborFixedCost: (cost: number) => void; 
+        removeFinishedProduct: (id: string) => void;
+        setTankLaborFixedCost: (cost: number) => void;
     }
 }
 
@@ -136,11 +136,11 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
         toggleContainerParameters: () => {
             set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))
         },
-        removeFilledConsumerContainer: (id) => {
-            set((state) => ({
-                filledConsumerContainers: state.filledConsumerContainers.filter((c) => c.id !== id)
-            }))
-        },
+        // removeFinishedProduct: (id) => {
+        //     set((state) => ({
+        //         : state.filledConsumerContainers.filter((c) => c.id !== id)
+        //     }))
+        // },
         setTankLaborFixedCost: (cost) => {
             set(() => ({
                 tankLaborFixedCost: cost

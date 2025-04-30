@@ -4,20 +4,20 @@ import useDialog from '@/hooks/useDialog'
 import { usePricingProducedActions } from '@/store/pricingProducedSlice'
 import React from 'react'
 
-const DeleteFilledConsumerContainerAlert = ({ selectedConsumerContainerId, produced = false }: { selectedConsumerContainerId: string, produced?: boolean }) => {
+const DeleteFinishedProductAlert = ({ selectedFinishedProductId, produced = false }: { selectedFinishedProductId: string, produced?: boolean }) => {
 
 
     const { resetDialogContext } = useDialog()
-    const { removeFilledConsumerContainer } = usePricingProducedActions()
+    const { removeFinishedProduct } = usePricingProducedActions()
 
     const handleDelete = async () => {
 
         if (produced) {
-            removeFilledConsumerContainer(selectedConsumerContainerId);
+            removeFinishedProduct(selectedFinishedProductId);
         }
 
 
-        await accountingActions.filledConsumerContainers.delete(selectedConsumerContainerId)
+        await accountingActions.finishedProducts.delete(selectedFinishedProductId)
         location.reload()
 
     }
@@ -34,11 +34,11 @@ const DeleteFilledConsumerContainerAlert = ({ selectedConsumerContainerId, produ
                     action={handleDelete}
                 >
 
-                    This will delete the filled consumer container for this product. Are you sure?
+                    This will delete the finished product for this item. Are you sure?
                 </Alert.Content>
             </Alert.Root>
         </div>
     )
 }
 
-export default DeleteFilledConsumerContainerAlert
+export default DeleteFinishedProductAlert 

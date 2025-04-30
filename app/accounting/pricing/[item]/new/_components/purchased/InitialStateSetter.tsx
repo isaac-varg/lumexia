@@ -37,9 +37,10 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
     }, [finishedProducts])
 
     useEffect(() => {
-        const price = pricingData?.isUpcomingPriceActive ? pricingData.upcomingPrice : lastPrice?.pricePerUnit || 0
 
-        const itemCost = getItemCost(price, pricingData?.arrivalCost || 0, pricingData?.unforeseenDifficultiesCost || 0)
+        if (!pricingData) return;
+
+        const itemCost = getItemCost(pricingData, lastPrice)
 
         setItemCost(itemCost);
     }, [pricingData, lastPrice])

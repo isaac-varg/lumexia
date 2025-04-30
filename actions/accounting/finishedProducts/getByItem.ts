@@ -1,5 +1,6 @@
 'use server'
 
+import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
 import prisma from "@/lib/prisma"
 
 export const getFinishedProductsByItem = async (itemId: string) => {
@@ -13,17 +14,32 @@ export const getFinishedProductsByItem = async (itemId: string) => {
                 include: {
                     auxiliaryItem: {
                         include: {
-                            itemPricingData: true,
+                            itemPricingData: {
+                                include: {
+                                    upcomingPriceUom: true,
+                                },
+                            },
                             aliases: true,
                             itemType: true,
-                        }
-                    }
-                }
-            }
-        }
-    })
+                        },
+                    },
+                },
+            },
+        },
+    });
 
-    return fp;
+    const withAuxiliaries = await Promise.all(
+        fp.map(async (current) => {
+            const auxiliaries = await getAuxiliariesTotalCost(current.auxiliaries);
+            return {
+                ...current,
+                auxiliaries,
+            };
+        })
+    );
+
+    return withAuxiliaries;
 };
 
 export type FinishedProduct = Awaited<ReturnType<typeof getFinishedProductsByItem>>[number]
+
