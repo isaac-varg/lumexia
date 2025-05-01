@@ -1,92 +1,87 @@
-'use client'
+import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice';
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import DataCard from '../shared/DataCard';
+import DataCardText from '../shared/DataCardText';
+import { toFracitonalDigits } from '@/utils/data/toFractionalDigits';
+import AlterModeButton, { AlterMode } from '../shared/AlterModeButton';
+import { getMarkup } from '@/app/accounting/pricing/_calculations/getMarkup';
+import { getProfit } from '@/app/accounting/pricing/_calculations/getProfit';
+import { getProfitPercentage } from '@/app/accounting/pricing/_calculations/getProfitPercentage';
+import { getConsumerPrice } from '@/app/accounting/pricing/_calculations/getConsumerPrice';
+import validator from 'validator';
+import Text from '@/components/Text';
+import { TbEdit, TbTrash } from 'react-icons/tb';
+import useDialog from '@/hooks/useDialog';
+import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
+import { getProductFillCost } from '@/app/accounting/pricing/_calculations/getProductFillCost';
+import { getFinishedProductTotalCost } from '@/app/accounting/pricing/_calculations/getFinishedProductTotalCost';
+import EditFinishedProductDialog from '../shared/EditFinishedProductDialog';
+import DeleteFinishedProductAlert from '../shared/DeleteFinishedProductAlert';
 
-import { usePricingPurchasedActions, usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
-import EditFinishedProductDialog from "../shared/EditFinishedProductDialog"
-import DeleteFinishedProductAlert from "../shared/DeleteFinishedProductAlert"
-import { TbEdit, TbTrash } from "react-icons/tb"
-import { FinishedProduct } from "@/actions/accounting/finishedProducts/getByItem"
-import useDialog from "@/hooks/useDialog"
-import DataCard from "../shared/DataCard"
-import DataCardText from "../shared/DataCardText"
-import AlterModeButton from "../shared/AlterModeButton"
-import { useCallback, useEffect, useState } from "react"
-import Text from "@/components/Text"
-import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
-import { usePricingProducedActions } from "@/store/pricingProducedSlice"
-import validator from "validator"
-import { getMarkup } from "@/app/accounting/pricing/_calculations/getMarkup"
-import { getProfit } from "@/app/accounting/pricing/_calculations/getProfit"
-import { getProfitPercentage } from "@/app/accounting/pricing/_calculations/getProfitPercentage"
-import { getConsumerPrice } from "@/app/accounting/pricing/_calculations/getConsumerPrice"
-import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+type Props = {
+    selectedFinishedProduct: FinishedProduct | null;
+}
+
+const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
 
 
+    if (!selectedFinishedProduct) return null;
 
-const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFinishedProduct: FinishedProductFromPurchased | null }) => {
-
-    const {
-        itemCost,
-        isContainerParametersPanelShown
-    } = usePricingPurchasedSelection()
-    const {
-        updateInterimFinishedProduct,
-        getInterimFinishedProduct,
-    } = usePricingPurchasedActions()
+    const { itemCost, isContainerParametersPanelShown } = usePricingPurchasedSelection();
+    const { getInterimFinishedProduct, updateInterimFinishedProduct } = usePricingPurchasedActions()
     const { showDialog } = useDialog()
-    const [alterMode, setAlterMode] = useState<'consumerPrice' | 'markup' | 'profitPercentage' | 'profit'>("consumerPrice")
+    const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
+
+    //  _       _   _       _             _            _       _   _                 
+    // (_)_ __ | |_(_) __ _| |   ___ __ _| | ___ _   _| | __ _| |_(_) ___  _ __  ___ 
+    // | | '_ \| __| |/ _` | |  / __/ _` | |/ __| | | | |/ _` | __| |/ _ \| '_ \/ __|
+    // | | | | | |_| | (_| | | | (_| (_| | | (__| |_| | | (_| | |_| | (_) | | | \__ \
+    // |_|_| |_|\__|_|\__,_|_|  \___\__,_|_|\___|\__,_|_|\__,_|\__|_|\___/|_| |_|___/
+    //                                                                               
+    const productFillCost = useMemo(() => {
+        if (!selectedFinishedProduct) return 0;
+        return getProductFillCost(selectedFinishedProduct.fillQuantity, itemCost);
+    }, [selectedFinishedProduct, itemCost]);
+
+    const finishedProductTotalCost = useMemo(() => {
+        return selectedFinishedProduct.finishedProductTotalCost ??
+            getFinishedProductTotalCost(
+                productFillCost,
+                selectedFinishedProduct.auxiliaries.total,
+                selectedFinishedProduct.difficultyAdjustmentCost,
+                selectedFinishedProduct.freeShippingCost
+            );
+    }, [
+        selectedFinishedProduct.finishedProductTotalCost,
+        productFillCost,
+        selectedFinishedProduct.auxiliaries.total,
+        selectedFinishedProduct.difficultyAdjustmentCost,
+        selectedFinishedProduct.freeShippingCost
+    ]);
+
+
+
+    //      _        _            
+    //  ___| |_ __ _| |_ ___  ___ 
+    // / __| __/ _` | __/ _ \/ __|
+    // \__ \ || (_| | ||  __/\__ \
+    // |___/\__\__,_|\__\___||___/
+    //                            
+
     const [consumerPrice, setConsumerPrice] = useState<number>(0);
     const [markup, setMarkup] = useState<number>(0);
-    const [profitPercentage, setProfitPercentage] = useState<number>(0);
     const [profit, setProfit] = useState<number>(0);
+    const [profitPercentage, setProfitPercentage] = useState<number>(0);
 
 
-    // for alter mode input
-    const getValueByAlterMode = () => {
-        switch (alterMode) {
-            case 'consumerPrice':
-                return consumerPrice;
-            case 'markup':
-                return markup;
-            case 'profit':
-                return profit;
-            default:
-                return profitPercentage;
-        }
-    };
-
-    // step for alt mode
-    const step = ['consumerPrice', 'profit'].includes(alterMode) ? '0.01' : '0.1';
-
-
-    useEffect(() => {
-        // initial state setting
-        if (!selectedFinishedProduct) return;
-
-        const interimFinishedProduct = getInterimFinishedProduct(selectedFinishedProduct.id)
-
-        if (interimFinishedProduct) {
-            setConsumerPrice(interimFinishedProduct.consumerPrice)
-            setMarkup(interimFinishedProduct.markup);
-            setProfit(interimFinishedProduct.profit)
-            setProfitPercentage(interimFinishedProduct.profitPercentage);
-            return;
-        }
-
-
-        setConsumerPrice(selectedFinishedProduct.consumerPrice)
-        setMarkup(selectedFinishedProduct.markup)
-        setProfitPercentage(selectedFinishedProduct.profitPercentage)
-        setProfit(selectedFinishedProduct.profit)
-
-    }, [selectedFinishedProduct])
-
-
+    //        __  __           _                     _       _            
+    //   ___ / _|/ _| ___  ___| |_   _   _ _ __   __| | __ _| |_ ___  ___ 
+    //  / _ \ |_| |_ / _ \/ __| __| | | | | '_ \ / _` |/ _` | __/ _ \/ __|
+    // |  __/  _|  _|  __/ (__| |_  | |_| | |_) | (_| | (_| | ||  __/\__ \
+    //  \___|_| |_|  \___|\___|\__|  \__,_| .__/ \__,_|\__,_|\__\___||___/
+    //                                    |_|                             
     const updatePricingCalculations = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-
-        if (!selectedFinishedProduct) return;
-
         const value = validator.isEmpty(event.target.value) ? 0 : parseFloat(event.target.value);
-        const finishedProductTotalCost = selectedFinishedProduct.calculatedTotals.finishedProductTotalCost
 
         let cp = 0; // consumer price
         let m = 0; // markup
@@ -98,34 +93,28 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                 cp = value;
                 m = getMarkup(finishedProductTotalCost, cp);
                 p = getProfit(finishedProductTotalCost, cp);
-                pp = getProfitPercentage(finishedProductTotalCost, cp);
+                pp = getProfitPercentage(p, finishedProductTotalCost);
                 break;
             }
             case 'markup': {
                 m = value;
                 cp = getConsumerPrice(finishedProductTotalCost, m);
                 p = getProfit(finishedProductTotalCost, cp);
-                pp = getProfitPercentage(finishedProductTotalCost, cp);
+                pp = getProfitPercentage(p, finishedProductTotalCost);
                 break;
             }
             case 'profit': {
                 p = value;
                 cp = p + finishedProductTotalCost;
-                pp = getProfitPercentage(finishedProductTotalCost, cp);
+                pp = getProfitPercentage(p, finishedProductTotalCost);
                 m = getMarkup(finishedProductTotalCost, cp);
                 break;
             }
             case 'profitPercentage': {
                 pp = value;
-                cp = (finishedProductTotalCost / (1 - (pp / 100)));
-                p = cp - finishedProductTotalCost
+                p = (pp / 100) * finishedProductTotalCost;
+                cp = p + finishedProductTotalCost;
                 m = getMarkup(finishedProductTotalCost, cp);
-                console.log('data', {
-                    pp,
-                    p,
-                    cp,
-                    m
-                })
                 break;
             }
             default:
@@ -138,24 +127,59 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
         setProfit(p);
         setProfitPercentage(pp);
 
-        // update zustand
-        const interimPayload = {
-            finishedProductId: selectedFinishedProduct.id,
-            finishedProduct: selectedFinishedProduct,
-            consumerPrice: cp,
-            profit: p,
-            markup: m,
-            wasViewed: true,
-            profitPercentage: pp
+        // Update zustand store if container exists
+        if (selectedFinishedProduct) {
+            updateInterimFinishedProduct({ finishedProductId: selectedFinishedProduct.id, finishedProduct: selectedFinishedProduct, consumerPrice: cp, wasViewed: true, profitPercentage: pp });
 
         }
-        updateInterimFinishedProduct(interimPayload);
+    }, [alterMode, finishedProductTotalCost, selectedFinishedProduct, updateInterimFinishedProduct]);
 
-    }, [alterMode, selectedFinishedProduct, updateInterimFinishedProduct]);
+    useEffect(() => {
+        if (!selectedFinishedProduct) return;
 
+        const interimData = getInterimFinishedProduct(selectedFinishedProduct.id);
+        const consumerPrice = interimData ? interimData.consumerPrice : selectedFinishedProduct.consumerPrice;
+        const markup = getMarkup(finishedProductTotalCost, consumerPrice);
+        const profit = getProfit(finishedProductTotalCost, consumerPrice);
+        const profitPercentage = getProfitPercentage(profit, finishedProductTotalCost);
 
-    if (!selectedFinishedProduct) { return false }
+        if (!interimData) {
+            updateInterimFinishedProduct({
+                finishedProductId: selectedFinishedProduct.id,
+                finishedProduct: selectedFinishedProduct,
+                consumerPrice: selectedFinishedProduct.consumerPrice,
+                wasViewed: true,
+                profitPercentage,
+            });
+        }
 
+        setConsumerPrice(consumerPrice);
+        setMarkup(markup);
+        setProfit(profit);
+        setProfitPercentage(profitPercentage);
+    }, [
+        selectedFinishedProduct,
+        finishedProductTotalCost,
+        getInterimFinishedProduct,
+        updateInterimFinishedProduct
+    ]);
+
+    useEffect(() => {
+        if (!selectedFinishedProduct) return;
+
+        const interimData = getInterimFinishedProduct(selectedFinishedProduct.id);
+        const initialConsumerPrice = interimData?.consumerPrice ?? selectedFinishedProduct.consumerPrice;
+        const initialMarkup = getMarkup(finishedProductTotalCost, initialConsumerPrice);
+        const initialProfit = getProfit(finishedProductTotalCost, initialConsumerPrice);
+        const initialProfitPercentage = getProfitPercentage(initialProfit, finishedProductTotalCost);
+
+        setConsumerPrice(initialConsumerPrice);
+        setMarkup(initialMarkup);
+        setProfit(initialProfit);
+        setProfitPercentage(initialProfitPercentage);
+    }, [selectedFinishedProduct, finishedProductTotalCost, getInterimFinishedProduct]);
+
+    if (!selectedFinishedProduct) return null;
 
     return (
         <div className='flex flex-col gap-y-6'>
@@ -173,7 +197,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                 <DataCard>
                     <DataCardText size='small' color='light'>Filled Container Cost</DataCardText>
                     <div className="tooltip" data-tip="You can see more details on how this number was calculated by using the toggle below.">
-                        <DataCardText>{selectedFinishedProduct.calculatedTotals.finishedProductTotalCost}</DataCardText>
+                        <DataCardText>{toFracitonalDigits.curreny(finishedProductTotalCost)}</DataCardText>
                         <DataCardText size='tiny' color='light'>$ / container</DataCardText>
                     </div>
                 </DataCard>
@@ -182,14 +206,14 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                     <div className='tooltip' data-tip="Markup % = [(Consumer Price - Overall Container Cost )/ Overall Container Cost ] * 100">
                         <DataCardText size='small' color='light'>Consumer Price</DataCardText>
                         <DataCardText>$ {toFracitonalDigits.curreny(consumerPrice)}</DataCardText>
-                        <DataCardText size='tiny' color='light'>{toFracitonalDigits.curreny(markup)} % markup</DataCardText>
+                        <DataCardText size='tiny' color='light'>{toFracitonalDigits.digits(markup, 2)} % markup</DataCardText>
                     </div>
                 </DataCard>
 
                 <DataCard>
                     <DataCardText size='small' color='light'>Profit</DataCardText>
                     <DataCardText>{toFracitonalDigits.curreny(profit)}</DataCardText>
-                    <DataCardText size='tiny' color='light'>{toFracitonalDigits.curreny(profitPercentage)} % profit margin</DataCardText>
+                    <DataCardText size='tiny' color='light'>{toFracitonalDigits.curreny(profitPercentage)} % profit</DataCardText>
                 </DataCard>
             </div>
 
@@ -203,7 +227,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                         <AlterModeButton alterModeId='consumerPrice' currentMode={alterMode} label='Consumer Price' onSelect={setAlterMode} />
                         <AlterModeButton alterModeId='markup' currentMode={alterMode} label='Markup Percentage' onSelect={setAlterMode} />
                         <AlterModeButton alterModeId='profit' currentMode={alterMode} label='Profit' onSelect={setAlterMode} />
-                        <AlterModeButton alterModeId='profitPercentage' currentMode={alterMode} label='Profit Margin' onSelect={setAlterMode} />
+                        <AlterModeButton alterModeId='profitPercentage' currentMode={alterMode} label='Profit Percentage' onSelect={setAlterMode} />
                     </div>
                 </div>
 
@@ -214,7 +238,9 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
 
                     <input
                         type='number'
-                        value={getValueByAlterMode()}
+                        value={alterMode === 'consumerPrice' ? consumerPrice :
+                            alterMode === 'markup' ? markup :
+                                alterMode === 'profit' ? profit : profitPercentage}
                         onChange={updatePricingCalculations}
                         className='bg-lilac-300 w-full h-full flex items-center justify-center font-poppins text-2xl font-medium text-center rounded-xl'
                         step={alterMode === 'consumerPrice' || alterMode === 'profit' ? '0.01' : '0.1'}
@@ -237,6 +263,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                         <p className='font-poppins text-xl font-normal'>
                             These are are parameters are unique this product filled into this container.
                         </p>
+
                         <div className='flex flex-col gap-y-1'>
                             <Text.LabelDataPair
                                 label='Fill Quantity'
@@ -288,8 +315,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                 </div>
             )}
         </div>
+    );
+};
 
-    )
-}
-
-export default SelectedFinishedProductPanel
+export default SelectedFinishedProductPanel;

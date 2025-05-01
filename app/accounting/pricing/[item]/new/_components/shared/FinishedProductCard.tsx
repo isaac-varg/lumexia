@@ -1,9 +1,10 @@
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem'
+import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem'
 import React, { Dispatch, SetStateAction } from 'react'
 
 type Props = {
-    onSelect: Dispatch<SetStateAction<FinishedProduct | null>>
-    finishedProduct: FinishedProduct
+    onSelect: Dispatch<SetStateAction<FinishedProductFromPurchased | null>>
+    finishedProduct: FinishedProductFromPurchased
     selectedFinishedProductId: string
 
 }

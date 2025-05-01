@@ -4,15 +4,16 @@ import { usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice'
 import React, { useState } from 'react'
 import FinishedProductCard from '../shared/FinishedProductCard'
 import AddFinishedProductButton from './AddFinishedProductButton'
-import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem'
 import AddFinishedProductDialog from '../shared/AddFinishedProductDialog'
+import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
+import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem'
 
 const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
 
     const { finishedProducts } = usePricingPurchasedSelection()
 
-    const [selectedFinishedProduct, setSelectedFinishedProduct] = useState<FinishedProduct | null>(null)
+    const [selectedFinishedProduct, setSelectedFinishedProduct] = useState<FinishedProductFromPurchased | null>(null)
 
     return (
         <div className='col-span-2'>

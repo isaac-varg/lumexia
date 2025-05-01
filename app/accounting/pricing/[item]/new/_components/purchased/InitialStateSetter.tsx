@@ -1,7 +1,6 @@
 'use client'
 
-import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers/getAllByFillItem"
-import { FinishedProduct } from "@/actions/accounting/finishedProducts/getByItem"
+import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData"
 import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice"
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost"
@@ -11,7 +10,7 @@ import { useEffect } from "react"
 type InitialStateSetterProps = {
     lastPrice: LastItemPrice,
     pricingData: ItemPricingData,
-    finishedProducts: FinishedProduct[]
+    finishedProducts: FinishedProductFromPurchased[]
 
 }
 
@@ -27,6 +26,7 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
             upcomingPriceUom: pricingData?.upcomingPriceUom || null,
             upcomingPriceActive: pricingData?.isUpcomingPriceActive || false,
             lastPrice: lastPrice,
+            pricingDataObject: pricingData,
             productionUsageCost: pricingData?.productionUsageCost || 0,
 
         })
@@ -44,6 +44,8 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
 
         setItemCost(itemCost);
     }, [pricingData, lastPrice])
+
+
 
 
     return false;

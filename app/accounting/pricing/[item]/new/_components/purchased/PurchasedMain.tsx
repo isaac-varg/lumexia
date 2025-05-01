@@ -14,7 +14,7 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
 
     const pricingData = await accountingActions.pricing.item.getItemPricingData(item.id)
     const lastPrice = await accountingActions.pricing.item.getLastItemPrice(item.id)
-    const finishedProducts = await accountingActions.finishedProducts.getByItem(item.id);
+    const finishedProducts = await accountingActions.finishedProducts.getByPurchasedItem(item.id, pricingData, lastPrice);
     const examinationId = uuidv4();
 
 

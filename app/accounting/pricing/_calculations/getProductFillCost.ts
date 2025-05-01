@@ -2,7 +2,7 @@
 // explaining this to other will be easier
 
 export const getProductFillCost = (fillQuantity: number | undefined, itemCost: number) => {
-    if (!fillQuantity || itemCost) {
+    if (!fillQuantity || !itemCost) {
         throw new Error('Insufficient data to get product fill cost')
     }
     return itemCost * fillQuantity

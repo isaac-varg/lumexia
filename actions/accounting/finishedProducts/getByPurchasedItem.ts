@@ -1,9 +1,14 @@
 'use server'
 
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
+import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost";
 import prisma from "@/lib/prisma"
+import { ItemPricingData } from "../pricing/getItemPricingData";
+import { LastItemPrice } from "../pricing/getLastItemPrice";
+import { getProductFillCost } from "@/app/accounting/pricing/_calculations/getProductFillCost";
 
-export const getFinishedProductsByItem = async (itemId: string) => {
+export const getFinishedProductsByPurchasedItem = async (itemId: string, itemPricingData: ItemPricingData, lastPrice: LastItemPrice) => {
+
     const fp = await prisma.finishedProduct.findMany({
         where: {
             filledWithItemId: itemId,
@@ -28,21 +33,32 @@ export const getFinishedProductsByItem = async (itemId: string) => {
         },
     });
 
+    const itemCost = getItemCost(itemPricingData, lastPrice)
+
     const withAuxiliaries = await Promise.all(
         fp.map(async (current) => {
             const auxiliaries = await getAuxiliariesTotalCost(current.auxiliaries);
+            const productFillCost = getProductFillCost(current.fillQuantity, itemCost)
+            const finishedProductTotalCost = productFillCost +
+                auxiliaries.total +
+                current.difficultyAdjustmentCost +
+                current.freeShippingCost;
+
             return {
                 ...current,
                 auxiliaries,
+                calculatedTotals: {
+                    productFillCost,
+                    finishedProductTotalCost
+                }
             };
         })
     );
 
 
 
-
     return withAuxiliaries;
 };
 
-export type FinishedProduct = Awaited<ReturnType<typeof getFinishedProductsByItem>>[number]
+export type FinishedProductFromPurchased = Awaited<ReturnType<typeof getFinishedProductsByPurchasedItem>>[number]
 

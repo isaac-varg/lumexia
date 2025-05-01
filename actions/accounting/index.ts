@@ -23,6 +23,7 @@ import { getAllAuxiliaries } from "./finishedProducts/auxiliaries/getAll";
 import { createFinishedProduct } from "./finishedProducts/create";
 import { deleteFinishedProduct } from "./finishedProducts/delete";
 import { getFinishedProductsByItem } from "./finishedProducts/getByItem";
+import { getFinishedProductsByPurchasedItem } from "./finishedProducts/getByPurchasedItem";
 import { updateFinishedProduct } from "./finishedProducts/update";
 import { createPricingQueue } from "./pricing/createQueue";
 import { getItemPricingData } from "./pricing/getItemPricingData";
@@ -44,6 +45,7 @@ export const accountingActions = {
             getAll: getAllAuxiliaries,
         },
         getByItem: getFinishedProductsByItem,
+        getByPurchasedItem: getFinishedProductsByPurchasedItem,
         create: createFinishedProduct,
         delete: deleteFinishedProduct,
         update: updateFinishedProduct,
