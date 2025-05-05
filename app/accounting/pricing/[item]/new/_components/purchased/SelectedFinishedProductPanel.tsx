@@ -235,7 +235,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                         </div>
 
                         <p className='font-poppins text-xl font-normal'>
-                            These are are parameters are unique this product filled into this container.
+                            These parameters are unique to this product filled into this container.
                         </p>
                         <div className='flex flex-col gap-y-1'>
                             <Text.LabelDataPair
@@ -251,39 +251,64 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                                 data={selectedFinishedProduct.fillUom.abbreviation}
                             />
                             <Text.LabelDataPair
-                                label='Difficulties Cost'
+                                label='Difficulty Adjustment Cost'
                                 data={selectedFinishedProduct.difficultyAdjustmentCost}
                             />
+                            <Text.LabelDataPair
+                                label='Free Shipping Cost'
+                                data={selectedFinishedProduct.freeShippingCost}
+                            />
+                            <Text.LabelDataPair
+                                label="Product Fill Cost"
+                                data={selectedFinishedProduct.calculatedTotals.productFillCost}
+                            />
+                            <Text.LabelDataPair
+                                label="Finished Product Total Cost"
+                                data={selectedFinishedProduct.calculatedTotals.finishedProductTotalCost}
+                            />
+
                         </div>
                     </div>
 
                     <div className='flex flex-col gap-y-4'>
                         <h1 className='font-poppins text-xl font-semibold'>
-                            Global Container Costs
+                            Auxiliaries
                         </h1>
 
                         <p className='font-poppins text-xl font-normal'>
-                            These are are parameters that affect all products that use this same container.
+                            Auxiliaries are items that supplement or support the overall packaged finished product. E.g., labels, containers, caps, packaging boxes. These have costs and parameters that are global, i.e., their parameters contribute to all finished goods that utilize the item as an auxiliary.
                         </p>
 
-                        <div className='flex flex-col gap-y-1'>
-                            <Text.LabelDataPair
-                                label='Container Cost'
-                                data={0}
-                            />
-                            <Text.LabelDataPair
-                                label='Fill Labor'
-                                data={0}
-                            />
-                            <Text.LabelDataPair
-                                label='Shipping'
-                                data={0}
-                            />
-                            <Text.LabelDataPair
-                                label='Free Shipping'
-                                data={0}
-                            />
+                        <h1 className="font-poppins font-semibold text-2xl text-neutral-800">
+                            Auxiliaries Total: {selectedFinishedProduct.auxiliaries.total}
+                        </h1>
+
+
+                        <div className="grid grid-cols-2 gap-2">
+
+
+                            {selectedFinishedProduct.auxiliaries.breakdown.map((aux) => {
+                                return (
+                                    <div
+                                        key={aux.auxiliaryItemId}
+                                        className="flex flex-col gap-y-2 p-6 bg-neutral-200 rounded-xl"
+                                    >
+                                        <h1 className="font-poppins text-xl font-medium">
+                                            {aux.name}
+                                        </h1>
+
+                                        <Text.Normal>Quantity: {aux.quantity}</Text.Normal>
+                                        <Text.Normal>Cost: {aux.itemCost}</Text.Normal>
+                                        <Text.Normal>Auxiliary Usage Cost: {aux.auxiliaryUsageCost}</Text.Normal>
+                                        <Text.Normal>Difficulty Adjustment Cost: {aux.difficultyAdjustmentCost}</Text.Normal>
+                                        <Text.Normal>Total Cost: {aux.lineTotal}</Text.Normal>
+
+                                    </div>
+                                )
+                            })}
+
                         </div>
+
                     </div>
                 </div>
             )}

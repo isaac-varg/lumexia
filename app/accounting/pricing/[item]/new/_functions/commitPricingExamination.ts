@@ -2,31 +2,39 @@ import { accountingActions } from "@/actions/accounting"
 import { PricingPurchasedState } from "@/store/pricingPurchasedSlice"
 import { PurchasedValidation } from "./validatePurchasedCommit"
 import { ItemPricingDataArchivePayload } from "@/actions/accounting/examinations/archives/createItemPricingDataArchive"
-import { ConsumerContainerArchivePayload } from "@/actions/accounting/examinations/archives/createManyConsumerContainerArchives"
-import { FilledConsumerContainerArhivePayload } from "@/actions/accounting/examinations/archives/createManyFilledConsumerContainerArchives"
 import { ExaminationValidationPayload } from "@/actions/accounting/examinations/archives/createExaminationValidationArchive"
 import { staticRecords } from "@/configs/staticRecords"
 import { completePricingQueues } from "./completePricingQueues"
+import prisma from "@/lib/prisma"
+import { Prisma } from "@prisma/client"
 
 export const commitPricingExamination = async (
     examinationId: string,
-    examinedItemId: string,
     pricingState: PricingPurchasedState,
     validation: PurchasedValidation,
-    pricingDataId: string | null,
 ) => {
 
+    const { interimFinishedProducts, finishedProducts } = pricingState;
+
+    if (
+        !pricingState.pricingDataObject
+    ) {
+        throw new Error("There was not enough data to submit.")
+    }
+
+
     // ensure pricing examination id exists and create if not
-    const pricingExamination = await accountingActions.examinations.upsert(examinationId, examinedItemId)
+    const pricingExamination = await accountingActions.examinations.upsert(examinationId, pricingState.pricingDataObject.itemId)
 
 
     // item pricing data archives
-    const { arrivalCost, productionUsageCost, unforeseenDifficultiesCost, upcomingPrice, upcomingPriceUom, upcomingPriceActive } = pricingState
+    const { arrivalCost, productionUsageCost, unforeseenDifficultiesCost, pricingDataObject, upcomingPrice, upcomingPriceUom, upcomingPriceActive } = pricingState
     const ipdaPayload: ItemPricingDataArchivePayload = {
         examinationId: pricingExamination.id,
-        ...(pricingDataId && { currentItemPricingDataId: pricingDataId }),
+        currentItemPricingDataId: pricingDataObject.id,
         arrivalCost,
         productionUsageCost,
+        auxiliaryUsageCost: 0,
         unforeseenDifficultiesCost,
         overallItemCost: pricingState.itemCost,
         upcomingPrice,
@@ -38,55 +46,64 @@ export const commitPricingExamination = async (
 
 
 
-    //consumer container archives
+    // finished product archives
 
-    const { consumerContainers, interimConsumerContainers } = pricingState
 
-    const ccaPayload: ConsumerContainerArchivePayload[] = [];
+    const finishedProductsMap = new Map(finishedProducts.map(fp => [fp.id, fp]))
 
-    consumerContainers.forEach((cc) => {
-        const container = cc.consumerContainer;
+    const finishedProductPayload = interimFinishedProducts.map((i) => {
 
-        const payload: ConsumerContainerArchivePayload = {
-            examinationId: pricingExamination.id,
-            currentConsumerContaineId: container.id,
-            containerItemId: container.containerItemId,
-            containerCost: container.containerCost,
-            fillLaborCost: container.fillLaborCost,
-            shippingCost: container.shippingCost,
-            freeShippingCost: container.freeShippingCost,
-        }
+        const matchingFinishedProduct = finishedProductsMap.get(i.finishedProductId);
 
-        ccaPayload.push(payload);
+        return ({
+            pricingExaminationId: pricingExamination.id,
+            currentFinishedProductId: matchingFinishedProduct?.id || '',
+            name: matchingFinishedProduct?.name || '',
+            filledWithItemId: matchingFinishedProduct?.filledWithItemId || '',
+            fillQuantity: matchingFinishedProduct?.fillQuantity || 0,
+            declaredQuantity: matchingFinishedProduct?.declaredQuantity || 0,
+            freeShippingCost: matchingFinishedProduct?.freeShippingCost || 0,
+            fillUomId: matchingFinishedProduct?.fillUomId || '',
+            difficultyAdjustmentCost: matchingFinishedProduct?.difficultyAdjustmentCost || 0,
+            finishedProductTotalCost: matchingFinishedProduct?.calculatedTotals.finishedProductTotalCost || 0,
+            auxiliariesTotalCost: matchingFinishedProduct?.auxiliaries.total || 0,
+            productFillCost: matchingFinishedProduct?.calculatedTotals?.productFillCost || 0,
+            consumerPrice: i.consumerPrice,
+            markup: i.markup,
+            profit: i.profit,
+            profitPercentage: i.profitPercentage,
+        })
     });
 
-    const consumerContainerArchives = await accountingActions.examinations.archives.consumerContainer.createMany(ccaPayload);
+    await prisma.finishedProductArchive.createMany({
+        data: finishedProductPayload,
+    });
 
 
-    // filled consumer container archives
+    // auxiliaries archive
+    
+    const auxuiliariesArchivePayload: Prisma.FinishedProductAuxiliaryArchiveUncheckedCreateInput[] = [];
 
-    const iccaPayload: FilledConsumerContainerArhivePayload[] = [];
 
-    consumerContainers.forEach((cc) => {
+    finishedProducts.forEach(fp => {
+        fp.auxiliaries.breakdown.forEach(aux => {
+            auxuiliariesArchivePayload.push({
+                apartOfFinishedProductId: fp.id,
+                auxiliaryItemId: aux.auxiliaryItemId,
+                quantity: aux.quantity,
+                difficultyAdjustmentCost: aux.difficultyAdjustmentCost,
+                ipdArrivalCost: fp.aux
+            })
+        })
+    }) 
 
-        const consumerContainerArchiveId = consumerContainerArchives[consumerContainerArchives.findIndex((container) => container.currentConsumerContaineId === cc.consumerContainerId)].id
-        const interimConsumerPricing = interimConsumerContainers[interimConsumerContainers.findIndex((icc) => icc.filledConsumerContainerId === cc.id)].consumerPrice;
 
-        const payload: FilledConsumerContainerArhivePayload = {
-            examinationId: pricingExamination.id,
-            currentItemConsumerContainerId: cc.id,
-            consumerContainerArchiveId,
-            fillQuantity: cc.fillQuantity,
-            declaredQuantity: cc.fillQuantity,
-            uomId: cc.uomId,
-            difficultiesCost: cc.difficultiesCost,
-            consumerPrice: interimConsumerPricing,
-        }
-
-        iccaPayload.push(payload);
+    await prisma.finishedProductAuxiliaryArchive.createMany({
+        data: 
+            
+        })
     })
 
-    await accountingActions.examinations.archives.filleConsumerContainer.createMany(iccaPayload)
 
 
 
@@ -101,7 +118,7 @@ export const commitPricingExamination = async (
 
     await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
 
-    await completePricingQueues(examinedItemId)
+    await completePricingQueues(pricingState.pricingDataObject.itemId)
 
 
     return pricingExamination

@@ -1,9 +1,10 @@
 model ItemPricingDataArchive {
     id                         String             @id @default(uuid())
     examinationId              String             @map("examination_id")
-    currentItemPricingDataId   String?            @map("current_item_pricing_data_id")
+    currentItemPricingDataId   String             @map("current_item_pricing_data_id")
     arrivalCost                Float              @map("arrival_cost")
     productionUsageCost        Float              @map("productionUsageCost")
+    auxiliaryUsageCost         Float              @map("auxiliary_usage_cost")
     unforeseenDifficultiesCost Float              @map("unforeseen_difficulties_cost")
     isUpcomingPriceActive      Boolean            @map("isUpcomingPriceActive")
     upcomingPrice              Float              @map("upcomingPrice")
@@ -13,7 +14,7 @@ model ItemPricingDataArchive {
     overallItemCost            Float              @default(0) @map("overall_item_cost")
     upcomingPriceUom           UnitOfMeasurement  @relation(fields: [upcomingPriceUomId], references: [id])
     examination                PricingExamination @relation(fields: [examinationId], references: [id])
-    currentItemPricingData     ItemPricingData?   @relation(fields: [currentItemPricingDataId], references: [id])
+    currentItemPricingData     ItemPricingData ?   @relation(fields: [currentItemPricingDataId], references: [id])
 
     @@map("item_pricing_data_archives")
 }

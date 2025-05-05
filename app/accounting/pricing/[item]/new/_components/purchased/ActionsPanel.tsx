@@ -50,7 +50,7 @@ const ActionsPanel = ({
 
         if (!validation) return;
 
-        await commitPricingExamination(examinationId, examinedItemId, purchasedPricingState, validation, pricingData?.id || null)
+        await commitPricingExamination(examinationId, purchasedPricingState, validation)
 
         router.back()
 
