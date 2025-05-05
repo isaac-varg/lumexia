@@ -26,6 +26,7 @@ export const getAuxiliariesTotalCost = async (auxiliaries: FinishedProductAuxili
                 difficultyAdjustmentCost,
                 quantity,
                 lineTotal,
+                auxiliaryItemPricingData: current.auxiliaryItem.itemPricingData,
             };
         })
     );

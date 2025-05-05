@@ -1,45 +1,45 @@
+'use server'
 import { accountingActions } from "@/actions/accounting"
-import { PricingPurchasedState } from "@/store/pricingPurchasedSlice"
+import { InterimFinishedProduct } from "@/store/pricingPurchasedSlice"
 import { PurchasedValidation } from "./validatePurchasedCommit"
-import { ItemPricingDataArchivePayload } from "@/actions/accounting/examinations/archives/createItemPricingDataArchive"
 import { ExaminationValidationPayload } from "@/actions/accounting/examinations/archives/createExaminationValidationArchive"
-import { staticRecords } from "@/configs/staticRecords"
 import { completePricingQueues } from "./completePricingQueues"
 import prisma from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
+import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
+import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData"
 
 export const commitPricingExamination = async (
     examinationId: string,
-    pricingState: PricingPurchasedState,
+    stateData: { interimFinishedProducts: InterimFinishedProduct[], finishedProducts: FinishedProductFromPurchased[], pricingDataObject: ItemPricingData },
     validation: PurchasedValidation,
 ) => {
 
-    const { interimFinishedProducts, finishedProducts } = pricingState;
+    const { interimFinishedProducts, finishedProducts, pricingDataObject } = stateData;
 
     if (
-        !pricingState.pricingDataObject
+        !pricingDataObject
     ) {
         throw new Error("There was not enough data to submit.")
     }
 
 
     // ensure pricing examination id exists and create if not
-    const pricingExamination = await accountingActions.examinations.upsert(examinationId, pricingState.pricingDataObject.itemId)
+    const pricingExamination = await accountingActions.examinations.upsert(examinationId, pricingDataObject.itemId)
 
 
     // item pricing data archives
-    const { arrivalCost, productionUsageCost, unforeseenDifficultiesCost, pricingDataObject, upcomingPrice, upcomingPriceUom, upcomingPriceActive } = pricingState
-    const ipdaPayload: ItemPricingDataArchivePayload = {
+    const { id, arrivalCost, productionUsageCost, auxiliaryUsageCost, unforeseenDifficultiesCost, overallItemCost, upcomingPrice, upcomingPriceUomId, isUpcomingPriceActive } = pricingDataObject
+    const ipdaPayload = {
         examinationId: pricingExamination.id,
-        currentItemPricingDataId: pricingDataObject.id,
+        currentItemPricingDataId: id,
         arrivalCost,
         productionUsageCost,
-        auxiliaryUsageCost: 0,
+        auxiliaryUsageCost,
         unforeseenDifficultiesCost,
-        overallItemCost: pricingState.itemCost,
+        overallItemCost,
         upcomingPrice,
-        upcomingPriceUomId: upcomingPriceUom?.id || staticRecords.inventory.uom.lb,
-        isUpcomingPriceActive: upcomingPriceActive,
+        upcomingPriceUomId,
+        isUpcomingPriceActive,
 
     }
     await accountingActions.examinations.archives.itemPricingData.create(ipdaPayload)
@@ -81,8 +81,8 @@ export const commitPricingExamination = async (
 
 
     // auxiliaries archive
-    
-    const auxuiliariesArchivePayload: Prisma.FinishedProductAuxiliaryArchiveUncheckedCreateInput[] = [];
+
+    const auxuiliariesArchivePayload: any[] = [];
 
 
     finishedProducts.forEach(fp => {
@@ -92,23 +92,25 @@ export const commitPricingExamination = async (
                 auxiliaryItemId: aux.auxiliaryItemId,
                 quantity: aux.quantity,
                 difficultyAdjustmentCost: aux.difficultyAdjustmentCost,
-                ipdArrivalCost: fp.aux
+                ipdArrivalCost: aux.auxiliaryItemPricingData[0].arrivalCost,
+                ipdProductionUsageCost: aux.auxiliaryItemPricingData[0].productionUsageCost,
+                ipdAuxiliaryUsageCost: aux.auxiliaryItemPricingData[0].auxiliaryUsageCost,
+                ipdUnforeseenDifficultiesCost: aux.auxiliaryItemPricingData[0].unforeseenDifficultiesCost,
+                ipdUpcomingPrice: aux.auxiliaryItemPricingData[0].upcomingPrice,
+                ipdIsUpcomingPriceActive: aux.auxiliaryItemPricingData[0].isUpcomingPriceActive,
+                ipdUpcomingPriceUomId: aux.auxiliaryItemPricingData[0].upcomingPriceUomId
             })
-        })
-    }) 
-
-
-    await prisma.finishedProductAuxiliaryArchive.createMany({
-        data: 
-            
         })
     })
 
 
+    await prisma.finishedProductAuxiliaryArchive.createMany({
+        data: auxuiliariesArchivePayload,
+
+    })
 
 
     // pricing examination validation archives
-
     const pevaPayload: ExaminationValidationPayload = {
 
         examinationId: pricingExamination.id,
@@ -118,7 +120,7 @@ export const commitPricingExamination = async (
 
     await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
 
-    await completePricingQueues(pricingState.pricingDataObject.itemId)
+    await completePricingQueues(pricingDataObject.itemId)
 
 
     return pricingExamination

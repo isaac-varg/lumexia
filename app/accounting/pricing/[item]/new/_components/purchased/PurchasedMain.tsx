@@ -18,6 +18,7 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
     const examinationId = uuidv4();
 
 
+
     return (
         <div className='flex flex-col gap-y-4'>
             <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} finishedProducts={finishedProducts} />
@@ -25,7 +26,7 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
             <PageBreadcrumbs />
             <div className="grid grid-cols-2 gap-4">
                 <Basics />
-                <ActionsPanel finishedProducts={finishedProducts} examinationId={examinationId} examinedItemId={item.id} pricingData={pricingData} />
+                <ActionsPanel examinationId={examinationId} />
 
                 <FinishedProducts fillItemId={item.id} />
 
