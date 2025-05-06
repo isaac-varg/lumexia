@@ -24,7 +24,6 @@ const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Pricin
     const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(activeMbpr.id)
     const filledConsumerContainers = await accountingActions.filledConsumerContainers.getAllByFillItem(item.id);
     const bom = await getBomWithPricing(activeMbpr.id)
-    const tankLaborCost = await getTankLaborCost();
 
 
 

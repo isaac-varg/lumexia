@@ -17,8 +17,6 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
     const finishedProducts = await accountingActions.finishedProducts.getByPurchasedItem(item.id, pricingData, lastPrice);
     const examinationId = uuidv4();
 
-
-
     return (
         <div className='flex flex-col gap-y-4'>
             <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} finishedProducts={finishedProducts} />

@@ -1,29 +1,30 @@
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
+import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
+import { CompoundingVessel } from '@/actions/production/compoundingVessels/getAllCompoundinVessels';
 import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { PricingBom, PricingBomObject } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
 import { staticRecords } from '@/configs/staticRecords';
 import { create } from 'zustand';
 
-export type InterimConsumerContainerData = {
-    filledConsumerContainerId: string
+export type InterimFinishedProduct = {
+    finishedProductId: string
+    finishedProduct: FinishedProduct
     consumerPrice: number
+    profit: number
+    markup: number
     wasViewed: boolean
     profitPercentage: number
-
 }
-
 
 type State = {
     isContainerParametersPanelShown: boolean
-    filledConsumerContainers: FilledConsumerContainer[]
-    interimConsumerContainers: InterimConsumerContainerData[]
     activeMbpr: MbprByItem | null
     activeBatchSize: BatchSize | null
+    compoundingVessel: CompoundingVessel | null
     batchSizes: BatchSize[]
     bomObject: PricingBomObject | null
     selectedBomItem: PricingBom | null
-    tankLaborFixedCost: number
 }
 
 export type StateForCommit = {

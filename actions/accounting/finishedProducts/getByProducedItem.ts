@@ -8,7 +8,7 @@ import { LastItemPrice } from "../pricing/getLastItemPrice";
 import { getProductFillCost } from "@/app/accounting/pricing/_calculations/getProductFillCost";
 import { staticRecords } from "@/configs/staticRecords";
 
-export const getFinishedProductsByPurchasedItem = async (itemId: string, itemPricingData: ItemPricingData, lastPrice: LastItemPrice) => {
+export const getFinishedProductsByProducedItem = async (itemId: string, itemPricingData: ItemPricingData ) => {
 
     const fp = await prisma.finishedProduct.findMany({
         where: {

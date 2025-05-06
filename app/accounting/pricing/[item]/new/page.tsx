@@ -24,7 +24,7 @@ const NewPricingEntry = async ({ searchParams }: NewPricingEntryProps) => {
 
     return (
         <div>
-            {/*<ProducedMain item={item} noteTypes={noteTypes} />*/}
+            <ProducedMain item={item} noteTypes={noteTypes} />
         </div>
     )
 }
