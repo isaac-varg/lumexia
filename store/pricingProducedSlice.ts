@@ -27,14 +27,14 @@ type State = {
     selectedBomItem: PricingBom | null
 }
 
-export type StateForCommit = {
-    filledConsumerContainers: FilledConsumerContainer[]
-    interimConsumerContainers: InterimConsumerContainerData[]
-    activeMbpr: MbprByItem | null
-    activeBatchSize: BatchSize | null
-    bomObject: PricingBomObject | null
-
-}
+//export type StateForCommit = {
+//    filledConsumerContainers: FilledConsumerContainer[]
+//    interimConsumerContainers: InterimConsumerContainerData[]
+//    activeMbpr: MbprByItem | null
+//    activeBatchSize: BatchSize | null
+//    bomObject: PricingBomObject | null
+//
+//}
 
 //export type PricingProducedStates = keyof State
 export type PricingProducedState = State; // alias for this state
@@ -42,7 +42,6 @@ export type PricingProducedState = State; // alias for this state
 type Actions = {
     actions: {
         setActiveMbpr: (mbpr: MbprByItem) => void,
-        setFilledConsumerContainers: (containers: FilledConsumerContainer[]) => void,
         setBatchSizes: (batchSizes: BatchSize[]) => void;
         setBomObject: (bomObject: PricingBomObject) => void;
         setSelectedBomItem: (bom: PricingBom) => void;
@@ -59,8 +58,6 @@ type Actions = {
 
 export const usePricingProducedSelection = create<State & Actions>((set, get) => ({
     isContainerParametersPanelShown: false,
-    filledConsumerContainers: [],
-    interimConsumerContainers: [],
     activeMbpr: null,
     activeBatchSize: null,
     batchSizes: [],
@@ -75,11 +72,6 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
                 activeMbpr: mbpr
             }))
         },
-        setFilledConsumerContainers: (containers) => {
-            set(() => ({
-                filledConsumerContainers: containers,
-            }))
-        },
         setBatchSizes: (batchSizes) => {
             const active = batchSizes.filter((bs) => bs.recordStatusId === staticRecords.app.recordStatuses.active);
             set(() => ({ batchSizes, }))
@@ -91,19 +83,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
         setSelectedBomItem: (bom) => {
             set(() => ({ selectedBomItem: bom }))
         },
-        addFilledConsumerContainer: (container) => {
-            set((state) => ({
-                filledConsumerContainers: [...state.filledConsumerContainers, container]
-            }))
-        },
-        updateFilledConsumerContainer: (id, container) => {
-            set((state) => ({
-                filledConsumerContainers: state.filledConsumerContainers.map((i) =>
-                    i.id === id ? { ...container } : i
-                ),
-            }));
-        },
-        updateInterimConsumerContainer: (id, data) => {
+        updateInterim: (id, data) => {
 
             const current = get()
             const existingIndex = current.interimConsumerContainers.findIndex(

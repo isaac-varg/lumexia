@@ -4,49 +4,72 @@ import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost"
 import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
 import { getConversionFactor } from "@/utils/uom/getConversionFactor";
+import { getPricingMbpr } from "./getPricingMbpr";
+import { throwPricingError } from "./throwPricingError";
+import { getPricingBom } from "./getPricingBom";
+import { validatePricingBom } from "./validatePricingBom";
+import { getPricingLaborCost } from "./getPricingLaborCost";
 
 const lb = staticRecords.inventory.uom.lb;
 
-
 export const getBomWithPricing = async (mbprId: string) => {
-    const bom = await prisma.billOfMaterial.findMany({
-        where: {
-            mbprId,
-        },
-        include: {
-            item: {
-                include: {
-                    itemPricingData: true,
-                    purchaseOrderItem: {
-                        take: 1,
-                        orderBy: {
-                            updatedAt: 'desc',
-                        },
-                    },
-                },
-            },
-            mbpr: {
-                include: {
-                    BatchSize: {
-                        where: {
-                            recordStatusId: staticRecords.app.recordStatuses.active
-                        },
-                        include: {
-                            batchSizeCompoundingVessels: true
-                        }
-                    }
-                }
-            }
-        },
-    });
 
-    // get static labor cost
-    const fixedTankLaborCostResponse = await prisma.config.findFirst({
-        where: {
-            id: 'b3474654-d309-4259-9e28-f0e6fb57f593'
-        },
-    });
-    const fixedTankLaborCost = parseFloat(fixedTankLaborCostResponse?.value || '0')
+    // get the mbpr main data
+    const mbpr = await getPricingMbpr(mbprId);
+
+    if (!mbpr) { return throwPricingError({ message: 'There was an error retrieving the MBPR.', errorOnFunction: 'getMbpr' }) }
+
+    if (mbpr.BatchSize.length === 0 ||
+        mbpr.BatchSize[0].batchSizeCompoundingVessels.length === 0 ||
+        !mbpr.BatchSize[0].batchSizeCompoundingVessels[0].tankTime ||
+        !mbpr.BatchSize[0].batchSizeCompoundingVessels[0].compoundingVessel.operationalCost
+    ) {
+        return throwPricingError({
+            message: 'The MBPR is missing either a batch size tank time or the compounding vessel is missing the operational cost.',
+            errorOnFunction: 'getPricingMbpr'
+        })
+    }
+
+
+    // get the bom
+    const bom = await getPricingBom(mbpr.id);
+
+    if (bom.length === 0) {
+        throwPricingError({ message: 'No BOM line items returned', errorOnFunction: 'getPricingBom' })
+    }
+
+
+    // validate the bom for pricing
+    const isBomValidated = validatePricingBom(bom)
+
+    if (!isBomValidated.passes) {
+        throwPricingError({
+            message: 'The following BOM items are missing both Item Pricing Data in which the upcoming price is active and a last purchase price.',
+            errorOnFunction: 'isBomValidated',
+            data: isBomValidated.errorOnBomItem,
+        })
+    }
+
+    // get the labor cost
+    const laborCost = getPricingLaborCost(mbpr)
+
+
+
+    // get the bom item cost
+    // calculate the cost in batch
+    // sum these
+}
+
+
+
+
+
+
+export const oldiebutagoodie = async (mbprId: string) => {
+
+    // main source of data
+    // the bom connects the mbpr, which is 
+    // connected to the batch size and compounding vessel
 
     // pricing 
 

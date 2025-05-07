@@ -9,41 +9,33 @@ import { PricingBom, PricingBomObject } from "../_functions/getBomWithPricing"
 
 type SetterProps = {
     activeMbpr: MbprByItem
-    filledConsumerContainers: FilledConsumerContainer[]
     batchSizes: BatchSize[]
-    bom: PricingBomObject
-    tankLaborCost: number
 }
 
 const InitialStateSetter = ({
     activeMbpr,
-    filledConsumerContainers,
     batchSizes,
-    bom,
-    tankLaborCost,
 }: SetterProps) => {
 
     const {
         setActiveMbpr,
-        setFilledConsumerContainers,
         setBatchSizes,
-        setBomObject,
-        setTankLaborFixedCost,
     } = usePricingProducedActions()
 
-
+    const { activeBatchSize } = usePricingProducedSelection()
 
     useEffect(() => {
         setActiveMbpr(activeMbpr);
         setBatchSizes(batchSizes);
-        setBomObject(bom)
-        setTankLaborFixedCost(tankLaborCost)
 
-    }, [activeMbpr])
+    }, [activeMbpr, batchSizes])
+
 
     useEffect(() => {
-        setFilledConsumerContainers(filledConsumerContainers);
-    }, [filledConsumerContainers])
+        // recalcaulate bom when active batch sizes change;
+
+    }, [activeBatchSize])
+
 
     return false
 }
