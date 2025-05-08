@@ -12,6 +12,13 @@ export const getPricingBom = async (mbprId: string) => {
                 include: {
                     itemPricingData: true,
                     purchaseOrderItem: {
+                        include: {
+                            purchaseOrders: {
+                                select: {
+                                    referenceCode: true
+                                }
+                            }
+                        },
                         take: 1,
                         orderBy: {
                             updatedAt: 'desc',

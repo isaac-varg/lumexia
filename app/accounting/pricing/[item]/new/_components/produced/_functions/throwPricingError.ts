@@ -1,10 +1,10 @@
-type PricingError = {
+type PricingErrorPayload = {
     message: string
     errorOnFunction: string
     data?: string[]
 }
 
-export const throwPricingError = (error: PricingError) => {
+export const throwPricingError = (error: PricingErrorPayload) => {
     const { message, errorOnFunction, data } = error;
 
     console.error(`${errorOnFunction}: ${message}`, data)
@@ -13,5 +13,9 @@ export const throwPricingError = (error: PricingError) => {
         message,
         errorOnFunction,
         data,
+        isError: true,
     })
 }
+
+export type PricingError = ReturnType<typeof throwPricingError>
+

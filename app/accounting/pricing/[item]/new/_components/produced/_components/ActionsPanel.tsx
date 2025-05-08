@@ -18,56 +18,58 @@ const ActionsPanel = ({
     examinatedItemId,
 }: PanelProps) => {
 
-    const { isContainerParametersPanelShown, filledConsumerContainers, interimConsumerContainers } = usePricingProducedSelection();
+    const { isContainerParametersPanelShown, producedPricingSummations } = usePricingProducedSelection();
     const { toggleContainerParameters } = usePricingProducedActions();
-    const { showDialog } = useDialog()
-    const pricingState = usePricingProducedSelection()
-    const [validation, setValidaton] = useState<ProducedValidation>()
-    const router = useRouter()
+    //const { showDialog } = useDialog()
+    // const pricingState = usePricingProducedSelection()
+    //const [validation, setValidaton] = useState<ProducedValidation>()
+    // const router = useRouter()
 
 
-    const handleCommit = () => {
+    // const handleCommit = () => {
 
-        const validation = validateProducedCommit(filledConsumerContainers.length, interimConsumerContainers)
-        setValidaton(validation)
+    //     const validation = validateProducedCommit(filledConsumerContainers.length, interimConsumerContainers)
+    //     setValidaton(validation)
 
-        if (!validation.allValid) {
-            showDialog("producedValidationErrors")
-            return;
-        }
+    //     if (!validation.allValid) {
+    //         showDialog("producedValidationErrors")
+    //         return;
+    //     }
 
-        initiateCommit()
-    }
+    //     initiateCommit()
+    // }
 
-    const initiateCommit = async () => {
+    // const initiateCommit = async () => {
 
-        if (!validation) return;
+    //     if (!validation) return;
 
-        const serializedPricingState: StateForCommit = {
-            bomObject: pricingState.bomObject,
-            activeMbpr: pricingState.activeMbpr,
-            activeBatchSize: pricingState.activeBatchSize,
-            filledConsumerContainers: pricingState.filledConsumerContainers,
-            interimConsumerContainers: pricingState.interimConsumerContainers,
-        }
+    //     const serializedPricingState: StateForCommit = {
+    //         bomObject: pricingState.bomObject,
+    //         activeMbpr: pricingState.activeMbpr,
+    //         activeBatchSize: pricingState.activeBatchSize,
+    //         filledConsumerContainers: pricingState.filledConsumerContainers,
+    //         interimConsumerContainers: pricingState.interimConsumerContainers,
+    //     }
 
-        await commitProducedPricingExamination(examinationId, examinatedItemId, validation, serializedPricingState)
+    //     await commitProducedPricingExamination(examinationId, examinatedItemId, validation, serializedPricingState)
 
-        console.log('49')
-        router.back()
+    //     console.log('49')
+    //     router.back()
 
-    }
+    // }
 
 
     return (
         <Card.Root>
-            <ValidationErrorAlert validation={validation} onProceed={initiateCommit} />
+            {/*<ValidationErrorAlert validation={validation} onProceed={initiateCommit} /> */}
 
             <Card.Title>Actions</Card.Title>
             <button className={`btn ${isContainerParametersPanelShown ? 'btn-accent' : ''}`} onClick={() => toggleContainerParameters()}>
                 {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
             </button>
-            <button className='btn btn-success' onClick={() => handleCommit()}>Commit</button>
+
+            <button className='btn btn-square' onClick={() => console.log(producedPricingSummations)}>show me homie</button>
+            {/*<button className='btn btn-success' onClick={() => handleCommit()}>Commit</button> */}
         </Card.Root>
 
     )

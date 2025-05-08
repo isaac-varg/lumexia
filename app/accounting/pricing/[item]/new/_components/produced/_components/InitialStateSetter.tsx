@@ -1,18 +1,17 @@
 'use client'
 
-import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers/getAllByFillItem"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
+import useDialog from "@/hooks/useDialog"
 import { usePricingProducedActions, usePricingProducedSelection } from "@/store/pricingProducedSlice"
 import { useEffect } from "react"
-import { PricingBom, PricingBomObject } from "../_functions/getBomWithPricing"
 
 type SetterProps = {
     activeMbpr: MbprByItem
     batchSizes: BatchSize[]
 }
 
-const InitialStateSetter = ({
+const StateSetter = ({
     activeMbpr,
     batchSizes,
 }: SetterProps) => {
@@ -20,9 +19,10 @@ const InitialStateSetter = ({
     const {
         setActiveMbpr,
         setBatchSizes,
+        getProducedPricingSummations,
     } = usePricingProducedActions()
-
-    const { activeBatchSize } = usePricingProducedSelection()
+    const { activeBatchSize, producedPricingSummations } = usePricingProducedSelection()
+    const { showDialog } = useDialog()
 
     useEffect(() => {
         setActiveMbpr(activeMbpr);
@@ -33,11 +33,17 @@ const InitialStateSetter = ({
 
     useEffect(() => {
         // recalcaulate bom when active batch sizes change;
+        getProducedPricingSummations();
+    }, [activeBatchSize, activeMbpr])
 
-    }, [activeBatchSize])
+    useEffect(() => {
+        if (producedPricingSummations && producedPricingSummations.isError) {
+            showDialog('pricingError')
+        }
+    }, [producedPricingSummations])
 
 
     return false
 }
 
-export default InitialStateSetter
+export default StateSetter 
