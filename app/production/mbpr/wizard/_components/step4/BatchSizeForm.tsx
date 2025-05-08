@@ -164,14 +164,14 @@ const BatchSizeForm = () => {
                     <Heading>Compounding Vessel</Heading>
 
                     <div className='grid grid-cols-2 gap-4'>
-                        {compoundingVessels.filter((cv) => cv.capacity >= parseFloat(sizeInput)).map((cv) => {
+                        {compoundingVessels.filter((cv) => parseFloat(sizeInput) <= cv.capacityMaximum && parseFloat(sizeInput) >= cv.capacityMinimum).map((cv) => {
                             const isSelected = cv.id === selectedCompoundingVessel?.id;
                             return (
                                 <div key={cv.id} className={`bg-neutral-100   ${isSelected ? 'ring-2 ring-lilac-500' : ''} flex flex-col gap-4 p-6 rounded-xl`} onClick={() => setSelectedCompoundingVessel(cv)}>
                                     <h1 className='font-poppins font-semibold text-lg text-neutral-800'>
                                         {cv.equipment.name}
                                     </h1>
-                                    <h2 className='font-poppins font-medium text-base text-neutral-800'>{cv.capacity} lb Capacity</h2>
+                                    <h2 className='font-poppins font-medium text-base text-neutral-800'>{cv.capacityMinimum} - {cv.capacityMaximum} lb Capacity</h2>
                                     <h2 className='font-poppins font-medium text-base text-neutral-800'>{cv.operationalCost} $/hour</h2>
                                 </div>
                             )

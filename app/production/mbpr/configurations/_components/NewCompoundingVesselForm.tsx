@@ -11,14 +11,15 @@ import { useForm } from 'react-hook-form'
 
 type Input = {
     equipmentId: string
-    capacity: number
+    capacityMinimum: number
+    capacityMaximum: number
     operationalCost: number
 }
 
 const NewEquipmentVesselForm = ({ compoundingVessels, selectedVessel }: { compoundingVessels: Equipment[], selectedVessel?: CompoundingVessel }) => {
 
 
-    const form = useForm<Input>({ defaultValues: selectedVessel ? { equipmentId: selectedVessel.equipmentId, capacity: selectedVessel.capacity, operationalCost: selectedVessel.operationalCost } : {} })
+    const form = useForm<Input>({ defaultValues: selectedVessel ? { equipmentId: selectedVessel.equipmentId, capacityMinimum: selectedVessel.capacityMinimum, capacityMaximum: selectedVessel.capacityMaximum, operationalCost: selectedVessel.operationalCost } : {} })
 
     const equipmentOptions = compoundingVessels.map((v) => ({ label: v.name, value: v.id }))
 
@@ -41,7 +42,8 @@ const NewEquipmentVesselForm = ({ compoundingVessels, selectedVessel }: { compou
         if (selectedVessel) {
             form.reset({
                 equipmentId: selectedVessel.equipmentId,
-                capacity: selectedVessel.capacity,
+                capacityMinimum: selectedVessel.capacityMinimum,
+                capacityMaximum: selectedVessel.capacityMaximum,
                 operationalCost: selectedVessel.operationalCost,
             })
         }
@@ -58,7 +60,9 @@ const NewEquipmentVesselForm = ({ compoundingVessels, selectedVessel }: { compou
 
                 <Form.Select form={form} fieldName='equipmentId' label='Equipment' options={equipmentOptions} />
 
-                <Form.Number form={form} fieldName='capacity' label='Capacity (lbs)' required />
+                <Form.Number form={form} fieldName='capacityMinimum' label='Capacity Minimum (lbs)' required />
+
+                <Form.Number form={form} fieldName='capacityMaximum' label='Capacity Maximum (lbs)' required />
 
                 <Form.Number form={form} fieldName='operationalCost' label='Operational Cost ($/hour)' required />
 

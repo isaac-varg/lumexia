@@ -41,6 +41,7 @@ export const getBomWithPricing = async (mbprId: string): Promise<BatchSummations
     // validate the bom for pricing
     const isBomValidated = validatePricingBom(bom)
 
+
     if (!isBomValidated.passes) {
         return throwPricingError({
             message: 'The following BOM items are missing both Item Pricing Data in which the upcoming price is active and a last purchase price.',
@@ -48,6 +49,8 @@ export const getBomWithPricing = async (mbprId: string): Promise<BatchSummations
             data: isBomValidated.errorOnBomItem,
         })
     }
+
+    console.log('validate', isBomValidated)
 
     // get the labor cost
     const laborCost = getPricingLaborCost(mbpr)

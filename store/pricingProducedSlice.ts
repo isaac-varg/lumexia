@@ -75,7 +75,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
                     producedPricingSummations: summations
                 }))
             } catch (error) {
-                throw new Error(`Something went wrong when getting the summations: ${error}`)
+               console.error(`Something went wrong when getting the summations: ${error}`)
             } finally {
                 
                 set(() => ({ isLoading: false }))

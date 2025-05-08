@@ -36,12 +36,12 @@ const CompoundingVessels = ({ vessels, equipment }: Props) => {
 
                         <div className='flex flex-col gap-y-1'>
                             <h2 className='font-poppins text-xl font-semibold'>{vessel.equipment.name}</h2>
-                                <h2 className='font-poppins text-lg font-medium bg-lilac-900 text-white px-4 py-1 rounded-xl w-fit'>{vessel.equipment.identifier}</h2>
+                            <h2 className='font-poppins text-lg font-medium bg-lilac-900 text-white px-4 py-1 rounded-xl w-fit'>{vessel.equipment.identifier}</h2>
 
                         </div>
 
                         <div className='flex gap-x-2 font-poppins font-medium text-lg'>
-                            <p>{vessel.capacity} lb Capacity</p>
+                            <p>{vessel.capacityMinimum} - {vessel.capacityMaximum} lb Capacity </p>
 
                             <p>{vessel.operationalCost} $/hour</p>
 
