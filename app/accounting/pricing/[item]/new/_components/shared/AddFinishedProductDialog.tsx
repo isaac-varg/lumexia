@@ -5,6 +5,7 @@ import StepFinishedProductDetails, { FinishedProductDetails } from './StepFinish
 import StepAuxiliaries, { InterimAuxiliaryItem } from './StepAuxiliaries'
 import StepSubmission from './StepSubmission'
 import useDialog from '@/hooks/useDialog'
+import { usePricingProducedActions } from '@/store/pricingProducedSlice'
 
 export type FilledConsumerContainerFormParameters = {
     fillQuantity: number
@@ -19,6 +20,7 @@ const AddFinishedProductDialog = ({ fillItemId, produced = false }: { fillItemId
     const [finishedProductDetails, setFinishedProductDetails] = useState<FinishedProductDetails | null>(null)
     const [auxiliaries, setAuxiliaries] = useState<InterimAuxiliaryItem[]>([])
     const { resetDialogContext } = useDialog()
+    const { getFinishedProducts } = usePricingProducedActions()
 
     const nextStep = () => {
         setStep((prev) => prev + 1);
@@ -29,6 +31,10 @@ const AddFinishedProductDialog = ({ fillItemId, produced = false }: { fillItemId
         setFinishedProductDetails(null)
         setAuxiliaries([])
         resetDialogContext();
+
+        if (produced) {
+            getFinishedProducts();
+        }
 
     }
 

@@ -16,15 +16,16 @@ import useDialog from '@/hooks/useDialog';
 import EditFilledConsumerContainerDialog from '../../shared/EditFilledConsumerContainerDialog';
 import DeleteFilledConsumerContainerAlert from '../../shared/DeleteFilledConsumerContainerAlert';
 import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice';
+import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
 
 type Props = {
-    selectedConsumerContainer: FilledConsumerContainer | null;
+    selectedFinishedProduct: FinishedProductFromProduced | null;
 }
 
-const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) => {
+const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
     // Early return moved after hooks to maintain hook order
-    const { bomObject, isContainerParametersPanelShown } = usePricingProducedSelection();
-    const { getInterimConsumerContainer, updateInterimConsumerContainer } = usePricingProducedActions()
+    const { producedPricingSummations, isContainerParametersPanelShown } = usePricingProducedSelection();
+    const { ,  } = usePricingProducedActions()
     const { showDialog } = useDialog()
 
     const [alterMode, setAlterMode] = useState<AlterMode>('consumerPrice');
@@ -272,4 +273,4 @@ const SelectedConsumerContainerPanel = ({ selectedConsumerContainer }: Props) =>
     );
 };
 
-export default SelectedConsumerContainerPanel;
+export default SelectedFinishedProductPanel;

@@ -20,6 +20,7 @@ const StateSetter = ({
         setActiveMbpr,
         setBatchSizes,
         getProducedPricingSummations,
+        getFinishedProducts,
     } = usePricingProducedActions()
     const { activeBatchSize, producedPricingSummations } = usePricingProducedSelection()
     const { showDialog } = useDialog()
@@ -35,13 +36,21 @@ const StateSetter = ({
         // recalcaulate bom when active batch sizes change;
         getProducedPricingSummations();
 
-        // 
     }, [activeBatchSize, activeMbpr])
+
+
 
     useEffect(() => {
         if (producedPricingSummations && producedPricingSummations.isError) {
             showDialog('pricingError')
         }
+
+
+        if (producedPricingSummations && !producedPricingSummations.isError) {
+            getFinishedProducts()
+        }
+
+
     }, [producedPricingSummations])
 
 

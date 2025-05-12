@@ -1,39 +1,40 @@
 'use client'
 import Card from '@/components/Card'
 import React, { useState } from 'react'
-import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
-import SelectedConsumerContainerPanel from './SelectedConsumerContainerPanel'
+import FinishedProductCard from '../../shared/FinishedProductCard'
+import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem'
+import AddFinishedProductButton from '../../purchased/AddFinishedProductButton'
+import AddFinishedProductDialog from '../../shared/AddFinishedProductDialog'
 
-const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
+const FinishedProducts = () => {
 
-    const { filledConsumerContainers } = usePricingProducedSelection()
-    const {   } = usePricingProducedSelection()
+    const { finishedProducts, activeMbpr } = usePricingProducedSelection()
 
-    // CC shorthand for consumer container
-    const [selectedCC, setSelectedCC] = useState<FilledConsumerContainer | null>(null)
+    // fp is shorthand for finished proudct
+    const [selectedFp, setSelectedFp] = useState<FinishedProductFromProduced | null>(null)
 
     return (
         <div className='col-span-2'>
-            <AddConsumerContainerDialog produced={true} fillItemId={fillItemId} />
+            <AddFinishedProductDialog produced={true} fillItemId={activeMbpr?.producesItemId || ''} />
             <Card.Root>
                 <div className='flex gap-x-6'>
 
                     <div className='flex flex-col w-1/3 gap-y-6'>
-                        <Card.Title>Consumer Containers</Card.Title>
+                        <Card.Title>Finished Products</Card.Title>
 
                         <div className='flex flex-col gap-y-1'>
 
-                            <AddConsumerContainerButton />
+                            <AddFinishedProductButton />
 
-                            {filledConsumerContainers.map((cc) => <FilledConsumerContainerCard key={cc.id} selectedConsumerContainerId={selectedCC ? selectedCC.id : ''} onSelect={setSelectedCC} filledConsumerContainer={cc} />)}
+                            {finishedProducts.map((fp) => <FinishedProductCard key={fp.id} finishedProduct={fp} onSelect={setSelectedFp} selectedFinishedProductId={selectedFp?.id || ''} />)}
 
                         </div>
                     </div>
 
                     <div className='flex flex-col w-2/3 '>
 
-                        <SelectedConsumerContainerPanel selectedConsumerContainer={selectedCC} />
+                        <SelectedFinishedProductPanel selectedConsumerContainer={selectedCC} />
 
 
                     </div>
