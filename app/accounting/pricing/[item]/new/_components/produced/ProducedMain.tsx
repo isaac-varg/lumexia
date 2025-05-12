@@ -11,7 +11,7 @@ import BOM from './_components/BOM'
 import { PricingExaminationNoteType } from '@/actions/accounting/examinations/notes/getAllNoteTypes'
 import NotesPanel from '../shared/NotesPanel'
 import { v4 as uuidv4 } from 'uuid';
-import StateSetter from './_components/InitialStateSetter'
+import StateSetter from './_components/StateSetter'
 import PricingErrorAlert from './_components/PricingErrorAlert'
 
 const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: PricingExaminationNoteType[] }) => {
@@ -20,9 +20,6 @@ const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Pricin
     const examinationId = uuidv4();
     const activeMbpr = await productionActions.mbprs.getActive(item.id);
     const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(activeMbpr.id)
-
-
-
 
 
     return (
