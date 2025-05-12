@@ -1,32 +1,17 @@
 "use client"
 import Card from '@/components/Card'
 import Text from '@/components/Text'
-import useDialog from '@/hooks/useDialog'
 import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import React, { useEffect } from 'react'
 import MissingBomDataAlert from './MissingBomDataAlert'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
-import { ProducedPricingSummations } from '../_functions/getBomWithPricing'
 import { BatchSummations } from '../_functions/getBomPricingSummations'
 
 const BasicsPanel = () => {
 
-    const { activeBatchSize, isLoading, producedPricingSummations } = usePricingProducedSelection()
-    const { showDialog } = useDialog()
+    const { producedPricingSummations } = usePricingProducedSelection()
 
     const summations = producedPricingSummations?.isError ? null : producedPricingSummations as BatchSummations
-
-
-
-
-    //useEffect(() => {
-
-    //    if (isLoading) return;
-
-    //    if (bomObject.missingPricingData.length !== 0) {
-    //        showDialog("missingBomData")
-    //    }
-    //}, [bomObject])
 
 
     return (
@@ -39,7 +24,7 @@ const BasicsPanel = () => {
                     <div className='flex flex-col gap-y-2 w-2/3'>
 
 
-                        {isLoading && (<>
+                        {!summations && (<>
                             <div className="skeleton h-4 w-full"></div>
 
                             <div className="skeleton h-4 w-full"></div>
@@ -49,11 +34,6 @@ const BasicsPanel = () => {
                         )}
 
                         {summations && (<>
-                            <Text.LabelDataPair
-                                label='BOM $/batch'
-                                tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like Production Usage Cost, Arrival Cost, etc.'
-                                data={`${summations.totalBomCostPerBatch}`}
-                            />
 
                             <Text.LabelDataPair
                                 label='Labor Cost'
@@ -61,18 +41,34 @@ const BasicsPanel = () => {
                                 data={summations.laborCost}
 
                             />
+                            <Text.LabelDataPair
+                                label='BOM $/batch'
+                                tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like the items Production Usage Cost, Arrival Cost, etc.'
+                                data={`${summations.totalBomCostPerBatch}`}
+                            />
+                            <Text.LabelDataPair
+                                label='BOM $/lb'
+                                tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like the items Production Usage Cost, Arrival Cost, etc.'
+                                data={`${summations.totalBomCostPerLb}`}
+                            />
+
+                            <Text.LabelDataPair
+                                label='Total $/batch'
+                                tooltip='The overall cost of everything per batch'
+                                data={`${summations.totalBomCostPerBatch}`}
+                            />
                         </>)}
 
 
 
                     </div>
 
-                    {isLoading && (<div className='rounded-xl flex w-1/3 flex-col h-32 skeleton' />)}
+                    {!summations && (<div className='rounded-xl flex w-1/3 flex-col h-32 skeleton' />)}
 
                     {summations && (
                         <div className=' rounded-xl flex w-1/3 flex-col gap-y-2 p-2 bg-sky-800 items-center justify-center'>
                             <h1 className='font-poppins font-bold text-6xl text-white'>{toFracitonalDigits.curreny(summations.totalCostPerLb)}</h1>
-                            <h2 className='font-poppins font-semibold text-lg text-neutral-300'>{`$/lb`}</h2>
+                            <h2 className='font-poppins font-semibold text-lg text-neutral-300'>{`total $/lb`}</h2>
                         </div>
                     )}
 

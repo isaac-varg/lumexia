@@ -34,6 +34,8 @@ const StateSetter = ({
     useEffect(() => {
         // recalcaulate bom when active batch sizes change;
         getProducedPricingSummations();
+
+        // 
     }, [activeBatchSize, activeMbpr])
 
     useEffect(() => {

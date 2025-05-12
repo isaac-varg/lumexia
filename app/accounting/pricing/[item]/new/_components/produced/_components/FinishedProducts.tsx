@@ -2,15 +2,13 @@
 import Card from '@/components/Card'
 import React, { useState } from 'react'
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
-import AddConsumerContainerDialog from '../../purchased/AddConsumerContainerDialog'
-import AddConsumerContainerButton from '../../purchased/AddConsumerContainerButton'
-import FilledConsumerContainerCard from '../../shared/FilledConsumerContainerCard'
 import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import SelectedConsumerContainerPanel from './SelectedConsumerContainerPanel'
 
-const ConsumerContainers = ({ fillItemId }: { fillItemId: string }) => {
+const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
 
     const { filledConsumerContainers } = usePricingProducedSelection()
+    const {   } = usePricingProducedSelection()
 
     // CC shorthand for consumer container
     const [selectedCC, setSelectedCC] = useState<FilledConsumerContainer | null>(null)
@@ -48,4 +46,4 @@ const ConsumerContainers = ({ fillItemId }: { fillItemId: string }) => {
 }
 
 
-export default ConsumerContainers
+export default FinishedProducts 

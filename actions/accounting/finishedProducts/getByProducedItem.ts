@@ -1,14 +1,12 @@
 'use server'
 
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
-import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost";
 import prisma from "@/lib/prisma"
-import { ItemPricingData } from "../pricing/getItemPricingData";
-import { LastItemPrice } from "../pricing/getLastItemPrice";
-import { getProductFillCost } from "@/app/accounting/pricing/_calculations/getProductFillCost";
 import { staticRecords } from "@/configs/staticRecords";
+import { ProducedPricingSummations } from "@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing";
+import { BatchSummations } from "@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations";
 
-export const getFinishedProductsByProducedItem = async (itemId: string, itemPricingData: ItemPricingData ) => {
+export const getFinishedProductsByProducedItem = async (itemId: string, summations: BatchSummations) => {
 
     const fp = await prisma.finishedProduct.findMany({
         where: {
@@ -37,12 +35,18 @@ export const getFinishedProductsByProducedItem = async (itemId: string, itemPric
         },
     });
 
-    const itemCost = getItemCost(itemPricingData, lastPrice)
+
 
     const withAuxiliaries = await Promise.all(
         fp.map(async (current) => {
             const auxiliaries = await getAuxiliariesTotalCost(current.auxiliaries);
-            const productFillCost = getProductFillCost(current.fillQuantity, itemCost)
+
+            if (current.fillUomId !== staticRecords.inventory.uom.lb) {
+                throw new Error('Fill UOM must be in pounds')
+            }
+
+            const productFillCost = current.fillQuantity * summations.totalCostPerLb;
+
             const finishedProductTotalCost = productFillCost +
                 auxiliaries.total +
                 current.difficultyAdjustmentCost +
@@ -64,5 +68,6 @@ export const getFinishedProductsByProducedItem = async (itemId: string, itemPric
     return withAuxiliaries;
 };
 
-export type FinishedProductFromPurchased = Awaited<ReturnType<typeof getFinishedProductsByPurchasedItem>>[number]
+export type FinishedProductFromProduced = Awaited<ReturnType<typeof getFinishedProductsByProducedItem>>[number]
+
 
