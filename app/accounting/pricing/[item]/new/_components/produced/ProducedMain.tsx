@@ -4,15 +4,14 @@ import PageTitle from '@/components/Text/PageTitle'
 import { Item } from '@/types/item'
 import React from 'react'
 import BasicsPanel from './_components/BasicsPanel'
-import ActionsPanel from './_components/ActionsPanel'
 import ProductionInfo from './_components/ProductionInfo'
-import BOM from './_components/BOM'
 import { PricingExaminationNoteType } from '@/actions/accounting/examinations/notes/getAllNoteTypes'
 import NotesPanel from '../shared/NotesPanel'
 import { v4 as uuidv4 } from 'uuid';
 import StateSetter from './_components/StateSetter'
 import PricingErrorAlert from './_components/PricingErrorAlert'
 import FinishedProducts from './_components/FinishedProducts'
+import ActionsPanel from './_components/ActionsPanel'
 
 const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: PricingExaminationNoteType[] }) => {
 
@@ -33,7 +32,7 @@ const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Pricin
 
                 <BasicsPanel />
                 <ProductionInfo />
-                <ActionsPanel examinatedItemId={item.id} examinationId={examinationId} />
+                <ActionsPanel examinationId={examinationId} />
             </div>
 
             <div className='grid grid-cols-2 gap-4'>

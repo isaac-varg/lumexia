@@ -1,77 +1,86 @@
 'use client'
 import Card from '@/components/Card'
-import { StateForCommit, usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
+import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice'
 import React, { useState } from 'react'
-import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
+import ValidationErrorAlert from './ValidationErrorAlert'
 import useDialog from '@/hooks/useDialog'
 import { useRouter } from 'next/navigation'
-import ValidationErrorAlert from './ValidationErrorAlert'
+import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
+import { commitPricingExamination } from '../../../_functions/commitPricingExamination'
+import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import { commitProducedPricingExamination } from '../../../_functions/commitProducedPricingExamination'
-
-type PanelProps = {
-    examinationId: string
-    examinatedItemId: string
-}
 
 const ActionsPanel = ({
     examinationId,
-    examinatedItemId,
-}: PanelProps) => {
+}: {
+    examinationId: string
 
-    const { isContainerParametersPanelShown, producedPricingSummations } = usePricingProducedSelection();
-    const { toggleContainerParameters } = usePricingProducedActions();
-    //const { showDialog } = useDialog()
-    // const pricingState = usePricingProducedSelection()
-    //const [validation, setValidaton] = useState<ProducedValidation>()
-    // const router = useRouter()
+}) => {
+
+    const { toggleContainerParameters } = usePricingProducedActions()
+    const { showDialog } = useDialog()
+    const router = useRouter()
+    const { isContainerParametersPanelShown, interimFinishedProducts, finishedProducts, producedPricingSummations } = usePricingProducedSelection();
+    const [validation, setValidaton] = useState<ProducedValidation>()
 
 
-    // const handleCommit = () => {
+    const handleDebug = () => {
+        console.log(producedPricingSummations)
+    }
 
-    //     const validation = validateProducedCommit(filledConsumerContainers.length, interimConsumerContainers)
-    //     setValidaton(validation)
+    // show warning that it is invalid and log if it bypassed
+    const handleCommit = async () => {
 
-    //     if (!validation.allValid) {
-    //         showDialog("producedValidationErrors")
-    //         return;
-    //     }
+        const validation = validateProducedCommit(finishedProducts.length, interimFinishedProducts);
+        setValidaton(validation)
 
-    //     initiateCommit()
-    // }
+        if (!validation.allValid) {
+            showDialog("producedValidationErrors")
+            return;
+        }
 
-    // const initiateCommit = async () => {
+        initiateCommit()
+    }
 
-    //     if (!validation) return;
+    const initiateCommit = async () => {
 
-    //     const serializedPricingState: StateForCommit = {
-    //         bomObject: pricingState.bomObject,
-    //         activeMbpr: pricingState.activeMbpr,
-    //         activeBatchSize: pricingState.activeBatchSize,
-    //         filledConsumerContainers: pricingState.filledConsumerContainers,
-    //         interimConsumerContainers: pricingState.interimConsumerContainers,
-    //     }
+        if (!validation) return;
 
-    //     await commitProducedPricingExamination(examinationId, examinatedItemId, validation, serializedPricingState)
+        const stateData = {
+            interimFinishedProducts: interimFinishedProducts,
+            finishedProducts: finishedProducts,
+            pricingDataObject: pricingDataObject,
+        }
 
-    //     console.log('49')
-    //     router.back()
+        await commitProducedPricingExamination(examinationId, stateData, validation)
 
-    // }
+        router.back()
 
+    }
 
     return (
         <Card.Root>
-            {/*<ValidationErrorAlert validation={validation} onProceed={initiateCommit} /> */}
+
+            <ValidationErrorAlert validation={validation} onProceed={initiateCommit} />
 
             <Card.Title>Actions</Card.Title>
-            <button className={`btn ${isContainerParametersPanelShown ? 'btn-accent' : ''}`} onClick={() => toggleContainerParameters()}>
-                {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
-            </button>
 
-            <button className='btn btn-square' onClick={() => console.log(producedPricingSummations)}>show me homie</button>
-            {/*<button className='btn btn-success' onClick={() => handleCommit()}>Commit</button> */}
-        </Card.Root>
 
+
+            <div className='grid grid-cols-2 gap-4'>
+
+                <button className='btn btn-accent' onClick={handleCommit}>Commit</button>
+
+                <button className='btn' onClick={() => handleDebug()}>Debug bug</button>
+                <button
+                    className={`btn ${isContainerParametersPanelShown ? 'btn-active' : ''}`}
+                    onClick={toggleContainerParameters}
+                >
+                    {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
+                </button>
+
+            </div>
+        </Card.Root >
     )
 }
 

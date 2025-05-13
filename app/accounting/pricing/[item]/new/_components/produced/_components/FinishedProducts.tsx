@@ -6,6 +6,7 @@ import FinishedProductCard from '../../shared/FinishedProductCard'
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem'
 import AddFinishedProductButton from '../../purchased/AddFinishedProductButton'
 import AddFinishedProductDialog from '../../shared/AddFinishedProductDialog'
+import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
 
 const FinishedProducts = () => {
 
@@ -34,7 +35,7 @@ const FinishedProducts = () => {
 
                     <div className='flex flex-col w-2/3 '>
 
-                        <SelectedFinishedProductPanel selectedConsumerContainer={selectedCC} />
+                        <SelectedFinishedProductPanel selectedFinishedProduct={selectedFp} />
 
 
                     </div>

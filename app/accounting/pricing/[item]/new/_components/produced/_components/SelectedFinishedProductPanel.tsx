@@ -1,41 +1,35 @@
-'use client'
+import React, { useEffect, useState, useCallback } from 'react'
+import DataCard from '../../shared/DataCard';
+import DataCardText from '../../shared/DataCardText';
+import { toFracitonalDigits } from '@/utils/data/toFractionalDigits';
+import AlterModeButton from '../../shared/AlterModeButton';
+import { getMarkup } from '@/app/accounting/pricing/_calculations/getMarkup';
+import { getProfit } from '@/app/accounting/pricing/_calculations/getProfit';
+import { getProfitPercentage } from '@/app/accounting/pricing/_calculations/getProfitPercentage';
+import { getConsumerPrice } from '@/app/accounting/pricing/_calculations/getConsumerPrice';
+import validator from 'validator';
+import Text from '@/components/Text';
+import { TbEdit, TbTrash } from 'react-icons/tb';
+import useDialog from '@/hooks/useDialog';
+import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice';
+import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
+import EditFinishedProductDialog from '../../shared/EditFinishedProductDialog';
+import DeleteFinishedProductAlert from '../../shared/DeleteFinishedProductAlert';
 
-import { usePricingPurchasedActions, usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
-import EditFinishedProductDialog from "../shared/EditFinishedProductDialog"
-import DeleteFinishedProductAlert from "../shared/DeleteFinishedProductAlert"
-import { TbEdit, TbTrash } from "react-icons/tb"
-import useDialog from "@/hooks/useDialog"
-import DataCard from "../shared/DataCard"
-import DataCardText from "../shared/DataCardText"
-import AlterModeButton from "../shared/AlterModeButton"
-import { useCallback, useEffect, useState } from "react"
-import Text from "@/components/Text"
-import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
-import validator from "validator"
-import { getMarkup } from "@/app/accounting/pricing/_calculations/getMarkup"
-import { getProfit } from "@/app/accounting/pricing/_calculations/getProfit"
-import { getProfitPercentage } from "@/app/accounting/pricing/_calculations/getProfitPercentage"
-import { getConsumerPrice } from "@/app/accounting/pricing/_calculations/getConsumerPrice"
-import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+type Props = {
+    selectedFinishedProduct: FinishedProductFromProduced | null;
+}
 
+const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
 
-
-const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFinishedProduct: FinishedProductFromPurchased | null }) => {
-
-    const {
-        isContainerParametersPanelShown
-    } = usePricingPurchasedSelection()
-    const {
-        updateInterimFinishedProduct,
-        getInterimFinishedProduct,
-    } = usePricingPurchasedActions()
+    const { producedPricingSummations, isContainerParametersPanelShown } = usePricingProducedSelection();
+    const { updateInterimFinishedProduct, getInterimFinishedProduct } = usePricingProducedActions()
     const { showDialog } = useDialog()
     const [alterMode, setAlterMode] = useState<'consumerPrice' | 'markup' | 'profitPercentage' | 'profit'>("consumerPrice")
     const [consumerPrice, setConsumerPrice] = useState<number>(0);
     const [markup, setMarkup] = useState<number>(0);
     const [profitPercentage, setProfitPercentage] = useState<number>(0);
     const [profit, setProfit] = useState<number>(0);
-
 
     // for alter mode input
     const getValueByAlterMode = () => {
@@ -50,9 +44,6 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                 return profitPercentage;
         }
     };
-
-    // step for alt mode
-    const step = ['consumerPrice', 'profit'].includes(alterMode) ? '0.01' : '0.1';
 
 
     useEffect(() => {
@@ -151,7 +142,10 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
     }, [alterMode, selectedFinishedProduct, updateInterimFinishedProduct]);
 
 
+
     if (!selectedFinishedProduct) { return false }
+
+
 
 
     return (
@@ -310,8 +304,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                 </div>
             )}
         </div>
+    );
+};
 
-    )
-}
-
-export default SelectedFinishedProductPanel
+export default SelectedFinishedProductPanel;

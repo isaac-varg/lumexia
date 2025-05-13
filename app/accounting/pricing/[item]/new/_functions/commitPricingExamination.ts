@@ -22,10 +22,8 @@ export const commitPricingExamination = async (
         throw new Error("There was not enough data to submit.")
     }
 
-
     // ensure pricing examination id exists and create if not
     const pricingExamination = await accountingActions.examinations.upsert(examinationId, pricingDataObject.itemId)
-
 
     // item pricing data archives
     const { id, arrivalCost, productionUsageCost, auxiliaryUsageCost, unforeseenDifficultiesCost, overallItemCost, upcomingPrice, upcomingPriceUomId, isUpcomingPriceActive } = pricingDataObject
@@ -40,8 +38,8 @@ export const commitPricingExamination = async (
         upcomingPrice,
         upcomingPriceUomId,
         isUpcomingPriceActive,
-
     }
+
     await accountingActions.examinations.archives.itemPricingData.create(ipdaPayload)
 
 

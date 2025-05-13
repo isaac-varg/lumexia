@@ -26,6 +26,7 @@ type State = {
     batchSizes: BatchSize[]
     producedPricingSummations: ProducedPricingSummations | null
     finishedProducts: FinishedProductFromProduced[]
+    interimFinishedProducts: InterimFinishedProduct[]
 }
 //export type PricingProducedStates = keyof State
 export type PricingProducedState = State; // alias for this state
@@ -37,6 +38,9 @@ type Actions = {
         toggleContainerParameters: () => void;
         getProducedPricingSummations: () => void;
         getFinishedProducts: () => void;
+        updateInterimFinishedProduct: (interimFinishedProductPayload: InterimFinishedProduct) => void;
+        getInterimFinishedProduct: (finishedProductId: string) => InterimFinishedProduct | null;
+
     }
 
 }
@@ -49,6 +53,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     batchSizes: [],
     producedPricingSummations: null,
     finishedProducts: [],
+    interimFinishedProducts: [],
 
 
 
@@ -101,7 +106,39 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
             } catch (error) {
                 console.error(`Something went wrong with getting the finished products: ${error}`)
             }
-        }
+        },
+
+        updateInterimFinishedProduct: (interimFinishedProductPayload) => {
+            set((state) => {
+                const existingIndex = state.interimFinishedProducts.findIndex(
+                    (c) => c.finishedProductId === interimFinishedProductPayload.finishedProductId
+                );
+
+                if (existingIndex !== -1) {
+                    // Update existing container
+                    const updatedFinishedProducts = [...state.interimFinishedProducts];
+                    updatedFinishedProducts[existingIndex] = interimFinishedProductPayload
+
+                    return { interimFinishedProducts: updatedFinishedProducts };
+                } else {
+                    // Add new container
+                    return {
+                        interimFinishedProducts: [
+                            ...state.interimFinishedProducts,
+                            interimFinishedProductPayload,
+                        ],
+                    };
+                }
+            });
+        },
+        getInterimFinishedProduct: (finishedProductId) => {
+            const state = get();
+            return (
+                state.interimFinishedProducts.find(
+                    (c) => c.finishedProductId === finishedProductId
+                ) || null
+            );
+        },
     }
 }));
 

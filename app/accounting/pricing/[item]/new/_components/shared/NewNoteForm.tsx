@@ -19,7 +19,7 @@ const NewNoteForm = ({ types, examinationId, setMode, itemId }: {
     types: PricingExaminationNoteType[], examinationId: string, setMode: Dispatch<SetStateAction<'addNoteType' | 'default'>>, itemId: string
 }) => {
 
-    const form = useForm<Inputs>({ defaultValues: { noteTypeId: staticRecords.purchasing.requestTypes.default } });
+    const form = useForm<Inputs>({ defaultValues: { noteTypeId: staticRecords.pricing.notes.noteTypes.default } });
     const { resetDialogContext } = useDialog()
     const { getExaminationNotes } = usePricingSharedActions()
 
