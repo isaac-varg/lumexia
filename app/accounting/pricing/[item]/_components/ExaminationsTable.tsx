@@ -6,12 +6,15 @@ import { Filter } from '@/types/filter';
 import { toFacetFilter } from '@/utils/data/toFacetFilter';
 import React from 'react'
 import { examinationColumns } from './ExaminationsColumns';
+import { useRouter } from 'next/navigation';
 
 const ExaminationsTable = ({ pricingExaminations }: { pricingExaminations: PricingExamination[] }) => {
 
+    const router = useRouter()
+
     const filters: Filter[] = [
         {
-            columnName: "user.name",
+            columnName: "userName",
             filterLabel: "Conducted By",
             options: toFacetFilter(pricingExaminations, "user.id", "user.name"),
         },
@@ -26,7 +29,7 @@ const ExaminationsTable = ({ pricingExaminations }: { pricingExaminations: Prici
                 data={pricingExaminations}
                 filters={filters}
                 columns={examinationColumns}
-                onRowClick={(row) => console.log(row)}
+                onRowClick={(row) => router.push(`/accounting/pricing/details?id=${row.original.id}`)}
                 tableStateName='itemPricingExamiantions'
             />
         </Card.Root>

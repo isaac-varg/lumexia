@@ -1,14 +1,14 @@
 'use client'
 import Card from '@/components/Card'
-import { usePricingPurchasedActions, usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice'
 import React, { useState } from 'react'
 import ValidationErrorAlert from './ValidationErrorAlert'
 import useDialog from '@/hooks/useDialog'
 import { useRouter } from 'next/navigation'
 import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
-import { commitPricingExamination } from '../../../_functions/commitPricingExamination'
 import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import { commitProducedPricingExamination } from '../../../_functions/commitProducedPricingExamination'
+import { finished } from 'stream'
+import { BatchSummations } from '../_functions/getBomPricingSummations'
 
 const ActionsPanel = ({
     examinationId,
@@ -20,7 +20,7 @@ const ActionsPanel = ({
     const { toggleContainerParameters } = usePricingProducedActions()
     const { showDialog } = useDialog()
     const router = useRouter()
-    const { isContainerParametersPanelShown, interimFinishedProducts, finishedProducts, producedPricingSummations } = usePricingProducedSelection();
+    const { isContainerParametersPanelShown, activeMbpr, interimFinishedProducts, finishedProducts, producedPricingSummations, activeBatchSize } = usePricingProducedSelection();
     const [validation, setValidaton] = useState<ProducedValidation>()
 
 
@@ -44,12 +44,16 @@ const ActionsPanel = ({
 
     const initiateCommit = async () => {
 
-        if (!validation) return;
+        if (!validation || interimFinishedProducts.length === 0 || finishedProducts.length === 0 || !activeMbpr || !activeBatchSize || !producedPricingSummations || producedPricingSummations.isError) return;
 
+        const summations = producedPricingSummations as BatchSummations;
         const stateData = {
-            interimFinishedProducts: interimFinishedProducts,
-            finishedProducts: finishedProducts,
-            pricingDataObject: pricingDataObject,
+            interimFinishedProducts,
+            finishedProducts,
+            activeMbpr,
+            batchSize: activeBatchSize,
+            batchSummations: summations,
+
         }
 
         await commitProducedPricingExamination(examinationId, stateData, validation)

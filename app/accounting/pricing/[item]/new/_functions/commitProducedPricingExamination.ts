@@ -24,6 +24,8 @@ export const commitProducedPricingExamination = async (
         throw new Error("There was not enough data to submit.")
     }
 
+    console.dir(batchSummations, { depth: null })
+
 
     // ensure pricing examination id exists and create if not
     const pricingExamination = await accountingActions.examinations.upsert(examinationId, activeMbpr.producesItemId)
@@ -37,8 +39,28 @@ export const commitProducedPricingExamination = async (
             mbprVersionLabel: activeMbpr.versionLabel || '',
             batchSizeId: batchSize.id,
             batchSizeQuantity: batchSize.quantity,
+            compoundingVesselId: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
+            compoundingVesselEquipmentName: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
+            compoundingTankTime: batchSize.batchSizeCompoundingVessels[0].tankTime,
+            bomCount: batchSummations.bomWithCost.length,
+            totalBomCostPerBatch: batchSummations.totalBomCostPerBatch,
+            totalBomCostPerLb: batchSummations.totalBomCostPerLb,
+            totalCostPerBatch: batchSummations.totalCostPerBatch,
+            totalCostPerLb: batchSummations.totalCostPerLb
         }
-    })
+    });
+
+
+
+
+    // bom pricing data archive
+    await Promise.all(batchSummations.bomWithCost.map(async (bom) => {
+
+
+
+
+    }))
+
 
 
     // finished product archives
@@ -113,7 +135,7 @@ export const commitProducedPricingExamination = async (
 
     await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
 
-    await completePricingQueues(pricingDataObject.itemId)
+    await completePricingQueues(activeMbpr.producesItemId)
 
 
     return pricingExamination

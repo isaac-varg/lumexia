@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue May 13 2025 15:47:48 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu May 15 2025 09:35:36 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -365,7 +365,7 @@ model ProducedPricingDataArchive {
   mbpr                           MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   batchSize                      BatchSize                   @relation(fields: [batchSizeId], references: [id])
   compoundingVessel              CompoundingVessel           @relation(fields: [compoundingVesselId], references: [id])
-  BomPricingDataArchive          BomPricingDataArchive[]
+  bomPricingDataArchives         BomPricingDataArchive[]
 
   @@map("produced_pricing_data_archives")
 }

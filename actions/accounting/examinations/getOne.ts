@@ -16,25 +16,12 @@ export const getOnePricingExamination = async (id: string) => {
             },
             user: true,
             itemPricingDataArchive: true,
-            filledConsumerContainerArchives: {
+            FinishedProductArchive: {
                 include: {
-                    consumerContainerArchive: {
-                        include: {
-                            containerItem: true
-                        }
-                    },
-                    uom: true,
-                }
+                    currentFinishedProduct: true,
+
+                },
             },
-            producedPricingDataArchives: {
-                include: {
-                    bomPricingDataArchives: {
-                        include: {
-                            item: true
-                        }
-                    }
-                }
-            }
         },
     });
 
@@ -42,3 +29,5 @@ export const getOnePricingExamination = async (id: string) => {
 }
 
 export type SinglePricingExaminationCombined = Awaited<ReturnType<typeof getOnePricingExamination>>
+
+export type SinglePricingFinishedProduct = Awaited<ReturnType<typeof getOnePricingExamination>>["FinishedProductArchive"][number]

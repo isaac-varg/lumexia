@@ -35,7 +35,7 @@ export const getBomItemCost = async (bom: PricingBOM[], batchSize: number) => {
 
 
         return {
-            ...bom,
+            ...i,
             itemCostInBatch,
             itemCostPerLb,
             totalItemCost: itemCost,

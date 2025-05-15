@@ -21,7 +21,8 @@ interface ItemPricingDashboardProps {
 const ItemPricingDashboard = async ({ searchParams }: ItemPricingDashboardProps) => {
 
     const item = await getItem(searchParams.id);
-    const examinations = await accountingActions.examinations.getAllByItem(item.id);
+
+    const examinations = await accountingActions.examinations.getAllByItem(searchParams.id);
     const isProduced = item.procurementTypeId === staticRecords.inventory.procurementTypes.produced;
     const pricingExaminationProduced = await getProducedPricingExaminations(item.id)
 
