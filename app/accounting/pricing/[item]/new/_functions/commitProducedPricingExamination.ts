@@ -9,6 +9,7 @@ import { ProducedValidation } from "./validateProducedCommit"
 import { InterimFinishedProduct } from "@/store/pricingProducedSlice"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
+import { staticRecords } from "@/configs/staticRecords"
 
 export const commitProducedPricingExamination = async (
     examinationId: string,
@@ -23,8 +24,6 @@ export const commitProducedPricingExamination = async (
     ) {
         throw new Error("There was not enough data to submit.")
     }
-
-    console.dir(batchSummations, { depth: null })
 
 
     // ensure pricing examination id exists and create if not
@@ -56,9 +55,29 @@ export const commitProducedPricingExamination = async (
     // bom pricing data archive
     await Promise.all(batchSummations.bomWithCost.map(async (bom) => {
 
+        const pricingDataExists = bom.item.itemPricingData.length !== 0;
 
 
+        const response = await prisma.bomPricingDataArchive.create({
+            data: {
+                producedPricingDataArchiveId: producedExaminationDataArchive.id,
+                bomId: bom.id,
+                itemId: bom.itemId,
+                upcomingPriceUsed: bom.isUpcomingPriceActive,
+                arrivalCost: pricingDataExists ? bom.item.itemPricingData[0].arrivalCost : 0,
+                unforeseenDifficultiesCost: pricingDataExists ? bom.item.itemPricingData[0].unforeseenDifficultiesCost : 0,
+                productionUsageCost: pricingDataExists ? bom.item.itemPricingData[0].productionUsageCost : 0,
+                overallItemCostPerLb: bom.itemCostPerLb,
+                overallItemCostPerBatch: bom.itemCostInBatch,
+                examinationId: pricingExamination.id,
+                materialPrice: bom.itemCost,
+                materialPriceOrigin: bom.priceUsed,
+                totalMaterialCost: bom.totalItemCost,
+                upcomingPriceUomId: pricingDataExists ? bom.item.itemPricingData[0].upcomingPriceUomId : staticRecords.inventory.uom.lb,
+            }
+        })
 
+        return response
     }))
 
 

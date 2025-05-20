@@ -50,7 +50,6 @@ export const getBomWithPricing = async (mbprId: string): Promise<BatchSummations
         })
     }
 
-    console.log('validate', isBomValidated)
 
     // get the labor cost
     const laborCost = getPricingLaborCost(mbpr)

@@ -12,6 +12,7 @@ import StateSetter from './_components/StateSetter'
 import PricingErrorAlert from './_components/PricingErrorAlert'
 import FinishedProducts from './_components/FinishedProducts'
 import ActionsPanel from './_components/ActionsPanel'
+import BOM from './_components/BOM'
 
 const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: PricingExaminationNoteType[] }) => {
 
@@ -36,9 +37,9 @@ const ProducedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Pricin
             </div>
 
             <div className='grid grid-cols-2 gap-4'>
-                <FinishedProducts  />
+                <FinishedProducts />
 
-                {/*<BOM /> */} 
+                <BOM />
 
 
                 <NotesPanel noteTypes={noteTypes} examinationId={examinationId} itemId={item.id} />

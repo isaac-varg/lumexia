@@ -3,14 +3,12 @@
 import Alert from "@/components/Alert";
 import { usePricingProducedSelection } from "@/store/pricingProducedSlice"
 import { useRouter } from "next/navigation";
-import { isSet } from "util/types";
-import { ProducedPricingSummations } from "../_functions/getBomWithPricing";
 import { PricingError } from "../_functions/throwPricingError";
 
 const PricingErrorAlert = () => {
 
     const { producedPricingSummations } = usePricingProducedSelection();
-
+    const router = useRouter()
     const isError = producedPricingSummations?.isError || false
 
 
@@ -20,7 +18,6 @@ const PricingErrorAlert = () => {
     const error = producedPricingSummations as PricingError
 
 
-    const router = useRouter()
 
     return (
         <Alert.Root identifier="pricingError">

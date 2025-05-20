@@ -8,14 +8,14 @@ const DeleteFinishedProductAlert = ({ selectedFinishedProductId, produced = fals
 
 
     const { resetDialogContext } = useDialog()
-    const { removeFinishedProduct } = usePricingProducedActions()
+    //const { removeFinishedProduct } = usePricingProducedActions()
 
     const handleDelete = async () => {
 
-        if (produced) {
-            removeFinishedProduct(selectedFinishedProductId);
-        }
-
+//        if (produced) {
+//            removeFinishedProduct(selectedFinishedProductId);
+//        }
+//
 
         await accountingActions.finishedProducts.delete(selectedFinishedProductId)
         location.reload()

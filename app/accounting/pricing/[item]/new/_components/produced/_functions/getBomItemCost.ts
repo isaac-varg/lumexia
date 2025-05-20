@@ -37,8 +37,11 @@ export const getBomItemCost = async (bom: PricingBOM[], batchSize: number) => {
         return {
             ...i,
             itemCostInBatch,
+            isUpcomingPriceActive: isUpcomingPrice,
+            priceUom: lb,
             itemCostPerLb,
             totalItemCost: itemCost,
+            itemCost: convertedPrice,
             priceUsed: isUpcomingPrice ? 'Upcoming Price' : `Price from PO #${i.item.purchaseOrderItem[0].purchaseOrders.referenceCode}`
         }
 

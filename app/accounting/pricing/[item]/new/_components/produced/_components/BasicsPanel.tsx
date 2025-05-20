@@ -2,8 +2,7 @@
 import Card from '@/components/Card'
 import Text from '@/components/Text'
 import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
-import React, { useEffect } from 'react'
-import MissingBomDataAlert from './MissingBomDataAlert'
+import React from 'react'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 import { BatchSummations } from '../_functions/getBomPricingSummations'
 
@@ -17,7 +16,6 @@ const BasicsPanel = () => {
     return (
         <div className='col-span-2'>
             <Card.Root>
-                <MissingBomDataAlert />
                 <Card.Title>Basics</Card.Title>
 
                 <div className='flex justify-between gap-x-4'>

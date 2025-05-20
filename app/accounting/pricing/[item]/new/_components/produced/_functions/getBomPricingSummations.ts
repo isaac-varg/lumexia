@@ -9,7 +9,6 @@ export const getBomPricingSummations = (bomItemCost: PricingBomItemCost[], labor
         return accumulator + current.itemCostInBatch;
     }, 0);
 
-    console.log('totalbomcostperbatch', totalBomCostPerBatch)
 
     // in the future this will include consumables TODO
     const totalCostPerBatch = totalBomCostPerBatch + laborCost;

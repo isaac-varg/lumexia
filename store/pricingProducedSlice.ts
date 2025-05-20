@@ -1,10 +1,9 @@
 import { accountingActions } from '@/actions/accounting';
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
-import { FinishedProductFromProduced, getFinishedProductsByProducedItem } from '@/actions/accounting/finishedProducts/getByProducedItem';
-import { getActiveMbpr } from '@/actions/production/getActiveMbpr';
+import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
 import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
-import { BatchSummations, getBomPricingSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
+import { BatchSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
 import { ProducedPricingSummations, getBomWithPricing } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
 import { staticRecords } from '@/configs/staticRecords';
 import { create } from 'zustand';
@@ -27,6 +26,7 @@ type State = {
     producedPricingSummations: ProducedPricingSummations | null
     finishedProducts: FinishedProductFromProduced[]
     interimFinishedProducts: InterimFinishedProduct[]
+    selectedBomRow: BatchSummations['bomWithCost'][number] | null
 }
 //export type PricingProducedStates = keyof State
 export type PricingProducedState = State; // alias for this state
@@ -35,11 +35,14 @@ type Actions = {
     actions: {
         setActiveMbpr: (mbpr: MbprByItem) => void,
         setBatchSizes: (batchSizes: BatchSize[]) => void;
+        setSelectedBomRow: (row?: BatchSummations['bomWithCost'][number]) => void;
         toggleContainerParameters: () => void;
         getProducedPricingSummations: () => void;
         getFinishedProducts: () => void;
         updateInterimFinishedProduct: (interimFinishedProductPayload: InterimFinishedProduct) => void;
         getInterimFinishedProduct: (finishedProductId: string) => InterimFinishedProduct | null;
+
+
 
     }
 
@@ -54,6 +57,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     producedPricingSummations: null,
     finishedProducts: [],
     interimFinishedProducts: [],
+    selectedBomRow: null,
 
 
 
@@ -67,6 +71,13 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
             const active = batchSizes.filter((bs) => bs.recordStatusId === staticRecords.app.recordStatuses.active);
             set(() => ({ batchSizes, }))
             set(() => ({ activeBatchSize: active[0] }))
+        },
+        setSelectedBomRow: (row) => {
+            if (row) {
+                set(() => ({ selectedBomRow: row }))
+            } else {
+                set(() => ({ selectedBomRow: null }))
+            }
         },
         toggleContainerParameters: () => {
             set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))

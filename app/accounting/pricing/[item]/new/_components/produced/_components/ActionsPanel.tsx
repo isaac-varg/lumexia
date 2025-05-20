@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
 import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import { commitProducedPricingExamination } from '../../../_functions/commitProducedPricingExamination'
-import { finished } from 'stream'
 import { BatchSummations } from '../_functions/getBomPricingSummations'
 
 const ActionsPanel = ({
@@ -23,10 +22,6 @@ const ActionsPanel = ({
     const { isContainerParametersPanelShown, activeMbpr, interimFinishedProducts, finishedProducts, producedPricingSummations, activeBatchSize } = usePricingProducedSelection();
     const [validation, setValidaton] = useState<ProducedValidation>()
 
-
-    const handleDebug = () => {
-        console.log(producedPricingSummations)
-    }
 
     // show warning that it is invalid and log if it bypassed
     const handleCommit = async () => {
@@ -75,7 +70,6 @@ const ActionsPanel = ({
 
                 <button className='btn btn-accent' onClick={handleCommit}>Commit</button>
 
-                <button className='btn' onClick={() => handleDebug()}>Debug bug</button>
                 <button
                     className={`btn ${isContainerParametersPanelShown ? 'btn-active' : ''}`}
                     onClick={toggleContainerParameters}
