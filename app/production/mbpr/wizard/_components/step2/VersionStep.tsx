@@ -12,7 +12,7 @@ import MbprForm from "./MbprForm"
 const VersionStep = () => {
     const { producesItem, step, isLoading, mbprs, selectedMbpr, isRevalidating } = useMbprWizardSelection()
     const [dialogMode, setDialogMode] = useState<"edit" | "create">('create');
-    const { getMbprs, setSelectedMbpr } = useMbprWizardActions()
+    const { getMbprs  } = useMbprWizardActions()
     const { showDialog } = useDialog()
 
     useEffect(() => {
