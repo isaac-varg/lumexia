@@ -1,134 +1,150 @@
 'use server'
-
-import { StateForCommit } from "@/store/pricingProducedSlice"
-import { ProducedValidation } from "./validateProducedCommit"
 import { accountingActions } from "@/actions/accounting"
-import { Prisma } from "@prisma/client"
-import prisma from "@/lib/prisma"
-import { ConsumerContainerArchivePayload } from "@/actions/accounting/examinations/archives/createManyConsumerContainerArchives"
-import { FilledConsumerContainerArhivePayload } from "@/actions/accounting/examinations/archives/createManyFilledConsumerContainerArchives"
 import { ExaminationValidationPayload } from "@/actions/accounting/examinations/archives/createExaminationValidationArchive"
 import { completePricingQueues } from "./completePricingQueues"
+import prisma from "@/lib/prisma"
+import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
+import { BatchSummations } from "../_components/produced/_functions/getBomPricingSummations"
+import { ProducedValidation } from "./validateProducedCommit"
+import { InterimFinishedProduct } from "@/store/pricingProducedSlice"
+import { MbprByItem } from "@/actions/production/getMbprsByItem"
+import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
+import { staticRecords } from "@/configs/staticRecords"
 
 export const commitProducedPricingExamination = async (
     examinationId: string,
-    examinedItemId: string,
+    stateData: { interimFinishedProducts: InterimFinishedProduct[], finishedProducts: FinishedProductFromPurchased[], activeMbpr: MbprByItem, batchSize: BatchSize, batchSummations: BatchSummations },
     validation: ProducedValidation,
-    pricingState: StateForCommit,
 ) => {
 
-    // ensure pricing examination id exists and if not upsert it (because of notes)
-    const pricingExamination = await accountingActions.examinations.upsert(examinationId, examinedItemId)
+    const { interimFinishedProducts, finishedProducts, batchSummations, activeMbpr, batchSize } = stateData;
 
-    // produced pricing data archives
-    if (!pricingState.bomObject || !pricingState.activeMbpr || !pricingState.activeBatchSize) {
-        console.error("Missing pricing state data")
-        return
+    if (
+        !batchSummations || !activeMbpr || !batchSize || batchSize.batchSizeCompoundingVessels.length === 0
+    ) {
+        throw new Error("There was not enough data to submit.")
     }
 
-    const { overallBomCostPerBatch, overallBomCostPerLb } = pricingState.bomObject
 
-    const producedPricingDataArchivesPayload: Prisma.ProducedPricingDataArchiveUncheckedCreateInput = {
-        examinationId: pricingExamination.id,
-        bomCostPerBatch: overallBomCostPerBatch,
-        bomCostPerLb: overallBomCostPerLb,
-        mbprId: pricingState.activeMbpr.id,
-        mbprVersionLabel: pricingState.activeMbpr.versionLabel || '',
-        batchSizeId: pricingState.activeBatchSize.id,
-        batchSizeQuantity: pricingState.activeBatchSize.quantity,
-        productionVesselName: pricingState.activeBatchSize.batchSizeCompoundingVessels[0].compoundingVessel.equipment.name,
-        tankTime: pricingState.activeBatchSize.batchSizeCompoundingVessels[0].tankTime,
-    }
+    // ensure pricing examination id exists and create if not
+    const pricingExamination = await accountingActions.examinations.upsert(examinationId, activeMbpr.producesItemId)
 
-    const archiveData = await prisma.producedPricingDataArchive.create({
-        data: producedPricingDataArchivesPayload,
+
+    // producedpricingdataarchive 
+    const producedExaminationDataArchive = await prisma.producedPricingDataArchive.create({
+        data: {
+            mbprId: activeMbpr.id,
+            examinationId,
+            mbprVersionLabel: activeMbpr.versionLabel || '',
+            batchSizeId: batchSize.id,
+            batchSizeQuantity: batchSize.quantity,
+            compoundingVesselId: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
+            compoundingVesselEquipmentName: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
+            compoundingTankTime: batchSize.batchSizeCompoundingVessels[0].tankTime,
+            bomCount: batchSummations.bomWithCost.length,
+            totalBomCostPerBatch: batchSummations.totalBomCostPerBatch,
+            totalBomCostPerLb: batchSummations.totalBomCostPerLb,
+            totalCostPerBatch: batchSummations.totalCostPerBatch,
+            totalCostPerLb: batchSummations.totalCostPerLb
+        }
     });
 
-    // bom pricing data archives
-    const bomArchivePayload: Prisma.BomPricingDataArchiveUncheckedCreateInput[] = []
-
-    pricingState.bomObject.bom.forEach((material) => {
-
-        if (!material) {
-            console.error('Material data missing');
-            return;
-        };
-
-        const { id, itemId, itemCost, isUpcomingPriceActive, arrivalCost, unforeseenDifficultiesCost, productionUsageCost, itemCostPerPound, itemCostPerBatch, } = material;
 
 
-        const payload: Prisma.BomPricingDataArchiveUncheckedCreateInput = {
-            producedPricingDataArchiveId: archiveData.id,
-            bomId: id,
-            itemId: itemId,
-            materialCost: itemCost,
-            upcomingPriceUsed: isUpcomingPriceActive,
-            arrivalCost,
-            unforeseenDifficultiesCost,
-            productionUsageCost,
-            overallItemCostPerLb: itemCostPerPound,
-            overallItemCostPerBatch: itemCostPerBatch,
-        }
-        bomArchivePayload.push(payload);
+
+    // bom pricing data archive
+    await Promise.all(batchSummations.bomWithCost.map(async (bom) => {
+
+        const pricingDataExists = bom.item.itemPricingData.length !== 0;
+
+
+        const response = await prisma.bomPricingDataArchive.create({
+            data: {
+                producedPricingDataArchiveId: producedExaminationDataArchive.id,
+                bomId: bom.id,
+                itemId: bom.itemId,
+                upcomingPriceUsed: bom.isUpcomingPriceActive,
+                arrivalCost: pricingDataExists ? bom.item.itemPricingData[0].arrivalCost : 0,
+                unforeseenDifficultiesCost: pricingDataExists ? bom.item.itemPricingData[0].unforeseenDifficultiesCost : 0,
+                productionUsageCost: pricingDataExists ? bom.item.itemPricingData[0].productionUsageCost : 0,
+                overallItemCostPerLb: bom.itemCostPerLb,
+                overallItemCostPerBatch: bom.itemCostInBatch,
+                examinationId: pricingExamination.id,
+                materialPrice: bom.itemCost,
+                materialPriceOrigin: bom.priceUsed,
+                totalMaterialCost: bom.totalItemCost,
+                upcomingPriceUomId: pricingDataExists ? bom.item.itemPricingData[0].upcomingPriceUomId : staticRecords.inventory.uom.lb,
+            }
+        })
+
+        return response
+    }))
+
+
+
+    // finished product archives
+
+    const finishedProductsMap = new Map(finishedProducts.map(fp => [fp.id, fp]))
+
+    const finishedProductPayload = interimFinishedProducts.map((i) => {
+
+        const matchingFinishedProduct = finishedProductsMap.get(i.finishedProductId);
+
+        return ({
+            pricingExaminationId: pricingExamination.id,
+            currentFinishedProductId: matchingFinishedProduct?.id || '',
+            name: matchingFinishedProduct?.name || '',
+            filledWithItemId: matchingFinishedProduct?.filledWithItemId || '',
+            fillQuantity: matchingFinishedProduct?.fillQuantity || 0,
+            declaredQuantity: matchingFinishedProduct?.declaredQuantity || 0,
+            freeShippingCost: matchingFinishedProduct?.freeShippingCost || 0,
+            fillUomId: matchingFinishedProduct?.fillUomId || '',
+            difficultyAdjustmentCost: matchingFinishedProduct?.difficultyAdjustmentCost || 0,
+            finishedProductTotalCost: matchingFinishedProduct?.calculatedTotals.finishedProductTotalCost || 0,
+            auxiliariesTotalCost: matchingFinishedProduct?.auxiliaries.total || 0,
+            productFillCost: matchingFinishedProduct?.calculatedTotals?.productFillCost || 0,
+            consumerPrice: i.consumerPrice,
+            markup: i.markup,
+            profit: i.profit,
+            profitPercentage: i.profitPercentage,
+        })
+    });
+
+    await prisma.finishedProductArchive.createMany({
+        data: finishedProductPayload,
+    });
+
+    // auxiliaries archive
+
+    const auxuiliariesArchivePayload: any[] = [];
+
+
+    finishedProducts.forEach(fp => {
+        fp.auxiliaries.breakdown.forEach(aux => {
+            auxuiliariesArchivePayload.push({
+                apartOfFinishedProductId: fp.id,
+                auxiliaryItemId: aux.auxiliaryItemId,
+                quantity: aux.quantity,
+                difficultyAdjustmentCost: aux.difficultyAdjustmentCost,
+                ipdArrivalCost: aux.auxiliaryItemPricingData[0].arrivalCost,
+                ipdProductionUsageCost: aux.auxiliaryItemPricingData[0].productionUsageCost,
+                ipdAuxiliaryUsageCost: aux.auxiliaryItemPricingData[0].auxiliaryUsageCost,
+                ipdUnforeseenDifficultiesCost: aux.auxiliaryItemPricingData[0].unforeseenDifficultiesCost,
+                ipdUpcomingPrice: aux.auxiliaryItemPricingData[0].upcomingPrice,
+                ipdIsUpcomingPriceActive: aux.auxiliaryItemPricingData[0].isUpcomingPriceActive,
+                ipdUpcomingPriceUomId: aux.auxiliaryItemPricingData[0].upcomingPriceUomId
+            })
+        })
     })
 
-    await prisma.bomPricingDataArchive.createMany({
-        data: bomArchivePayload,
-    });
 
-    // consumer container archive
-    const { filledConsumerContainers, interimConsumerContainers } = pricingState
+    await prisma.finishedProductAuxiliaryArchive.createMany({
+        data: auxuiliariesArchivePayload,
 
-    const ccaPayload: ConsumerContainerArchivePayload[] = [];
-
-    filledConsumerContainers.forEach((cc) => {
-        const container = cc.consumerContainer;
-
-        const payload: ConsumerContainerArchivePayload = {
-            examinationId: pricingExamination.id,
-            currentConsumerContaineId: container.id,
-            containerItemId: container.containerItemId,
-            containerCost: container.containerCost,
-            fillLaborCost: container.fillLaborCost,
-            shippingCost: container.shippingCost,
-            freeShippingCost: container.freeShippingCost,
-        }
-
-        ccaPayload.push(payload);
-    });
-
-    const consumerContainerArchives = await accountingActions.examinations.archives.consumerContainer.createMany(ccaPayload);
-
-
-    // filled consumer container archives
-
-    const iccaPayload: FilledConsumerContainerArhivePayload[] = [];
-
-    filledConsumerContainers.forEach((cc) => {
-
-        const consumerContainerArchiveId = consumerContainerArchives[consumerContainerArchives.findIndex((container) => container.currentConsumerContaineId === cc.consumerContainerId)].id
-        const interimConsumerPricing = interimConsumerContainers[interimConsumerContainers.findIndex((icc) => icc.filledConsumerContainerId === cc.id)].consumerPrice;
-
-        const payload: FilledConsumerContainerArhivePayload = {
-            examinationId: pricingExamination.id,
-            currentItemConsumerContainerId: cc.id,
-            consumerContainerArchiveId,
-            fillQuantity: cc.fillQuantity,
-            declaredQuantity: cc.fillQuantity,
-            uomId: cc.uomId,
-            difficultiesCost: cc.difficultiesCost,
-            consumerPrice: interimConsumerPricing,
-        }
-
-        iccaPayload.push(payload);
     })
-
-    await accountingActions.examinations.archives.filleConsumerContainer.createMany(iccaPayload)
-
 
 
     // pricing examination validation archives
-
     const pevaPayload: ExaminationValidationPayload = {
 
         examinationId: pricingExamination.id,
@@ -138,9 +154,9 @@ export const commitProducedPricingExamination = async (
 
     await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
 
-
-    await completePricingQueues(examinedItemId)
+    await completePricingQueues(activeMbpr.producesItemId)
 
 
     return pricingExamination
+
 }

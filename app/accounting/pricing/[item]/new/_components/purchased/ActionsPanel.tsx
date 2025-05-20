@@ -6,29 +6,21 @@ import { PurchasedValidation, validatePurchasedCommit } from '../../_functions/v
 import ValidationErrorAlert from './ValidationErrorAlert'
 import useDialog from '@/hooks/useDialog'
 import { commitPricingExamination } from '../../_functions/commitPricingExamination'
-import { ItemPricingData } from '@/actions/accounting/pricing/getItemPricingData'
 import { useRouter } from 'next/navigation'
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem'
 
 const ActionsPanel = ({
-    finishedProducts,
     examinationId,
-    examinedItemId,
-    pricingData,
 }: {
-    finishedProducts: FinishedProduct[]
     examinationId: string
-    examinedItemId: string
-    pricingData: ItemPricingData,
 
 }) => {
 
     const { toggleContainerParameters } = usePricingPurchasedActions()
     const { showDialog } = useDialog()
     const router = useRouter()
-    const { isContainerParametersPanelShown, interimFinishedProducts } = usePricingPurchasedSelection();
+    const { isContainerParametersPanelShown, interimFinishedProducts, finishedProducts, pricingDataObject } = usePricingPurchasedSelection();
     const [validation, setValidaton] = useState<PurchasedValidation>()
-    const purchasedPricingState = usePricingPurchasedSelection()
 
 
     // show warning that it is invalid and log if it bypassed
@@ -50,7 +42,13 @@ const ActionsPanel = ({
 
         if (!validation) return;
 
-        await commitPricingExamination(examinationId, examinedItemId, purchasedPricingState, validation, pricingData?.id || null)
+        const stateData = {
+            interimFinishedProducts: interimFinishedProducts,
+            finishedProducts: finishedProducts,
+            pricingDataObject: pricingDataObject,
+        }
+
+        await commitPricingExamination(examinationId, stateData, validation)
 
         router.back()
 

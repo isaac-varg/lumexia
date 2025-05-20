@@ -12,6 +12,7 @@ const ViewMode = ({ pricing }: { pricing: ItemPricingData }) => {
     const upcomingPrice = toFracitonalDigits.curreny(pricing?.upcomingPrice || 0)
     const upcomingPriceActive = pricing?.isUpcomingPriceActive || false
     const upcomingPriceUom = pricing?.upcomingPriceUom.abbreviation || 'NA'
+    const auxiliaryUsageCost = toFracitonalDigits.curreny(pricing?.auxiliaryUsageCost || 0)
 
 
 
@@ -21,6 +22,7 @@ const ViewMode = ({ pricing }: { pricing: ItemPricingData }) => {
             <Text.LabelDataPair label='Arrival Cost' data={arrivalCost} tooltip='The shipping cost to procure this from the supplier warehouse to our warehouse. This affects all consumer pricing and therefore production BOMs' />
 
             <Text.LabelDataPair label='Production Usage Cost' data={productionUsageCost} tooltip='Additional amount to add to the individual item bom cost due to it being difficult to stage and compound. Affects all production BOMs that use this material' />
+            <Text.LabelDataPair label='Auxiliary Usage Cost' data={auxiliaryUsageCost} tooltip='Additional amount to add to the individual item cost for when it is used as an auxiliary item in a finished product. Think container, cap, label, box, etc.' />
 
             <Text.LabelDataPair label='Unforeseen Difficulties Cost' data={unforeseenDifficultiesCost} tooltip='Cost to reflect disasters, shortages in global supply, or general difficulties. Affects the pricing of the material and all production BOM that use it' />
 

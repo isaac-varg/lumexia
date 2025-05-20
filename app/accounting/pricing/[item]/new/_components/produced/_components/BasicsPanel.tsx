@@ -1,39 +1,28 @@
 "use client"
 import Card from '@/components/Card'
 import Text from '@/components/Text'
-import useDialog from '@/hooks/useDialog'
 import { usePricingProducedSelection } from '@/store/pricingProducedSlice'
-import React, { useEffect } from 'react'
-import MissingBomDataAlert from './MissingBomDataAlert'
+import React from 'react'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
+import { BatchSummations } from '../_functions/getBomPricingSummations'
 
 const BasicsPanel = () => {
 
-    const { bomObject, activeBatchSize, tankLaborFixedCost  } = usePricingProducedSelection()
-    const { showDialog } = useDialog()
-    
+    const { producedPricingSummations } = usePricingProducedSelection()
 
-    useEffect(() => {
-
-        if (!bomObject) return;
-
-        if (bomObject.missingPricingData.length !== 0) {
-            showDialog("missingBomData")
-        }
-    }, [bomObject])
+    const summations = producedPricingSummations?.isError ? null : producedPricingSummations as BatchSummations
 
 
     return (
         <div className='col-span-2'>
             <Card.Root>
-                <MissingBomDataAlert />
                 <Card.Title>Basics</Card.Title>
 
                 <div className='flex justify-between gap-x-4'>
                     <div className='flex flex-col gap-y-2 w-2/3'>
 
 
-                        {!bomObject && (<>
+                        {!summations && (<>
                             <div className="skeleton h-4 w-full"></div>
 
                             <div className="skeleton h-4 w-full"></div>
@@ -42,24 +31,29 @@ const BasicsPanel = () => {
                         </>
                         )}
 
-                        {bomObject && (<>
-                            <Text.LabelDataPair
-                                label='BOM $/batch'
-                                tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like Production Usage Cost, Arrival Cost, etc.'
-                                data={`${bomObject?.overallBomCostPerBatch}`}
-                            />
+                        {summations && (<>
 
-                            <Text.LabelDataPair
-                                label='BOM Count'
-                                tooltip='The amount of items in the BOM'
-                                data={bomObject?.bom.length || 0}
-
-                            />
                             <Text.LabelDataPair
                                 label='Labor Cost'
                                 tooltip='The fixed labour cost times the tank time'
-                                data={(activeBatchSize?.batchSizeCompoundingVessels[0].tankTime || 0) * tankLaborFixedCost || 0}
+                                data={summations.laborCost}
 
+                            />
+                            <Text.LabelDataPair
+                                label='BOM $/batch'
+                                tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like the items Production Usage Cost, Arrival Cost, etc.'
+                                data={`${summations.totalBomCostPerBatch}`}
+                            />
+                            <Text.LabelDataPair
+                                label='BOM $/lb'
+                                tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like the items Production Usage Cost, Arrival Cost, etc.'
+                                data={`${summations.totalBomCostPerLb}`}
+                            />
+
+                            <Text.LabelDataPair
+                                label='Total $/batch'
+                                tooltip='The overall cost of everything per batch'
+                                data={`${summations.totalBomCostPerBatch}`}
                             />
                         </>)}
 
@@ -67,12 +61,12 @@ const BasicsPanel = () => {
 
                     </div>
 
-                    {!bomObject && (<div className='rounded-xl flex w-1/3 flex-col h-32 skeleton' />)}
+                    {!summations && (<div className='rounded-xl flex w-1/3 flex-col h-32 skeleton' />)}
 
-                    {bomObject && (
+                    {summations && (
                         <div className=' rounded-xl flex w-1/3 flex-col gap-y-2 p-2 bg-sky-800 items-center justify-center'>
-                            <h1 className='font-poppins font-bold text-6xl text-white'>{toFracitonalDigits.curreny(bomObject?.overallBomCostPerLb || 0)}</h1>
-                            <h2 className='font-poppins font-semibold text-lg text-neutral-300'>{`$/lb`}</h2>
+                            <h1 className='font-poppins font-bold text-6xl text-white'>{toFracitonalDigits.curreny(summations.totalCostPerLb)}</h1>
+                            <h2 className='font-poppins font-semibold text-lg text-neutral-300'>{`total $/lb`}</h2>
                         </div>
                     )}
 

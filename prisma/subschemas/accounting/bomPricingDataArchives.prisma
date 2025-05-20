@@ -1,10 +1,14 @@
 model BomPricingDataArchive {
     id                           String                     @id @default(uuid())
+    examinationId                String                     @map("examination_id")
     producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
     bomId                        String                     @map("bom_id")
     itemId                       String                     @map("item_id")
-    materialCost                 Float                      @map("material_cost")
+    totalMaterialCost            Float                      @map("total_material_cost")
+    materialPrice                Float                      @map("material_price")
+    materialPriceOrigin          String                     @map("material_price_origin")
     upcomingPriceUsed            Boolean                    @map("upcoming_price_used")
+    upcomingPriceUomId           String                     @map("upcoming_price_uom_id")
     arrivalCost                  Float                      @map("arrival_cost")
     unforeseenDifficultiesCost   Float                      @map("unforeseen_difficulties_cost")
     productionUsageCost          Float                      @map("production_usage_cost")
@@ -13,8 +17,10 @@ model BomPricingDataArchive {
     createdAt                    DateTime                   @default(now()) @map("created_at")
     updatedAt                    DateTime                   @updatedAt @map("updated_at")
     producedPricingDataArchive   ProducedPricingDataArchive @relation(fields: [producedPricingDataArchiveId], references: [id])
+    examination                  PricingExamination         @relation(fields: [examinationId], references: [id])
     bom                          BillOfMaterial             @relation(fields: [bomId], references: [id])
     item                         Item                       @relation(fields: [itemId], references: [id])
+    upcomingPriceUom             UnitOfMeasurement          @relation(fields: [upcomingPriceUomId], references: [id])
 
     @@map("bom_pricing_data_archives")
 }

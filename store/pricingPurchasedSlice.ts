@@ -1,13 +1,19 @@
+import { accountingActions } from '@/actions/accounting';
 import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
+import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem';
+import { ItemPricingData } from '@/actions/accounting/pricing/getItemPricingData';
 import { LastItemPrice } from '@/actions/accounting/pricing/getLastItemPrice';
 import { Uom } from '@/actions/inventory/getAllUom';
+import prisma from '@/lib/prisma';
 import { create } from 'zustand';
 
 export type InterimFinishedProduct = {
     finishedProductId: string
     finishedProduct: FinishedProduct
     consumerPrice: number
+    profit: number
+    markup: number
     wasViewed: boolean
     profitPercentage: number
 
@@ -15,6 +21,7 @@ export type InterimFinishedProduct = {
 
 type State = {
     arrivalCost: number
+    pricingDataObject: ItemPricingData | null
     unforeseenDifficultiesCost: number
     isContainerParametersPanelShown: boolean
     upcomingPrice: number
@@ -22,28 +29,31 @@ type State = {
     upcomingPriceActive: boolean
     lastPrice: LastItemPrice | null
     itemCost: number,
-    finishedProducts: FinishedProduct[]
+    finishedProducts: FinishedProductFromPurchased[]
     interimFinishedProducts: InterimFinishedProduct[]
     productionUsageCost: number
 }
+
 
 //export type pricingPurchasedStates = keyof State
 export type PricingPurchasedState = State; // alias for this state
 
 type Actions = {
     actions: {
-        setState: (data: { arrivalCost: number, unforeseenDifficultiesCost: number, upcomingPrice: number, upcomingPriceUom: Uom | null, upcomingPriceActive: boolean, lastPrice: LastItemPrice | null, productionUsageCost: number }) => void;
+        setState: (data: { arrivalCost: number, unforeseenDifficultiesCost: number, upcomingPrice: number, upcomingPriceUom: Uom | null, upcomingPriceActive: boolean, lastPrice: LastItemPrice | null, productionUsageCost: number, pricingDataObject: ItemPricingData }) => void;
         setItemCost: (cost: number) => void;
         toggleContainerParameters: () => void;
-        setFinishedProducts: (finishedProducts: FinishedProduct[]) => void
+        setFinishedProducts: (finishedProducts: FinishedProductFromPurchased[]) => void
         updateInterimFinishedProduct: (interimFinishedProductPayload: InterimFinishedProduct) => void;
         getInterimFinishedProduct: (finishedProductId: string) => InterimFinishedProduct | null;
+        refreshFinishedProducts: (fillItemId: string) => void;
     }
 }
 
 
 export const usePricingPurchasedSelection = create<State & Actions>((set, get) => ({
     arrivalCost: 0,
+    pricingDataObject: null,
     unforeseenDifficultiesCost: 0,
     isCalculationsPanelShown: false,
     isContainerParametersPanelShown: false,
@@ -58,7 +68,7 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
 
     actions: {
         setState: (data) => {
-            const { arrivalCost, unforeseenDifficultiesCost, upcomingPriceActive, upcomingPrice, upcomingPriceUom, lastPrice, productionUsageCost } = data;
+            const { arrivalCost, unforeseenDifficultiesCost, upcomingPriceActive, upcomingPrice, upcomingPriceUom, lastPrice, productionUsageCost, pricingDataObject } = data;
             set(() => ({
                 arrivalCost,
                 unforeseenDifficultiesCost,
@@ -67,6 +77,7 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
                 upcomingPriceActive,
                 lastPrice,
                 productionUsageCost,
+                pricingDataObject
             }));
         },
         setItemCost: (cost) => {
@@ -109,6 +120,20 @@ export const usePricingPurchasedSelection = create<State & Actions>((set, get) =
         },
         toggleContainerParameters: () => {
             set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))
+        },
+        refreshFinishedProducts: async (fillItemId) => {
+            const state = get()
+            try {
+
+                const finishedProducts = await accountingActions.finishedProducts.getByPurchasedItem(fillItemId, state.pricingDataObject, state.lastPrice);
+                set(() => ({
+                    finishedProducts,
+                }))
+
+            } catch (error) {
+
+                console.error('There was an issue retrieving the finished products', error)
+            }
         }
     },
 }));

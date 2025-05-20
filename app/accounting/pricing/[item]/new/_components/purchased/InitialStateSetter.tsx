@@ -1,7 +1,6 @@
 'use client'
 
-import { FilledConsumerContainer } from "@/actions/accounting/consumerContainers/getAllByFillItem"
-import { FinishedProduct } from "@/actions/accounting/finishedProducts/getByItem"
+import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData"
 import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice"
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost"
@@ -11,7 +10,7 @@ import { useEffect } from "react"
 type InitialStateSetterProps = {
     lastPrice: LastItemPrice,
     pricingData: ItemPricingData,
-    finishedProducts: FinishedProduct[]
+    finishedProducts: FinishedProductFromPurchased[]
 
 }
 
@@ -27,6 +26,7 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
             upcomingPriceUom: pricingData?.upcomingPriceUom || null,
             upcomingPriceActive: pricingData?.isUpcomingPriceActive || false,
             lastPrice: lastPrice,
+            pricingDataObject: pricingData,
             productionUsageCost: pricingData?.productionUsageCost || 0,
 
         })
@@ -37,12 +37,15 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
     }, [finishedProducts])
 
     useEffect(() => {
-        const price = pricingData?.isUpcomingPriceActive ? pricingData.upcomingPrice : lastPrice?.pricePerUnit || 0
 
-        const itemCost = getItemCost(price, pricingData?.arrivalCost || 0, pricingData?.unforeseenDifficultiesCost || 0)
+        if (!pricingData) return;
+
+        const itemCost = getItemCost(pricingData, lastPrice)
 
         setItemCost(itemCost);
     }, [pricingData, lastPrice])
+
+
 
 
     return false;

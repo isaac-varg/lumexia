@@ -4,27 +4,42 @@ import DataTable from '@/components/DataTable'
 import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import React from 'react'
 import { bomColumns } from './BomColumns'
-import { PricingBom } from '../_functions/getBomWithPricing'
 import useDialog from '@/hooks/useDialog'
 import BomItemDetailsDialog from './BomItemDetailsDialog'
+import { BatchSummations } from '../_functions/getBomPricingSummations'
 
 const BOM = () => {
 
-    const { bomObject } = usePricingProducedSelection()
-    const { setSelectedBomItem } = usePricingProducedActions()
+
     const { showDialog } = useDialog()
 
-    if (!bomObject) return null;
+    const { producedPricingSummations } = usePricingProducedSelection()
+    const { setSelectedBomRow } = usePricingProducedActions()
 
-    const handleRowClick = (bom: PricingBom) => {
+    if (!producedPricingSummations || producedPricingSummations.isError) {
+        return (
 
+            <div className='col-span-2'>
+                <Card.Root>
 
-        if (!bom) return;
+                    <Card.Title>Bill of Materials</Card.Title>
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-4 w-full"></div>
+                    <div className="skeleton h-4 w-full"></div>
+                </Card.Root>
+            </div>
 
-        setSelectedBomItem(bom);
-
-        showDialog(`bomItem${bom.id}`)
+        )
     }
+
+    const summations = producedPricingSummations as BatchSummations
+
+    const handleRowClick = (row: BatchSummations['bomWithCost'][number]) => {
+        setSelectedBomRow(row);
+        showDialog(`bomItem${row.id}`)
+    }
+
 
     return (
         <div className='col-span-2'>
@@ -34,9 +49,10 @@ const BOM = () => {
 
                 <Card.Title>Bill of Materials</Card.Title>
 
+
                 <DataTable.Default
                     columns={bomColumns}
-                    data={bomObject.bom}
+                    data={summations.bomWithCost}
                     onRowClick={(row) => handleRowClick(row.original)}
                     tableStateName='pricingBom'
                     disableFilters

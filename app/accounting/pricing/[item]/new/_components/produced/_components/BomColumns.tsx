@@ -1,12 +1,13 @@
-import { CellContext, Row, createColumnHelper } from "@tanstack/react-table";
-import { PricingBom } from "../_functions/getBomWithPricing";
+import {  Row, createColumnHelper } from "@tanstack/react-table";
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 import { useRouter } from "next/navigation";
 import { getSlug } from "@/utils/general/getSlug";
+import { BatchSummations } from "../_functions/getBomPricingSummations";
 
-const columnHelper = createColumnHelper<PricingBom>();
 
-const ActionButtons = ({ row }: { row: Row<PricingBom> }) => {
+const columnHelper = createColumnHelper<BatchSummations["bomWithCost"][number]>();
+
+const ActionButtons = ({ row }: { row: Row<BatchSummations["bomWithCost"][number]> }) => {
 
 
 
@@ -36,22 +37,22 @@ export const bomColumns = [
     columnHelper.accessor("concentration", {
         header: 'w/w %'
     }),
-    columnHelper.accessor("itemCost", {
-        header: "Item Cost",
+    columnHelper.accessor("totalItemCost", {
+        header: "Total Item Cost",
         cell: (row) => {
-            return toFracitonalDigits.curreny(row.row.original?.itemCost || 0)
+            return toFracitonalDigits.curreny(row.row.original?.totalItemCost || 0)
         }
     }),
-    columnHelper.accessor("itemCostPerBatch", {
+    columnHelper.accessor("itemCostInBatch", {
         header: "$ / batch",
         cell: (row) => {
-            return toFracitonalDigits.curreny(row.row.original?.itemCostPerBatch || 0)
+            return toFracitonalDigits.curreny(row.row.original?.itemCostInBatch || 0)
         }
     }),
-    columnHelper.accessor("itemCostPerPound", {
+    columnHelper.accessor("itemCostPerLb", {
         header: "$ / lb",
         cell: (row) => {
-            return toFracitonalDigits.curreny(row.row.original?.itemCostPerPound || 0)
+            return toFracitonalDigits.curreny(row.row.original?.itemCostPerLb || 0)
         }
     }),
     columnHelper.display({

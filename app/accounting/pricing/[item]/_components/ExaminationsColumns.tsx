@@ -9,6 +9,7 @@ const columnHelper = createColumnHelper<PricingExamination>();
 
 export const examinationColumns = [
     columnHelper.accessor("user.name", {
+        id: 'userName',
         header: SortableHeaderType("Conducted By"),
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));

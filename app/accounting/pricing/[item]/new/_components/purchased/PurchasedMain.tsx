@@ -14,9 +14,8 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
 
     const pricingData = await accountingActions.pricing.item.getItemPricingData(item.id)
     const lastPrice = await accountingActions.pricing.item.getLastItemPrice(item.id)
-    const finishedProducts = await accountingActions.finishedProducts.getByItem(item.id);
+    const finishedProducts = await accountingActions.finishedProducts.getByPurchasedItem(item.id, pricingData, lastPrice);
     const examinationId = uuidv4();
-
 
     return (
         <div className='flex flex-col gap-y-4'>
@@ -25,7 +24,7 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
             <PageBreadcrumbs />
             <div className="grid grid-cols-2 gap-4">
                 <Basics />
-                <ActionsPanel finishedProducts={finishedProducts} examinationId={examinationId} examinedItemId={item.id} pricingData={pricingData} />
+                <ActionsPanel examinationId={examinationId} />
 
                 <FinishedProducts fillItemId={item.id} />
 

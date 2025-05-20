@@ -3,14 +3,13 @@ import Card from '@/components/Card'
 import React from 'react'
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-import { PricingExamination } from '@/actions/accounting/examinations/getAllByItem';
 import { DateTime } from 'luxon';
-import { ProducedExaminations } from '../_functions/getProducedPricingExamination';
-import { dateFormatString } from '@/configs/data/dateFormatString';
+import { ProducedPricingExaminationForDashboard } from '../_functions/getProducedPricingExamination';
 
 
-const OverallMbprPricingChart = ({ pricingExaminations }: { pricingExaminations: ProducedExaminations[] }) => {
+const OverallMbprPricingChart = ({ examinations }: { examinations: ProducedPricingExaminationForDashboard[] }) => {
 
+    const dataArchives = examinations.flatMap((e) => e.producedPricingDataArchives);
 
     const options: ApexOptions = {
         chart: {
@@ -25,7 +24,7 @@ const OverallMbprPricingChart = ({ pricingExaminations }: { pricingExaminations:
     const series = [
         {
             name: 'Prices',
-            data: pricingExaminations.map((exam) => ({ x: DateTime.fromJSDate(exam.createdAt), y: exam.bomCostPerLb || 0 }))
+            data: dataArchives.map((exam) => ({ x: DateTime.fromJSDate(exam.createdAt), y: exam.totalCostPerLb || 0 }))
         },
     ]
 
@@ -33,7 +32,7 @@ const OverallMbprPricingChart = ({ pricingExaminations }: { pricingExaminations:
 
     return (
         <Card.Root >
-            <Card.Title>Overall BOM $/lb</Card.Title>
+            <Card.Title>Overall $/lb</Card.Title>
 
             <Chart
                 options={options}

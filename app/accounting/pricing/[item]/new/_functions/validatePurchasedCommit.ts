@@ -1,17 +1,17 @@
-import { InterimConsumerContainerData } from "@/store/pricingPurchasedSlice";
+import { InterimFinishedProduct } from "@/store/pricingPurchasedSlice";
 
 export const validatePurchasedCommit = (
     serverFilledContainersCount: number,
-    interimConsumerContainers: InterimConsumerContainerData[]
-)  => {
+    interimFinishedProducts: InterimFinishedProduct[]
+) => {
 
 
     const profitPercentageThreshold = 25;
 
     const checks = {
-        examinedConsumerContainerCountsMatch: serverFilledContainersCount === interimConsumerContainers.length,
-        allInterimViewed: interimConsumerContainers.every((c) => c.wasViewed === true),
-        allProfitPercentagesExceedThreshold: interimConsumerContainers.every((c) => c.profitPercentage > profitPercentageThreshold),
+        examinedConsumerContainerCountsMatch: serverFilledContainersCount === interimFinishedProducts.length,
+        allInterimViewed: interimFinishedProducts.every((c) => c.wasViewed === true),
+        allProfitPercentagesExceedThreshold: interimFinishedProducts.every((c) => c.profitPercentage > profitPercentageThreshold),
         // Add additional checks here if needed
     };
 
@@ -19,7 +19,7 @@ export const validatePurchasedCommit = (
 
 
 
-   
+
     return { allValid, checks };
 };
 

@@ -4,8 +4,9 @@ import Card from '@/components/Card'
 import React from 'react'
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-import { ProducedExaminations } from '../_functions/getProducedPricingExamination';
+import { ProducedPricingExaminationForDashboard } from '../_functions/getProducedPricingExamination';
 import { DateTime } from 'luxon';
+import { groupByProperty } from '@/utils/data/groupByProperty';
 
 type Archive = {
     bomId: string;
@@ -16,13 +17,10 @@ type Archive = {
     };
 };
 
-const BomPricingChart = ({ pricingExaminations }: { pricingExaminations: ProducedExaminations[] }) => {
-    const flattenedArchives: Archive[] = pricingExaminations.flatMap(entry =>
-        entry.bomPricingDataArchives.map(archive => ({
-            ...archive,
-            name: archive.item?.name || 'Unknown Item',
-        }))
-    );
+const BomPricingChart = ({ examinations }: { examinations: ProducedPricingExaminationForDashboard[] }) => {
+
+    const flattenedArchives = examinations.flatMap((e) => e.BomPricingDataArchive)
+
 
     const groupedByBomId = flattenedArchives.reduce((acc: Record<string, Archive[]>, archive: Archive) => {
         const { bomId } = archive;
@@ -32,6 +30,7 @@ const BomPricingChart = ({ pricingExaminations }: { pricingExaminations: Produce
         acc[bomId].push(archive);
         return acc;
     }, {});
+
 
     const options: ApexOptions = {
         chart: {
@@ -45,17 +44,17 @@ const BomPricingChart = ({ pricingExaminations }: { pricingExaminations: Produce
 
 
     const series = Object.entries(groupedByBomId).map(([bomId, entries]) => ({
-        name: entries[0].item.name || bomId, 
+        name: entries[0].item.name || bomId,
         data: entries
             .map(entry => ({
-                x:  DateTime.fromJSDate(entry.createdAt),
+                x: DateTime.fromJSDate(entry.createdAt),
                 y: entry.overallItemCostPerLb || 0
             }))
     }));
 
     return (
         <Card.Root>
-            <Card.Title>Material Cost $/lb</Card.Title>
+            <Card.Title>Overall Material Cost $/lb</Card.Title>
             <Chart
                 options={options}
                 series={series}

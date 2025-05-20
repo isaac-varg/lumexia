@@ -1,34 +1,32 @@
 'use client'
 import Card from '@/components/Card'
-import { StateForCommit, usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import React, { useState } from 'react'
-import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
+import ValidationErrorAlert from './ValidationErrorAlert'
 import useDialog from '@/hooks/useDialog'
 import { useRouter } from 'next/navigation'
-import ValidationErrorAlert from './ValidationErrorAlert'
+import { ProducedValidation, validateProducedCommit } from '../../../_functions/validateProducedCommit'
+import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice'
 import { commitProducedPricingExamination } from '../../../_functions/commitProducedPricingExamination'
-
-type PanelProps = {
-    examinationId: string
-    examinatedItemId: string
-}
+import { BatchSummations } from '../_functions/getBomPricingSummations'
 
 const ActionsPanel = ({
     examinationId,
-    examinatedItemId,
-}: PanelProps) => {
+}: {
+    examinationId: string
 
-    const { isContainerParametersPanelShown, filledConsumerContainers, interimConsumerContainers } = usePricingProducedSelection();
-    const { toggleContainerParameters } = usePricingProducedActions();
+}) => {
+
+    const { toggleContainerParameters } = usePricingProducedActions()
     const { showDialog } = useDialog()
-    const pricingState = usePricingProducedSelection()
-    const [validation, setValidaton] = useState<ProducedValidation>()
     const router = useRouter()
+    const { isContainerParametersPanelShown, activeMbpr, interimFinishedProducts, finishedProducts, producedPricingSummations, activeBatchSize } = usePricingProducedSelection();
+    const [validation, setValidaton] = useState<ProducedValidation>()
 
 
-    const handleCommit = () => {
+    // show warning that it is invalid and log if it bypassed
+    const handleCommit = async () => {
 
-        const validation = validateProducedCommit(filledConsumerContainers.length, interimConsumerContainers)
+        const validation = validateProducedCommit(finishedProducts.length, interimFinishedProducts);
         setValidaton(validation)
 
         if (!validation.allValid) {
@@ -41,35 +39,46 @@ const ActionsPanel = ({
 
     const initiateCommit = async () => {
 
-        if (!validation) return;
+        if (!validation || interimFinishedProducts.length === 0 || finishedProducts.length === 0 || !activeMbpr || !activeBatchSize || !producedPricingSummations || producedPricingSummations.isError) return;
 
-        const serializedPricingState: StateForCommit = {
-            bomObject: pricingState.bomObject,
-            activeMbpr: pricingState.activeMbpr,
-            activeBatchSize: pricingState.activeBatchSize,
-            filledConsumerContainers: pricingState.filledConsumerContainers,
-            interimConsumerContainers: pricingState.interimConsumerContainers,
+        const summations = producedPricingSummations as BatchSummations;
+        const stateData = {
+            interimFinishedProducts,
+            finishedProducts,
+            activeMbpr,
+            batchSize: activeBatchSize,
+            batchSummations: summations,
+
         }
 
-        await commitProducedPricingExamination(examinationId, examinatedItemId, validation, serializedPricingState)
+        await commitProducedPricingExamination(examinationId, stateData, validation)
 
-        console.log('49')
         router.back()
 
     }
 
-
     return (
         <Card.Root>
+
             <ValidationErrorAlert validation={validation} onProceed={initiateCommit} />
 
             <Card.Title>Actions</Card.Title>
-            <button className={`btn ${isContainerParametersPanelShown ? 'btn-accent' : ''}`} onClick={() => toggleContainerParameters()}>
-                {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
-            </button>
-            <button className='btn btn-success' onClick={() => handleCommit()}>Commit</button>
-        </Card.Root>
 
+
+
+            <div className='grid grid-cols-2 gap-4'>
+
+                <button className='btn btn-accent' onClick={handleCommit}>Commit</button>
+
+                <button
+                    className={`btn ${isContainerParametersPanelShown ? 'btn-active' : ''}`}
+                    onClick={toggleContainerParameters}
+                >
+                    {`${isContainerParametersPanelShown ? 'Hide' : 'Show'} Container Parameters`}
+                </button>
+
+            </div>
+        </Card.Root >
     )
 }
 

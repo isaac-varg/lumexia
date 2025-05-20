@@ -5,7 +5,7 @@ import React from 'react'
 import BasicsPanel from './_components/BasicsPanel'
 import ActionsPanel from './_components/ActionsPanel'
 import ApprovalStatus from './_components/ApprovalStatus'
-import ConsumerContainerPanel from './_components/ConsumerContainerPanel'
+import FinishedProductsPanel from './_components/FinishedProductsPanel'
 
 interface PricingDetailsProps {
     searchParams: {
@@ -33,7 +33,7 @@ const PricingDetailsPage = async ({ searchParams }: PricingDetailsProps) => {
             </div>
 
 
-            <ConsumerContainerPanel exam={examination} />
+            <FinishedProductsPanel finishedProducts={examination.FinishedProductArchive} />
 
 
 

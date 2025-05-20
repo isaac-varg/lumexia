@@ -170,5 +170,12 @@ export const staticRecords = {
     },
     configs: {
         isProductionNotionEnabled: '1f782875-32aa-4804-b344-84221b4c391b',
+    },
+    pricing: {
+        notes: {
+            noteTypes: {
+                default: '030a218c-50fd-419f-8b4b-b3302d91b7f8'
+            }
+        }
     }
 }

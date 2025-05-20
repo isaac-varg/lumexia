@@ -1,4 +1,5 @@
-export const getMarkup = (overallFilledContainerCost: number, consumerPrice: number) => {
+export const getMarkup = (finishedProductTotalCost: number, consumerPrice: number) => {
+    const grossProfit = consumerPrice - finishedProductTotalCost;
 
-    return ((consumerPrice - overallFilledContainerCost) /  overallFilledContainerCost ) * 100
+    return ((grossProfit) / finishedProductTotalCost) * 100
 }

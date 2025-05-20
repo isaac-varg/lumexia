@@ -11,15 +11,7 @@ export const getAllPricingExaminationsByItem = async (examinedItemId: string) =>
         include: {
             user: true,
             itemPricingDataArchive: true,
-            filledConsumerContainerArchives: {
-                include: {
-                    consumerContainerArchive: {
-                        include: {
-                            containerItem: true
-                        }
-                    },
-                }
-            },
+            FinishedProductArchive: true,
         },
         orderBy: {
             createdAt: 'desc'

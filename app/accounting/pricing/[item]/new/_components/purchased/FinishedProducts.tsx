@@ -2,22 +2,23 @@
 import Card from '@/components/Card'
 import { usePricingPurchasedSelection } from '@/store/pricingPurchasedSlice'
 import React, { useState } from 'react'
-import AddConsumerContainerDialog from './AddConsumerContainerDialog'
-import { FilledConsumerContainer } from '@/actions/accounting/consumerContainers/getAllByFillItem'
 import FinishedProductCard from '../shared/FinishedProductCard'
 import AddFinishedProductButton from './AddFinishedProductButton'
-import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem'
+import AddFinishedProductDialog from '../shared/AddFinishedProductDialog'
+import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
+import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem'
 
 const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
 
     const { finishedProducts } = usePricingPurchasedSelection()
 
-    const [selectedFinishedProduct, setSelectedFinishedProduct] = useState<FinishedProduct | null>(null)
+    const [selectedFinishedProduct, setSelectedFinishedProduct] = useState<FinishedProductFromPurchased | null>(null)
 
     return (
         <div className='col-span-2'>
-            <AddConsumerContainerDialog fillItemId={fillItemId} />
+            <AddFinishedProductDialog fillItemId={fillItemId} />
+
             <Card.Root>
                 <div className='flex gap-x-6'>
 
@@ -40,7 +41,7 @@ const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
 
                     <div className='flex flex-col w-2/3 '>
 
-                        <SelectedFinishedProductPanel sele={selectedCC} />
+                        <SelectedFinishedProductPanel selectedFinishedProduct={selectedFinishedProduct} />
 
 
                     </div>
