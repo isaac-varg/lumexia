@@ -1,7 +1,7 @@
 import { Item } from "../items/items"
-import { Container } from "./containers"
+import { Container }from "./containers"
 import { Transaction } from "./transactions"
-import { UnitOfMeasurement } from "./unitsOfMeasurement"
+import { UnitOfMeasurement }from "./unitsOfMeasurement"
 
 model Lot {
     id              String            @id @default(uuid())
@@ -14,8 +14,9 @@ model Lot {
     updatedAt       DateTime          @updatedAt @map("updated_at")
     containers      Container[]
     transactions    Transaction[]
-    lotOrigin	    LotOrigin[]
+    lotOrigin       LotOrigin[]
     uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    qcRecords       QcRecord[]
 
     @@map("lots")
 }

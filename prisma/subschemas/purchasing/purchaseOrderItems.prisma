@@ -1,25 +1,24 @@
 import { PurchaseOrder } from "./purchaseOrders"
-import { Item } from "../items/items"
+import { Item }from "../items/items"
 import { UnitOfMeasurement} from "../inventory/unitsOfMeasurement"
-import { PurchaseOrderStatus } from "./purchaseOrderStatuses"
+import { PurchaseOrderStatus }from "./purchaseOrderStatuses"
 
 model PurchaseOrderItem {
-    id                    String              @id @default(uuid())
-    purchaseOrderId       String              @map("purchase_order_id")
-    itemId                String              @map("item_id")
+    id                    String                    @id @default(uuid())
+    purchaseOrderId       String                    @map("purchase_order_id")
+    itemId                String                    @map("item_id")
     quantity              Float
-    pricePerUnit          Float               @map("price_per_unit")
-    uomId                 String              @map("uom_id")
-    purchaseOrderStatusId String              @map("purchase_order_status_id")
-    createdAt             DateTime            @default(now()) @map("created_at")
-    updatedAt             DateTime            @updatedAt @map("updated_at")
-    purchaseOrders        PurchaseOrder       @relation(fields: [purchaseOrderId], references: [id])
-    item                  Item                @relation(fields: [itemId], references: [id])
-    uom                   UnitOfMeasurement   @relation(fields: [uomId], references: [id])
-    purchaseOrderStatus   PurchaseOrderStatus @relation(fields: [purchaseOrderStatusId], references: [id])
-    details PurchaseOrderItemDetail[]
+    pricePerUnit          Float                     @map("price_per_unit")
+    uomId                 String                    @map("uom_id")
+    purchaseOrderStatusId String                    @map("purchase_order_status_id")
+    createdAt             DateTime                  @default(now()) @map("created_at")
+    updatedAt             DateTime                  @updatedAt @map("updated_at")
+    purchaseOrders        PurchaseOrder             @relation(fields: [purchaseOrderId], references: [id])
+    item                  Item                      @relation(fields: [itemId], references: [id])
+    uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
+    purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
+    details               PurchaseOrderItemDetail[]
+    qcRecords             QcRecord[]
 
     @@map("purchase_order_items")
 }
-
-

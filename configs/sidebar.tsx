@@ -1,9 +1,10 @@
 import { TbBook2, TbClipboardCheck, TbShoppingBag, TbShoppingBagPlus, TbSmartHome, TbTruck } from "react-icons/tb";
-import { BsBox2Heart  } from "react-icons/bs";
+import { BsBox2Heart } from "react-icons/bs";
 import { TbScale, TbCreditCard, TbClipboardHeart } from "react-icons/tb";
 import { BiBuildings } from "react-icons/bi";
 import { MdOilBarrel } from "react-icons/md";
 import { FaBacteria } from "react-icons/fa";
+import { HiCheckBadge } from "react-icons/hi2";
 
 
 
@@ -93,7 +94,13 @@ export const sidebar = [
                 label: "Micro",
                 icon: <FaBacteria />,
                 path: "/quality/micro/new"
+            },
+            {
+                label: "QC",
+                icon: <HiCheckBadge />,
+                path: "/quality/qc/"
             }
+
         ]
     },
     {

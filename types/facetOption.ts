@@ -1,5 +1,5 @@
 export interface FacetOptions {
-    value: string;
+    value: string | boolean;
     label: string;
     icon?: React.ComponentType<{ className?: string }>
-  }
+}

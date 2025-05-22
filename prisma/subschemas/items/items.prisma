@@ -28,6 +28,7 @@ model Item {
     consumerContainers        ConsumerContainer[]
     pricingExaminations       PricingExamination[]
     consumerContainerArchives ConsumerContainerArchive[]
+    qcItemParameters          QcItemParameter[]
 
     @@map("items")
 }

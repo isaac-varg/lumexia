@@ -1,0 +1,17 @@
+model QcAuditLog {
+    id              String   @id @default(uuid())
+    qcRecordId      String   @map("qc_record_id")
+    editedById      String   @map("edited_by_id")
+    action          String
+    editedTableName String   @map("edited_table_name")
+    recordId        String   @map("record_id")
+    fieldName       String   @map("field_name")
+    oldValue        String   @map("old_value")
+    newValue        String   @map("new_value")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
+    qcRecord        QcRecord @relation(fields: [qcRecordId], references: [id])
+    editedBy        User     @relation(fields: [editedById], references: [id])
+
+    @@map("qc_audit_logs")
+}

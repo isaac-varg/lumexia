@@ -1,0 +1,14 @@
+model QcItemParameter {
+    id                      String      @id @default(uuid())
+    itemId                  String      @map("item_id")
+    parameterId             String      @map("parameter_id")
+    specification           Json?
+    calculatedSpecification Json?       @map("calculated_specification")
+    createdAt               DateTime    @default(now()) @map("created_at")
+    updatedAt               DateTime    @updatedAt @map("updated_at")
+    item                    Item        @relation(fields: [itemId], references: [id])
+    parameter               QcParameter @relation(fields: [parameterId], references: [id])
+
+    @@unique([itemId, parameterId])
+    @@map("qc_item_parameters")
+}

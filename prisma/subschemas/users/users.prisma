@@ -18,6 +18,9 @@ model User {
     auditRequests       AuditRequest[]
     auditRequestNotes   AuditRequestNote[]
     pricingExaminations PricingExamination[]
+    qcRecords           QcRecord[]
+    qcRecordNotes       QcRecordNote[]
+    qcAuditLog          QcAuditLog[]
 
     @@map("users")
 }

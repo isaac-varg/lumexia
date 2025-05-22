@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu May 15 2025 09:35:36 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed May 21 2025 15:56:53 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -584,6 +584,7 @@ model Lot {
   transactions    Transaction[]
   lotOrigin       LotOrigin[]
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+  qcRecords       QcRecord[]
   BprStaging      BprStaging[]
 
   @@map("lots")
@@ -725,6 +726,7 @@ model Item {
   consumerContainers              ConsumerContainer[]
   pricingExaminations             PricingExamination[]
   consumerContainerArchives       ConsumerContainerArchive[]
+  qcItemParameters                QcItemParameter[]
   BomPricingDataArchive           BomPricingDataArchive[]
   FinishedProductArchive          FinishedProductArchive[]
   FinishedProductAuxiliary        FinishedProductAuxiliary[]
@@ -803,6 +805,7 @@ model BatchProductionRecord {
 
   bprBatchSteps      BprBatchStep[]
   lotOrigin          LotOrigin[]
+  qcRecords          QcRecord[]
   NotionBpr          NotionBpr[]
   BprBillOfMaterials BprBillOfMaterials[]
   RequestBpr         RequestBpr[]
@@ -1205,6 +1208,7 @@ model PurchaseOrderItem {
   uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
   purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
   details               PurchaseOrderItemDetail[]
+  qcRecords             QcRecord[]
 
   @@map("purchase_order_items")
 }
@@ -1467,6 +1471,137 @@ model MicroSubmission {
   @@map("micro_submissions")
 }
 
+model QcAuditLog {
+  id              String   @id @default(uuid())
+  qcRecordId      String   @map("qc_record_id")
+  editedById      String   @map("edited_by_id")
+  action          String
+  editedTableName String   @map("edited_table_name")
+  recordId        String   @map("record_id")
+  fieldName       String   @map("field_name")
+  oldValue        String   @map("old_value")
+  newValue        String   @map("new_value")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  qcRecord        QcRecord @relation(fields: [qcRecordId], references: [id])
+  editedBy        User     @relation(fields: [editedById], references: [id])
+
+  @@map("qc_audit_logs")
+}
+
+model QcItemParameter {
+  id                      String      @id @default(uuid())
+  itemId                  String      @map("item_id")
+  parameterId             String      @map("parameter_id")
+  specification           Json?
+  calculatedSpecification Json?       @map("calculated_specification")
+  createdAt               DateTime    @default(now()) @map("created_at")
+  updatedAt               DateTime    @updatedAt @map("updated_at")
+  item                    Item        @relation(fields: [itemId], references: [id])
+  parameter               QcParameter @relation(fields: [parameterId], references: [id])
+
+  @@unique([itemId, parameterId])
+  @@map("qc_item_parameters")
+}
+
+model QcParameterResult {
+  id            String      @id @default(uuid())
+  qcRecordId    String      @map("qc_record_id")
+  qcParameterId String      @map("qc_parameter_id")
+  resultsData   Json        @map("results_data")
+  note          String?
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  qcRecord      QcRecord    @relation(fields: [qcRecordId], references: [id])
+  qcParameter   QcParameter @relation(fields: [qcParameterId], references: [id])
+
+  @@map("qc_parameter_results")
+}
+
+model QcParameter {
+  id              String   @id @default(uuid())
+  name            String
+  uom             String
+  dataType        String   @map("data_type")
+  description     String?
+  inputDefinition Json?
+  isWetParameter  Boolean  @map("is_wet_parameter")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  qcItemParameters   QcItemParameter[]
+  qcParameterResults QcParameterResult[]
+
+  @@map("qc_parameters")
+}
+
+model QcRecordNoteType {
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
+  bgColor       String         @map("bg_color")
+  textColor     String         @map("text_color")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  qcRecordNotes QcRecordNote[]
+
+  @@map("qc_record_note_types")
+}
+
+model QcRecordNote {
+  id          String           @id @default(uuid())
+  qcRecordId  String           @map("qc_record_id")
+  createdById String           @map("created_by_id")
+  content     String           @map("content")
+  noteTypeId  String           @map("note_type_id")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  qcRecord    QcRecord         @relation(fields: [qcRecordId], references: [id])
+  createdBy   User             @relation(fields: [createdById], references: [id])
+  noteType    QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("qc_record_notes")
+}
+
+model QcRecordStatus {
+  id          String     @id @default(uuid())
+  name        String
+  sequence    Int        @unique
+  description String?
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  qcRecords   QcRecord[]
+
+  @@map("qc_record_statuses")
+}
+
+model QcRecord {
+  id                        String                 @id @default(uuid())
+  conductedById             String                 @map("conducted_by_id")
+  statusId                  String                 @map("status_id")
+  examinationType           String                 @map("examination_type")
+  examinedLotId             String                 @map("examined_lot_id")
+  linkedBprId               String?                @map("linked_bpr_id")
+  linkedPurchaseOrderItemId String?                @map("linked_purchase_order_item_id")
+  coaSupplierDocumentUrl    String?                @map("coa_supplier_document_url")
+  coaPublicDocumentUrl      String?                @map("coa_public_document_url")
+  coaParsedData             String?                @map("coa_parsed_data")
+  createdAt                 DateTime               @default(now()) @map("created_at")
+  updatedAt                 DateTime               @updatedAt @map("updated_at")
+  status                    QcRecordStatus         @relation(fields: [statusId], references: [id])
+  conductedBy               User                   @relation(fields: [conductedById], references: [id])
+  examinedLot               Lot                    @relation(fields: [examinedLotId], references: [id])
+  linkedPurchaseOrderItem   PurchaseOrderItem?     @relation(fields: [linkedPurchaseOrderItemId], references: [id])
+  linkedBpr                 BatchProductionRecord? @relation(fields: [linkedBprId], references: [id])
+  qcParameterResults        QcParameterResult[]
+  qcRecordNotes             QcRecordNote[]
+  qcAuditLogs               QcAuditLog[]
+
+  @@map("qc_records")
+}
+
 model Account {
   id                String   @id @default(cuid())
   userId            String   @map("user_id")
@@ -1584,6 +1719,9 @@ model User {
   auditRequests                 AuditRequest[]
   auditRequestNotes             AuditRequestNote[]
   pricingExaminations           PricingExamination[]
+  qcRecords                     QcRecord[]
+  qcRecordNotes                 QcRecordNote[]
+  qcAuditLog                    QcAuditLog[]
   PricingExaminationNote        PricingExaminationNote[]
   InventoryAudit                InventoryAudit[]
   BprStaging                    BprStaging[]

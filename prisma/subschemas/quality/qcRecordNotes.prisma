@@ -1,0 +1,14 @@
+model QcRecordNote {
+    id          String           @id @default(uuid())
+    qcRecordId  String           @map("qc_record_id")
+    createdById String           @map("created_by_id")
+    content     String           @map("content")
+    noteTypeId  String           @map("note_type_id")
+    createdAt   DateTime         @default(now()) @map("created_at")
+    updatedAt   DateTime         @updatedAt @map("updated_at")
+    qcRecord    QcRecord         @relation(fields: [qcRecordId], references: [id])
+    createdBy   User             @relation(fields: [createdById], references: [id])
+    noteType    QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
+
+    @@map("qc_record_notes")
+}
