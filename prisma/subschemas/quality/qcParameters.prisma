@@ -9,8 +9,9 @@ model QcParameter {
     createdAt       DateTime @default(now()) @map("created_at")
     updatedAt       DateTime @updatedAt @map("updated_at")
 
-    qcItemParameters   QcItemParameter[]
-    qcParameterResults QcParameterResult[]
+    qcItemParameters     QcItemParameter[]
+    qcParameterResults   QcParameterResult[]
+    qcTemplateParameters QcTemplateParameter[]
 
     @@map("qc_parameters")
 }

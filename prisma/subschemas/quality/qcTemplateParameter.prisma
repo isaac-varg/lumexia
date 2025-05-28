@@ -1,0 +1,11 @@
+model QcTemplateParameter {
+    id          String      @id @default(uuid())
+    templateId  String      @map("template_id")
+    parameterId String      @map("parameter_id")
+    createdAt   DateTime    @default(now()) @map("created_at")
+    updatedAt   DateTime    @updatedAt @map("updated_at")
+    template    QcTemplate  @relation(fields: [templateId], references: [id])
+    parameter   QcParameter @relation(fields: [parameterId], references: [id])
+
+    @@map("qc_template_parameters")
+}

@@ -61,7 +61,7 @@ const getConvertedPrice = async (currentUomId: string, price: number) => {
         throw new Error(`Conversion factor not found for ${currentUomId} `)
     }
 
-    return conversionFactor * price;
+    return conversionFactor / price;
 }
 
 

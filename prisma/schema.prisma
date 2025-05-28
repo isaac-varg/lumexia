@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed May 21 2025 15:56:53 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed May 28 2025 11:30:00 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1529,8 +1529,9 @@ model QcParameter {
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
-  qcItemParameters   QcItemParameter[]
-  qcParameterResults QcParameterResult[]
+  qcItemParameters     QcItemParameter[]
+  qcParameterResults   QcParameterResult[]
+  qcTemplateParameters QcTemplateParameter[]
 
   @@map("qc_parameters")
 }
@@ -1600,6 +1601,29 @@ model QcRecord {
   qcAuditLogs               QcAuditLog[]
 
   @@map("qc_records")
+}
+
+model QcTemplateParameter {
+  id          String      @id @default(uuid())
+  templateId  String      @map("template_id")
+  parameterId String      @map("parameter_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  template    QcTemplate  @relation(fields: [templateId], references: [id])
+  parameter   QcParameter @relation(fields: [parameterId], references: [id])
+
+  @@map("qc_template_parameters")
+}
+
+model QcTemplate {
+  id          String                @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+  parameters  QcTemplateParameter[]
+
+  @@map("qc_templates")
 }
 
 model Account {
