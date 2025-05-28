@@ -39,13 +39,13 @@ export default function FacetedFilter<TData, TValue>({
             tableFacets.removeValueFromFilter(tableStateName, filterName, filterValue )
 
             // for tanstack
-            selectedValues.delete(option.value);
+            selectedValues.delete(option.value as string);
         } else {
             //state
             tableFacets.addToFilter(tableStateName, filterName, filterValue)
 
             // tanstack
-            selectedValues.add(option.value);
+            selectedValues.add(option.value as string);
         }
 
         const filterValues = Array.from(selectedValues);

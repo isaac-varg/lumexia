@@ -30,10 +30,10 @@ export type TableStateName = keyof State;
 
 type Actions = {
     setFilter: (tableState: TableStateName, value: FilterArray) => void;
-    addToFilter: (tableState: TableStateName, filterName: string, value: string) => void;
+    addToFilter: (tableState: TableStateName, filterName: string, value: string | boolean) => void;
     removeFilter: (tableState: TableStateName, filterName: string) => void;
     resetFilter: (tableState: TableStateName) => void;
-    removeValueFromFilter: (tableState: TableStateName, filterName: string, value: string) => void;
+    removeValueFromFilter: (tableState: TableStateName, filterName: string, value: string | boolean) => void;
 };
 
 export const useTableFacets = create<State & Actions>((set) => ({
