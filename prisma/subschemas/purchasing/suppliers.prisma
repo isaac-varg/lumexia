@@ -1,25 +1,22 @@
 import { PurchaseOrder } from "./purchaseOrders"
-import { SupplierAlias } from "./supplierAliases"
+import { SupplierAlias }from "./supplierAliases"
 import { SupplierNote   } from "./supplierNotes"
-import { SupplierPaymentMethod } from "./supplierPaymentMethods"
+import { SupplierPaymentMethod }from "./supplierPaymentMethods"
 
 model Supplier {
-    id                    String                  @id @default(uuid())
-    name                  String
-    addressStreet1        String                  @map("address_street1")
-    addressStreet2        String?                 @map("address_street2")
-    addressCity           String                  @map("address_city")
-    addressState          String                  @map("address_state")
-    addressZip            String                  @map("address_zip")
-    phone                 String
-    purchaseOrders        PurchaseOrder[]
-    supplierAlias         SupplierAlias[]
-    supplierNotes         SupplierNote[]
-    SupplierPaymentMethod SupplierPaymentMethod[]
+    id                           String                        @id @default(uuid())
+    name                         String
+    addressStreet1               String                        @map("address_street1")
+    addressStreet2               String?                       @map("address_street2")
+    addressCity                  String                        @map("address_city")
+    addressState                 String                        @map("address_state")
+    addressZip                   String                        @map("address_zip")
+    phone                        String
+    purchaseOrders               PurchaseOrder[]
+    supplierAlias                SupplierAlias[]
+    supplierNotes                SupplierNote[]
+    SupplierPaymentMethod        SupplierPaymentMethod[]
+    genericUnitConversionFactors GenericUnitConversionFactor[]
 
     @@map("suppliers")
 }
-
-
-
-

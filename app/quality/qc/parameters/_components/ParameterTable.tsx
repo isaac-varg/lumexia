@@ -5,8 +5,17 @@ import Card from "@/components/Card";
 import DataTable from "@/components/DataTable";
 import { Filter } from "@/types/filter";
 import { parameterColumns } from "./ParameterColumns";
+import { useRouter } from "next/navigation";
+import { QcTemplate } from "@/actions/quality/qc/templates/getAll";
+import { useState } from "react";
+import TemplateParameterLinkDialog from "./TemplateParameterLinkDialog";
+import useDialog from "@/hooks/useDialog";
 
-const ParameterTable = ({ parameters }: { parameters: QcParameter[] }) => {
+const ParameterTable = ({ parameters, templates }: { parameters: QcParameter[], templates: QcTemplate[] }) => {
+
+    const router = useRouter()
+    const [selectedParameter, setSelectedParameter] = useState<QcParameter | null>(null)
+    const { showDialog } = useDialog()
 
     const filters: Filter[] = [
         {
@@ -19,13 +28,19 @@ const ParameterTable = ({ parameters }: { parameters: QcParameter[] }) => {
 
     return (
         <Card.Root>
-            <Card.Title>Parameters</Card.Title>
-
+            <TemplateParameterLinkDialog templates={templates} selectedParameter={selectedParameter} />
+            <div className="flex justify-between items-center">
+                <Card.Title>Parameters</Card.Title>
+                <button className="btn" onClick={() => router.push('/quality/qc/parameters/new')}>Add Parameter</button>
+            </div>
             <DataTable.Default
                 data={parameters}
                 filters={filters}
                 columns={parameterColumns}
-                onRowClick={(row) => console.log(`/accounting/pricing/details?id=${row.original.id}`)}
+                onRowClick={(row) => {
+                    setSelectedParameter(row.original);
+                    showDialog('templateParameterLink');
+                }}
                 tableStateName='itemPricingExamiantions'
             />
         </Card.Root>

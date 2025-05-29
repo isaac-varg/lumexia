@@ -9,17 +9,14 @@ import AiEntry from "./AiEntry"
 
 const ParameterWizard = () => {
 
-    const [mode, setMode] = useState<'manual' | 'ai' | null>(null)
 
     return (
         <div>
 
 
-            {!mode && <ModeSelector setMode={setMode} />}
 
-            {mode === 'manual' && <ManualEntry />}
+            <ManualEntry />
 
-            {mode === 'ai' && <AiEntry />}
 
 
 

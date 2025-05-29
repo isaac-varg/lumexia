@@ -9,8 +9,6 @@ const BomItemDetailsDialog = () => {
 
     const { selectedBomRow } = usePricingProducedSelection()
 
-    console.log(selectedBomRow)
-
     if (!selectedBomRow) return null
     return (
         <Dialog.Root identifier={`bomItem${selectedBomRow.id}`}>

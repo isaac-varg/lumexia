@@ -14,8 +14,8 @@ const ParametersPage = async () => {
 
 
 
-            <ParameterTable parameters={parameters} />
-            <TemplateTable templates={templates} />
+            <ParameterTable parameters={parameters} templates={templates} />
+            <TemplateTable templates={templates}  />
 
 
         </div>

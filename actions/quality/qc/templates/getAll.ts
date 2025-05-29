@@ -5,8 +5,8 @@ import prisma from "@/lib/prisma"
 export const getAllQcTemplates = async () => {
     const templates = await prisma.qcTemplate.findMany({
         include: {
-            parameters: true
-        }
+            parameters: true,
+        },
     });
 
     return templates

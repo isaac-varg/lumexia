@@ -20,7 +20,8 @@ export const staticRecords = {
         },
         producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
         uom: {
-            lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b'
+            lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b',
+            units: '4a243326-5d46-4ac0-89fd-d60b8b11f64a'
         },
         containerTypes: {
             drum: '8dfd5db7-06c9-4246-817e-8332f87df56f',

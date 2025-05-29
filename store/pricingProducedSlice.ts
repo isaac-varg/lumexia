@@ -103,7 +103,6 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
 
             const summations = producedPricingSummations as BatchSummations
 
-
             if (!producedPricingSummations || !activeMbpr) { throw new Error('No summation data present') }
 
             try {

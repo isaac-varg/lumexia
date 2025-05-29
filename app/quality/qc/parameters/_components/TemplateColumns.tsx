@@ -1,38 +1,23 @@
-import { QcParameter } from "@/actions/quality/qc/parameters/getAll";
+import { QcTemplate } from "@/actions/quality/qc/templates/getAll";
 import { createColumnHelper } from "@tanstack/react-table";
 
 
-const columnHelper = createColumnHelper<QcParameter>();
+const columnHelper = createColumnHelper<QcTemplate>();
 
 
 
-export const parameterColumns = [
+export const templateColumns = [
     columnHelper.accessor("name", {
         header: "Parameter Name",
-    }),
-
-    columnHelper.accessor('isWetParameter', {
-        id: 'isWetParameter',
-        header: 'Is Wet Parameter',
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id));
-        },
     }),
     columnHelper.accessor("description", {
         header: "Description"
     }),
-    columnHelper.accessor("uom", {
-        header: "UOM",
-        cell: (row) => {
-            return row.row.original.uom
-        }
-    }),
     columnHelper.display({
-        id: "hasInputDef",
+        id: "parameterCount",
         cell: (row) => {
-            const hasData = Object.keys(row.row.original.inputDefinition || {}).length !== 0;
-            return hasData.toString();
+            return row.row.original.parameters.length
         },
-        header: 'Has Input Definition'
+        header: 'Parameters Count' 
     }),
 ]

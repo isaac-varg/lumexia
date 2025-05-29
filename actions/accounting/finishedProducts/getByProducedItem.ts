@@ -36,7 +36,6 @@ export const getFinishedProductsByProducedItem = async (itemId: string, summatio
     });
 
 
-
     const withAuxiliaries = await Promise.all(
         fp.map(async (current) => {
             const auxiliaries = await getAuxiliariesTotalCost(current.auxiliaries);

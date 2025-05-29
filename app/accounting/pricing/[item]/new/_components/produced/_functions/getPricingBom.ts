@@ -15,6 +15,7 @@ export const getPricingBom = async (mbprId: string) => {
                         include: {
                             purchaseOrders: {
                                 select: {
+                                    supplierId: true,
                                     referenceCode: true
                                 }
                             }

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed May 28 2025 11:30:00 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu May 29 2025 13:52:44 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -543,6 +543,22 @@ model Container {
   @@map("containers")
 }
 
+model GenericUnitConversionFactor {
+  id               String            @id @default(uuid())
+  itemId           String            @map("item_id")
+  supplierId       String            @map("supplier_id")
+  convertToUomId   String            @map("convert_to_uom_id")
+  conversionFactor Float             @map("conversion_factor")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  item             Item              @relation(fields: [itemId], references: [id])
+  supplier         Supplier          @relation(fields: [supplierId], references: [id])
+  convertToUom     UnitOfMeasurement @relation(fields: [convertToUomId], references: [id])
+
+  @@unique([itemId, supplierId], name: "item_supplier_unique")
+  @@map("generic_unit_conversion_factors")
+}
+
 model InventoryAudit {
   id            String         @id @default(uuid())
   itemId        String         @map("item_id")
@@ -643,6 +659,7 @@ model UnitOfMeasurement {
   transactions                    Transaction[]
   container                       Container[]
   purchaseOrderItem               PurchaseOrderItem[]
+  genericUnitConversionFactors    GenericUnitConversionFactor[]
   BomPricingDataArchive           BomPricingDataArchive[]
   FinishedProductArchive          FinishedProductArchive[]
   FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
@@ -727,6 +744,7 @@ model Item {
   pricingExaminations             PricingExamination[]
   consumerContainerArchives       ConsumerContainerArchive[]
   qcItemParameters                QcItemParameter[]
+  genericUnitConversionFactors    GenericUnitConversionFactor[]
   BomPricingDataArchive           BomPricingDataArchive[]
   FinishedProductArchive          FinishedProductArchive[]
   FinishedProductAuxiliary        FinishedProductAuxiliary[]
@@ -1445,19 +1463,20 @@ model SupplierPaymentMethod {
 }
 
 model Supplier {
-  id                    String                  @id @default(uuid())
-  name                  String
-  addressStreet1        String                  @map("address_street1")
-  addressStreet2        String?                 @map("address_street2")
-  addressCity           String                  @map("address_city")
-  addressState          String                  @map("address_state")
-  addressZip            String                  @map("address_zip")
-  phone                 String
-  purchaseOrders        PurchaseOrder[]
-  supplierAlias         SupplierAlias[]
-  supplierNotes         SupplierNote[]
-  SupplierPaymentMethod SupplierPaymentMethod[]
-  SupplierContact       SupplierContact[]
+  id                           String                        @id @default(uuid())
+  name                         String
+  addressStreet1               String                        @map("address_street1")
+  addressStreet2               String?                       @map("address_street2")
+  addressCity                  String                        @map("address_city")
+  addressState                 String                        @map("address_state")
+  addressZip                   String                        @map("address_zip")
+  phone                        String
+  purchaseOrders               PurchaseOrder[]
+  supplierAlias                SupplierAlias[]
+  supplierNotes                SupplierNote[]
+  SupplierPaymentMethod        SupplierPaymentMethod[]
+  genericUnitConversionFactors GenericUnitConversionFactor[]
+  SupplierContact              SupplierContact[]
 
   @@map("suppliers")
 }

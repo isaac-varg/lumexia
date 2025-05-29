@@ -1,21 +1,16 @@
-import { UnitOfMeasurementConversion } from "./unitOfMeasurementConversions"
-import { Lot } from "./lots"
-import { Transaction } from "./transactions"
-import { Container } from "./containers"
-import { PurchaseOrderItem } from "../purchasing/purchaseOrderItems"
-
 model UnitOfMeasurement {
-    id                String                        @id @default(uuid())
-    name              String
-    abbreviation      String
-    uomA              UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
-    uomB              UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
-    createdAt         DateTime                      @default(now()) @map("created_at")
-    updatedAt         DateTime                      @updatedAt @map("updated_at")
-    lots              Lot[]
-    transactions      Transaction[]
-    container         Container[]
-    purchaseOrderItem PurchaseOrderItem[]
+    id                           String                        @id @default(uuid())
+    name                         String
+    abbreviation                 String
+    uomA                         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+    uomB                         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+    createdAt                    DateTime                      @default(now()) @map("created_at")
+    updatedAt                    DateTime                      @updatedAt @map("updated_at")
+    lots                         Lot[]
+    transactions                 Transaction[]
+    container                    Container[]
+    purchaseOrderItem            PurchaseOrderItem[]
+    genericUnitConversionFactors GenericUnitConversionFactor[]
 
     @@map("units_of_measurement")
 }

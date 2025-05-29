@@ -57,7 +57,7 @@ const ManualEntry = () => {
     return (
         <Card.Root>
 
-            <Card.Title>Manual Entry</Card.Title>
+            <Card.Title>New Parameter</Card.Title>
 
             <Form.Root form={form} onSubmit={handleSubmit} >
 
