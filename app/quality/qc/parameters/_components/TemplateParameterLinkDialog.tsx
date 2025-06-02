@@ -19,9 +19,9 @@ const TemplateCard = ({ template, selectedParameterId }: { template: QcTemplate,
     }
 
     return (
-        <div onClick={() => handleSubmit()} className="flex flex-col gap-y-4 bg-lilac-100 hover:bg-lilac-200 hover:cursor-pointer p-8 rounded-xl">
+        <div onClick={() => handleSubmit()} className="flex flex-col justify-center gap-y-4 bg-lilac-100 hover:bg-lilac-200 hover:cursor-pointer p-8 rounded-xl">
             <h1 className="font-poppins text-xl font-semibold">{template.name}</h1>
-            <p className="font-poppins text-lg">{template.description}</p>
+            {template.description.length !== 0 && <p className="font-poppins text-lg">{template.description}</p>}
         </div>
     )
 

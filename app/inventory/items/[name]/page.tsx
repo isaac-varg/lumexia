@@ -1,4 +1,3 @@
-import aliasActions from "@/actions/inventory/aliases";
 import itemActions from "@/actions/inventory/items";
 import Layout from "@/components/Layout";
 import PageTitle from "@/components/Text/PageTitle";
@@ -13,6 +12,7 @@ import { ProcurementType } from "@/types/procurementType";
 import { InventoryType } from "@/types/inventoryType";
 import { getAliases } from "./_functions/getAliases";
 import TopActions from "./_components/TopActions";
+import StateSetter from "./_components/StateSetter";
 
 type ItemDashboardProps = {
     params: {
@@ -51,10 +51,11 @@ const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
 
     return (
         <div className="flex flex-col gap-y-6">
+            <StateSetter itemId={searchParams.id} />
             <div className="flex justify-between items-center">
                 <PageTitle title={item.name} />
 
-                <TopActions  itemId={item.id}/>
+                <TopActions itemId={item.id} />
             </div>
 
             <Layout.Grid>

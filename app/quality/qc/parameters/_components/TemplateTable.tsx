@@ -6,23 +6,26 @@ import { Filter } from "@/types/filter";
 import { templateColumns } from "./TemplateColumns";
 import TemplateFormDialog from "./TemplateFormDialog";
 import useDialog from "@/hooks/useDialog";
+import ModifyTemplateDialog from "./ModifyTemplateDialog";
+import { useState } from "react";
 
 const TemplateTable = ({ templates }: { templates: QcTemplate[] }) => {
 
 
     const dialog = useDialog()
-    const filters: Filter[] = [
-        {
-            columnName: "isWetParameter",
-            filterLabel: "Is Wet Parameter",
-            options: [{ value: true, label: 'True' }, { value: false, label: 'False' }]
-        },
-    ];
+    const [selectedTemplate, setSelectedTemplate] = useState<QcTemplate | null>(null)
+
+
+    const handleRowClick = (row: any) => {
+        setSelectedTemplate(row.original);
+        dialog.showDialog('modifyTemplateDialog');
+    }
 
 
     return (
         <Card.Root>
-            
+            <ModifyTemplateDialog template={selectedTemplate} />
+
             <TemplateFormDialog />
             <div className="flex justify-between items-center">
                 <Card.Title>Template</Card.Title>
@@ -30,9 +33,8 @@ const TemplateTable = ({ templates }: { templates: QcTemplate[] }) => {
             </div>
             <DataTable.Default
                 data={templates}
-                filters={filters}
                 columns={templateColumns}
-                onRowClick={() => console.log('af')}
+                onRowClick={(row) => handleRowClick(row)}
                 tableStateName='itemPricingExamiantions'
             />
         </Card.Root>

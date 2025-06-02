@@ -1,5 +1,6 @@
 import PageBreadcrumbs from "@/components/App/PageBreadcrumbs"
 import NavigationPanels from "./_components/NavigationPanels"
+import ScanPanel from "./_components/ScanPanel"
 
 
 const QcPage = () => {
@@ -8,6 +9,10 @@ const QcPage = () => {
             <PageBreadcrumbs />
 
             <NavigationPanels />
+
+
+            <ScanPanel />
+
 
         </div>
     )

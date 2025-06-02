@@ -9,6 +9,9 @@ export const getOneItem = async (id: string) => {
         },
         include: {
             itemType: true,
+            procurementType: true,
+            inventoryType: true,
+
         }
     })
 

@@ -12,6 +12,7 @@ import PricingTab from "./pricing/PricingTab";
 import { PanelStates } from "@/store/panelSelectionSlice";
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
 import { Uom } from "@/actions/inventory/getAllUom";
+import QualityTab from "./quality/QualityTab";
 
 const TabsDemo = ({
     item,
@@ -34,6 +35,7 @@ const TabsDemo = ({
     const tabs = [
         { identifier: "inventory", label: "Inventory" },
         { identifier: "production", label: "Production" },
+        { identifier: 'quality', label: 'Quality' }
     ];
 
     const purchasedAdditionalTabs = [
@@ -66,6 +68,10 @@ const TabsDemo = ({
 
             <TabsPanel.Content identifier="production">
                 <ProductionTab item={item} usage={usage} />
+            </TabsPanel.Content>
+
+            <TabsPanel.Content identifier="quality">
+                <QualityTab />
             </TabsPanel.Content>
         </TabsPanel.Root>
     );

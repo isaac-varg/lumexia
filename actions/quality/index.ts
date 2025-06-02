@@ -1,6 +1,8 @@
 import { createQcParameter } from "./qc/parameters/create";
 import { getAllQcParameters } from "./qc/parameters/getAll";
+import { getAllQcParametersByItem } from "./qc/parameters/getAllByItem";
 import { createTemplateParameter } from "./qc/templateParameters/create";
+import { deleteTemplateParameter } from "./qc/templateParameters/delete";
 import { createQcTemplate } from "./qc/templates/create";
 import { getAllQcTemplates } from "./qc/templates/getAll";
 
@@ -10,12 +12,16 @@ export const qualityActions = {
             getAll: getAllQcParameters,
             create: createQcParameter,
         },
+        itemParameters: {
+            getByItem: getAllQcParametersByItem,
+        },
         templates: {
             getAll: getAllQcTemplates,
             create: createQcTemplate,
         },
         templateParameters: {
             create: createTemplateParameter,
+            delete: deleteTemplateParameter,
         },
     }
 };
