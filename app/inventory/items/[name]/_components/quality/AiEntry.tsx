@@ -5,8 +5,15 @@ import React, { useCallback, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import AiEntrySubmission from "./AiEntrySubmission";
 
-export interface RecognizedCoaData {
-    [key: string]: any;
+//export interface RecognizedCoaData {
+//    [key: string]: any;
+//}
+
+export type RecognizedCoaData = {
+    name: string
+    unitOfMeasurement: string
+    resultValue: string
+    specification: string
 }
 
 const AiEntry = () => {
@@ -70,7 +77,6 @@ const AiEntry = () => {
                 processedResults.push(JSON.parse(result));
             }
 
-            console.log(processedResults)
             setRecognizedData(processedResults);
         } catch (err: any) {
             console.error("Error processing files:", err);
@@ -95,30 +101,32 @@ const AiEntry = () => {
     return (
         <div>
 
+            {!recognizedData && (<div>
 
-
-            <div
-                {...getRootProps()}
-                className={`
+                <div
+                    {...getRootProps()}
+                    className={`
           mt-4 p-6 border-2 border-dashed rounded-lg text-center
           ${isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50"}
           cursor-pointer transition-colors duration-200 ease-in-out
         `}
-            >
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                    <p>Drop the files here ...</p>
-                ) : (
-                    <p>Drag n drop some files here, or click to select files</p>
-                )}
+                >
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                        <p>Drop the files here ...</p>
+                    ) : (
+                        <p>Drag n drop some files here, or click to select files</p>
+                    )}
+                </div>
+
+                {loading && <p className="mt-4 text-blue-600">Processing files...</p>}
+                {error && <p className="mt-4 text-red-600">Error: {error}</p>}
+
             </div>
-
-            {loading && <p className="mt-4 text-blue-600">Processing files...</p>}
-            {error && <p className="mt-4 text-red-600">Error: {error}</p>}
-
+            )}
 
             {recognizedData && recognizedData.length > 0 && (
-                <AiEntrySubmission data={recognizedData || []} />
+                <AiEntrySubmission data={recognizedData} />
             )}
 
 
