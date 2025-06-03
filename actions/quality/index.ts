@@ -1,3 +1,4 @@
+import { deleteQcItemParameter } from "./qc/itemParameters/delete";
 import { createQcParameter } from "./qc/parameters/create";
 import { getAllQcParameters } from "./qc/parameters/getAll";
 import { getAllQcParametersByItem } from "./qc/parameters/getAllByItem";
@@ -14,6 +15,7 @@ export const qualityActions = {
         },
         itemParameters: {
             getByItem: getAllQcParametersByItem,
+            delete: deleteQcItemParameter
         },
         templates: {
             getAll: getAllQcTemplates,

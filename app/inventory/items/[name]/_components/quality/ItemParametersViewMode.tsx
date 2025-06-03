@@ -1,16 +1,31 @@
 import Text from "@/components/Text"
-import { TbPlus } from "react-icons/tb"
+import { TbPlus, TbTrash } from "react-icons/tb"
 import { useItemDashboardActions, useItemDashboardSelection } from "@/store/itemDashboardSlice"
+import { qualityActions } from "@/actions/quality"
+import { useEffect } from "react"
 
 
 const ItemParametersViewMode = () => {
 
-    const { itemParameters } = useItemDashboardSelection()
-    const { setItemParametersPanelMode } = useItemDashboardActions()
+    const { itemParameters, isItemParametersFetched, item } = useItemDashboardSelection()
+    const { setItemParametersPanelMode, getQcItemParameters } = useItemDashboardActions()
 
     const handleAddParameter = () => {
         setItemParametersPanelMode('add')
     }
+
+    const handleRemoveParameter = async (id: string) => {
+        await qualityActions.qc.itemParameters.delete(id)
+        getQcItemParameters()
+    }
+
+    useEffect(() => {
+        if (itemParameters.length === 0) {
+            getQcItemParameters()
+        }
+
+    }, [isItemParametersFetched, item])
+
 
 
     return (
@@ -46,7 +61,7 @@ const ItemParametersViewMode = () => {
                                     <td>{JSON.stringify(ip.specification)}</td>
                                     <td>{JSON.stringify(ip.calculatedSpecification)}</td>
                                     <td>
-                                        <button className="btn btn-warning">X</button>
+                                        <button onClick={() => handleRemoveParameter(ip.id)} className="btn btn-error"><TbTrash /></button>
                                     </td>
                                 </tr>
                             )

@@ -1,0 +1,14 @@
+model QcExaminationType {
+    id           String   @id @default(uuid())
+    name         String   @map("name")
+    abbreviation String   @map("abbreviation")
+    description  String?  @map("description")
+    bgColor      String   @map("bg_color")
+    textColor    String   @map("text_color")
+    createdAt    DateTime @default(now()) @map("created_at")
+    updatedAt    DateTime @updatedAt @map("updated_at")
+
+    qcRecords QcRecord[]
+
+    @@map("qc_examination_types")
+}

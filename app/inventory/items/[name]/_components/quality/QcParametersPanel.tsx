@@ -8,15 +8,8 @@ import ItemParametersAddMode from "./ItemParametersAddMode"
 const QcParametersPanel = () => {
 
 
-    const { itemParameters, isItemParametersFetched, itemParametersPanelMode } = useItemDashboardSelection()
-    const { getQcItemParameters } = useItemDashboardActions()
+    const {   itemParametersPanelMode } = useItemDashboardSelection()
 
-    useEffect(() => {
-        if (!isItemParametersFetched) {
-            getQcItemParameters()
-        }
-
-    }, [isItemParametersFetched])
 
     return (
         <Panels.Root>

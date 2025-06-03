@@ -12,13 +12,14 @@ type State = {
 
 }
 
-export type commandPalletStates = keyof State
+export type itemDashboardStates = keyof State
 
 type Actions = {
     actions: {
         getItem: (id: string) => void;
         getQcItemParameters: () => void;
         setItemParametersPanelMode: (mode: "view" | "add") => void;
+        setIsItemParametersFetched: (fetched: boolean) => void;
     }
 }
 
@@ -31,6 +32,7 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
     actions: {
         getItem: async (id) => {
             try {
+
                 const item = await inventoryActions.items.getOne(id)
                 set(() => ({ item, }))
             } catch (error) {
@@ -44,7 +46,9 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
             try {
                 const { item } = get()
 
-                if (!item) return;
+                if (!item) {
+                    return;
+                };
 
                 const parameters = await qualityActions.qc.itemParameters.getByItem(item.id)
                 set(() => ({ itemParameters: parameters }))
@@ -55,6 +59,10 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
                     isItemParametersFetched: true,
                 }))
             }
+        },
+
+        setIsItemParametersFetched: (fetched) => {
+            set(() => ({ isItemParametersFetched: fetched }))
         },
 
         setItemParametersPanelMode: (mode) => {

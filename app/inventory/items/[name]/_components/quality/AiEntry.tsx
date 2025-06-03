@@ -5,9 +5,6 @@ import React, { useCallback, useState } from "react";
 import { useDropzone, FileRejection } from "react-dropzone";
 import AiEntrySubmission from "./AiEntrySubmission";
 
-//export interface RecognizedCoaData {
-//    [key: string]: any;
-//}
 
 export type RecognizedCoaData = {
     name: string

@@ -67,40 +67,6 @@ export const parseCoaData = async (
                             }
                         }
                     }
-                    //type: Type.OBJECT,
-                    //properties: {
-                    //    data: {
-                    //        type: Type.ARRAY,
-                    //        items: {
-                    //            type: Type.OBJECT,
-                    //            properties: {
-                    //                itemName: {
-                    //                    type: Type.STRING,
-                    //                },
-                    //                parameters: {
-                    //                    type: Type.ARRAY,
-                    //                    items: {
-                    //                        type: Type.OBJECT,
-                    //                        properties: {
-                    //                            parameterName: {
-                    //                                type: Type.STRING,
-                    //                            },
-                    //                            uom: {
-                    //                                type: Type.STRING,
-                    //                            },
-                    //                            dataType: {
-                    //                                type: Type.STRING,
-                    //                            },
-                    //                            specification: {
-                    //                                type: Type.STRING,
-                    //                            },
-                    //                        },
-                    //                    },
-                    //                },
-                    //            },
-                    //        },
-                    //    },
-                    //},
                 },
             }
         });

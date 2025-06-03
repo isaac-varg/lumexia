@@ -2,7 +2,7 @@ model QcRecord {
     id                        String                 @id @default(uuid())
     conductedById             String                 @map("conducted_by_id")
     statusId                  String                 @map("status_id")
-    examinationType           String                 @map("examination_type")
+    examinationTypeId         String                 @map("examination_type_id")
     examinedLotId             String                 @map("examined_lot_id")
     linkedBprId               String?                @map("linked_bpr_id")
     linkedPurchaseOrderItemId String?                @map("linked_purchase_order_item_id")
@@ -16,6 +16,7 @@ model QcRecord {
     examinedLot               Lot                    @relation(fields: [examinedLotId], references: [id])
     linkedPurchaseOrderItem   PurchaseOrderItem?     @relation(fields: [linkedPurchaseOrderItemId], references: [id])
     linkedBpr                 BatchProductionRecord? @relation(fields: [linkedBprId], references: [id])
+    examinationType           QcExaminationType      @relation(fields: [examinationTypeId], references: [id])
     qcParameterResults        QcParameterResult[]
     qcRecordNotes             QcRecordNote[]
     qcAuditLogs               QcAuditLog[]
