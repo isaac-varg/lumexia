@@ -1,13 +1,13 @@
 import { inventoryActions } from '@/actions/inventory';
+import { Lot } from '@/actions/inventory/lots/getAll';
 import { SingleLot } from '@/actions/inventory/lots/getOne';
-import prisma from '@/lib/prisma';
 import { create } from 'zustand';
 
 type State = {
     isLoading: boolean
     wizardStep: number
     selectedLotId: string | null
-    allLots: SingleLot[]
+    allLots: Lot[]
     lot: SingleLot,
 }
 
