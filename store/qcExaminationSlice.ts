@@ -32,10 +32,10 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
 
     actions: {
         nextStep: () => {
-            set((state) => ({ wizardStep: state.wizardStep++ }))
+            set((state) => ({ wizardStep: state.wizardStep + 1 }))
         },
         previousStep: () => {
-            set((state) => ({ wizardStep: state.wizardStep-- }))
+            set((state) => ({ wizardStep: state.wizardStep - 1 }))
 
         },
         setIsLoading: (loading) => {

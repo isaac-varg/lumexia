@@ -5,22 +5,21 @@ import { Panels } from "@/components/Panels"
 import { Search } from "@/components/Search"
 import Text from "@/components/Text"
 import { useQcExaminationActions, useQcExaminationSelection } from "@/store/qcExaminationSlice"
-import { search } from "@notionhq/client/build/src/api-endpoints"
 import { useEffect, useState } from "react"
 
 const LotSelectionStep = () => {
 
 
-    const { allLots, isLoading } = useQcExaminationSelection()
+    const { allLots, isLoading, wizardStep } = useQcExaminationSelection()
     const [received, setReceived] = useState<Lot[]>([])
     const [batches, setBatches] = useState<Lot[]>([])
     const [searchInput, setSearchInput] = useState("")
     const [queryResults, setQueryResults] = useState<Lot[]>([])
-    const { getLots } = useQcExaminationActions()
+    const { getLots, setLot, nextStep } = useQcExaminationActions()
 
-    const handleSearchClick = (lot: Lot) => {
-
-        console.log(lot)
+    const handleSelection = (lot: Lot) => {
+        setLot(lot);
+        nextStep()
     }
 
     useEffect(() => {
@@ -50,6 +49,8 @@ const LotSelectionStep = () => {
 
     }, [allLots])
 
+    if (wizardStep !== 0) return false
+
 
     return (
         <div className="grid grid-cols-3 gap-4">
@@ -62,7 +63,7 @@ const LotSelectionStep = () => {
 
                     {received.map(r => {
                         return (
-                            <div key={r.id} className="p-6 flex flex-col rounded-xl bg-slate-200 hover:bg-slate-300 hover:cursor-pointer">
+                            <div key={r.id} onClick={() => handleSelection(r)} className="p-6 flex flex-col rounded-xl bg-slate-200 hover:bg-slate-300 hover:cursor-pointer">
                                 <h1 className="font-poppins text-md font-medium">{r.item.name}</h1>
                                 <h1 className="font-poppins text-md font-medium">{r.lotNumber}</h1>
                                 <h1 className="font-poppins text-md font-medium">PO #{r.purchaseOrderNumber}</h1>
@@ -82,7 +83,7 @@ const LotSelectionStep = () => {
 
                     {batches.map(r => {
                         return (
-                            <div key={r.id} className="p-6 flex flex-col rounded-xl bg-slate-200 hover:bg-slate-300 hover:cursor-pointer">
+                            <div key={r.id} onClick={() => handleSelection(r)} className="p-6 flex flex-col rounded-xl bg-slate-200 hover:bg-slate-300 hover:cursor-pointer">
                                 <h1 className="font-poppins text-md font-medium">{r.item.name}</h1>
                                 <h1 className="font-poppins text-md font-medium">{r.lotNumber}</h1>
                                 <h1 className="font-poppins text-md font-medium">BPR #{r.batchNumber}</h1>
@@ -108,7 +109,7 @@ const LotSelectionStep = () => {
 
                 {queryResults.map(q => {
                     return (
-                        <div onClick={() => handleSearchClick(q)} key={q.id} className="flex bg-slate-200 hover:bg-slate-300 hover:cursor-pointer py-2 px-1 rounded-xl">
+                        <div onClick={() => handleSelection(q)} key={q.id} className="flex bg-slate-200 hover:bg-slate-300 hover:cursor-pointer py-2 px-1 rounded-xl">
                             <span className="font-poppins text-sm">{`${q.itemName} [${q.lotNumber}] [From ${q.purchaseOrderNumber ? 'PO #' + q.purchaseOrderNumber : 'BPR #' + q.batchNumber}]`}</span>
 
                         </div>

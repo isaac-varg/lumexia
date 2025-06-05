@@ -11,7 +11,11 @@ export const getItemsWithUnits = async () => {
         where: {
             purchaseOrderItem: {
                 some: {
-                    uomId: staticRecords.inventory.uom.units,
+                    OR: [
+
+                        { uomId: staticRecords.inventory.uom.units },
+                        { uomId: staticRecords.inventory.uom.case },
+                    ]
                 }
             }
         },

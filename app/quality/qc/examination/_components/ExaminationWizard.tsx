@@ -5,8 +5,6 @@ const ExaminationWizard = () => {
     return (
         <div className='min-h-[800px] flex flex-col gap-y-8'>
             <StepTrack />
-
-
             <LotSelectionStep />
         </div>
     )

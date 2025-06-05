@@ -36,7 +36,7 @@ const ModifyTemplateDialog = ({ template }: { template: QcTemplate | null }) => 
             <Text.SectionTitle size="small">Parameters</Text.SectionTitle>
 
             <div className="grid grid-cols-4 gap-4">
-                {(parameters && parameters?.length !== 0) && parameters.map((p) => <TemplateParameter name={p.parameter.name} id={p.id} onRemove={handleRemoval} />)}
+                {(parameters && parameters?.length !== 0) && parameters.map((p) => <TemplateParameter key={p.id} name={p.parameter.name} id={p.id} onRemove={handleRemoval} />)}
             </div>
 
 

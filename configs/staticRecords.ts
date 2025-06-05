@@ -21,6 +21,7 @@ export const staticRecords = {
         producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
         uom: {
             lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b',
+            case: '160f22b6-b3cf-419c-a607-d7216da598c3',
             units: '4a243326-5d46-4ac0-89fd-d60b8b11f64a'
         },
         containerTypes: {
