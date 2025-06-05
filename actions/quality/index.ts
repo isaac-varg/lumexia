@@ -1,3 +1,4 @@
+import { getAllExaminationTypes } from "./qc/examinationTypes/getAll";
 import { deleteQcItemParameter } from "./qc/itemParameters/delete";
 import { createQcParameter } from "./qc/parameters/create";
 import { getAllQcParameters } from "./qc/parameters/getAll";
@@ -25,5 +26,8 @@ export const qualityActions = {
             create: createTemplateParameter,
             delete: deleteTemplateParameter,
         },
+        examinationTypes: {
+            getAll: getAllExaminationTypes,
+        }
     }
 };

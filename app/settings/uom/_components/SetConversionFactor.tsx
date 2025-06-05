@@ -2,12 +2,12 @@
 
 import { Uom } from "@/actions/inventory/getAllUom"
 import Dialog from "@/components/Dialog"
-import { ItemWithGenericUnits } from "../_functions/getItemsWithUnits"
 import { useForm } from "react-hook-form"
 import Form from "@/components/Form"
 import { staticRecords } from "@/configs/staticRecords"
 import { inventoryActions } from "@/actions/inventory"
 import useDialog from "@/hooks/useDialog"
+import { ItemWithGenericUnits } from "../_functions/getItemsWithUnits"
 
 type Inputs = {
     convertToUomId: string
@@ -15,6 +15,8 @@ type Inputs = {
 }
 
 const SetConversionFactor = ({ uoms, selectedItem }: { uoms: Uom[], selectedItem: ItemWithGenericUnits | null }) => {
+
+    console.log(selectedItem)
 
     const form = useForm()
     const dialog = useDialog()
@@ -33,7 +35,7 @@ const SetConversionFactor = ({ uoms, selectedItem }: { uoms: Uom[], selectedItem
 
         const payload = {
             itemId: selectedItem.id,
-            supplierId: selectedItem.purchaseOrderItem[0].purchaseOrders.supplierId,
+            supplierId: selectedItem.supplierId,
             convertToUomId: data.convertToUomId,
             conversionFactor: data.conversionFactor,
         };
@@ -52,7 +54,7 @@ const SetConversionFactor = ({ uoms, selectedItem }: { uoms: Uom[], selectedItem
 
             <p className="font-poppins text-xl mb-8">
 
-                This form is to set the conversion factor when purchasing the <span className="font-semibold text-emerald-700">{selectedItem.name}</span> item in <span className="italic text-lilac-600">generic units</span> from specifically <span className="font-semibold text-rose-400">{selectedItem.purchaseOrderItem[0].purchaseOrders.supplier.name}</span>
+                This form is to set the conversion factor when purchasing the <span className="font-semibold text-emerald-700">{selectedItem.name}</span> item in <span className="italic text-lilac-600">generic units</span> from specifically <span className="font-semibold text-rose-400">{selectedItem.associatedSupplier}</span>
             </p>
 
 

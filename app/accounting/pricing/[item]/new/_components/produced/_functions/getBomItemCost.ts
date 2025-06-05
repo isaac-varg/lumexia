@@ -78,7 +78,7 @@ const getGenericUnitsConvertedPrice = async (itemId: string, supplierId: string,
     const conversionFactor = await inventoryActions.genericUnitsConversion.getBySupplierItemUnique(itemId, supplierId);
 
     if (!conversionFactor) {
-        throw new Error("No conversion factor found for one of the BOM items with generic units.")
+        throw new Error(`No conversion factor found for one of the BOM items with generic units: ${itemId}`)
     }
 
     if (conversionFactor.convertToUomId !== lb) {
