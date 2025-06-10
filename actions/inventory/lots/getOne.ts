@@ -24,6 +24,7 @@ export const getSingleLot = async (id: string) => {
 
                 }
             },
+            item: true
         }
     })
 

@@ -1,28 +1,7 @@
-import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
-import ExaminationWizard from "./_components/ExaminationWizard";
-
-
-
-
-type Props = {
-    searchParams: {
-        id: string;
-    };
-};
-
-const ExaminationPage = ({ searchParams }: Props) => {
-
-
-
+const ExaminationPage = () => {
     return (
-        <div>
-
-            <PageBreadcrumbs />
-
-            <ExaminationWizard />
-
-        </div>
+        <div></div>
     )
 }
 
-export default ExaminationPage 
+export default ExaminationPage; 

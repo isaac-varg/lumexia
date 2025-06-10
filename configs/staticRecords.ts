@@ -3,6 +3,7 @@
 // i didn't want to hard code these in but since they are the same and essential, i didn't want to call the db every time we used them
 
 import loadJsConfig from "next/dist/build/load-jsconfig";
+import { loadEnvFile } from "process";
 
 export const staticRecords = {
     inventory: {
@@ -177,6 +178,25 @@ export const staticRecords = {
         notes: {
             noteTypes: {
                 default: '030a218c-50fd-419f-8b4b-b3302d91b7f8'
+            }
+        }
+    },
+    quality: {
+        examinations: {
+            types: {
+                inProcess: 'a158361e-ccc2-4ad7-ac46-b1d854a86bac'
+            }
+        },
+        recordNotes: {
+            types: {
+                default: 'e2ca11e7-1d89-4773-a0e5-71c895760925'
+            }
+        },
+        records: {
+            statuses: {
+                open: 'bfe0a4fb-80b5-4eb4-9c73-5ddfd730af80',
+                pass: 'a09bd94d-f6db-465f-8bc7-7b99111e9b40',
+                oos: '0b02109c-dadb-42b6-888b-247b8b0a5d68',
             }
         }
     }

@@ -5,6 +5,18 @@ import { qualityActions } from '@/actions/quality';
 import { ExaminationType } from '@/actions/quality/qc/examinationTypes/getAll';
 import { QcItemParameter } from '@/actions/quality/qc/parameters/getAllByItem';
 import { create } from 'zustand';
+import { QcRecordNoteType } from '@/actions/quality/qc/recordNotes/types/getAll';
+import { QcRecordNote } from '@/actions/quality/qc/recordNotes/getAllByRecord';
+import { getUserId } from '@/actions/users/getUserId';
+import { staticRecords } from '@/configs/staticRecords';
+import { QcRecordStatus } from '@/actions/quality/qc/records/statuses/getAll';
+
+
+export type IntermediateParameterResult = {
+    parameterId: string;
+    note?: string;
+    [key: string]: string | number | boolean | undefined;
+}
 
 type State = {
     isLoading: boolean
@@ -14,6 +26,15 @@ type State = {
     lot: SingleLot,
     itemParameters: QcItemParameter[],
     examinationTypes: ExaminationType[],
+    selectedExaminationType: ExaminationType | null,
+    selectedItemParameter: QcItemParameter | null,
+    examinationRecordId: string | null,
+    parameterResults: Record<string, IntermediateParameterResult>;
+    recordNoteTypes: QcRecordNoteType[];
+    recordNotes: QcRecordNote[];
+    isValidated: boolean;
+    examinationStatuses: QcRecordStatus[]
+    selectedExaminationStatusId: string;
 }
 
 type Actions = {
@@ -23,10 +44,20 @@ type Actions = {
         setSelectedLotId: (id: string) => void;
         setLot: (lot: SingleLot) => void;
         setIsLoading: (loading: boolean) => void;
+        setSelectedExaminationType: (type: ExaminationType) => void;
+        setSelectedItemParameter: (itemParameter: QcItemParameter) => void;
+        setExaminationRecordId: () => void;
         getLots: () => void;
         getItemParameters: () => void;
         getExaminationTypes: () => void;
-
+        setParameterResult: (parameterId: string, results: IntermediateParameterResult) => void;
+        getParameterResult: (parameterId: string) => IntermediateParameterResult | undefined;
+        hasParameterResult: (parameterId: string) => boolean;
+        getRecordNoteTypes: () => void;
+        getRecordNotes: () => void;
+        conductValidation: () => void;
+        getExaminationStatuses: () => void;
+        setSelectedExaminationStatusId: (id: string) => void;
     }
 }
 
@@ -38,6 +69,15 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
     lot: null,
     itemParameters: [],
     examinationTypes: [],
+    selectedExaminationType: null,
+    selectedItemParameter: null,
+    examinationRecordId: null,
+    parameterResults: {},
+    recordNoteTypes: [],
+    recordNotes: [],
+    isValidated: false,
+    examinationStatuses: [],
+    selectedExaminationStatusId: '',
 
     actions: {
         nextStep: () => {
@@ -55,6 +95,39 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
         },
         setLot: (lot) => {
             set(() => ({ lot, }))
+        },
+        setSelectedExaminationType: (type) => {
+            set(() => ({ selectedExaminationType: type, }))
+        },
+        setSelectedItemParameter: (itemParameter) => {
+            set(() => ({ selectedItemParameter: itemParameter, }))
+        },
+        setExaminationRecordId: async () => {
+            const userId = await getUserId()
+            const lot = get().lot;
+
+            if (!userId || !lot) return;
+            const bpr = lot.lotOrigin[0].bprId
+            const po = lot.lotOrigin[0].purchaseOrderId
+
+
+            const record = await qualityActions.qc.records.create({
+                conductedById: userId,
+                statusId: staticRecords.quality.records.statuses.open,
+                examinationTypeId: staticRecords.quality.examinations.types.inProcess,
+                examinedLotId: lot.id,
+                ...(lot.lotOrigin[0].originType === 'batchProduction' ? { linkedBprId: bpr } : { linkedPurchaseOrderItemId: po }),
+            })
+
+            set(() => ({ examinationRecordId: record.id, selectedExaminationStatusId: staticRecords.quality.records.statuses.open }))
+        },
+        setParameterResult: (parameterId, results) => {
+            set((state) => ({
+                parameterResults: {
+                    ...state.parameterResults,
+                    [parameterId]: results
+                }
+            }))
         },
 
         getLots: async () => {
@@ -98,10 +171,69 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
             } catch (error) {
                 console.error(error);
             }
-        }
-    }
+        },
+
+        getParameterResult: (parameterId) => {
+            return get().parameterResults[parameterId]
+        },
+
+        getRecordNoteTypes: async () => {
+            try {
+                const types = await qualityActions.qc.recordNotes.types.getAll();
+                set(() => ({ recordNoteTypes: types, }))
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        getRecordNotes: async () => {
+            const recordId = get().examinationRecordId;
+
+            if (!recordId) {
+                throw new Error("Could retrieve notes due to missing record ID");
+            }
+
+            try {
+                const notes = await qualityActions.qc.recordNotes.getAllByRecord(recordId);
+                set(() => ({ recordNotes: notes }))
+            } catch (error) {
+                console.error(error)
+                throw new Error("Something went wrong fetching the record notes.")
+            }
+        },
+
+        getExaminationStatuses: async () => {
+            try {
+                const statuses = await qualityActions.qc.records.statsues.getAll();
+                set(() => ({ examinationStatuses: statuses }))
+            } catch (error) {
+                console.error(error)
+            }
+        },
+
+        setSelectedExaminationStatusId: (id) => {
+            set(() => ({ selectedExaminationStatusId: id, }))
+        },
+
+        hasParameterResult: (parameterId) => {
+            return !!get().parameterResults[parameterId]
+        },
 
 
+        conductValidation: () => {
+            const itemParameters = get().itemParameters;
+            const hasResult = get().actions.hasParameterResult;
+            const allHaveResults = itemParameters.every(p => hasResult(p.parameterId))
+            const selectedExaminationType = get().selectedExaminationType;
+            const isRecordStatusSelected = get().selectedExaminationStatusId !== staticRecords.quality.records.statuses.open;
+
+            if (allHaveResults && selectedExaminationType && isRecordStatusSelected) {
+                set(() => ({ isValidated: true }))
+            } else {
+                set(() => ({ isValidated: false }))
+            }
+        },
+
+    },
 }))
 
 export const useQcExaminationActions = () => useQcExaminationSelection((state) => state.actions) 

@@ -17,7 +17,6 @@ const ModifyTemplateDialog = ({ template }: { template: QcTemplate | null }) => 
 
     useEffect(() => {
         if (!template) {
-            console.log('fml')
             return;
         }
 
