@@ -1,9 +1,19 @@
 "use server"
 
+import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
 
 export const getRequests = async () => {
     const requests = await prisma.purchasingRequest.findMany({
+        where: {
+
+            NOT: {
+                OR: [
+                    { statusId: staticRecords.purchasing.requestStatuses.delivered },
+                    { statusId: staticRecords.purchasing.requestStatuses.requestCancelledDuplicateRequest }
+                ]
+            }
+        },
         include: {
             item: true,
             status: true,
