@@ -77,11 +77,18 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
         }
 
         // add to pricing queue
-        //
-        await accountingActions.pricing.createQueue({
-            itemId: item.item.id,
-            isCompleted: false,
-        })
+
+        const { packaging, warehouseSupplies, officeSupplies } = staticRecords.inventory.itemTypes;
+        const itemTypeId = item.item.itemTypeId
+
+        if (itemTypeId !== packaging || itemTypeId !== warehouseSupplies || itemTypeId !== officeSupplies) {
+
+            await accountingActions.pricing.createQueue({
+                itemId: item.item.id,
+                isCompleted: false,
+            })
+
+        }
 
         await lotOriginActions.createNew(originCreateData)
         await updateConnectedRequests(item.purchaseOrderId, item.item.id)

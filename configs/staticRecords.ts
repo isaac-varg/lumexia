@@ -16,6 +16,8 @@ export const staticRecords = {
         },
         itemTypes: {
             packaging: '4dae8a77-150b-4ea3-9c60-237adb843179',
+            officeSupplies: 'd1bc1ea3-133c-4075-8a0e-aaefc6831468',
+            warehouseSupplies: 'a00c8cb3-8c0f-4951-9bcf-e18bca7910f4',
             essentialOil: '2bc7af2f-741a-4f2d-93ed-73216400e214',
             fragranceOil: '7c0cdc6b-a0c7-4c80-978d-19f89916d9ec',
         },
