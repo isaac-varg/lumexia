@@ -18,13 +18,14 @@ import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice";
 //
 // where itemCost is the upcoming price if isUpcomingPriceActive is true and the lastPurchasePrice otherwise
 
-export const getItemCost = (pricingData: ItemPricingData, lastPurchaseOrder?: null  | LastItemPrice) => {
+export const getItemCost = (pricingData: ItemPricingData, lastPurchaseOrder?: null | LastItemPrice) => {
 
     if (!pricingData) throw new Error('Pricing data not provided')
 
     const isUpcomingPriceActive = pricingData.isUpcomingPriceActive || false
 
     if ((isUpcomingPriceActive && !pricingData.upcomingPrice) || (!isUpcomingPriceActive && !lastPurchaseOrder)) {
+        console.error('Item Causing Error:', pricingData.itemId)
         throw new Error('Not enough pricing data: Either the upcoming price is active, but not set or upcoming price is inactive, but there is no purchase order.')
     }
 
