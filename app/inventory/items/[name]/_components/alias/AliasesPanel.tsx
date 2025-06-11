@@ -8,6 +8,7 @@ import aliasTypeActions from "@/actions/inventory/aliasTypes";
 import supplierActions from "@/actions/purchasing/supplierActions";
 import { staticRecords } from "@/configs/staticRecords";
 import { IAliasWithSupplier } from "../../_functions/getAliases";
+import Aliases from "./Aliases";
 
 const AliasesPanel = async ({ aliases, item }: { aliases: IAliasWithSupplier[]; item: Item }) => {
 
@@ -19,29 +20,7 @@ const AliasesPanel = async ({ aliases, item }: { aliases: IAliasWithSupplier[]; 
         <>
             <Card.Root>
                 <AliasDialogTitleRow item={item} aliasTypes={aliasTypes} suppliers={suppliers} />
-                {aliases.map((alias: IAliasWithSupplier) => {
-
-                    if (alias.aliasTypeId === staticRecords.inventory.aliases.types.supplier) {
-
-                        if (!alias.supplierAlias[0]) {
-                            throw new Error("no supplier alias found")
-                        }
-                        return <LabelDataPair
-                           key={alias.id}
-                            label={`${alias.supplierAlias[0].supplier.name}`}
-                            data={alias.name}
-                        />
- 
-                    }
-
-                    return (
-                        <LabelDataPair
-                            key={alias.id}
-                            label={alias.aliasType ? alias.aliasType.name : "Alias"}
-                            data={alias.name}
-                        />
-                    )
-                })}
+                <Aliases />
             </Card.Root>
         </>
     );

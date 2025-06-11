@@ -1,3 +1,4 @@
+import { getAliasByItem } from "./aliases/getByItem";
 import { createGenericUnitConversionFactor } from "./genericUnitConversionFactors/create";
 import { getConversionByItemSupplierUnique } from "./genericUnitConversionFactors/getByItemSupplierUnique";
 import { getAllItems } from "./getAllItems";
@@ -44,6 +45,9 @@ export const inventoryActions = {
     lots: {
         getOne: getSingleLot,
         getAll: getAllLots,
+    },
+    aliases: {
+        getByItem: getAliasByItem,
     }
 }
 

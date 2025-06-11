@@ -1,5 +1,7 @@
 import { inventoryActions } from '@/actions/inventory';
+import { ItemAlias } from '@/actions/inventory/aliases/getByItem';
 import { SingleItem } from '@/actions/inventory/getOneItem';
+import inventoryTypeActions from '@/actions/inventory/inventoryTypeActions';
 import { qualityActions } from '@/actions/quality';
 import { QcItemParameter } from '@/actions/quality/qc/parameters/getAllByItem';
 import { create } from 'zustand';
@@ -9,6 +11,9 @@ type State = {
     itemParameters: QcItemParameter[]
     isItemParametersFetched: boolean;
     itemParametersPanelMode: "view" | "add";
+    aliases: ItemAlias[]
+    selectedAlias: ItemAlias | null
+    aliasDialogMode: "modify" | 'create' | null
 
 }
 
@@ -18,8 +23,11 @@ type Actions = {
     actions: {
         getItem: (id: string) => void;
         getQcItemParameters: () => void;
+        getAliases: () => void;
         setItemParametersPanelMode: (mode: "view" | "add") => void;
         setIsItemParametersFetched: (fetched: boolean) => void;
+        setSelectedAlias: (alias: ItemAlias | null) => void;
+        setAliasDialogMode: (mode: "modify" | 'create' | null) => void;
     }
 }
 
@@ -28,6 +36,9 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
     itemParameters: [],
     isItemParametersFetched: false,
     itemParametersPanelMode: 'view',
+    aliases: [],
+    selectedAlias: null,
+    aliasDialogMode: null,
 
     actions: {
         getItem: async (id) => {
@@ -61,12 +72,31 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
             }
         },
 
+        getAliases: async () => {
+            const item = get().item
+            if (!item) return;
+            try {
+                const aliases = await inventoryActions.aliases.getByItem(item.id);
+                set(() => ({ aliases, }));
+            } catch (error) {
+                console.error(error)
+            }
+        },
+
         setIsItemParametersFetched: (fetched) => {
             set(() => ({ isItemParametersFetched: fetched }))
         },
 
         setItemParametersPanelMode: (mode) => {
             set(() => ({ itemParametersPanelMode: mode }))
+        },
+
+        setSelectedAlias: (alias) => {
+            set(() => ({ selectedAlias: alias }));
+        },
+
+        setAliasDialogMode: (mode) => {
+            set(() => ({ aliasDialogMode: mode }))
         }
     }
 
