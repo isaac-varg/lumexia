@@ -40,6 +40,7 @@ type State = {
 type Actions = {
     actions: {
         nextStep: () => void;
+        setStep: (step: number) => void;
         previousStep: () => void;
         setSelectedLotId: (id: string) => void;
         setLot: (lot: SingleLot) => void;
@@ -82,6 +83,7 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
     actions: {
         nextStep: () => {
             set((state) => ({ wizardStep: state.wizardStep + 1 }))
+
         },
         previousStep: () => {
             set((state) => ({ wizardStep: state.wizardStep - 1 }))
@@ -232,6 +234,10 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
                 set(() => ({ isValidated: false }))
             }
         },
+
+        setStep: (step) => {
+            set(() => ({ wizardStep: 1 }));
+        }
 
     },
 }))

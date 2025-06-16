@@ -1,7 +1,6 @@
 'use server'
 
 import prisma from "@/lib/prisma"
-import { transform } from "next/dist/build/swc";
 
 export const getAllLots = async () => {
 

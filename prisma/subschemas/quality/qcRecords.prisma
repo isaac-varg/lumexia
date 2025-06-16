@@ -1,5 +1,6 @@
 model QcRecord {
     id                        String                 @id @default(uuid())
+    referenceCode             Int                    @default(autoincrement()) @map("reference_code")
     conductedById             String                 @map("conducted_by_id")
     statusId                  String                 @map("status_id")
     examinationTypeId         String                 @map("examination_type_id")

@@ -1,11 +1,12 @@
 'use client'
 import { useQcExaminationActions, useQcExaminationSelection } from "@/store/qcExaminationSlice"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 const StateSetter = () => {
 
     const { getRecordNoteTypes, getExaminationStatuses, getExaminationTypes, getItemParameters, setExaminationRecordId } = useQcExaminationActions()
-    const { examinationStatuses, lot, itemParameters, recordNoteTypes, examinationTypes } = useQcExaminationSelection()
+    const { examinationStatuses,  lot, itemParameters, recordNoteTypes, examinationTypes } = useQcExaminationSelection()
+    const effectRan = useRef(false);
 
     useEffect(() => {
         if (itemParameters.length === 0) {
@@ -25,6 +26,7 @@ const StateSetter = () => {
         }
 
         setExaminationRecordId()
+
 
 
     }, [lot])

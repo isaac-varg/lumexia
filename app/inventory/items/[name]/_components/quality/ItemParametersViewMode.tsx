@@ -1,14 +1,18 @@
 import Text from "@/components/Text"
-import { TbPlus, TbTrash } from "react-icons/tb"
+import { TbEdit, TbPlus, TbTrash } from "react-icons/tb"
 import { useItemDashboardActions, useItemDashboardSelection } from "@/store/itemDashboardSlice"
 import { qualityActions } from "@/actions/quality"
 import { useEffect } from "react"
+import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem"
+import useDialog from "@/hooks/useDialog"
+import EditParameterDialog from "./EditParameterDialog"
 
 
 const ItemParametersViewMode = () => {
 
     const { itemParameters, isItemParametersFetched, item } = useItemDashboardSelection()
-    const { setItemParametersPanelMode, getQcItemParameters } = useItemDashboardActions()
+    const { setItemParametersPanelMode, getQcItemParameters, setSelectedQcItemParameter } = useItemDashboardActions()
+    const { showDialog } = useDialog()
 
     const handleAddParameter = () => {
         setItemParametersPanelMode('add')
@@ -17,6 +21,11 @@ const ItemParametersViewMode = () => {
     const handleRemoveParameter = async (id: string) => {
         await qualityActions.qc.itemParameters.delete(id)
         getQcItemParameters()
+    }
+
+    const handleEditParameter = async (parameter: QcItemParameter) => {
+        setSelectedQcItemParameter(parameter);
+        showDialog('editQcItemParameter');
     }
 
     useEffect(() => {
@@ -30,6 +39,7 @@ const ItemParametersViewMode = () => {
 
     return (
         <>
+            <EditParameterDialog />
             <div className="flex justify-between items-center">
 
                 <Text.SectionTitle>QC Parameters</Text.SectionTitle>
@@ -53,15 +63,17 @@ const ItemParametersViewMode = () => {
                     </thead>
                     <tbody>
                         {itemParameters.map((ip) => {
-
                             return (
-                                <tr key={ip.id}>
+                                <tr key={ip.id} >
                                     <th>{ip.parameter.name}</th>
                                     <td>{ip.parameter.isWetParameter.toString()}</td>
-                                    <td>{JSON.stringify(ip.specification)}</td>
+                                    <td>{ip.specification ? 'Exists' : 'Null'}</td>
                                     <td>{JSON.stringify(ip.calculatedSpecification)}</td>
                                     <td>
-                                        <button onClick={() => handleRemoveParameter(ip.id)} className="btn btn-error"><TbTrash /></button>
+                                        <div className="flex gap-x-2">
+                                            <button onClick={() => handleRemoveParameter(ip.id)} className="btn btn-error"><TbTrash /></button>
+                                            <button onClick={() => handleEditParameter(ip)} className="btn btn-info "><TbEdit /></button>
+                                        </div>
                                     </td>
                                 </tr>
                             )

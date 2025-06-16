@@ -35,6 +35,7 @@ const ImageUpload = () => {
             }
 
             const data = await response.json();
+            console.log('data', data)
             setUploadedFile({ fileName: data.fileName, url: data.url });
         } catch (err: any) {
             setError(err.message);

@@ -1,9 +1,10 @@
 "use server"
 
+import { ExaminationType } from "@/actions/quality/qc/examinationTypes/getAll"
 import prisma from "@/lib/prisma"
 import { IntermediateParameterResult } from "@/store/qcExaminationSlice"
 
-export const completeExamination = async (recordId: string, parameterResults: IntermediateParameterResult[], examinationStatusId: string) => {
+export const completeExamination = async (recordId: string, parameterResults: IntermediateParameterResult[], examinationStatusId: string, examinationTypeId: string) => {
 
     // update record
     const record = await prisma.qcRecord.update({
@@ -12,6 +13,7 @@ export const completeExamination = async (recordId: string, parameterResults: In
         },
         data: {
             statusId: examinationStatusId,
+            examinationTypeId,
         }
     })
 

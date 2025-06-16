@@ -28,7 +28,24 @@ export const getSingleLot = async (id: string) => {
         }
     })
 
-    return lot
+    if (!lot) {
+        return lot
+    }
+
+
+
+    const hasOrigin = lot.lotOrigin.length !== 0;
+    const purchaseOrderNumber = hasOrigin ? lot.lotOrigin[0].purchaseOrder?.referenceCode || null : null
+    const batchNumber = hasOrigin ? lot.lotOrigin[0].bpr?.referenceCode || null : null
+
+    return ({
+        ...lot,
+        purchaseOrderNumber,
+        batchNumber,
+        itemName: lot.item.name,
+    })
+
+
 };
 
 

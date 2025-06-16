@@ -11,6 +11,7 @@ type State = {
     itemParameters: QcItemParameter[]
     isItemParametersFetched: boolean;
     itemParametersPanelMode: "view" | "add";
+    selectedItemParameter: QcItemParameter | null;
     aliases: ItemAlias[]
     selectedAlias: ItemAlias | null
     aliasDialogMode: "modify" | 'create' | null
@@ -28,6 +29,7 @@ type Actions = {
         setIsItemParametersFetched: (fetched: boolean) => void;
         setSelectedAlias: (alias: ItemAlias | null) => void;
         setAliasDialogMode: (mode: "modify" | 'create' | null) => void;
+        setSelectedQcItemParameter: (parameter: QcItemParameter | null) => void;
     }
 }
 
@@ -36,6 +38,7 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
     itemParameters: [],
     isItemParametersFetched: false,
     itemParametersPanelMode: 'view',
+    selectedItemParameter: null,
     aliases: [],
     selectedAlias: null,
     aliasDialogMode: null,
@@ -97,6 +100,10 @@ export const useItemDashboardSelection = create<State & Actions>((set, get) => (
 
         setAliasDialogMode: (mode) => {
             set(() => ({ aliasDialogMode: mode }))
+        },
+
+        setSelectedQcItemParameter: (parameter) => {
+            set(() => ({ selectedItemParameter: parameter, }))
         }
     }
 

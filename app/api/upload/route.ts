@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
         };
 
         // Upload the file to MinIO
-        await s3.putObject(bucketName, objectName, buffer, undefined, metaData);
+        const object = await s3.putObject(bucketName, objectName, buffer, undefined, metaData);
+        console.log(object)
 
         // Construct the file URL
         const fileUrl = `${process.env.S3_END_POINT}:${process.env.S3_PORT}/${bucketName}/${objectName}`;
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
         //      },
         //  });
 
-        return NextResponse.json({ status: 200 });
+        return NextResponse.json(object, { status: 200 });
         //        return NextResponse.json(savedImage, { status: 200 });
 
     } catch (error) {

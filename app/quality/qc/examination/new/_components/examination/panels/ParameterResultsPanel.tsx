@@ -2,9 +2,9 @@ import Form from "@/components/Form"
 import { Panels } from "@/components/Panels"
 import Text from "@/components/Text"
 import { IntermediateParameterResult, useQcExaminationActions, useQcExaminationSelection } from "@/store/qcExaminationSlice"
-import { keepPreviousData } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { JsonEditor } from 'json-edit-react'
 
 
 type ParameterInputDefinition = {
@@ -22,6 +22,7 @@ const ParameterResultsPanel = () => {
     const { selectedItemParameter } = useQcExaminationSelection()
     const { setParameterResult, getParameterResult, hasParameterResult } = useQcExaminationActions()
     const form = useForm();
+    console.log(selectedItemParameter)
 
 
     const inputDefinition = selectedItemParameter?.parameter?.inputDefinition as ParameterInputDefinition | undefined;
@@ -66,9 +67,19 @@ const ParameterResultsPanel = () => {
     return (
         <Panels.Root>
 
-            <Text.SectionTitle size="small">Parameter Results</Text.SectionTitle>
 
             {!selectedItemParameter && <h1 className="font-poppins text-xl font-semibold">Please select a parameter</h1>}
+
+            <Text.SectionTitle size="small">Specification</Text.SectionTitle>
+
+            <JsonEditor
+                data={selectedItemParameter.specification}
+            />
+
+
+            <Text.SectionTitle size="small">Parameter Results</Text.SectionTitle>
+
+
 
             <Form.Root form={form} onSubmit={handleSubmit}>
 

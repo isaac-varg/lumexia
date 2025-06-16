@@ -1,5 +1,6 @@
 import { getAllExaminationTypes } from "./qc/examinationTypes/getAll";
 import { deleteQcItemParameter } from "./qc/itemParameters/delete";
+import { updateQcItemParameter } from "./qc/itemParameters/update";
 import { createQcParameter } from "./qc/parameters/create";
 import { getAllQcParameters } from "./qc/parameters/getAll";
 import { getAllQcParametersByItem } from "./qc/parameters/getAllByItem";
@@ -8,6 +9,8 @@ import { getAllRecordNotesByRecord } from "./qc/recordNotes/getAllByRecord";
 import { createQcRecordNoteType } from "./qc/recordNotes/types/create";
 import { getAllQcRecordNoteTypes } from "./qc/recordNotes/types/getAll";
 import { createQcRecord } from "./qc/records/create";
+import { getAllQcExaminations } from "./qc/records/getAll";
+import { getSingleQcExamination } from "./qc/records/getOne";
 import { getAllQcRecordStatuses } from "./qc/records/statuses/getAll";
 import { createTemplateParameter } from "./qc/templateParameters/create";
 import { deleteTemplateParameter } from "./qc/templateParameters/delete";
@@ -22,7 +25,8 @@ export const qualityActions = {
         },
         itemParameters: {
             getByItem: getAllQcParametersByItem,
-            delete: deleteQcItemParameter
+            delete: deleteQcItemParameter,
+            update: updateQcItemParameter,
         },
         templates: {
             getAll: getAllQcTemplates,
@@ -45,6 +49,8 @@ export const qualityActions = {
         },
         records: {
             create: createQcRecord,
+            getAll: getAllQcExaminations,
+            getOne: getSingleQcExamination,
             statsues: {
                 getAll: getAllQcRecordStatuses,
             }

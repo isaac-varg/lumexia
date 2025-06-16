@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jun 10 2025 16:24:30 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Jun 16 2025 11:05:20 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1614,6 +1614,7 @@ model QcRecordStatus {
 
 model QcRecord {
   id                        String                 @id @default(uuid())
+  referenceCode             Int                    @default(autoincrement()) @map("reference_code")
   conductedById             String                 @map("conducted_by_id")
   statusId                  String                 @map("status_id")
   examinationTypeId         String                 @map("examination_type_id")

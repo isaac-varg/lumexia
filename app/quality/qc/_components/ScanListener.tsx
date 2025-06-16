@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { BsQrCodeScan } from "react-icons/bs";
 
-const ScanListener = ({ handleItemSelection }: { handleItemSelection: (item: string) => void; }) => {
+const ScanListener = ({ handleItemSelection }: { handleItemSelection: (lot: string) => void; }) => {
     const [scannedLot, setScannedLot] = useState("");
     const [isScanComplete, setIsScanComplete] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +11,7 @@ const ScanListener = ({ handleItemSelection }: { handleItemSelection: (item: str
         try {
             setIsLoading(true);
             //const itemId = await getItemIdFromLot(lot);
-            //handleItemSelection(itemId);
+            handleItemSelection(lot);
         } catch (error) {
             console.error('There was an error retrieving the lot', error);
         } finally {

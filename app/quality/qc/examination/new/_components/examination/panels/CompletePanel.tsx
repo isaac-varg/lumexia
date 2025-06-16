@@ -12,14 +12,12 @@ const CompletePanel = () => {
     const router = useRouter()
 
     const handleSubmit = async () => {
-        if (!isValidated || !examinationRecordId) return;
+        if (!isValidated || !examinationRecordId  || !selectedExaminationType) return;
 
         const resultsArray = Object.values(parameterResults)
 
-        await completeExamination(examinationRecordId, resultsArray, selectedExaminationStatusId)
-
+        await completeExamination(examinationRecordId, resultsArray, selectedExaminationStatusId, selectedExaminationType.id)
         router.back()
-
 
     }
 

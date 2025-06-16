@@ -12,7 +12,6 @@ const ExaminationStep = () => {
 
     const { wizardStep } = useQcExaminationSelection()
 
-
     if (wizardStep !== 1) return false;
 
     return (

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react"
 const LotSelectionStep = () => {
 
 
-    const { allLots, isLoading, wizardStep } = useQcExaminationSelection()
+    const { allLots, isLoading, wizardStep, lot } = useQcExaminationSelection()
     const [received, setReceived] = useState<Lot[]>([])
     const [batches, setBatches] = useState<Lot[]>([])
     const [searchInput, setSearchInput] = useState("")
