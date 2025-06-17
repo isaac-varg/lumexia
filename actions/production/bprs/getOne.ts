@@ -8,7 +8,19 @@ export const getSingleBpr = async (id: string) => {
         },
         include: {
             status: true,
-            batchSize: true,
+            batchSize: {
+                include: {
+                    batchSizeCompoundingVessels: {
+                        include: {
+                            compoundingVessel: {
+                                include: {
+                                    equipment: true,
+                                }
+                            },
+                        }
+                    }
+                }
+            },
             mbpr: {
                 include: {
                     producesItem: true,

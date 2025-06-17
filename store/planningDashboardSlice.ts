@@ -11,6 +11,7 @@ type State = {
     bprStatuses: BprStatus[],
     bom: BprBomItem[],
     bomItemInventory: BprBomItemInventory[],
+    selectedBomItem: BprBomItemInventory | null,
 }
 
 export type planningDashboardStates = keyof State
@@ -21,6 +22,7 @@ type Actions = {
         getBprStatuses: () => void;
         getBom: () => void;
         getBomItemInventory: () => void;
+        setSelectedBomItem: (item: BprBomItemInventory | null) => void;
     }
 }
 
@@ -30,6 +32,7 @@ export const usePlanningDashboardSelection = create<State & Actions>((set, get) 
     bprStatuses: [],
     bom: [],
     bomItemInventory: [],
+    selectedBomItem: null,
 
     actions: {
         getBpr: async (bprId) => {
@@ -75,6 +78,10 @@ export const usePlanningDashboardSelection = create<State & Actions>((set, get) 
             } catch (error) {
                 console.error(error)
             }
+        },
+
+        setSelectedBomItem: (item) => {
+            set(() => ({ selectedBomItem: item }))
         }
     }
 

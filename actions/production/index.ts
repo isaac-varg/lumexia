@@ -1,6 +1,7 @@
 import { getBprBom } from "./bprs/boms/getByBpr";
 import { getSingleBpr } from "./bprs/getOne";
 import { getBprStatuses } from "./bprs/statuses/getAll";
+import { updateBpr2 } from "./bprs/update";
 import { createCompoundingVessel } from "./compoundingVessels/createCompoundingVessel";
 import { getAllCompoundingVessels } from "./compoundingVessels/getAllCompoundinVessels";
 import { updateCompoundingVessel } from "./compoundingVessels/updateCompoundingVessel";
@@ -47,6 +48,8 @@ export const productionActions = {
         },
         getOne: getSingleBpr,
         update: updateBpr,
+        // bad naming
+        update2: updateBpr2,
     },
     mbprs: {
         getActive: getActiveMbpr,

@@ -1,10 +1,11 @@
 "use client"
 import React from 'react'
-import { MaterialsBom } from './MaterialSufficiency'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 import { staticRecords } from '@/configs/staticRecords'
 import useDialog from '@/hooks/useDialog'
+import { BprBomItemInventory } from '@/actions/inventory/inventory/getAllByBom'
 import MaterialAllocationDialog from './MaterialAllocationDialog'
+import { usePlanningDashboardActions } from '@/store/planningDashboardSlice'
 
 const classes = {
     bg: {
@@ -13,9 +14,10 @@ const classes = {
     }
 }
 
-const MaterialSufficiencyLine = ({ material }: { material: MaterialsBom }) => {
+const MaterialSufficiencyLine = ({ material }: { material: BprBomItemInventory }) => {
 
     const { showDialog } = useDialog()
+    const { setSelectedBomItem } = usePlanningDashboardActions()
 
     const isConsumable = material.bom.item.inventoryTypeId === staticRecords.inventory.inventoryTypes.consumable;
     const available = isConsumable ? 'Consumable' : toFracitonalDigits.weight(material.totalQuantityAvailable);
@@ -24,21 +26,22 @@ const MaterialSufficiencyLine = ({ material }: { material: MaterialsBom }) => {
     const bgClasses: keyof typeof classes.bg = isAvailableSufficient || isConsumable ? 'sufficient' : 'insufficient'
 
     const handleClick = () => {
+        setSelectedBomItem(material)
         showDialog(`allocation${material.id}`)
     }
 
     return (
         <>
-        <MaterialAllocationDialog material={material}/>
-    
+            <MaterialAllocationDialog />
 
-        <tr className={`${classes.bg[bgClasses]} hover:bg-neutral-200 hover:cursor-pointer`} onClick={() => handleClick()}>
-            <th>{material.bom.identifier}</th>
-            <td>{material.bom.item.name}</td>
-            <td>{toFracitonalDigits.weight(material.quantity)}</td>
-            <td>{available}</td>
-            <td>{isConsumable ? <progress className='progress' /> : <progress className='progress' value={material.totalQuantityAvailable} max={material.quantity}></progress>}</td>
-        </tr>
+
+            <tr className={`${classes.bg[bgClasses]} hover:bg-neutral-200 hover:cursor-pointer`} onClick={() => handleClick()}>
+                <th>{material.bom.identifier}</th>
+                <td>{material.bom.item.name}</td>
+                <td>{toFracitonalDigits.weight(material.quantity)}</td>
+                <td>{isConsumable ? 'Consumable' : available}</td>
+                <td>{isConsumable ? <progress className='progress ' value={100} max={100} /> : <progress className='progress' value={material.totalQuantityAvailable} max={material.quantity}></progress>}</td>
+            </tr>
         </>
     )
 }

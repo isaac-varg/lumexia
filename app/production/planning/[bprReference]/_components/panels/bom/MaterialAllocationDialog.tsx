@@ -1,18 +1,14 @@
+'use client'
+import { BprBomItemInventory } from "@/actions/inventory/inventory/getAllByBom"
 import Dialog from "@/components/Dialog"
-import { MaterialsBom } from "./MaterialSufficiency"
+import { usePlanningDashboardSelection } from "@/store/planningDashboardSlice"
 import { useEffect, useState } from "react"
-import { PurchasingRequestForPlanning, getPurchasingRequests } from "../_functions/getPurchasingRequests"
-import RequestForm from "./RequestForm"
-import MaterialAllocationPanels from "./MaterialAllocationPanels"
-import AuditRequest from "./AuditRequest"
 
-const MaterialAllocationDialog = ({
-    material,
-}: {
-    material: MaterialsBom
-}) => {
+const MaterialAllocationDialog = () => {
 
-    const allocationDialogIdentifier = `allocation${material.id}`
+    const { selectedBomItem: material } = usePlanningDashboardSelection()
+
+    const allocationDialogIdentifier = `allocation${material?.id}`
     const [isLoading, setIsLoading] = useState(false);
     const [mode, setMode] = useState<"default" | "request" | "audit">("default")
     const [requests, setRequests] = useState<PurchasingRequestForPlanning[]>([])
@@ -50,7 +46,7 @@ const MaterialAllocationDialog = ({
 
                 {mode === 'request' && <RequestForm material={material} setMode={setMode} hasRequests={hasRequests} />}
 
-                {mode === 'audit' && <AuditRequest setMode={setMode} itemId={material.bom.itemId}/>}
+                {mode === 'audit' && <AuditRequest setMode={setMode} itemId={material.bom.itemId} />}
 
             </Dialog.Root>
         </>

@@ -1,12 +1,11 @@
 "use client"
 
-import { getBprStatuses } from "@/actions/production/getBprStatuses";
 import { usePlanningDashboardActions, usePlanningDashboardSelection } from "@/store/planningDashboardSlice";
 import { useEffect } from "react";
 
 const StateSetter = ({ bprId }: { bprId: string }) => {
 
-    const { getBpr, getBom, getBomItemInventory } = usePlanningDashboardActions()
+    const { getBpr, getBom,getBprStatuses, getBomItemInventory } = usePlanningDashboardActions()
     const { bprStatuses, bpr, bom } = usePlanningDashboardSelection()
 
     useEffect(() => {
