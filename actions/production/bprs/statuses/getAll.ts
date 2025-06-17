@@ -1,6 +1,5 @@
 "use server"
 
-import bprStatusActions from "@/actions/production/bprStatuses"
 import prisma from "@/lib/prisma";
 
 export const getBprStatuses = async () => {
@@ -12,3 +11,5 @@ export const getBprStatuses = async () => {
 
     return statuses;
 }
+
+export type BprStatus = Awaited<ReturnType<typeof getBprStatuses>>[number];

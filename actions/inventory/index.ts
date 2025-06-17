@@ -11,6 +11,7 @@ import { getItemLots } from "./getItemLots";
 import { getOneAuditRequest } from "./getOneAuditRequest";
 import { getOneItem } from "./getOneItem";
 import { getPurchasedItems } from "./getPurchasedItems";
+import { getAllInventoryByBom } from "./inventory/getAllByBom";
 import { getAllLots } from "./lots/getAll";
 import { getSingleLot } from "./lots/getOne";
 import { getReceivables } from "./receiving/getReceivables";
@@ -26,11 +27,12 @@ export const inventoryActions = {
     getItemLots: getItemLots,
     items: {
         getOne: getOneItem,
-        getAll: getAllItems
+        getAll: getAllItems,
     },
     inventory: {
         getByItem: getInventory,
         getByLot: getInventoryOfLot,
+        getAllByBprBom: getAllInventoryByBom,
     },
     uom: {
         getAll: getAllUom,

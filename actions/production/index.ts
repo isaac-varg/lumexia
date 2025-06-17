@@ -1,9 +1,11 @@
+import { getBprBom } from "./bprs/boms/getByBpr";
+import { getSingleBpr } from "./bprs/getOne";
+import { getBprStatuses } from "./bprs/statuses/getAll";
 import { createCompoundingVessel } from "./compoundingVessels/createCompoundingVessel";
 import { getAllCompoundingVessels } from "./compoundingVessels/getAllCompoundinVessels";
 import { updateCompoundingVessel } from "./compoundingVessels/updateCompoundingVessel";
 import { getActiveMbpr } from "./getActiveMbpr";
 import { getAllMbprs } from "./getAllMbprs";
-import { getBprStatuses } from "./getBprStatuses";
 import { getMbprsByItem } from "./getMbprsByItem";
 import { getPlanningBprs } from "./getPlanningBprs";
 import { createActionable } from "./mbpr/actionables/create";
@@ -40,6 +42,10 @@ export const productionActions = {
         statuses: {
             getAll: getBprStatuses,
         },
+        boms: {
+            getByBpr: getBprBom,
+        },
+        getOne: getSingleBpr,
         update: updateBpr,
     },
     mbprs: {
@@ -88,6 +94,6 @@ export const productionActions = {
         update: updateCompoundingVessel,
     },
     templates: {
-        scent: handleNewScent, 
+        scent: handleNewScent,
     }
 };

@@ -1,14 +1,14 @@
 "use server"
 import prisma from "@/lib/prisma"
 
-export const getBpr = async (id: string) => {
-    const bprs = await prisma.batchProductionRecord.findFirst({
+export const getSingleBpr = async (id: string) => {
+    const bprs = await prisma.batchProductionRecord.findUnique({
         where: {
             id,
         },
         include: {
             status: true,
-            batchSize: true, 
+            batchSize: true,
             mbpr: {
                 include: {
                     producesItem: true,
@@ -18,10 +18,12 @@ export const getBpr = async (id: string) => {
                 include: {
                     lot: true
                 }
-            } 
+            }
 
         }
     })
 
     return bprs;
 }
+
+export type BatchProductionRecord = Awaited<ReturnType<typeof getSingleBpr>>

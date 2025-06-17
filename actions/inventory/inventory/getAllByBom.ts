@@ -4,12 +4,13 @@ import { getLotsByItem } from "@/actions/auxiliary/getLotsByItem"
 import { ExBprBom } from "@/types/bprBom"
 import prisma from "@/lib/prisma"
 import { staticRecords } from "@/configs/staticRecords"
+import { BprBomItem } from "@/actions/production/bprs/boms/getByBpr"
 
 
 
 
-export const getInventory = async (bom: ExBprBom[]) => {
-    const data = await Promise.all(bom.map(async (material: ExBprBom) => {
+export const getAllInventoryByBom = async (bom: BprBomItem[]) => {
+    const data = await Promise.all(bom.map(async (material: BprBomItem) => {
         const lots = await getLotsByItem(material.bom.itemId)
         const { queued, stagingMaterials, compounding, completed, awaitingMaterials } = staticRecords.production.bprStatuses;
 
@@ -88,6 +89,5 @@ export const getInventory = async (bom: ExBprBom[]) => {
     return data
 }
 
-
-//const getAllocations = async ()
+export type BprBomItemInventory = Awaited<ReturnType<typeof getAllInventoryByBom>>[number];
 
