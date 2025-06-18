@@ -8,7 +8,8 @@ model QcExaminationType {
     createdAt    DateTime @default(now()) @map("created_at")
     updatedAt    DateTime @updatedAt @map("updated_at")
 
-    qcRecords QcRecord[]
+    qcRecords         QcRecord[]
+    qcParameterGroups QcParameterGroup[]
 
     @@map("qc_examination_types")
 }

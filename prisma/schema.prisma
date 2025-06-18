@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jun 16 2025 11:05:20 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jun 18 2025 14:55:00 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1518,9 +1518,22 @@ model QcExaminationType {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  qcRecords QcRecord[]
+  qcRecords         QcRecord[]
+  qcParameterGroups QcParameterGroup[]
 
   @@map("qc_examination_types")
+}
+
+model QcGroupParameter {
+  id          String           @id @default(uuid())
+  groupId     String           @map("group_id")
+  parameterId String           @map("parameter_id")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  group       QcParameterGroup @relation(fields: [groupId], references: [id])
+  parameter   QcParameter      @relation(fields: [parameterId], references: [id])
+
+  @@map("qc_group_parameters")
 }
 
 model QcItemParameter {
@@ -1536,6 +1549,20 @@ model QcItemParameter {
 
   @@unique([itemId, parameterId])
   @@map("qc_item_parameters")
+}
+
+model QcParameterGroup {
+  id                String            @id @default(uuid())
+  name              String
+  abbreviation      String
+  examinationTypeId String            @map("examination_type_id")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  examinationType   QcExaminationType @relation(fields: [examinationTypeId], references: [id])
+
+  parameters QcGroupParameter[]
+
+  @@map("qc_parameter_groups")
 }
 
 model QcParameterResult {
@@ -1566,6 +1593,7 @@ model QcParameter {
   qcItemParameters     QcItemParameter[]
   qcParameterResults   QcParameterResult[]
   qcTemplateParameters QcTemplateParameter[]
+  QcGroupParameter     QcGroupParameter[]
 
   @@map("qc_parameters")
 }

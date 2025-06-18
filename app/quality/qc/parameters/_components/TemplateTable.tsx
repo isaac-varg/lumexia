@@ -35,7 +35,7 @@ const TemplateTable = ({ templates }: { templates: QcTemplate[] }) => {
                 data={templates}
                 columns={templateColumns}
                 onRowClick={(row) => handleRowClick(row)}
-                tableStateName='itemPricingExamiantions'
+                tableStateName='qcTemplates'
             />
         </Card.Root>
     )

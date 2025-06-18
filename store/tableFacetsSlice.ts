@@ -25,6 +25,8 @@ type State = {
     pricingBom: FilterArray
     itemWithGenericUnits: FilterArray
     qcExaminations: FilterArray
+    qcGroups: FilterArray
+    qcTemplates: FilterArray
 
 };
 
@@ -60,6 +62,8 @@ export const useTableFacets = create<State & Actions>((set) => ({
     pricingBom: [],
     itemWithGenericUnits: [],
     qcExaminations: [],
+    qcGroups: [],
+    qcTemplates: [],
 
 
     setFilter: (tableState, value) =>

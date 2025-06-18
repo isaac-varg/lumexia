@@ -1,0 +1,11 @@
+model QcGroupParameter {
+    id          String           @id @default(uuid())
+    groupId     String           @map("group_id")
+    parameterId String           @map("parameter_id")
+    createdAt   DateTime         @default(now()) @map("created_at")
+    updatedAt   DateTime         @updatedAt @map("updated_at")
+    group       QcParameterGroup @relation(fields: [groupId], references: [id])
+    parameter   QcParameter      @relation(fields: [parameterId], references: [id])
+
+    @@map("qc_group_parameters")
+}
