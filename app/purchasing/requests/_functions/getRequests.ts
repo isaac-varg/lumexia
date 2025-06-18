@@ -3,14 +3,16 @@
 import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
 
+const { delivered, requestCancelledDuplicateRequest, discontinuedIngredient } = staticRecords.purchasing.requestStatuses;
+
 export const getRequests = async () => {
     const requests = await prisma.purchasingRequest.findMany({
         where: {
-
-            NOT: {
-                OR: [
-                    { statusId: staticRecords.purchasing.requestStatuses.delivered },
-                    { statusId: staticRecords.purchasing.requestStatuses.requestCancelledDuplicateRequest }
+            statusId: {
+                notIn: [
+                    delivered,
+                    requestCancelledDuplicateRequest,
+                    discontinuedIngredient,
                 ]
             }
         },

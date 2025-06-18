@@ -31,10 +31,6 @@ const MaterialSufficiencyLine = ({ material }: { material: BprBomItemInventory }
     }
 
     return (
-        <>
-            <MaterialAllocationDialog />
-
-
             <tr className={`${classes.bg[bgClasses]} hover:bg-neutral-200 hover:cursor-pointer`} onClick={() => handleClick()}>
                 <th>{material.bom.identifier}</th>
                 <td>{material.bom.item.name}</td>
@@ -42,7 +38,6 @@ const MaterialSufficiencyLine = ({ material }: { material: BprBomItemInventory }
                 <td>{isConsumable ? 'Consumable' : available}</td>
                 <td>{isConsumable ? <progress className='progress ' value={100} max={100} /> : <progress className='progress' value={material.totalQuantityAvailable} max={material.quantity}></progress>}</td>
             </tr>
-        </>
     )
 }
 

@@ -1,4 +1,4 @@
-import AuditRequest from "@/app/production/planning/[bprReference]/_components/AuditRequest"
+import AuditRequest from "@/app/production/planning/[bprReference]/_components/panels/bom/AuditRequest"
 import Dialog from "@/components/Dialog"
 
 const AuditDialog = ({ itemId }: { itemId: string }) => {

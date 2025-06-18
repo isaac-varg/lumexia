@@ -5,7 +5,8 @@ import Layout from '@/components/Layout';
 import BatchSize from './_components/panels/BatchSize';
 import SchedulingPanel from './_components/panels/scheduling/SchedulingPanel';
 import Statuses from './_components/panels/status/Statuses';
-import BomMain from './_components/panels/bom/BomMain';
+import BomMain from './_components/panels/BomMain';
+import QcRecordsPanel from './_components/panels/qcRecords/QcRecordsPanel';
 
 type PlanningBprPage = {
     searchParams: {
@@ -35,17 +36,12 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
 
                 <BomMain />
 
+                <QcRecordsPanel />
+
             </Layout.Grid>
 
             {/*
             <ActionsPanel bpr={bpr as any} />
-
-                <SchedulingPanel bprId={bpr.id} start={bpr.scheduledForStart} end={bpr.scheduledForEnd} />
-
-
-            {bpr.status.id === staticRecords.production.bprStatuses.draft && (
-                <MaterialSufficiency materials={sortedMaterialInventory as any} />
-            )}
 
 */}
 

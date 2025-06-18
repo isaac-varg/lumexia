@@ -2,10 +2,10 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import { InterimAuditRequestNote } from './AuditRequest'
 import Form from '@/components/Form'
 import { useForm } from 'react-hook-form'
-import { AuditRequestNoteType } from '../_functions/getAuditRequestNoteTypes'
 import { TagSelectOptions } from '@/components/Form/TagSelect'
-import AuditRequestNoteTypeForm from './AuditRequestNoteTypeForm'
 import { staticRecords } from '@/configs/staticRecords'
+import { AuditRequestNoteType } from '@/actions/inventory/auditRequests/noteTypes/getAll'
+import AuditRequestNoteTypeForm from './AuditRequestNoteTypeForm'
 
 type AuditRequestFormProps = {
     setReqMode: Dispatch<SetStateAction<"view" | "add">>

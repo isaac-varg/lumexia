@@ -1,10 +1,10 @@
 'use server'
 import { getUserId } from "@/actions/users/getUserId"
-import { InterimAuditRequestNote } from "../_components/AuditRequest"
 import prisma from "@/lib/prisma"
 import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 import { revalidatePath } from "next/cache"
+import { InterimAuditRequestNote } from "@/app/production/planning/[bprReference]/_components/panels/bom/AuditRequest"
 
 export const createAuditRequest = async (notes: InterimAuditRequestNote[], itemId: string) => {
 

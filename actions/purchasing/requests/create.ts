@@ -1,13 +1,13 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { MaterialsBom } from "../_components/MaterialSufficiency"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { staticRecords } from "@/configs/staticRecords";
 import { DateTime } from "luxon";
 import { getUserId } from "@/actions/users/getUserId";
+import { BprBomItemInventory } from "@/actions/inventory/inventory/getAllByBom";
 
-export const createRequest = async (material: MaterialsBom, priorityId: string, wasOverridden: boolean) => {
+export const createRequest = async (material: BprBomItemInventory, priorityId: string, wasOverridden: boolean) => {
 
 
     const requestingUserId = await getUserId()

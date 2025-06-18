@@ -1,16 +1,15 @@
 import Dialog from '@/components/Dialog'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { MaterialsBom } from './MaterialSufficiency'
 import Form from '@/components/Form'
 import { useForm } from 'react-hook-form'
-import { getPurchasingPriorities } from '../_functions/getPurchasingPriorities'
-import { RequestPriority } from '@/types/requestPriority'
-import { createRequest } from '../_functions/createRequest'
+import { BprBomItemInventory } from '@/actions/inventory/inventory/getAllByBom'
+import { RequestPriority } from '@/actions/purchasing/requests/priorities/getAll'
+import { purchasingActions } from '@/actions/purchasing'
 
 
 type RequestFormProps = {
     setMode: Dispatch<SetStateAction<"default" | "request" | "audit">>
-    material: MaterialsBom
+    material: BprBomItemInventory
     hasRequests: boolean
 }
 
@@ -26,20 +25,16 @@ const RequestForm = ({
 ) => {
 
     const form = useForm<Inputs>()
-
-
+    const [isLoading, setIsLoading] = useState(false);
     const [requestPriorities, setRequestPriorities] = useState<RequestPriority[]>();
-    const [isLoading, setIsLoading] = useState(false)
     const [isWarningShown, setIsWarningShown] = useState(hasRequests)
     const [wasWarningOverridden, setWasWarningOverridden] = useState(false)
 
 
 
     const handleSubmit = async (data: Inputs) => {
-
-
         try {
-            await createRequest(material, data.priorityId, wasWarningOverridden);
+            await purchasingActions.requests.create(material, data.priorityId, wasWarningOverridden);
         } catch (error) {
             throw new Error("Error in creating request.")
         } finally {
@@ -57,7 +52,7 @@ const RequestForm = ({
 
             try {
                 setIsLoading(true)
-                const priorities = await getPurchasingPriorities();
+                const priorities = await purchasingActions.requests.priorities.getAll();
                 setRequestPriorities(priorities)
             } catch (error) {
                 throw new Error("Priorities could not be loaded.")

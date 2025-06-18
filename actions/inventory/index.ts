@@ -1,4 +1,8 @@
 import { getAliasByItem } from "./aliases/getByItem";
+import { createAuditRequest } from "./auditRequests/create";
+import { createAuditRequestNoteType } from "./auditRequests/noteTypes/create";
+import { getAuditRequestNoteTypes } from "./auditRequests/noteTypes/getAll";
+import { createAuditRequestNote } from "./auditRequests/notes/create";
 import { createGenericUnitConversionFactor } from "./genericUnitConversionFactors/create";
 import { getConversionByItemSupplierUnique } from "./genericUnitConversionFactors/getByItemSupplierUnique";
 import { getAllItems } from "./getAllItems";
@@ -20,6 +24,14 @@ export const inventoryActions = {
     getInventory: getInventory,
     getPurchasedItems: getPurchasedItems,
     auditReqests: {
+        noteTypes: {
+            create: createAuditRequestNoteType,
+            getAll: getAuditRequestNoteTypes,
+        },
+        notes: {
+            create: createAuditRequestNote,
+        },
+        create: createAuditRequest,
         getAll: getAuditRequests,
         getOne: getOneAuditRequest,
         getCount: getAuditRequestCount,

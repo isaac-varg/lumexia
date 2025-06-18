@@ -1,7 +1,7 @@
+import { inventoryActions } from '@/actions/inventory'
 import Form from '@/components/Form'
 import React, { Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
-import { createAuditRequestNoteType } from '../_functions/createAuditRequestNoteType'
 
 type CProps = {
     setFormMode: Dispatch<SetStateAction<'form' | 'type'>>
@@ -23,7 +23,7 @@ const AuditRequestNoteTypeForm = ({ setFormMode, setReval }: CProps) => {
     const name = form.watch('name')
 
     const handleSubmit = async (data: Inputs) => {
-        await createAuditRequestNoteType(data)
+        await inventoryActions.auditReqests.noteTypes.create(data)
         setReval(Math.random().toString())
         setFormMode('form')
     }

@@ -1,46 +1,29 @@
 'use client'
-import { BprBomItemInventory } from "@/actions/inventory/inventory/getAllByBom"
 import Dialog from "@/components/Dialog"
-import { usePlanningDashboardSelection } from "@/store/planningDashboardSlice"
+import { usePlanningDashboardActions, usePlanningDashboardSelection } from "@/store/planningDashboardSlice"
 import { useEffect, useState } from "react"
+import MaterialAllocationPanels from "./MaterialAllocationPanels"
+import RequestForm from "./RequestForm"
+import AuditRequest from "./AuditRequest"
 
 const MaterialAllocationDialog = () => {
 
-    const { selectedBomItem: material } = usePlanningDashboardSelection()
+    const { selectedBomItem: material, purchasingRequests: requests, isLoading } = usePlanningDashboardSelection()
+    const { getPurchasingRequestsForPlanning } = usePlanningDashboardActions()
 
     const allocationDialogIdentifier = `allocation${material?.id}`
-    const [isLoading, setIsLoading] = useState(false);
     const [mode, setMode] = useState<"default" | "request" | "audit">("default")
-    const [requests, setRequests] = useState<PurchasingRequestForPlanning[]>([])
     const hasRequests = requests.length !== 0
 
 
     useEffect(() => {
+        getPurchasingRequestsForPlanning()
 
-        const runGetter = async () => {
+    }, [material])
 
-            try {
-                setIsLoading(true)
-                const requests = await getPurchasingRequests(material.bom.itemId)
-                setRequests(requests)
-            } catch (error) {
-                throw new Error("There was an error in getting hte purchasing request")
-            } finally {
-                setIsLoading(false)
-            }
-
-        }
-
-        runGetter()
-
-    }, [])
-
-
-
-
+    if (!material) return;
     return (
-        <>
-            <Dialog.Root identifier={allocationDialogIdentifier} >
+        <Dialog.Root identifier={allocationDialogIdentifier} >
 
                 {mode === 'default' && <MaterialAllocationPanels material={material} isLoading={isLoading} requests={requests} setMode={setMode} />}
 
@@ -48,8 +31,8 @@ const MaterialAllocationDialog = () => {
 
                 {mode === 'audit' && <AuditRequest setMode={setMode} itemId={material.bom.itemId} />}
 
-            </Dialog.Root>
-        </>
+
+        </Dialog.Root>
     )
 }
 

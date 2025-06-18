@@ -1,16 +1,9 @@
-'use client'
-import { usePlanningDashboardSelection } from '@/store/planningDashboardSlice'
-import MaterialSufficiencyLine from './MaterialSufficiencyLine'
-import MaterialAllocationDialog from './MaterialAllocationDialog'
+import { usePlanningDashboardSelection } from "@/store/planningDashboardSlice"
 
-const MaterialSufficiencyTable = () => {
-
+const BomStatusTable = () => {
     const { bomItemInventory } = usePlanningDashboardSelection()
-
     return (
         <div>
-
-            <MaterialAllocationDialog />
             <div className="overflow-x-auto">
                 <table className="table">
                     <thead>
@@ -24,12 +17,12 @@ const MaterialSufficiencyTable = () => {
                     </thead>
 
                     <tbody>
-                        {bomItemInventory.map((material) => <MaterialSufficiencyLine key={material.id} material={material} />)}
                     </tbody>
                 </table>
             </div>
         </div>
+
     )
 }
 
-export default MaterialSufficiencyTable
+export default BomStatusTable

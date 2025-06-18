@@ -10,6 +10,7 @@ import { createQcRecordNoteType } from "./qc/recordNotes/types/create";
 import { getAllQcRecordNoteTypes } from "./qc/recordNotes/types/getAll";
 import { createQcRecord } from "./qc/records/create";
 import { getAllQcExaminations } from "./qc/records/getAll";
+import { getAllQcRecordsByBpr } from "./qc/records/getAllByBpr";
 import { getSingleQcExamination } from "./qc/records/getOne";
 import { getAllQcRecordStatuses } from "./qc/records/statuses/getAll";
 import { createTemplateParameter } from "./qc/templateParameters/create";
@@ -50,6 +51,7 @@ export const qualityActions = {
         records: {
             create: createQcRecord,
             getAll: getAllQcExaminations,
+            getAllByBpr: getAllQcRecordsByBpr,
             getOne: getSingleQcExamination,
             statsues: {
                 getAll: getAllQcRecordStatuses,

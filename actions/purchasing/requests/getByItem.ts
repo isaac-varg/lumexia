@@ -1,12 +1,19 @@
 "use server"
 
+import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
 
-export const getPurchasingRequests = async (itemId: string) => {
+const { delivered, requestCancelledDuplicateRequest, discontinuedIngredient } = staticRecords.purchasing.requestStatuses
+
+export const getPurchasingRequestsForPlanning = async (itemId: string) => {
+
 
     const response = await prisma.purchasingRequest.findMany({
         where: {
             itemId,
+            statusId: {
+                notIn: [delivered, requestCancelledDuplicateRequest, discontinuedIngredient]
+            }
         },
         include: {
             pos: {
@@ -28,4 +35,4 @@ export const getPurchasingRequests = async (itemId: string) => {
     return response
 }
 
-export type PurchasingRequestForPlanning = Awaited<ReturnType<typeof getPurchasingRequests>>[number]
+export type PurchasingRequestForPlanning = Awaited<ReturnType<typeof getPurchasingRequestsForPlanning>>[number]

@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import AuditRequestForm from './AuditRequestForm'
-import { AuditRequestNoteType, getAuditRequestNoteTypes } from '../_functions/getAuditRequestNoteTypes'
-import { createAuditRequest } from '../_functions/createAuditRequest'
 import useToast from '@/hooks/useToast'
 import useDialog from '@/hooks/useDialog'
+import { inventoryActions } from '@/actions/inventory'
+import AuditRequestForm from './AuditRequestForm'
+import { AuditRequestNoteType } from '@/actions/inventory/auditRequests/noteTypes/getAll'
 
 type AuditRequestProps = {
     setMode?: Dispatch<SetStateAction<"default" | "request" | "audit">>
@@ -29,7 +29,7 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
     const { resetDialogContext } = useDialog()
 
     const handleCompleteAuditRequest = async () => {
-        await createAuditRequest(notes, itemId);
+        await inventoryActions.auditReqests.create(notes, itemId);
 
         if (setMode) {
             setMode('default')
@@ -43,8 +43,7 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
 
     useEffect(() => {
         const getter = async () => {
-            const types = await getAuditRequestNoteTypes();
-
+            const types = await inventoryActions.auditReqests.noteTypes.getAll();
             setAuditRequestNoteTypes(types)
         }
 
