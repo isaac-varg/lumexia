@@ -1,0 +1,14 @@
+model BprNote {
+    id         String                @id @default(uuid())
+    bprId      String                @map("request_id")
+    noteTypeId String                @map("note_type_id")
+    userId     String                @map("user_id")
+    content    String
+    createdAt  DateTime              @default(now()) @map("created_at")
+    updatedAt  DateTime              @updatedAt @map("updated_at")
+    bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
+    user       User                  @relation(fields: [userId], references: [id])
+    noteType   BprNoteType           @relation(fields: [noteTypeId], references: [id])
+
+    @@map("bpr_notes")
+}

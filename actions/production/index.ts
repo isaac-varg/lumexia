@@ -1,5 +1,9 @@
 import { getBprBom } from "./bprs/boms/getByBpr";
 import { getSingleBpr } from "./bprs/getOne";
+import { createBprNote } from "./bprs/notes/create";
+import { getAllBprNotes } from "./bprs/notes/getAllByBpr";
+import { createBprNoteType } from "./bprs/notes/notesTypes/create";
+import { getAllBprNoteTypes } from "./bprs/notes/notesTypes/getAll";
 import { getBprStatuses } from "./bprs/statuses/getAll";
 import { updateBpr2 } from "./bprs/update";
 import { createCompoundingVessel } from "./compoundingVessels/createCompoundingVessel";
@@ -40,6 +44,14 @@ export const productionActions = {
         getBprs: getPlanningBprs,
     },
     bprs: {
+        notes: {
+            getAllByBpr: getAllBprNotes,
+            create: createBprNote,
+            types: {
+                getAll: getAllBprNoteTypes,
+                create: createBprNoteType,
+            }
+        },
         statuses: {
             getAll: getBprStatuses,
         },

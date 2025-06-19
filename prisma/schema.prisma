@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Jun 19 2025 09:08:23 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jun 19 2025 14:04:35 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -826,6 +826,7 @@ model BatchProductionRecord {
   qcRecords          QcRecord[]
   NotionBpr          NotionBpr[]
   BprBillOfMaterials BprBillOfMaterials[]
+  BprNote            BprNote[]
   RequestBpr         RequestBpr[]
   MicroSubmission    MicroSubmission[]
 
@@ -952,6 +953,34 @@ model BprBillOfMaterials {
   @@map("bpr_bills_of_materials")
 }
 
+model BprNoteType {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  bgColor     String    @map("bg_color")
+  textColor   String    @map("text_color")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  bprNotes    BprNote[]
+
+  @@map("bpr_note_types")
+}
+
+model BprNote {
+  id         String                @id @default(uuid())
+  bprId      String                @map("request_id")
+  noteTypeId String                @map("note_type_id")
+  userId     String                @map("user_id")
+  content    String
+  createdAt  DateTime              @default(now()) @map("created_at")
+  updatedAt  DateTime              @updatedAt @map("updated_at")
+  bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
+  user       User                  @relation(fields: [userId], references: [id])
+  noteType   BprNoteType           @relation(fields: [noteTypeId], references: [id])
+
+  @@map("bpr_notes")
+}
+
 model BprStaging {
   id                 String   @id @default(uuid())
   bprBomId           String   @map("bpr_bom_id")
@@ -976,6 +1005,7 @@ model BprStaging {
 model BprStagingStatus {
   id                 String               @id @default(uuid())
   name               String
+  sequence           Int                  @default(0)
   description        String
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
@@ -1812,6 +1842,7 @@ model User {
   qcAuditLog                    QcAuditLog[]
   PricingExaminationNote        PricingExaminationNote[]
   InventoryAudit                InventoryAudit[]
+  BprNote                       BprNote[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]

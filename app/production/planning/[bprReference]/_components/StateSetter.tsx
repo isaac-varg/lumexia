@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const StateSetter = ({ bprId }: { bprId: string }) => {
 
-    const { getBpr, getBom, getBprStatuses, getBomItemInventory, getQcExaminations } = usePlanningDashboardActions()
+    const { getBpr, getBom, getBprStatuses, getBomItemInventory, getQcExaminations, getQcGroups, getLastItemPrice, getBprNotes, getBprNoteTypes } = usePlanningDashboardActions()
     const { bprStatuses, bpr, bom } = usePlanningDashboardSelection()
 
     useEffect(() => {
@@ -20,6 +20,10 @@ const StateSetter = ({ bprId }: { bprId: string }) => {
         if (bpr) {
             getBom();
             getQcExaminations();
+            getQcGroups()
+            getLastItemPrice();
+            getBprNotes();
+            getBprNoteTypes();
         }
 
     }, [bpr])

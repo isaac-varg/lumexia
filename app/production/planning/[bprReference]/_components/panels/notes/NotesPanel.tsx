@@ -1,16 +1,17 @@
+'use client'
 import { Panels } from "@/components/Panels";
 import Text from "@/components/Text";
 import { useState } from "react";
 import NotesViewMode from "./NotesViewMode";
 import NotesAddMode from "./NotesAddMode";
-import CreateNoteTypeForm from "./NotesAddNoteTypeMode";
+import NoteTypesAddMode from "./NoteTypesAddMode";
 
 const NotesPanel = () => {
 
     const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
     return (
-        <Panels.Root span={2}>
+        <Panels.Root span={3}>
             <div className="flex justify-between items-center">
 
                 <Text.SectionTitle size="small">Notes</Text.SectionTitle>
@@ -19,7 +20,7 @@ const NotesPanel = () => {
 
             {mode === 'view' && <NotesViewMode />}
             {mode === 'addNote' && <NotesAddMode setMode={setMode} />}
-            {mode === 'addType' && <CreateNoteTypeForm setMode={setMode} />}
+            {mode === 'addType' && <NoteTypesAddMode setMode={setMode} />}
 
         </Panels.Root>
     )

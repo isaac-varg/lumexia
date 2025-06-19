@@ -15,7 +15,18 @@ export const getBprBom = async (bprId: string) => {
                 }
             },
             status: true,
-            bpr: true
+            bpr: true,
+            BprStaging: {
+                include: {
+                    BprStagingVerification: {
+                        include: {
+                            user: true
+                        }
+                    },
+                    status: true,
+                    pulledByUser: true,
+                }
+            }
         },
         orderBy: {
             bom: {

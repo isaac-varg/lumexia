@@ -7,6 +7,8 @@ import SchedulingPanel from './_components/panels/scheduling/SchedulingPanel';
 import Statuses from './_components/panels/status/Statuses';
 import BomMain from './_components/panels/BomMain';
 import QcRecordsPanel from './_components/panels/qcRecords/QcRecordsPanel';
+import RequirementsPanel from './_components/panels/requirements/RequirementsPanel';
+import NotesPanel from './_components/panels/notes/NotesPanel';
 
 type PlanningBprPage = {
     searchParams: {
@@ -37,6 +39,9 @@ const PlanningBprPage = async ({ searchParams }: PlanningBprPage) => {
                 <BomMain />
 
                 <QcRecordsPanel />
+                <RequirementsPanel />
+
+                <NotesPanel />
 
             </Layout.Grid>
 

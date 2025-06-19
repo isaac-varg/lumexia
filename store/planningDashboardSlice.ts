@@ -1,13 +1,18 @@
+import { accountingActions } from '@/actions/accounting';
+import { LastItemPrice } from '@/actions/accounting/pricing/getLastItemPrice';
 import { inventoryActions } from '@/actions/inventory';
 import { BprBomItemInventory } from '@/actions/inventory/inventory/getAllByBom';
 import { productionActions } from '@/actions/production';
 import { BprBomItem } from '@/actions/production/bprs/boms/getByBpr';
 import { BatchProductionRecord } from '@/actions/production/bprs/getOne';
+import { BprNote } from '@/actions/production/bprs/notes/getAllByBpr';
 import { BprStatus } from '@/actions/production/bprs/statuses/getAll';
 import { purchasingActions } from '@/actions/purchasing';
 import { PurchasingRequestForPlanning } from '@/actions/purchasing/requests/getByItem';
 import { qualityActions } from '@/actions/quality';
+import { QcGroupFromItem } from '@/actions/quality/qc/groups/groupParameters/getAllByItem';
 import { QcExamination } from '@/actions/quality/qc/records/getAll';
+import { BprNoteType } from '@prisma/client';
 import { create } from 'zustand';
 
 type State = {
@@ -19,6 +24,11 @@ type State = {
     purchasingRequests: PurchasingRequestForPlanning[]
     isLoading: boolean
     qcExaminations: QcExamination[],
+    qcGroups: QcGroupFromItem[],
+    lastItemPrice: LastItemPrice | null,
+    bprNotes: BprNote[],
+    bprNoteTypes: BprNoteType[]
+
 }
 
 export type planningDashboardStates = keyof State
@@ -31,6 +41,10 @@ type Actions = {
         getBomItemInventory: () => void;
         getPurchasingRequestsForPlanning: () => void;
         getQcExaminations: () => void;
+        getQcGroups: () => void;
+        getLastItemPrice: () => void;
+        getBprNotes: () => void;
+        getBprNoteTypes: () => void;
         setSelectedBomItem: (item: BprBomItemInventory | null) => void;
     }
 }
@@ -45,6 +59,11 @@ export const usePlanningDashboardSelection = create<State & Actions>((set, get) 
     purchasingRequests: [],
     isLoading: false,
     qcExaminations: [],
+    qcGroups: [],
+    lastItemPrice: null,
+    bprNotes: [],
+    bprNoteTypes: [],
+
 
     actions: {
         getBpr: async (bprId) => {
@@ -122,6 +141,72 @@ export const usePlanningDashboardSelection = create<State & Actions>((set, get) 
                 set(() => ({ isLoading: false }))
             }
         },
+
+        getQcGroups: async () => {
+            const { bpr } = get();
+
+            if (!bpr) return;
+
+            try {
+                set(() => ({ isLoading: true }))
+
+                const groups = await qualityActions.qc.groups.groupParameters.getAllByItem(bpr.mbpr.producesItemId);
+                set(() => ({ qcGroups: groups }));
+            } catch (error) {
+                console.error(error)
+            } finally {
+                set(() => ({ isLoading: false }))
+            }
+        },
+
+        getLastItemPrice: async () => {
+            const { bpr } = get()
+
+            if (!bpr) return;
+
+            try {
+                set(() => ({ isLoading: true }))
+                const price = await accountingActions.pricing.item.getLastItemPrice(bpr.mbpr.producesItemId);
+                set(() => ({ lastItemPrice: price }))
+            } catch (error) {
+                console.error(error)
+            } finally {
+                set(() => ({ isLoading: false }))
+            }
+        },
+
+        getBprNotes: async () => {
+            const { bpr } = get();
+
+            if (!bpr) return;
+
+            try {
+                set(() => ({ isLoading: true }))
+                const notes = await productionActions.bprs.notes.getAllByBpr(bpr.id);
+                set(() => ({ bprNotes: notes }))
+
+            } catch (error) {
+                console.error(error)
+            } finally {
+                set(() => ({ isLoading: false }))
+            }
+        },
+
+        getBprNoteTypes: async () => {
+
+            try {
+                set(() => ({ isLoading: true }))
+                const types = await productionActions.bprs.notes.types.getAll()
+                set(() => ({ bprNoteTypes: types }))
+
+            } catch (error) {
+                console.error(error)
+            } finally {
+                set(() => ({ isLoading: false }))
+            }
+        },
+
+
 
         setSelectedBomItem: (item) => {
             set(() => ({ selectedBomItem: item }))

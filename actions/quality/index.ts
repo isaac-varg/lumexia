@@ -2,6 +2,7 @@ import { getAllExaminationTypes } from "./qc/examinationTypes/getAll";
 import { createQcParameterGroup } from "./qc/groups/create";
 import { getAllQcParameterGroups } from "./qc/groups/getAll";
 import { createQcGroupParameter } from "./qc/groups/groupParameters/create";
+import { getAllQcGroupsByItem } from "./qc/groups/groupParameters/getAllByItem";
 import { getGroupParametersByExamination } from "./qc/groups/groupParameters/getByExamination";
 import { deleteQcItemParameter } from "./qc/itemParameters/delete";
 import { updateQcItemParameter } from "./qc/itemParameters/update";
@@ -65,6 +66,7 @@ export const qualityActions = {
             create: createQcParameterGroup,
             getAll: getAllQcParameterGroups,
             groupParameters: {
+                getAllByItem: getAllQcGroupsByItem,
                 getAllByExamination: getGroupParametersByExamination,
                 create: createQcGroupParameter,
             }

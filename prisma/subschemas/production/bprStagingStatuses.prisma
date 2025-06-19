@@ -1,9 +1,10 @@
 model BprStagingStatus {
-  id          String   @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+    id          String   @id @default(uuid())
+    name        String
+    sequence    Int      @default(0)
+    description String
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  @@map("bpr_staging_statuses")
+    @@map("bpr_staging_statuses")
 }

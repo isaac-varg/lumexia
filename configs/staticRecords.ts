@@ -130,6 +130,11 @@ export const staticRecords = {
         },
         bprStepActionableTypes: {
             completeStep: '48505c39-a0bd-4d9d-9c2e-241bb3cba10c'
+        },
+        bprNotes: {
+            types: {
+                default: '87b50042-fbc0-415c-8afc-a61b80b37859'
+            }
         }
 
     },
