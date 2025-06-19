@@ -5,13 +5,13 @@ import { useEffect, useRef } from "react"
 const StateSetter = () => {
 
     const { getRecordNoteTypes, getExaminationStatuses, getExaminationTypes, getItemParameters, setExaminationRecordId } = useQcExaminationActions()
-    const { examinationStatuses,  lot, itemParameters, recordNoteTypes, examinationTypes } = useQcExaminationSelection()
+    const { examinationStatuses, lot, itemParameters, recordNoteTypes, examinationTypes, selectedExaminationType } = useQcExaminationSelection()
     const effectRan = useRef(false);
 
     useEffect(() => {
-        if (itemParameters.length === 0) {
-            getItemParameters()
-        }
+        // if (itemParameters.length === 0) {
+        //     getItemParameters()
+        // }
 
         if (examinationTypes.length === 0) {
             getExaminationTypes()
@@ -27,9 +27,11 @@ const StateSetter = () => {
 
         setExaminationRecordId()
 
-
-
     }, [lot])
+
+    useEffect(() => {
+        getItemParameters()
+    }, [lot, selectedExaminationType])
 
     return false;
 

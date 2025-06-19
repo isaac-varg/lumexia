@@ -10,7 +10,9 @@ import RecordStatusPanel from "./panels/RecordStatusPanel"
 
 const ExaminationStep = () => {
 
-    const { wizardStep } = useQcExaminationSelection()
+    const { wizardStep, itemParameters } = useQcExaminationSelection()
+
+    console.log(itemParameters)
 
     if (wizardStep !== 1) return false;
 

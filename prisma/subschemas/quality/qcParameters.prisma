@@ -12,6 +12,7 @@ model QcParameter {
     qcItemParameters     QcItemParameter[]
     qcParameterResults   QcParameterResult[]
     qcTemplateParameters QcTemplateParameter[]
+    qcGroupParameters    QcGroupParameter[]
 
     @@map("qc_parameters")
 }

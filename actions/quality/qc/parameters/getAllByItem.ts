@@ -9,11 +9,11 @@ export const getAllQcParametersByItem = async (itemId: string) => {
             itemId,
         },
         include: {
-            parameter: true,
+            parameter: true
         }
     });
 
     return parameters;
 }
 
-export type  QcItemParameter = Awaited<ReturnType<typeof getAllQcParametersByItem>>[number]
+export type QcItemParameter = Awaited<ReturnType<typeof getAllQcParametersByItem>>[number]

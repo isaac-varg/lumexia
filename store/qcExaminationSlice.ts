@@ -10,6 +10,7 @@ import { QcRecordNote } from '@/actions/quality/qc/recordNotes/getAllByRecord';
 import { getUserId } from '@/actions/users/getUserId';
 import { staticRecords } from '@/configs/staticRecords';
 import { QcRecordStatus } from '@/actions/quality/qc/records/statuses/getAll';
+import { ExaminationParameter } from '@/actions/quality/qc/groups/groupParameters/getByExamination';
 
 
 export type IntermediateParameterResult = {
@@ -24,7 +25,7 @@ type State = {
     selectedLotId: string | null
     allLots: Lot[]
     lot: SingleLot,
-    itemParameters: QcItemParameter[],
+    itemParameters: ExaminationParameter[],//QcItemParameter[],
     examinationTypes: ExaminationType[],
     selectedExaminationType: ExaminationType | null,
     selectedItemParameter: QcItemParameter | null,
@@ -146,25 +147,41 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
 
         },
 
-        getItemParameters: async () => {
-            const { lot } = get()
 
-            if (!lot || !lot.itemId) {
-                throw new Error('Could not find item parameters.');
-            }
+        getItemParameters: async () => {
+            const { selectedExaminationType, lot } = get()
+
+            if (!lot || !lot.itemId || !selectedExaminationType) return;
 
             try {
-                set(() => ({ isLoading: true, }));
-                const parameters = await qualityActions.qc.itemParameters.getByItem(lot.itemId);
+                set(() => ({ isLoading: true }));
+                const parameters = await qualityActions.qc.groups.groupParameters.getAllByExamination(selectedExaminationType.id, lot.itemId)
                 set(() => ({ itemParameters: parameters }))
             } catch (error) {
-                console.error(error)
-                throw new Error("Unable to retrieve item parameters");
-            } finally {
 
-                set(() => ({ isLoading: false, }));
             }
         },
+
+
+        // getItemParameters: async () => {
+        //     const { lot } = get()
+
+        //     if (!lot || !lot.itemId) {
+        //         throw new Error('Could not find item parameters.');
+        //     }
+
+        //     try {
+        //         set(() => ({ isLoading: true, }));
+        //         const parameters = await qualityActions.qc.itemParameters.getByItem(lot.itemId);
+        //         set(() => ({ itemParameters: parameters }))
+        //     } catch (error) {
+        //         console.error(error)
+        //         throw new Error("Unable to retrieve item parameters");
+        //     } finally {
+
+        //         set(() => ({ isLoading: false, }));
+        //     }
+        // },
 
         getExaminationTypes: async () => {
             try {

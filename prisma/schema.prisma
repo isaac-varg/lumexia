@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jun 18 2025 14:55:00 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jun 19 2025 09:08:23 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1593,7 +1593,7 @@ model QcParameter {
   qcItemParameters     QcItemParameter[]
   qcParameterResults   QcParameterResult[]
   qcTemplateParameters QcTemplateParameter[]
-  QcGroupParameter     QcGroupParameter[]
+  qcGroupParameters    QcGroupParameter[]
 
   @@map("qc_parameters")
 }
