@@ -17,7 +17,11 @@ export const getGroupParametersByExamination = async (examinationTypeId: string,
             }
         },
         include: {
-            parameter: true
+            parameter: {
+                include: {
+                    qcItemParameters: true
+                }
+            } 
         }
     });
 

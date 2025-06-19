@@ -65,9 +65,11 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
 
     const isAvailableSufficient = material.totalQuantityAvailable >= material.quantity;
     const bgClasses: keyof typeof classes.bg = isAvailableSufficient || isConsumable ? 'sufficient' : 'insufficient'
-    const stagings = material.BprStaging[0];
-    const primaryVerification = getByDateDirection(stagings.BprStagingVerification, 'oldest');
-    const secondaryVerification = getByDateDirection(stagings.BprStagingVerification, 'newest');
+    const hasStagings = material.BprStaging.length !== 0
+    const stagings = hasStagings ? material.BprStaging[0] : null
+    const primaryVerification = (stagings) ? getByDateDirection(stagings.BprStagingVerification, 'oldest') : null;
+
+    const secondaryVerification =  stagings ? getByDateDirection(stagings.BprStagingVerification, 'newest') : null;
 
     const handleClick = () => {
         setSelectedBomItem(material)
@@ -81,7 +83,7 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
             <td>{toFracitonalDigits.weight(material.quantity)}</td>
             <td>{isConsumable ? 'Consumable' : available}</td>
             {isDraft && <td>{isConsumable ? <progress className='progress ' value={100} max={100} /> : <progress className='progress' value={material.totalQuantityAvailable} max={material.quantity}></progress>}</td>}
-            {!isDraft && (stagings.pulledByUser ? <td><UserIcon image={stagings.pulledByUser.image || ''} name={stagings.pulledByUser.name || ''} /></td> : <td><RedX /></td>)}
+            {!isDraft && (stagings?.pulledByUser ? <td><UserIcon image={stagings.pulledByUser.image || ''} name={stagings.pulledByUser.name || ''} /></td> : <td><RedX /></td>)}
             {!isDraft && (primaryVerification ? <td><UserIcon image={primaryVerification.user.image || ''} name={primaryVerification.user.name || ''} /></td> : <td><RedX /></td>)}
             {!isDraft && (secondaryVerification ? <td><UserIcon image={secondaryVerification.user.image || ''} name={secondaryVerification.user.name || ''} /></td> : <td><RedX /></td>)}
         </tr>

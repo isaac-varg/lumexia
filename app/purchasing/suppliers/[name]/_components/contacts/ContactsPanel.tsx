@@ -1,9 +1,9 @@
 import Card from "@/components/Card";
-import { SupplierContact } from "@prisma/client";
 import React from "react";
 import ContactsAddNewForm from "./ContactsAddNewForm";
 import ContactsTitle from "./ContactsTitle";
 import ContactCard from "./ContactCard";
+import { SupplierContact } from "@/types/supplierContact";
 
 const ContactsPanel = ({
     contacts,

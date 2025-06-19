@@ -8,7 +8,6 @@ import { updateCompletedBprCascade } from '../_functions/updateCompletedBprCasca
 import { useRouter } from 'next/navigation'
 import { revalidatePage } from '@/actions/app/revalidatePage'
 import useDialog from '@/hooks/useDialog'
-import ChangeStatusDialog from './ChangeStatusDialog'
 
 const ActionsPanel = ({
     bpr,

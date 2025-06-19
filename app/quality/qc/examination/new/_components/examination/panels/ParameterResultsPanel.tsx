@@ -73,7 +73,7 @@ const ParameterResultsPanel = () => {
             <Text.SectionTitle size="small">Specification</Text.SectionTitle>
 
             <JsonEditor
-                data={selectedItemParameter.specification}
+                data={selectedItemParameter.parameter.qcItemParameters[0].specification}
             />
 
 

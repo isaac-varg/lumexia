@@ -28,7 +28,7 @@ type State = {
     itemParameters: ExaminationParameter[],//QcItemParameter[],
     examinationTypes: ExaminationType[],
     selectedExaminationType: ExaminationType | null,
-    selectedItemParameter: QcItemParameter | null,
+    selectedItemParameter: ExaminationParameter | null,
     examinationRecordId: string | null,
     parameterResults: Record<string, IntermediateParameterResult>;
     recordNoteTypes: QcRecordNoteType[];
@@ -47,7 +47,7 @@ type Actions = {
         setLot: (lot: SingleLot) => void;
         setIsLoading: (loading: boolean) => void;
         setSelectedExaminationType: (type: ExaminationType) => void;
-        setSelectedItemParameter: (itemParameter: QcItemParameter) => void;
+        setSelectedItemParameter: (itemParameter: ExaminationParameter) => void;
         setExaminationRecordId: () => void;
         getLots: () => void;
         getItemParameters: () => void;

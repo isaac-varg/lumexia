@@ -3,6 +3,7 @@ import { Panels } from "@/components/Panels"
 import Text from "@/components/Text"
 import MissingParameters from "./MissingParameters"
 import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem"
+import { ExaminationParameter } from "@/actions/quality/qc/groups/groupParameters/getByExamination"
 
 const ParametersPanel = () => {
 
@@ -25,7 +26,7 @@ const ParametersPanel = () => {
     )
 }
 
-const ItemParameterButton = ({ parameter }: { parameter: QcItemParameter }) => {
+const ItemParameterButton = ({ parameter }: { parameter: ExaminationParameter }) => {
 
     const { selectedItemParameter } = useQcExaminationSelection()
     const { setSelectedItemParameter, hasParameterResult } = useQcExaminationActions()
