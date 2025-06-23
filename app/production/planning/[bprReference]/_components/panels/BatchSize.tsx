@@ -8,6 +8,16 @@ const BatchSize = () => {
 
     const { bpr } = usePlanningDashboardSelection()
 
+    if (!bpr || bpr.batchSize.batchSizeCompoundingVessels.length === 0 || !bpr.batchSize.batchSizeCompoundingVessels[0].compoundingVessel) {
+        return (
+            <Panels.Root>
+                <Text.SectionTitle size="small">Batch Size</Text.SectionTitle>
+
+                <p className="font-poppins text-rose-400 font-semibold text-xl">ERROR: The corresponding Master Batch Production Record is missing an active batch size or properly configured compounding vessel.</p>
+
+            </Panels.Root>
+        )
+    }
     return (
         <Panels.Root>
             <Text.SectionTitle size="small">Batch Size</Text.SectionTitle>
