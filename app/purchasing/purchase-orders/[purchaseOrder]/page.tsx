@@ -14,6 +14,8 @@ import { getOrderNotes } from "./_functions/getOrderNotes";
 import { getActivity } from "./_functions/getActivity";
 import ViewMode from "./_components/viewMode/ViewMode";
 import { appActions } from "@/actions/app";
+import { getUserId } from "@/actions/users/getUserId";
+import { getUser } from "@/actions/users/getUser";
 
 type PurchaseOrderDetailsProps = {
     searchParams: {
@@ -31,6 +33,8 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
     const notes = await getOrderNotes(purchaseOrder.id)
     const activity = await getActivity(purchaseOrder.id)
     const company = await appActions.configs.getByGroup('company');
+    const user = await getUser();
+
 
     const flattenedOrderItems = flattenOrderItems(orderItems)
 
@@ -48,10 +52,11 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
                 purchaseOrder={purchaseOrder}
                 orderItems={flattenedOrderItems}
                 items={flattenItems(items)}
+                user={user}
 
             />
 
-           
+
 
 
             <div className="grid grid-cols-2 gap-4">

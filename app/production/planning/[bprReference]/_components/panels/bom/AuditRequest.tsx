@@ -4,6 +4,8 @@ import useDialog from '@/hooks/useDialog'
 import { inventoryActions } from '@/actions/inventory'
 import AuditRequestForm from './AuditRequestForm'
 import { AuditRequestNoteType } from '@/actions/inventory/auditRequests/noteTypes/getAll'
+import { usePlanningDashboardSelection } from '@/store/planningDashboardSlice'
+import Text from '@/components/Text'
 
 type AuditRequestProps = {
     setMode?: Dispatch<SetStateAction<"default" | "request" | "audit">>
@@ -27,6 +29,7 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
     const [reval, setReval] = useState<string>('')
     const { toast } = useToast()
     const { resetDialogContext } = useDialog()
+    const { selectedBomItem } = usePlanningDashboardSelection()
 
     const handleCompleteAuditRequest = async () => {
         await inventoryActions.auditReqests.create(notes, itemId);
@@ -53,13 +56,16 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
     return (
         <div className='flex flex-col gap-y-6'>
 
+            <Text.SectionTitle >{selectedBomItem?.bom.item.name} Audit Request</Text.SectionTitle>
+
             {reqMode === 'add' && (<AuditRequestForm setReqMode={setReqMode} setNotes={setNotes} setReval={setReval} types={auditRequestNoteTypes} />)}
 
             {reqMode === 'view' && (<div className='flex flex-col gap-y-6'>
                 <div className='flex'>
                     <button className='btn' onClick={() => setReqMode('add')} >Add Note</button>
                 </div>
-                <h1 className='font-poppins text-xl text-neutral-700'>Notes</h1>
+
+                <Text.SectionTitle size='small'>Notes</Text.SectionTitle>
 
                 <ul className='flex flex-col gap-y-4 '>
                     {notes.map((n) => {

@@ -7,6 +7,7 @@ import { PoFlattenedOrderItems } from "../../_functions/flattenOrderItems"
 import { PoFlatItems } from "../../_functions/flattenItems"
 import ItemTable from "../ItemTable"
 import PlanningView from "../PlanningView"
+import { User } from "@/actions/users/getUser"
 
 export type PoViewModes = 'planning' | 'table'
 
@@ -14,9 +15,10 @@ type ViewModeProps = {
     purchaseOrder: PurchaseOrderDetails;
     orderItems: PoFlattenedOrderItems;
     items: PoFlatItems;
+    user: User;
 }
 
-const ViewMode = ({ purchaseOrder, orderItems, items }: ViewModeProps) => {
+const ViewMode = ({ purchaseOrder, orderItems, items, user }: ViewModeProps) => {
     const { poViewMode } = usePanelSelection()
     const { setPanelState } = usePanelActions()
 
@@ -33,6 +35,7 @@ const ViewMode = ({ purchaseOrder, orderItems, items }: ViewModeProps) => {
             />
 
             {poViewMode === 'table' && <ItemTable
+                user={user}
                 purchaseOrder={purchaseOrder}
                 orderItems={orderItems}
                 items={items}

@@ -17,19 +17,23 @@ import { revalidatePage } from "@/actions/app/revalidatePage";
 import Card from "@/components/Card";
 import { PoFlattenedOrderItems } from "../_functions/flattenOrderItems";
 import { PoFlatItems } from "../_functions/flattenItems";
+import { User } from "@/actions/users/getUser";
 
 
 type ItemTableProps = {
     orderItems: PoFlattenedOrderItems;
     items: PoFlatItems;
     purchaseOrder: PurchaseOrderDetails;
+    user: User
 };
 
-const ItemTable = ({ orderItems, items, purchaseOrder }: ItemTableProps) => {
+const ItemTable = ({ orderItems, items, purchaseOrder, user }: ItemTableProps) => {
     const { showDialog } = useDialog();
     const [columns, setColumns] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true)
-    const isLocked = purchaseOrder.statusId === staticRecords.purchasing.poStatuses.received || purchaseOrder.statusId === staticRecords.purchasing.poStatuses.confirmedSlashAwaitingDelivery
+    const isLocked = !user || user.UserRoleAssignment.length === 0 || user.UserRoleAssignment.every(r => r.userRoleId !== staticRecords.app.userRoles.purchasing)
+
+    //const isLocked = purchaseOrder.statusId === staticRecords.purchasing.poStatuses.received || purchaseOrder.statusId === staticRecords.purchasing.poStatuses.confirmedSlashAwaitingDelivery
 
     const router = useRouter();
 
