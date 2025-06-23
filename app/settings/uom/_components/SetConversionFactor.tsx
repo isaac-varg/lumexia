@@ -22,7 +22,8 @@ const SetConversionFactor = ({ uoms, selectedItem }: { uoms: Uom[], selectedItem
     const dialog = useDialog()
 
     // lol
-    const uomWithoutUnits = uoms.filter(u => u.id !== staticRecords.inventory.uom.units)
+    const uomWithoutUnits = uoms;
+    //const uomWithoutUnits = uoms.filter(u => u.id !== staticRecords.inventory.uom.units)
 
     const selectOptions = uomWithoutUnits.map((u) => ({
         label: u.name,
