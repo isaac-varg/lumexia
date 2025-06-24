@@ -5,6 +5,7 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { DateTime } from 'luxon';
 import { ProducedPricingExaminationForDashboard } from '../_functions/getProducedPricingExamination';
+import { toMathFractionalDigits } from '@/utils/data/toMathFractionalDigits';
 
 
 const OverallMbprPricingChart = ({ examinations }: { examinations: ProducedPricingExaminationForDashboard[] }) => {
@@ -24,7 +25,7 @@ const OverallMbprPricingChart = ({ examinations }: { examinations: ProducedPrici
     const series = [
         {
             name: 'Prices',
-            data: dataArchives.map((exam) => ({ x: DateTime.fromJSDate(exam.createdAt), y: exam.totalCostPerLb || 0 }))
+            data: dataArchives.map((exam) => ({ x: DateTime.fromJSDate(exam.createdAt), y: toMathFractionalDigits( exam.totalCostPerLb || 0, 3) }))
         },
     ]
 

@@ -6,6 +6,7 @@ import React from 'react'
 import Chart from "react-apexcharts";
 import { ProducedPricingExaminationForDashboard } from '../_functions/getProducedPricingExamination'
 import { PricingExamination } from '@/actions/accounting/examinations/getAllByItem'
+import { toMathFractionalDigits } from '@/utils/data/toMathFractionalDigits'
 
 
 const FinishedProductsChart = ({ examinations }: { examinations: PricingExamination[] }) => {
@@ -43,7 +44,7 @@ const FinishedProductsChart = ({ examinations }: { examinations: PricingExaminat
         data: finishedProducts
             .map(entry => ({
                 x: DateTime.fromJSDate(entry.createdAt),
-                y: entry.finishedProductTotalCost || 0
+                y: toMathFractionalDigits( entry.finishedProductTotalCost || 0, 3)
             }))
     }));
 

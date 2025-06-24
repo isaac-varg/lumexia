@@ -7,6 +7,7 @@ import { ApexOptions } from "apexcharts";
 import { ProducedPricingExaminationForDashboard } from '../_functions/getProducedPricingExamination';
 import { DateTime } from 'luxon';
 import { groupByProperty } from '@/utils/data/groupByProperty';
+import { toMathFractionalDigits } from '@/utils/data/toMathFractionalDigits';
 
 type Archive = {
     bomId: string;
@@ -48,7 +49,7 @@ const BomPricingChart = ({ examinations }: { examinations: ProducedPricingExamin
         data: entries
             .map(entry => ({
                 x: DateTime.fromJSDate(entry.createdAt),
-                y: entry.overallItemCostPerLb || 0
+                y: toMathFractionalDigits(entry.overallItemCostPerLb || 0, 3)
             }))
     }));
 
