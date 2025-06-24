@@ -1,6 +1,7 @@
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import aliasActions from "@/actions/inventory/aliases";
 import supplierAliasActions from "@/actions/purchasing/supplierAliasActions";
+import { Supplier } from "@/actions/purchasing/suppliers/getAll";
 import Dialog from "@/components/Dialog";
 import Form from "@/components/Form";
 import { staticRecords } from "@/configs/staticRecords";
@@ -9,7 +10,6 @@ import { useItemDashboardActions, useItemDashboardSelection } from "@/store/item
 import { AliasType } from "@/types/aliasType";
 import { Item } from "@/types/item";
 import { SelectOption } from "@/types/selectOption";
-import { Supplier } from "@/types/supplier";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { restructureData } from "@/utils/data/restructureData";
 import { useEffect } from "react";

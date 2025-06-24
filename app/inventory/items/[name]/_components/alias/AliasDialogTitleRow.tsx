@@ -8,8 +8,8 @@ import { TbPlus } from "react-icons/tb";
 import useDialog from "@/hooks/useDialog";
 import { Item } from "@/types/item";
 import { AliasType } from "@/types/aliasType";
-import { Supplier } from "@/types/supplier";
 import { useItemDashboardActions } from "@/store/itemDashboardSlice";
+import { Supplier } from "@/actions/purchasing/suppliers/getAll";
 
 const AliasDialogTitleRow = ({
     item,

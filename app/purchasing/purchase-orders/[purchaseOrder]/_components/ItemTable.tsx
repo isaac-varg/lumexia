@@ -18,6 +18,7 @@ import Card from "@/components/Card";
 import { PoFlattenedOrderItems } from "../_functions/flattenOrderItems";
 import { PoFlatItems } from "../_functions/flattenItems";
 import { User } from "@/actions/users/getUser";
+import { getSlug } from "@/utils/general/getSlug";
 
 
 type ItemTableProps = {
@@ -109,9 +110,10 @@ const ItemTable = ({ orderItems, items, purchaseOrder, user }: ItemTableProps) =
     };
 
     const handleRowClick = (row: any) => {
-        router.push(
-            `/inventory/items/${row.original.item.name}?id=${row.original.item.id}`,
-        )
+
+        const formattedName = getSlug(row.original.item.name)
+        const path = `/inventory/items/${`${formattedName}?id=${row.original.item.id}`} `
+        router.push(path)
     }
 
     useEffect(() => {

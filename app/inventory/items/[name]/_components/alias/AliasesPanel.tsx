@@ -9,12 +9,14 @@ import supplierActions from "@/actions/purchasing/supplierActions";
 import { staticRecords } from "@/configs/staticRecords";
 import { IAliasWithSupplier } from "../../_functions/getAliases";
 import Aliases from "./Aliases";
+import prisma from "@/lib/prisma";
+import { purchasingActions } from "@/actions/purchasing";
 
 const AliasesPanel = async ({ aliases, item }: { aliases: IAliasWithSupplier[]; item: Item }) => {
 
     const aliasTypes = await aliasTypeActions.getAll();
 
-    const suppliers = await supplierActions.getAll();
+    const suppliers = await purchasingActions.suppliers.getAll()
 
     return (
         <>

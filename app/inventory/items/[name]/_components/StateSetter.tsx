@@ -6,16 +6,14 @@ import { useEffect } from "react"
 const StateSetter = ({ itemId }: { itemId: string }) => {
 
     const { getItem, getAliases } = useItemDashboardActions()
-    const { aliases, item } = useItemDashboardSelection()
+    const { item } = useItemDashboardSelection()
 
     useEffect(() => {
         getItem(itemId);
     }, [itemId])
 
     useEffect(() => {
-        if (aliases.length === 0) {
-            getAliases();
-        }
+        getAliases();
     }, [item])
 
     return false
