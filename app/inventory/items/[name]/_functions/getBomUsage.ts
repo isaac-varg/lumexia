@@ -55,10 +55,10 @@ export const getBomUsage = async (itemId: string) => {
 
             console.error(`${bom.mbpr.versionLabel} MBPR either has 0 or too many active batch sizes.`)
             return {
-                producedItem: '',
+                producedItem: `ERROR: ${bom.mbpr.producesItem.name}`,
                 concentration: '',
                 quantity: 0,
-                mbprLabel: '',
+                mbprLabel: 'MBPR either has 0 or too many active batch sizes',
             }
 
         }

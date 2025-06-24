@@ -14,7 +14,6 @@ type ProductionTabProps = {
 }
 const ProductionTab = ({ item, usage }: ProductionTabProps) => {
 
-
     const chartOptions: ApexOptions = {
         chart: {
             type: 'donut',
