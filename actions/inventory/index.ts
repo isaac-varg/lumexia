@@ -1,5 +1,6 @@
 import { getAliasByItem } from "./aliases/getByItem";
 import { createAuditRequest } from "./auditRequests/create";
+import { getAllCompletedAuditRequests } from "./auditRequests/getAllCompleted";
 import { createAuditRequestNoteType } from "./auditRequests/noteTypes/create";
 import { getAuditRequestNoteTypes } from "./auditRequests/noteTypes/getAll";
 import { createAuditRequestNote } from "./auditRequests/notes/create";
@@ -31,6 +32,7 @@ export const inventoryActions = {
         notes: {
             create: createAuditRequestNote,
         },
+        getAllCompleted: getAllCompletedAuditRequests,
         create: createAuditRequest,
         getAll: getAuditRequests,
         getOne: getOneAuditRequest,

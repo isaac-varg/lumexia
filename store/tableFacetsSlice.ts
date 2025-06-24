@@ -27,6 +27,7 @@ type State = {
     qcExaminations: FilterArray
     qcGroups: FilterArray
     qcTemplates: FilterArray
+    audits: FilterArray
 
 };
 
@@ -64,6 +65,7 @@ export const useTableFacets = create<State & Actions>((set) => ({
     qcExaminations: [],
     qcGroups: [],
     qcTemplates: [],
+    audits: [],
 
 
     setFilter: (tableState, value) =>

@@ -3,24 +3,33 @@ import ScanPanel from "./_components/ScanPanel";
 import PageTitle from "@/components/Text/PageTitle";
 import RequestsPanel from "./_components/RequestsPanel";
 import { inventoryActions } from "@/actions/inventory";
+import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
+import Layout from "@/components/Layout";
+import RecentAuditsPanel from "./_components/RecentAuditsPanel";
 
-const ScanPage  = async () => {
+const ScanPage = async () => {
 
 
-const requests = await inventoryActions.auditReqests.getAll();
+    const requests = await inventoryActions.auditReqests.getAll();
+    const completedRequests = await inventoryActions.auditReqests.getAllCompleted();
 
-	return (
-		<div>
-			<PageTitle>Inventory Audit</PageTitle>
+    return (
+        <div className='flex flex-col gap-y-6'>
+            <PageTitle>Inventory Audit</PageTitle>
 
-            <div className="flex flex-col gap-y-6">
-			<ScanPanel />
+            <ScanPanel />
 
-            <RequestsPanel requests={requests} />
+            <Layout.Grid cols={2} >
 
-            </div>
-		</div>
-	);
+                <RequestsPanel requests={requests} />
+
+                <RecentAuditsPanel audits={completedRequests} />
+
+
+            </Layout.Grid>
+
+        </div>
+    );
 };
 
 export default ScanPage;

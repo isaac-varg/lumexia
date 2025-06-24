@@ -31,6 +31,7 @@ type State = {
     qcExaminations: StateData,
     qcGroups: StateData,
     qcTemplates: StateData,
+    audits: StateData,
 }
 
 
@@ -63,6 +64,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
     qcExaminations: { pageSize: 20, pageIndex: 0 },
     qcTemplates: { pageSize: 20, pageIndex: 0 },
     qcGroups: { pageSize: 20, pageIndex: 0 },
+    audits: { pageSize: 20, pageIndex: 0 },
 
 
     setPagination: (filterName, value) =>
