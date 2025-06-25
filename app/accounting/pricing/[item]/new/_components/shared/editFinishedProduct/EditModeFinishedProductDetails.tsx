@@ -1,6 +1,7 @@
 'use client'
 import Form from "@/components/Form";
-import { Dispatch, SetStateAction, useState } from "react"
+import { usePricingProducedSelection } from "@/store/pricingProducedSlice";
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 
 
@@ -19,9 +20,10 @@ type Props = {
     setFinishedProductDetails: Dispatch<SetStateAction<FinishedProductDetails | null>>
 }
 
-const StepFinishedProductDetails = ({ currentStep, nextStep, setFinishedProductDetails }: Props) => {
+const EditModeFinishedProductDetails = ({ currentStep, nextStep, setFinishedProductDetails }: Props) => {
 
     const form = useForm<FinishedProductDetails>()
+    const { selectedFinishedProduct } = usePricingProducedSelection();
 
 
     const handleSubmit = (data: FinishedProductDetails) => {
@@ -30,8 +32,22 @@ const StepFinishedProductDetails = ({ currentStep, nextStep, setFinishedProductD
     }
 
 
-    if (currentStep !== 0) { return false }
+    useEffect(() => {
 
+        if (selectedFinishedProduct) {
+            const { name, fillQuantity, declaredQuantity, difficultyAdjustmentCost, freeShippingCost } = selectedFinishedProduct;
+            form.reset({
+                name,
+                fillQuantity,
+                declaredQuantity,
+                difficultyAdjustmentCost,
+                freeShippingCost
+            });
+        }
+
+    }, [selectedFinishedProduct])
+
+    if (currentStep !== 0) { return false }
 
     return (
         <div>
@@ -60,4 +76,4 @@ const StepFinishedProductDetails = ({ currentStep, nextStep, setFinishedProductD
     )
 }
 
-export default StepFinishedProductDetails
+export default EditModeFinishedProductDetails

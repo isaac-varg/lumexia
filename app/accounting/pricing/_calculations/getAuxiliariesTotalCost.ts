@@ -19,6 +19,7 @@ export const getAuxiliariesTotalCost = async (auxiliaries: FinishedProductAuxili
             const lineTotal = (itemCost + auxiliaryUsageCost + difficultyAdjustmentCost) * quantity;
 
             return {
+                auxiliaryId: current.id,
                 auxiliaryItemId: current.auxiliaryItemId,
                 name: current.auxiliaryItem.name,
                 itemCost,

@@ -1,6 +1,7 @@
 import { accountingActions } from '@/actions/accounting';
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
+import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem';
 import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { BatchSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
@@ -27,6 +28,7 @@ type State = {
     finishedProducts: FinishedProductFromProduced[]
     interimFinishedProducts: InterimFinishedProduct[]
     selectedBomRow: BatchSummations['bomWithCost'][number] | null
+    selectedFinishedProduct: FinishedProductFromPurchased | null
 }
 //export type PricingProducedStates = keyof State
 export type PricingProducedState = State; // alias for this state
@@ -41,6 +43,7 @@ type Actions = {
         getFinishedProducts: () => void;
         updateInterimFinishedProduct: (interimFinishedProductPayload: InterimFinishedProduct) => void;
         getInterimFinishedProduct: (finishedProductId: string) => InterimFinishedProduct | null;
+        setSelectedFinishedProduct: (finishedProudct: FinishedProduct | null) => void;
 
 
 
@@ -58,6 +61,7 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
     finishedProducts: [],
     interimFinishedProducts: [],
     selectedBomRow: null,
+    selectedFinishedProduct: null,
 
 
 
@@ -78,6 +82,9 @@ export const usePricingProducedSelection = create<State & Actions>((set, get) =>
             } else {
                 set(() => ({ selectedBomRow: null }))
             }
+        },
+        setSelectedFinishedProduct: (finishedProduct) => {
+            set(() => ({ selectedFinishedProduct: finishedProduct }))
         },
         toggleContainerParameters: () => {
             set((state) => ({ isContainerParametersPanelShown: !state.isContainerParametersPanelShown }))

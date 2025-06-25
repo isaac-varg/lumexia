@@ -1,6 +1,7 @@
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem'
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem'
 import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem'
+import { usePricingProducedActions } from '@/store/pricingProducedSlice'
 import React, { Dispatch, SetStateAction } from 'react'
 
 type Props = {
@@ -13,9 +14,12 @@ type Props = {
 const FinishedProductCard = ({ onSelect, finishedProduct, selectedFinishedProductId }: Props) => {
 
     const isSelected = finishedProduct.id === selectedFinishedProductId;
+    const { setSelectedFinishedProduct } = usePricingProducedActions()
 
     const handleClick = () => {
+
         onSelect(finishedProduct)
+        setSelectedFinishedProduct(finishedProduct)
     }
 
     return (

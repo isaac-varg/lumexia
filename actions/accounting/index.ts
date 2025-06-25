@@ -19,6 +19,7 @@ import { createExaminationNoteType } from "./examinations/notes/createExaminatio
 import { getAllByExamId } from "./examinations/notes/getAllByExamId";
 import { getAllNoteTypes } from "./examinations/notes/getAllNoteTypes";
 import { upsertPricingExamination } from "./examinations/upsert";
+import { deleteAuxiliary } from "./finishedProducts/auxiliaries/delete";
 import { getAllAuxiliaries } from "./finishedProducts/auxiliaries/getAll";
 import { createFinishedProduct } from "./finishedProducts/create";
 import { deleteFinishedProduct } from "./finishedProducts/delete";
@@ -43,6 +44,7 @@ export const accountingActions = {
     },
     finishedProducts: {
         auxiliaries: {
+            delete: deleteAuxiliary,
             getAll: getAllAuxiliaries,
         },
         getByItem: getFinishedProductsByItem,

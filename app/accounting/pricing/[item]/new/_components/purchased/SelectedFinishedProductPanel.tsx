@@ -1,7 +1,6 @@
 'use client'
 
 import { usePricingPurchasedActions, usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
-import EditFinishedProductDialog from "../shared/EditFinishedProductDialog"
 import DeleteFinishedProductAlert from "../shared/DeleteFinishedProductAlert"
 import { TbEdit, TbTrash } from "react-icons/tb"
 import useDialog from "@/hooks/useDialog"
@@ -17,6 +16,7 @@ import { getProfit } from "@/app/accounting/pricing/_calculations/getProfit"
 import { getProfitPercentage } from "@/app/accounting/pricing/_calculations/getProfitPercentage"
 import { getConsumerPrice } from "@/app/accounting/pricing/_calculations/getConsumerPrice"
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+import EditFinishedProductDialog from "../shared/editFinishedProduct/EditFinishedProductDialog"
 
 
 
@@ -156,14 +156,20 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <EditFinishedProductDialog selectedFinishedProduct={selectedFinishedProduct} />
+            <EditFinishedProductDialog fillItemId={selectedFinishedProduct.filledWithItemId} produced={false} />
             <DeleteFinishedProductAlert selectedFinishedProductId={selectedFinishedProduct.id} />
 
             <div className='flex justify-between items-center'>
                 <h1 className='font-poppins text-3xl font-semibold'>{selectedFinishedProduct.name}</h1>
-                <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}>
-                    <span className='text-xl'><TbTrash /></span>
-                </button>
+                <div className="flex gap-x-2">
+                    <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}>
+                        <span className='text-xl'><TbTrash /></span>
+                    </button>
+                    <button className='btn btn-outline btn-sm' onClick={() => showDialog('editFinishedProduct')}>
+                        <span className='text-xl'><TbEdit /></span>
+                    </button>
+
+                </div>
             </div>
 
             <div className='grid grid-cols-3 gap-4'>
