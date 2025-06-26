@@ -3,13 +3,15 @@ import { usePlanningDashboardSelection } from '@/store/planningDashboardSlice'
 import MaterialSufficiencyLine from './MaterialSufficiencyLine'
 import MaterialAllocationDialog from './MaterialAllocationDialog'
 import { staticRecords } from '@/configs/staticRecords'
+import { useAppQuerySelection } from '@/store/appQuerySlice'
+import { useAppSelection } from '@/store/appSlice'
 
 const MaterialSufficiencyTable = () => {
 
     const { bomItemInventory, bpr } = usePlanningDashboardSelection()
+    const { user } = useAppSelection();
     const status = bpr?.status.id
     const isDraft = status === staticRecords.production.bprStatuses.draft
-
 
     return (
         <div>
@@ -21,14 +23,14 @@ const MaterialSufficiencyTable = () => {
                         <tr>
                             <th>#</th>
                             <th>Material Name</th>
-                            <th>Required</th>
-                            <th>Available </th>
+                            {isDraft ? <th>Required</th> : <th>Needed for Another Batch</th>}
+                            {isDraft ? <th>Available </th> : (user?.roles.isPurchasing ? <th>Available for Another Batch</th> : null)}
                             {isDraft && <th></th>}
                             {!isDraft && <th>Staged</th>}
                             {!isDraft && <th>1° Verification</th>}
                             {!isDraft && <th>2° Verification</th>}
 
-                       </tr>
+                        </tr>
                     </thead>
 
                     <tbody>

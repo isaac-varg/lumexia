@@ -6,6 +6,7 @@ import SearchbarContent from "./SearchbarContent";
 import UserIcon from './UserIcon'
 import { TbSettings } from 'react-icons/tb'
 import AppQuery from "./AppQuery";
+import AppStateSetter from "./AppStateSetter";
 
 const Searchbar = async () => {
 
@@ -24,6 +25,7 @@ const Searchbar = async () => {
         <>
             <ConfigurationStateSetter panelSelections={panelSelections} />
             <AppQuery />
+            <AppStateSetter />
             <div className="flex items-center justify-between bg-neutral-100 p-4 rounded-lg"  >
 
                 <SearchbarContent />

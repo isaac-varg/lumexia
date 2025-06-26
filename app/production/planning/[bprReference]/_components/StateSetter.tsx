@@ -10,6 +10,7 @@ const StateSetter = ({ bprId }: { bprId: string }) => {
 
     useEffect(() => {
         getBpr(bprId)
+
     }, [bprId])
 
     useEffect(() => {

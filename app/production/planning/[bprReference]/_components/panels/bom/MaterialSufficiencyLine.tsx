@@ -8,6 +8,7 @@ import MaterialAllocationDialog from './MaterialAllocationDialog'
 import { usePlanningDashboardActions } from '@/store/planningDashboardSlice'
 import { DateTime } from 'luxon'
 import { TbX } from 'react-icons/tb'
+import { useAppSelection } from '@/store/appSlice'
 
 const classes = {
     bg: {
@@ -16,22 +17,7 @@ const classes = {
     }
 }
 
-const getByDateDirection = (arr: any[], direction: 'oldest' | 'newest' = 'oldest') => {
-    if (!arr || arr.length === 0) {
-        return null;
-    }
 
-    return arr.reduce((accumulator, current) => {
-        const accumulatorDate = DateTime.fromISO(accumulator.createdAt);
-        const currentDate = DateTime.fromISO(current.createdAt);
-
-        if (direction === 'newest') {
-            return accumulatorDate > currentDate ? accumulator : current;
-        } else {
-            return accumulatorDate < currentDate ? accumulator : current;
-        }
-    });
-}
 
 const UserIcon = ({ image, name }: { image: string, name: string }) => {
     return (
@@ -59,6 +45,7 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
 
     const { showDialog } = useDialog()
     const { setSelectedBomItem } = usePlanningDashboardActions()
+    const { user } = useAppSelection()
 
     const isConsumable = material.bom.item.inventoryTypeId === staticRecords.inventory.inventoryTypes.consumable;
     const available = isConsumable ? 'Consumable' : toFracitonalDigits.weight(material.totalQuantityAvailable);
@@ -67,9 +54,8 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
     const bgClasses: keyof typeof classes.bg = isAvailableSufficient || isConsumable ? 'sufficient' : 'insufficient'
     const hasStagings = material.BprStaging.length !== 0
     const stagings = hasStagings ? material.BprStaging[0] : null
-    const primaryVerification = (stagings) ? getByDateDirection(stagings.BprStagingVerification, 'oldest') : null;
-
-    const secondaryVerification =  stagings ? getByDateDirection(stagings.BprStagingVerification, 'newest') : null;
+    const primaryVerification = stagings ? stagings.BprStagingVerification[0] : null;
+    const secondaryVerification = stagings ? stagings.BprStagingVerification[1] : null;
 
     const handleClick = () => {
         setSelectedBomItem(material)
@@ -80,8 +66,10 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
         <tr className={`${classes.bg[bgClasses]} hover:bg-neutral-200 hover:cursor-pointer`} onClick={() => handleClick()}>
             <th>{material.bom.identifier}</th>
             <td>{material.bom.item.name}</td>
+
             <td>{toFracitonalDigits.weight(material.quantity)}</td>
-            <td>{isConsumable ? 'Consumable' : available}</td>
+
+            {isDraft ? <td>{isConsumable ? 'Consumable' : available}</td> : (user?.roles.isPurchasing ? <td>{isConsumable ? 'Consumable' : available}</td> : null)}
             {isDraft && <td>{isConsumable ? <progress className='progress ' value={100} max={100} /> : <progress className='progress' value={material.totalQuantityAvailable} max={material.quantity}></progress>}</td>}
             {!isDraft && (stagings?.pulledByUser ? <td><UserIcon image={stagings.pulledByUser.image || ''} name={stagings.pulledByUser.name || ''} /></td> : <td><RedX /></td>)}
             {!isDraft && (primaryVerification ? <td><UserIcon image={primaryVerification.user.image || ''} name={primaryVerification.user.name || ''} /></td> : <td><RedX /></td>)}

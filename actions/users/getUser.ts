@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import { staticRecords } from "@/configs/staticRecords";
 
 export const getUser = async () => {
     const session = await auth();
@@ -22,10 +23,23 @@ export const getUser = async () => {
                 }
             }
         },
-    })
+    });
+
+    // some transformations for easier use
+
+    const isPurchasing = user &&
+        user.UserRoleAssignment.length > 0 &&
+        user.UserRoleAssignment.some(r => r.userRoleId === staticRecords.app.userRoles.purchasing)
 
 
-    return user;
+
+
+    return {
+        ...user,
+        roles: {
+            isPurchasing,
+        }
+    };
 };
 
 export type User = Awaited<ReturnType<typeof getUser>>

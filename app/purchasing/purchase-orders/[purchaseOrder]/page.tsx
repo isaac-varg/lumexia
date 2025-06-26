@@ -14,7 +14,6 @@ import { getOrderNotes } from "./_functions/getOrderNotes";
 import { getActivity } from "./_functions/getActivity";
 import ViewMode from "./_components/viewMode/ViewMode";
 import { appActions } from "@/actions/app";
-import { getUserId } from "@/actions/users/getUserId";
 import { getUser } from "@/actions/users/getUser";
 
 type PurchaseOrderDetailsProps = {

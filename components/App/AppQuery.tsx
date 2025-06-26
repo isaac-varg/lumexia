@@ -13,6 +13,7 @@ const AppQuery = () => {
     usePricingQueue()
     usePricingReviews()
     useCompletedBprs()
+    
 
     return false
 }
