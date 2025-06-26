@@ -51,7 +51,7 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
     const available = isConsumable ? 'Consumable' : toFracitonalDigits.weight(material.totalQuantityAvailable);
 
     const isAvailableSufficient = material.totalQuantityAvailable >= material.quantity;
-    const bgClasses: keyof typeof classes.bg = isAvailableSufficient || isConsumable ? 'sufficient' : 'insufficient'
+    const bgClasses: keyof typeof classes.bg = user?.roles.isPurchasing ? ((isAvailableSufficient || isConsumable) ? 'sufficient' : 'insufficient') : 'sufficient'
     const hasStagings = material.BprStaging.length !== 0
     const stagings = hasStagings ? material.BprStaging[0] : null
     const primaryVerification = stagings ? stagings.BprStagingVerification[0] : null;
