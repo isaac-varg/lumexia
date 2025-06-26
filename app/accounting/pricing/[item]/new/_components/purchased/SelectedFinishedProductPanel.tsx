@@ -2,7 +2,7 @@
 
 import { usePricingPurchasedActions, usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
 import DeleteFinishedProductAlert from "../shared/DeleteFinishedProductAlert"
-import { TbEdit, TbTrash } from "react-icons/tb"
+import { TbCopy, TbEdit, TbTrash } from "react-icons/tb"
 import useDialog from "@/hooks/useDialog"
 import DataCard from "../shared/DataCard"
 import DataCardText from "../shared/DataCardText"
@@ -17,6 +17,7 @@ import { getProfitPercentage } from "@/app/accounting/pricing/_calculations/getP
 import { getConsumerPrice } from "@/app/accounting/pricing/_calculations/getConsumerPrice"
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
 import EditFinishedProductDialog from "../shared/editFinishedProduct/EditFinishedProductDialog"
+import { duplicateFinishedProduct } from "../../_functions/duplicateFinishedProduct"
 
 
 
@@ -54,6 +55,15 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
     // step for alt mode
     const step = ['consumerPrice', 'profit'].includes(alterMode) ? '0.01' : '0.1';
 
+    const handleDuplicate = async () => {
+
+        if (!selectedFinishedProduct) {
+            console.error('No finished product selected.')
+            return;
+        }
+        await duplicateFinishedProduct(selectedFinishedProduct, true);
+        location.reload()
+    }
 
     useEffect(() => {
         // initial state setting
@@ -151,6 +161,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
     }, [alterMode, selectedFinishedProduct, updateInterimFinishedProduct]);
 
 
+
     if (!selectedFinishedProduct) { return false }
 
 
@@ -165,6 +176,10 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                     <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}>
                         <span className='text-xl'><TbTrash /></span>
                     </button>
+                    <button className='btn btn-outline btn-sm' onClick={() => handleDuplicate()}>
+                        <span className='text-xl'><TbCopy /></span>
+                    </button>
+
                     <button className='btn btn-outline btn-sm' onClick={() => showDialog('editFinishedProduct')}>
                         <span className='text-xl'><TbEdit /></span>
                     </button>
@@ -232,9 +247,6 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
                             <h1 className='font-poppins text-xl font-semibold'>
                                 Filled Container Costs
                             </h1>
-                            <button className='btn' onClick={() => showDialog('editFilledConsumerContainer')}>
-                                <span className='text-xl flex items-center gap-x-1'><TbEdit /><p> Edit</p></span>
-                            </button>
                         </div>
 
                         <p className='font-poppins text-xl font-normal'>

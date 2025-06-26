@@ -9,12 +9,13 @@ import { getProfitPercentage } from '@/app/accounting/pricing/_calculations/getP
 import { getConsumerPrice } from '@/app/accounting/pricing/_calculations/getConsumerPrice';
 import validator from 'validator';
 import Text from '@/components/Text';
-import { TbEdit, TbTrash } from 'react-icons/tb';
+import { TbCopy, TbEdit, TbTrash } from 'react-icons/tb';
 import useDialog from '@/hooks/useDialog';
 import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice';
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
 import DeleteFinishedProductAlert from '../../shared/DeleteFinishedProductAlert';
 import EditFinishedProductDialog from '../../shared/editFinishedProduct/EditFinishedProductDialog';
+import { duplicateFinishedProduct } from '../../../_functions/duplicateFinishedProduct';
 
 type Props = {
     selectedFinishedProduct: FinishedProductFromProduced | null;
@@ -44,6 +45,17 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                 return profitPercentage;
         }
     };
+
+
+    const handleDuplicate = async () => {
+
+        if (!selectedFinishedProduct) {
+            console.error('No finished product selected.')
+            return;
+        }
+        await duplicateFinishedProduct(selectedFinishedProduct, true);
+        location.reload()
+    }
 
 
     useEffect(() => {
@@ -159,6 +171,10 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                     <button className='btn btn-outline btn-error btn-sm' onClick={() => showDialog('deleteFilledConsumerContainer')}>
                         <span className='text-xl'><TbTrash /></span>
                     </button>
+                    <button className='btn btn-outline btn-sm' onClick={() => handleDuplicate()}>
+                        <span className='text-xl'><TbCopy /></span>
+                    </button>
+
                     <button className='btn btn-outline btn-sm' onClick={() => showDialog('editFinishedProduct')}>
                         <span className='text-xl'><TbEdit /></span>
                     </button>
@@ -226,9 +242,6 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                             <h1 className='font-poppins text-xl font-semibold'>
                                 Filled Container Costs
                             </h1>
-                            <button className='btn' onClick={() => showDialog('editFilledConsumerContainer')}>
-                                <span className='text-xl flex items-center gap-x-1'><TbEdit /><p> Edit</p></span>
-                            </button>
                         </div>
 
                         <p className='font-poppins text-xl font-normal'>
