@@ -36,24 +36,24 @@ const BasicsPanel = () => {
                             <Text.LabelDataPair
                                 label='Labor Cost'
                                 tooltip='The fixed labour cost times the tank time'
-                                data={summations.laborCost}
+                                data={toFracitonalDigits.curreny(summations.laborCost)}
 
                             />
                             <Text.LabelDataPair
                                 label='BOM $/batch'
                                 tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like the items Production Usage Cost, Arrival Cost, etc.'
-                                data={`${summations.totalBomCostPerBatch}`}
+                                data={`${toFracitonalDigits.curreny(summations.totalBomCostPerBatch)}`}
                             />
                             <Text.LabelDataPair
                                 label='BOM $/lb'
                                 tooltip='The overall cost of each material at the concentration that they are put into the batch. Also includes things like the items Production Usage Cost, Arrival Cost, etc.'
-                                data={`${summations.totalBomCostPerLb}`}
+                                data={`${toFracitonalDigits.curreny(summations.totalBomCostPerLb)}`}
                             />
 
                             <Text.LabelDataPair
                                 label='Total $/batch'
                                 tooltip='The overall cost of everything per batch'
-                                data={`${summations.totalBomCostPerBatch}`}
+                                data={`${toFracitonalDigits.curreny(summations.totalBomCostPerBatch)}`}
                             />
                         </>)}
 

@@ -1,7 +1,6 @@
 import { accountingActions } from '@/actions/accounting';
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
-import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem';
 import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { BatchSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
@@ -28,7 +27,7 @@ type State = {
     finishedProducts: FinishedProductFromProduced[]
     interimFinishedProducts: InterimFinishedProduct[]
     selectedBomRow: BatchSummations['bomWithCost'][number] | null
-    selectedFinishedProduct: FinishedProductFromPurchased | null
+    selectedFinishedProduct: FinishedProductFromProduced | null
 }
 //export type PricingProducedStates = keyof State
 export type PricingProducedState = State; // alias for this state
@@ -43,7 +42,7 @@ type Actions = {
         getFinishedProducts: () => void;
         updateInterimFinishedProduct: (interimFinishedProductPayload: InterimFinishedProduct) => void;
         getInterimFinishedProduct: (finishedProductId: string) => InterimFinishedProduct | null;
-        setSelectedFinishedProduct: (finishedProudct: FinishedProduct | null) => void;
+        setSelectedFinishedProduct: (finishedProudct: FinishedProductFromProduced | null) => void;
 
 
 

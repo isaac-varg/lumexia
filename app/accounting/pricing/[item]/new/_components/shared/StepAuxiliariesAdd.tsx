@@ -1,18 +1,14 @@
 import { PackagingItem } from "@/actions/accounting/consumerContainers/getPackagingItems"
-import Form from "@/components/Form"
 import { Search } from "@/components/Search"
-import Searcher from "@/components/Search/Searcher"
 import { UnmanagedForm } from "@/components/UnmanagedForm"
 import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
 import { TbEdit } from "react-icons/tb"
 import { InterimAuxiliaryItem } from "./StepAuxiliaries"
-import { InterimAuxiliaryItemEditMode } from "./editFinishedProduct/EditModeStepAuxiliaries"
 
 
 
-const EditModeStepAuxiliariesAdd = ({ setMode, onAuxiliaryAdd }: { setMode: Dispatch<SetStateAction<'view' | 'add'>>, onAuxiliaryAdd: (data: InterimAuxiliaryItemEditMode) => void }) => {
+const EditModeStepAuxiliariesAdd = ({ setMode, onAuxiliaryAdd }: { setMode: Dispatch<SetStateAction<'view' | 'add'>>, onAuxiliaryAdd: (data: InterimAuxiliaryItem) => void }) => {
 
     // packaging is considered auxiliary here..
     const { packagingItems } = usePricingSharedSelection()

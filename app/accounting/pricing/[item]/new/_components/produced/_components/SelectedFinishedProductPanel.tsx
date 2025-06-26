@@ -170,7 +170,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                 <DataCard>
                     <DataCardText size='small' color='light'>Filled Container Cost</DataCardText>
                     <div className="tooltip" data-tip="You can see more details on how this number was calculated by using the toggle below.">
-                        <DataCardText>{selectedFinishedProduct.calculatedTotals.finishedProductTotalCost}</DataCardText>
+                        <DataCardText>{toFracitonalDigits.curreny(selectedFinishedProduct.calculatedTotals.finishedProductTotalCost)}</DataCardText>
                         <DataCardText size='tiny' color='light'>$ / container</DataCardText>
                     </div>
                 </DataCard>
@@ -237,11 +237,11 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                         <div className='flex flex-col gap-y-1'>
                             <Text.LabelDataPair
                                 label='Fill Quantity'
-                                data={selectedFinishedProduct.fillQuantity}
+                                data={toFracitonalDigits.weight(selectedFinishedProduct.fillQuantity)}
                             />
                             <Text.LabelDataPair
                                 label='Declared Fill Quantity'
-                                data={selectedFinishedProduct.declaredQuantity}
+                                data={toFracitonalDigits.weight(selectedFinishedProduct.declaredQuantity)}
                             />
                             <Text.LabelDataPair
                                 label='UOM'
@@ -249,21 +249,20 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                             />
                             <Text.LabelDataPair
                                 label='Difficulty Adjustment Cost'
-                                data={selectedFinishedProduct.difficultyAdjustmentCost}
+                                data={toFracitonalDigits.curreny(selectedFinishedProduct.difficultyAdjustmentCost)}
                             />
                             <Text.LabelDataPair
                                 label='Free Shipping Cost'
-                                data={selectedFinishedProduct.freeShippingCost}
+                                data={toFracitonalDigits.curreny(selectedFinishedProduct.freeShippingCost)}
                             />
                             <Text.LabelDataPair
                                 label="Product Fill Cost"
-                                data={selectedFinishedProduct.calculatedTotals.productFillCost}
+                                data={toFracitonalDigits.curreny(selectedFinishedProduct.calculatedTotals.productFillCost)}
                             />
                             <Text.LabelDataPair
                                 label="Finished Product Total Cost"
-                                data={selectedFinishedProduct.calculatedTotals.finishedProductTotalCost}
+                                data={toFracitonalDigits.curreny(selectedFinishedProduct.calculatedTotals.finishedProductTotalCost)}
                             />
-
                         </div>
                     </div>
 
@@ -277,7 +276,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                         </p>
 
                         <h1 className="font-poppins font-semibold text-2xl text-neutral-800">
-                            Auxiliaries Total: {selectedFinishedProduct.auxiliaries.total}
+                            Auxiliaries Total: {toFracitonalDigits.curreny(selectedFinishedProduct.auxiliaries.total)}
                         </h1>
 
 
@@ -295,10 +294,10 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: Props) => {
                                         </h1>
 
                                         <Text.Normal>Quantity: {aux.quantity}</Text.Normal>
-                                        <Text.Normal>Cost: {aux.itemCost}</Text.Normal>
-                                        <Text.Normal>Auxiliary Usage Cost: {aux.auxiliaryUsageCost}</Text.Normal>
-                                        <Text.Normal>Difficulty Adjustment Cost: {aux.difficultyAdjustmentCost}</Text.Normal>
-                                        <Text.Normal>Total Cost: {aux.lineTotal}</Text.Normal>
+                                        <Text.Normal>Cost: {toFracitonalDigits.curreny(aux.itemCost)}</Text.Normal>
+                                        <Text.Normal>Auxiliary Usage Cost: {toFracitonalDigits.curreny(aux.auxiliaryUsageCost)}</Text.Normal>
+                                        <Text.Normal>Difficulty Adjustment Cost: {toFracitonalDigits.curreny(aux.difficultyAdjustmentCost)}</Text.Normal>
+                                        <Text.Normal>Total Cost: {toFracitonalDigits.curreny(aux.lineTotal)}</Text.Normal>
 
                                     </div>
                                 )
