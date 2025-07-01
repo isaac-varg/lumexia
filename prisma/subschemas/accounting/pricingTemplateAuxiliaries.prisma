@@ -1,0 +1,13 @@
+model PricingTemplateAuxiliary {
+    id                                      String                         @id @default(uuid())
+    apartOfPricingTemplateFinishedProductId String                         @map("apart_of_pricing_template_finished_product_id")
+    auxiliaryItemId                         String                         @map("auxiliary_item_id")
+    quantity                                Int
+    difficultyAdjustmentCost                Float                          @map("difficulty_adjustment_cost")
+    createdAt                               DateTime                       @default(now()) @map("created_at")
+    updatedAt                               DateTime                       @updatedAt @map("updated_at")
+    apartOfPricingTemplateFinishedProduct   PricingTemplateFinishedProduct @relation(fields: [apartOfPricingTemplateFinishedProductId], references: [id])
+    auxiliaryItem                           Item                           @relation(fields: [auxiliaryItemId], references: [id])
+
+    @@map("pricing_template_auxiliary")
+}

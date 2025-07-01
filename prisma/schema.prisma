@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Jun 19 2025 14:04:35 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Jul 01 2025 10:30:25 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -344,6 +344,51 @@ model PricingQueue {
   @@map("pricing_queue")
 }
 
+model PricingTemplateAuxiliary {
+  id                                      String                         @id @default(uuid())
+  apartOfPricingTemplateFinishedProductId String                         @map("apart_of_pricing_template_finished_product_id")
+  auxiliaryItemId                         String                         @map("auxiliary_item_id")
+  quantity                                Int
+  difficultyAdjustmentCost                Float                          @map("difficulty_adjustment_cost")
+  createdAt                               DateTime                       @default(now()) @map("created_at")
+  updatedAt                               DateTime                       @updatedAt @map("updated_at")
+  apartOfPricingTemplateFinishedProduct   PricingTemplateFinishedProduct @relation(fields: [apartOfPricingTemplateFinishedProductId], references: [id])
+  auxiliaryItem                           Item                           @relation(fields: [auxiliaryItemId], references: [id])
+
+  @@map("pricing_template_auxiliary")
+}
+
+model PricingTemplateFinishedProduct {
+  id                       String                     @id @default(uuid())
+  apartOfPricingTemplateId String                     @map("apart_of_pricing_template_id")
+  name                     String
+  fillQuantity             Float                      @map("fill_quantity")
+  declaredQuantity         Float                      @map("declared_quantity")
+  freeShippingCost         Float                      @map("free_shipping_cost")
+  fillUomId                String                     @map("fill_uom_id")
+  difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+  createdAt                DateTime                   @default(now()) @map("created_at")
+  updatedAt                DateTime                   @updatedAt @map("updated_at")
+  apartOfPricingTemplate   PricingTemplate            @relation(fields: [apartOfPricingTemplateId], references: [id])
+  fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+  auxiliaries              PricingTemplateAuxiliary[]
+
+  @@map("pricing_template_finished_products")
+}
+
+model PricingTemplate {
+  id               String                           @id @default(uuid())
+  name             String
+  description      String
+  forItemTypeId    String?                          @map("for_item_type_id")
+  createdAt        DateTime                         @default(now()) @map("created_at")
+  updatedAt        DateTime                         @updatedAt @map("updated_at")
+  forItemType      ItemType?                        @relation(fields: [forItemTypeId], references: [id])
+  finishedProducts PricingTemplateFinishedProduct[]
+
+  @@map("pricing_template")
+}
+
 model ProducedPricingDataArchive {
   id                             String                      @id @default(uuid())
   examinationId                  String                      @map("examination_id")
@@ -668,6 +713,7 @@ model UnitOfMeasurement {
   ItemConsumerContainer           ItemConsumerContainer[]
   ItemPricingData                 ItemPricingData[]
   ItemPricingDataArchive          ItemPricingDataArchive[]
+  PricingTemplateFinishedProduct  PricingTemplateFinishedProduct[]
   BatchSize                       BatchSize[]
   BprBillOfMaterials              BprBillOfMaterials[]
   BprStaging                      BprStaging[]
@@ -711,11 +757,12 @@ model InventoryType {
 }
 
 model ItemType {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  items     Item[]
+  id               String            @id @default(uuid())
+  name             String
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  items            Item[]
+  pricingTemplates PricingTemplate[]
 
   @@map("item_types")
 }
@@ -752,6 +799,7 @@ model Item {
   FinishedProduct                 FinishedProduct[]
   ItemConsumerContainer           ItemConsumerContainer[]
   PricingQueue                    PricingQueue[]
+  PricingTemplateAuxiliary        PricingTemplateAuxiliary[]
   BillOfMaterial                  BillOfMaterial[]
   MasterBatchProductionRecord     MasterBatchProductionRecord[]
 

@@ -7,6 +7,7 @@ import BeginPricingExaminationButton from './_components/BeginPricingExamination
 import { accountingActions } from '@/actions/accounting'
 import LatestExaminationsTable from './_components/LatestExaminationsTable'
 import QueueList from './_components/QueueList'
+import TemplatesButton from './_components/TemplatesButton'
 
 const PricingPage = async () => {
 
@@ -20,8 +21,14 @@ const PricingPage = async () => {
 
             <PageBreadcrumbs />
 
-            <div className='flex gap-x-4'>
-                <BeginPricingExaminationButton />
+            <div className='flex justify-between items-center'>
+                <div className='flex gap-x-4'>
+                    <BeginPricingExaminationButton />
+                </div>
+
+                <TemplatesButton />
+
+
             </div>
 
             <div className='grid grid-cols-2 gap-6'>

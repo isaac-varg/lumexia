@@ -1,0 +1,17 @@
+model PricingTemplateFinishedProduct {
+    id                       String                     @id @default(uuid())
+    apartOfPricingTemplateId String                     @map("apart_of_pricing_template_id")
+    name                     String
+    fillQuantity             Float                      @map("fill_quantity")
+    declaredQuantity         Float                      @map("declared_quantity")
+    freeShippingCost         Float                      @map("free_shipping_cost")
+    fillUomId                String                     @map("fill_uom_id")
+    difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+    createdAt                DateTime                   @default(now()) @map("created_at")
+    updatedAt                DateTime                   @updatedAt @map("updated_at")
+    apartOfPricingTemplate   PricingTemplate            @relation(fields: [apartOfPricingTemplateId], references: [id])
+    fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+    auxiliaries              PricingTemplateAuxiliary[]
+
+    @@map("pricing_template_finished_products")
+}

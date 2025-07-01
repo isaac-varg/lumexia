@@ -27,6 +27,14 @@ import { deleteFinishedProduct } from "./finishedProducts/delete";
 import { getFinishedProductsByItem } from "./finishedProducts/getByItem";
 import { getFinishedProductsByProducedItem } from "./finishedProducts/getByProducedItem";
 import { getFinishedProductsByPurchasedItem } from "./finishedProducts/getByPurchasedItem";
+import { createPricingTemplateAuxiliaries } from "./finishedProducts/templates/auxiliaries/create";
+import { deletePricingTemplateAuxiliary } from "./finishedProducts/templates/auxiliaries/delete";
+import { createPricingTemplate } from "./finishedProducts/templates/create";
+import { createPricingTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/create";
+import { updateTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/update";
+import { getAllTemplates } from "./finishedProducts/templates/getAll";
+import { getOnePricingTemplate } from "./finishedProducts/templates/getOne";
+import { updatePricingTemplate } from "./finishedProducts/templates/update";
 import { updateFinishedProduct } from "./finishedProducts/update";
 import { createPricingQueue } from "./pricing/createQueue";
 import { getItemPricingData } from "./pricing/getItemPricingData";
@@ -44,6 +52,20 @@ export const accountingActions = {
         getQueue: getQueue,
     },
     finishedProducts: {
+        templates: {
+            finishedProducts: {
+                update: updateTemplateFinishedProduct,
+                create: createPricingTemplateFinishedProduct,
+            },
+            auxiliaries: {
+                delete: deletePricingTemplateAuxiliary,
+                create: createPricingTemplateAuxiliaries,
+            },
+            create: createPricingTemplate,
+            update: updatePricingTemplate,
+            getOne: getOnePricingTemplate,
+            getAllTemplates: getAllTemplates,
+        },
         auxiliaries: {
             delete: deleteAuxiliary,
             create: createAuxiliary,

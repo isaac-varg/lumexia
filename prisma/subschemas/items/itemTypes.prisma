@@ -1,12 +1,11 @@
-import { Item } from "items"
-
 model ItemType {
-    id        String   @id @default(uuid())
-    name      String
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
-    items     Item[]
+    id               String            @id @default(uuid())
+    name             String
+    createdAt        DateTime          @default(now()) @map("created_at")
+    updatedAt        DateTime          @updatedAt @map("updated_at")
+    items            Item[]
+    pricingTemplates PricingTemplate[]
+
 
     @@map("item_types")
 }
-
