@@ -8,6 +8,7 @@ import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem
 import AddFinishedProductDialog from '../shared/AddFinishedProductDialog'
 import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
 import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem'
+import UsePricingTemplateButton from '../shared/pricingTemplates/UsePricingTemplateButton'
 
 const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
 
@@ -18,6 +19,7 @@ const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
     return (
         <div className='col-span-2'>
             <AddFinishedProductDialog fillItemId={fillItemId} />
+            
 
             <Card.Root>
                 <div className='flex gap-x-6'>
@@ -28,7 +30,11 @@ const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
 
                         <div className='flex flex-col gap-y-1'>
 
-                            <AddFinishedProductButton />
+                            <div className='grid grid-cols-2 gap-2'>
+                                <AddFinishedProductButton />
+                                <UsePricingTemplateButton />
+                            </div>
+
 
                             {finishedProducts.map((fp) => <FinishedProductCard
                                 key={fp.id}

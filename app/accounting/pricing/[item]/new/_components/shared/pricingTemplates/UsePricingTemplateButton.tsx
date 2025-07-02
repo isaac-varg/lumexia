@@ -2,12 +2,12 @@ import useDialog from '@/hooks/useDialog'
 import React from 'react'
 import { TbPlus } from 'react-icons/tb'
 
-const AddFinishedProductButton = () => {
+const UsePricingTemplateButton = () => {
 
     const { showDialog } = useDialog()
 
     const handleClick = () => {
-        showDialog('newconsumercontainerdialog')
+        showDialog('usepricingtemplate')
     }
     return (
         <div
@@ -16,11 +16,11 @@ const AddFinishedProductButton = () => {
         >
 
             <span className='text-2xl'><TbPlus /></span>
-            <div className='font-poppins font-semibold text-lg'>Finished Product</div>
+            <div className='font-poppins font-semibold text-lg'>Use Template</div>
         </div>
 
 
     )
 }
 
-export default AddFinishedProductButton
+export default UsePricingTemplateButton 

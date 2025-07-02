@@ -34,6 +34,7 @@ import { createPricingTemplate } from "./finishedProducts/templates/create";
 import { createPricingTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/create";
 import { updateTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/update";
 import { getAllTemplates } from "./finishedProducts/templates/getAll";
+import { getAllByItemType } from "./finishedProducts/templates/getAllByItemType";
 import { getOnePricingTemplate } from "./finishedProducts/templates/getOne";
 import { updatePricingTemplate } from "./finishedProducts/templates/update";
 import { updateFinishedProduct } from "./finishedProducts/update";
@@ -65,6 +66,7 @@ export const accountingActions = {
             },
             create: createPricingTemplate,
             update: updatePricingTemplate,
+            getAllByItemType: getAllByItemType,
             getOne: getOnePricingTemplate,
             getAllTemplates: getAllTemplates,
         },

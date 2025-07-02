@@ -2,6 +2,7 @@ import { accountingActions } from '@/actions/accounting';
 import { ConsumerContainer } from '@/actions/accounting/consumerContainers/getAll';
 import { PackagingItem } from '@/actions/accounting/consumerContainers/getPackagingItems';
 import { PricingExaminationNote } from '@/actions/accounting/examinations/notes/getAllByExamId';
+import { PricingTemplate } from '@/actions/accounting/finishedProducts/templates/getAll';
 import { inventoryActions } from '@/actions/inventory';
 import { Uom } from '@/types/uom';
 import { create } from 'zustand';
@@ -11,6 +12,7 @@ type State = {
     packagingItems: PackagingItem[];
     uoms: Uom[]
     examinationNotes: PricingExaminationNote[];
+    templates: PricingTemplate[];
 
 }
 
@@ -22,6 +24,7 @@ type Actions = {
         getPackagingItems: () => void;
         getUoms: () => void;
         getExaminationNotes: (pricingExaminationId: string) => void;
+        getTemplates: (itemTypeId: string) => void;
     }
 }
 
@@ -30,6 +33,7 @@ export const usePricingSharedSelection = create<State & Actions>((set) => ({
     packagingItems: [],
     uoms: [],
     examinationNotes: [],
+    templates: [],
 
     actions: {
         getAllConsumerContainers: async () => {
@@ -67,7 +71,17 @@ export const usePricingSharedSelection = create<State & Actions>((set) => ({
             } catch (error) {
                 console.error("There was an issue fetching the notes", error);
             }
-        }
+        },
+
+        getTemplates: async (itemTypeId) => {
+            try {
+                const templates = await accountingActions.finishedProducts.templates.getAllByItemType(itemTypeId)
+                set(() => ({ templates, }))
+
+            } catch (error) {
+                console.error(error)
+            }
+        },
     }
 
 

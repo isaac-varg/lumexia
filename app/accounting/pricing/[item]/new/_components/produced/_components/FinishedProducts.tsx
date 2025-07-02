@@ -7,6 +7,7 @@ import { FinishedProductFromProduced } from '@/actions/accounting/finishedProduc
 import AddFinishedProductButton from '../../purchased/AddFinishedProductButton'
 import AddFinishedProductDialog from '../../shared/AddFinishedProductDialog'
 import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
+import UsePricingTemplateButton from '../../shared/pricingTemplates/UsePricingTemplateButton'
 
 const FinishedProducts = () => {
 
@@ -26,7 +27,10 @@ const FinishedProducts = () => {
 
                         <div className='flex flex-col gap-y-1'>
 
-                            <AddFinishedProductButton />
+                            <div className='grid grid-cols-2 gap-2'>
+                                <AddFinishedProductButton />
+                                <UsePricingTemplateButton />
+                            </div>
 
                             {finishedProducts.map((fp) => <FinishedProductCard key={fp.id} finishedProduct={fp} onSelect={setSelectedFp} selectedFinishedProductId={selectedFp?.id || ''} />)}
 
