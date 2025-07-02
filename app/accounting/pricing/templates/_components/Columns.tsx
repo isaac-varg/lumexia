@@ -14,6 +14,7 @@ export const pricingTemplateColumns = [
     }),
     columnHelper.accessor('forItemTypeId', {
         header: "For Item Type",
+        id: 'forItemType',
         cell: (row) => row.row.original.forItemType?.name || 'All',
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
@@ -21,6 +22,7 @@ export const pricingTemplateColumns = [
     }),
     columnHelper.display({
         id: 'countFinishedProducts',
+        header: "Finished Products",
         cell: (row) => {
             const count = row.row.original.finishedProducts.length
             return (

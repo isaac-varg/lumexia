@@ -11,24 +11,26 @@ const PricingTemplatesTable = ({ templates }: { templates: PricingTemplate[] }) 
     const router = useRouter()
     const filters: Filter[] = [
         {
-            columnName: "statusName",
-            filterLabel: "Status",
-            options: toFacetFilter(templates, "statusName", "statusName"),
+            columnName: "forItemType",
+            filterLabel: "For Item Type",
+            options: toFacetFilter(templates, "forItemType.id", "forItemType.name"),
         },
 
     ];
 
     const handleClick = (row: any) => {
-
+        const path = `/accounting/pricing/templates/wizard?isExisting=true&templateId=${row.original.id}`
+        console.log(path)
+        router.push(path)
     }
 
     return (
         <div className="gap-y-5 flex-col flex">
             <div className="flex justify-start">
-            <button className="btn" onClick={() => router.push('/accounting/pricing/templates/wizard')}>
-            Create Template
+                <button className="btn" onClick={() => router.push('/accounting/pricing/templates/wizard')}>
+                    Create Template
 
-            </button>
+                </button>
             </div>
             <DataTable.Default
                 filters={filters}

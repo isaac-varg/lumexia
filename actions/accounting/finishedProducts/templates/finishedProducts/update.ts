@@ -8,6 +8,14 @@ export const updateTemplateFinishedProduct = async (id: string, payload: Prisma.
         where: {
             id,
         },
+        include: {
+            fillUom: true,
+            auxiliaries: {
+                include: {
+                    auxiliaryItem: true
+                }
+            }
+        },
         data: payload,
     })
     return res;

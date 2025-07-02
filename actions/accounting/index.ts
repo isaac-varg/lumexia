@@ -29,6 +29,7 @@ import { getFinishedProductsByProducedItem } from "./finishedProducts/getByProdu
 import { getFinishedProductsByPurchasedItem } from "./finishedProducts/getByPurchasedItem";
 import { createPricingTemplateAuxiliaries } from "./finishedProducts/templates/auxiliaries/create";
 import { deletePricingTemplateAuxiliary } from "./finishedProducts/templates/auxiliaries/delete";
+import { getByFinishedProduct } from "./finishedProducts/templates/auxiliaries/getByFinishedProduct";
 import { createPricingTemplate } from "./finishedProducts/templates/create";
 import { createPricingTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/create";
 import { updateTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/update";
@@ -58,6 +59,7 @@ export const accountingActions = {
                 create: createPricingTemplateFinishedProduct,
             },
             auxiliaries: {
+                getByFinishedProduct: getByFinishedProduct,
                 delete: deletePricingTemplateAuxiliary,
                 create: createPricingTemplateAuxiliaries,
             },

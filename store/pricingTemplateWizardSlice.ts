@@ -1,9 +1,11 @@
 import { accountingActions } from "@/actions/accounting"
+import { PackagingItem } from "@/actions/accounting/consumerContainers/getPackagingItems"
 import { PricingTemplateAuxiliaryPayload } from "@/actions/accounting/finishedProducts/templates/auxiliaries/create"
 import { PricingTemplatePayload } from "@/actions/accounting/finishedProducts/templates/create"
 import { PricingTemplateFinishedProductPayload } from "@/actions/accounting/finishedProducts/templates/finishedProducts/create"
 import { PricingTemplate } from "@/actions/accounting/finishedProducts/templates/getAll"
 import itemTypeActions from "@/actions/inventory/itemTypeActions"
+import prisma from "@/lib/prisma"
 import { ItemType } from "@prisma/client"
 import { create } from "zustand"
 
@@ -13,6 +15,7 @@ export type IntermediateTemplateFinishedProduct = PricingTemplateFinishedProduct
 }
 
 export type ExistingFinishedProduct = PricingTemplate['finishedProducts'][number]
+export type ExistingAuxiliary = ExistingFinishedProduct['auxiliaries'][number]
 
 
 export type IntermediateAuxiliary = PricingTemplateAuxiliaryPayload & {
@@ -24,11 +27,13 @@ export type FinishedProductStepMode = "all" | 'add' | 'view'
 type State = {
     existingTemplate: PricingTemplate | null
     existingFinishedProducts: ExistingFinishedProduct[],
+    existingAuxiliaries: ExistingAuxiliary[],
     finishedProductStepMode: FinishedProductStepMode,
     isExistingTemplate: boolean
     intermediateAuxiliaries: IntermediateAuxiliary[]
     intermediateTemlateData: PricingTemplatePayload | null
     itemTypes: ItemType[]
+    packagingItems: PackagingItem[],
     step: number
     selectedFinishedProduct: ExistingFinishedProduct | null
 }
@@ -36,7 +41,11 @@ type State = {
 type Actions = {
     actions: {
         nextStep: () => void;
+        previousStep: () => void;
+        resetSteps: () => void;
         getItemTypes: () => void;
+        getPackagingItems: () => void;
+        getFinishedProductAuxiliaries: () => void;
         getExistingTemplate: (templateId: string) => void;
         setFinishedProducts: () => void;
         setFinishedProductStepMode: (mode: FinishedProductStepMode) => void;
@@ -52,10 +61,12 @@ type Actions = {
 export const usePricingTemplateWizardSelection = create<State & Actions>((set, get) => ({
     finishedProductStepMode: 'all',
     itemTypes: [],
+    packagingItems: [],
     intermediateAuxiliaries: [],
     intermediateTemlateData: null,
     existingTemplate: null,
     existingFinishedProducts: [],
+    existingAuxiliaries: [],
     isExistingTemplate: false,
     selectedFinishedProduct: null,
     step: 0,
@@ -66,7 +77,7 @@ export const usePricingTemplateWizardSelection = create<State & Actions>((set, g
         getExistingTemplate: async (templateId) => {
             try {
                 const template = await accountingActions.finishedProducts.templates.getOne(templateId);
-                set(() => ({ existingTemplate: template }))
+                set(() => ({ existingTemplate: template, }))
             } catch (error) {
                 console.error(error)
             }
@@ -81,21 +92,38 @@ export const usePricingTemplateWizardSelection = create<State & Actions>((set, g
             }
         },
 
+        getPackagingItems: async () => {
+
+            try {
+                const packagingItems = await accountingActions.consumerContainers.getPackagingItems();
+                set(() => ({ packagingItems, }))
+            } catch (error) { console.error(error) }
+        },
+
         nextStep: () => {
             set((state) => ({ step: state.step + 1 }))
         },
 
-        setAuxiliaries: () => {
-            //            const { selectedFinishedProduct } = get();
-            //            if (!selectedFinishedProduct) return;
-            //
-            //
-            //            const transformedAuxes: IntermediateAuxiliary[] = selectedFinishedProduct.auxiliaries.map(aux => ({
-            //                ...aux,
-            //                isExisting: true,
-            //            }));
-            //            set(() => ({ intermediateAuxiliaries: transformedAuxes }))
-            //
+        previousStep: () => {
+            set((state) => ({ step: state.step - 1 }))
+        },
+
+        resetSteps: () => {
+            set(() => ({ step: 0 }))
+        },
+
+
+        setAuxiliaries: async () => {
+            const { selectedFinishedProduct } = get();
+            if (!selectedFinishedProduct) return;
+            try {
+                const existingAuxiliaries = await accountingActions.finishedProducts.templates.auxiliaries.getByFinishedProduct(selectedFinishedProduct.id)
+                set(() => ({ existingAuxiliaries, }))
+            } catch (error) {
+                console.error(error )
+            }
+
+
         },
 
         setFinishedProducts: () => {
@@ -103,6 +131,13 @@ export const usePricingTemplateWizardSelection = create<State & Actions>((set, g
             if (!existingTemplate) return
 
             set(() => ({ existingFinishedProducts: existingTemplate.finishedProducts }))
+        },
+
+        getFinishedProductAuxiliaries: async () => {
+
+            const { selectedFinishedProduct } = get()
+            if (!selectedFinishedProduct) return;
+            set(() => ({ existingAuxiliaries: selectedFinishedProduct.auxiliaries }))
         },
 
 

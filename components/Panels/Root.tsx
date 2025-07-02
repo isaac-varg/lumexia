@@ -2,6 +2,8 @@
 const classes = {
     bg: {
         default: 'bg-neutral-100/70 ',
+        white: 'bg-white',
+
     },
     base: 'flex flex-col  p-6 rounded-lg',
     gap: {
@@ -13,6 +15,10 @@ const classes = {
         2: 'col-span-2',
         3: 'col-span-3',
     },
+    border: {
+        none: '',
+        outline: 'border border-2 border-neutral-700',
+    }
 }
 
 interface RootProps {
@@ -20,6 +26,7 @@ interface RootProps {
     bg?: keyof typeof classes.bg,
     span?: keyof typeof classes.span,
     gap?: keyof typeof classes.gap
+    border?: keyof typeof classes.border,
 }
 
 
@@ -28,10 +35,11 @@ const Root = ({
     bg = 'default',
     span = 1,
     gap = 'default',
+    border = 'none'
 }: RootProps) => {
 
     return (
-        <div className={`${classes.base} ${classes.bg[bg]} ${classes.span[span]} ${classes.gap[gap]}`}>
+        <div className={`${classes.base} ${classes.bg[bg]} ${classes.span[span]} ${classes.gap[gap]} ${classes.border[border]}`}>
             {children}
         </div>
     )

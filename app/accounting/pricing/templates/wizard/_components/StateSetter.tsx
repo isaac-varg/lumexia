@@ -4,12 +4,16 @@ import { useEffect } from "react";
 
 const StateSetter = ({ isExisting, templateId }: { isExisting: boolean, templateId: string | null | undefined }) => {
 
-    const { itemTypes, isExistingTemplate, existingTemplate } = usePricingTemplateWizardSelection()
-    const { getItemTypes, setIsExistingTemplate, getExistingTemplate, setFinishedProducts, setAuxiliaries } = usePricingTemplateWizardActions()
+    const { selectedFinishedProduct, packagingItems, itemTypes, isExistingTemplate, existingTemplate } = usePricingTemplateWizardSelection()
+    const { getItemTypes, getFinishedProductAuxiliaries, getPackagingItems, resetSteps, setIsExistingTemplate, getExistingTemplate, setFinishedProducts, setAuxiliaries } = usePricingTemplateWizardActions()
 
     useEffect(() => {
         if (itemTypes.length === 0) {
             getItemTypes();
+        }
+
+        if (packagingItems.length === 0) {
+            getPackagingItems();
         }
     }, [])
 
@@ -20,19 +24,25 @@ const StateSetter = ({ isExisting, templateId }: { isExisting: boolean, template
             }
             setIsExistingTemplate(true);
             getExistingTemplate(templateId)
+            resetSteps();
             return;
         }
 
+        resetSteps();
         setIsExistingTemplate(false)
     }, [isExisting, templateId])
 
     useEffect(() => {
-        
+
         setFinishedProducts()
         setAuxiliaries();
 
 
     }, [isExistingTemplate, existingTemplate])
+
+    useEffect(() => {
+        getFinishedProductAuxiliaries()
+    }, [selectedFinishedProduct])
 
 
 

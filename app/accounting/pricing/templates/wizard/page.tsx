@@ -1,25 +1,24 @@
 'use client'
-
 import PageBreadcrumbs from "@/components/App/PageBreadcrumbs"
 import PageTitle from "@/components/Text/PageTitle"
 import { Wizard } from "@/components/Wizard"
-import { usePricingTemplateWizardSelection } from "@/store/pricingTemplateWizardSlice"
 import StateSetter from "./_components/StateSetter"
 import StepPricingTemplate from "./_components/StepPricingTemplate"
 import { Panels } from "@/components/Panels"
 import StepFinishedProduct from "./_components/StepFinishedProduct"
+import { usePricingTemplateWizardSelection } from "@/store/pricingTemplateWizardSlice"
 
 type Props = {
-    params: {
+    searchParams: {
         isExisting: boolean;
         templateId?: string | null;
     };
 };
 
 
-const PricingTemplateWizard = ({ params }: Props) => {
+const PricingTemplateWizard = ({ searchParams }: Props) => {
 
-    const { isExisting, templateId } = params;
+    const { isExisting, templateId } = searchParams;
 
     const { step } = usePricingTemplateWizardSelection()
     return (
