@@ -26,7 +26,7 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
                 <Basics />
                 <ActionsPanel examinationId={examinationId} />
 
-                <FinishedProducts fillItemId={item.id} />
+                <FinishedProducts fillItemId={item.id} itemTypeId={item.itemTypeId} />
 
                 <NotesPanel noteTypes={noteTypes} examinationId={examinationId} itemId={item.id} />
             </div>

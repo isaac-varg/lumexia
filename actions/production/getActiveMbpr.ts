@@ -4,13 +4,14 @@ import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
 
 export const getActiveMbpr = async (itemId: string) => {
-   
+
     const mbpr = await prisma.masterBatchProductionRecord.findFirstOrThrow({
         where: {
             producesItemId: itemId,
             recordStatusId: staticRecords.app.recordStatuses.active,
         },
         include: {
+            producesItem: true,
             BatchSize: {
                 include: {
                     recordStatus: true,

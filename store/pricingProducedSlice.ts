@@ -1,6 +1,7 @@
 import { accountingActions } from '@/actions/accounting';
 import { FinishedProduct } from '@/actions/accounting/finishedProducts/getByItem';
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
+import { ActiveMbpr } from '@/actions/production/getActiveMbpr';
 import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { BatchSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
@@ -20,7 +21,7 @@ export type InterimFinishedProduct = {
 
 type State = {
     isContainerParametersPanelShown: boolean
-    activeMbpr: MbprByItem | null
+    activeMbpr: ActiveMbpr | null
     activeBatchSize: BatchSize | null
     batchSizes: BatchSize[]
     producedPricingSummations: ProducedPricingSummations | null
@@ -34,7 +35,7 @@ export type PricingProducedState = State; // alias for this state
 
 type Actions = {
     actions: {
-        setActiveMbpr: (mbpr: MbprByItem) => void,
+        setActiveMbpr: (mbpr: ActiveMbpr) => void,
         setBatchSizes: (batchSizes: BatchSize[]) => void;
         setSelectedBomRow: (row?: BatchSummations['bomWithCost'][number]) => void;
         toggleContainerParameters: () => void;

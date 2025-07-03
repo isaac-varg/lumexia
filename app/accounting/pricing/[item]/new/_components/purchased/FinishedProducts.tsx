@@ -9,8 +9,9 @@ import AddFinishedProductDialog from '../shared/AddFinishedProductDialog'
 import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
 import { FinishedProductFromPurchased } from '@/actions/accounting/finishedProducts/getByPurchasedItem'
 import UsePricingTemplateButton from '../shared/pricingTemplates/UsePricingTemplateButton'
+import TemplateDialog from '../shared/pricingTemplates/TemplateDialog'
 
-const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
+const FinishedProducts = ({ fillItemId, itemTypeId }: { fillItemId: string, itemTypeId: string }) => {
 
     const { finishedProducts } = usePricingPurchasedSelection()
 
@@ -19,6 +20,7 @@ const FinishedProducts = ({ fillItemId }: { fillItemId: string }) => {
     return (
         <div className='col-span-2'>
             <AddFinishedProductDialog fillItemId={fillItemId} />
+            <TemplateDialog filledWithItemId={fillItemId} itemTypeId={itemTypeId} />
             
 
             <Card.Root>

@@ -1,5 +1,6 @@
 'use client'
 
+import { ActiveMbpr } from "@/actions/production/getActiveMbpr"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
 import useDialog from "@/hooks/useDialog"
@@ -7,7 +8,7 @@ import { usePricingProducedActions, usePricingProducedSelection } from "@/store/
 import { useEffect } from "react"
 
 type SetterProps = {
-    activeMbpr: MbprByItem
+    activeMbpr: ActiveMbpr
     batchSizes: BatchSize[]
 }
 

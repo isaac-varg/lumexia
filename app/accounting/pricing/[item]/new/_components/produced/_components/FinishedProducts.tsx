@@ -8,6 +8,7 @@ import AddFinishedProductButton from '../../purchased/AddFinishedProductButton'
 import AddFinishedProductDialog from '../../shared/AddFinishedProductDialog'
 import SelectedFinishedProductPanel from './SelectedFinishedProductPanel'
 import UsePricingTemplateButton from '../../shared/pricingTemplates/UsePricingTemplateButton'
+import TemplateDialog from '../../shared/pricingTemplates/TemplateDialog'
 
 const FinishedProducts = () => {
 
@@ -19,6 +20,7 @@ const FinishedProducts = () => {
     return (
         <div className='col-span-2'>
             <AddFinishedProductDialog produced={true} fillItemId={activeMbpr?.producesItemId || ''} />
+            {activeMbpr && <TemplateDialog itemTypeId={activeMbpr.producesItem.itemTypeId} filledWithItemId={activeMbpr.producesItemId} />}
             <Card.Root>
                 <div className='flex gap-x-6'>
 
