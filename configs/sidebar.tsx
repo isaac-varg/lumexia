@@ -107,6 +107,12 @@ export const sidebar = [
         label: "Accounting",
         contents: [
             {
+                label: "PO Matching",
+                icon: <TbCreditCard />,
+                path: "/accounting/pos"
+            },
+
+            {
                 label: "Pricing",
                 icon: <TbShoppingBag />,
                 path: "/accounting/pricing"

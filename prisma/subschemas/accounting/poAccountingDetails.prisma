@@ -10,7 +10,7 @@ model PoAccountingDetail {
     updatedAt             DateTime           @updatedAt @map("updated_at")
     status                PoAccountingStatus @relation(fields: [statusId], references: [id])
     purchaseOrder         PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id])
-    paymentMethod         PaymentMethod      @relation(fields: [paymentMethodId], references: [id])
+    paymentMethod         PaymentMethod?     @relation(fields: [paymentMethodId], references: [id])
 
     @@map("po_accounting_details")
 }
