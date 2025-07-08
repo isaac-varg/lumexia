@@ -4,7 +4,7 @@ const page = () => {
     return (
         <div>
 
-            <Dropper />
+            <Dropper pathPrefix="images" />
         </div>
     )
 }

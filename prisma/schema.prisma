@@ -1,918 +1,930 @@
-//🧩Don't Edit this file.✨Generated in Tue Jul 01 2025 10:30:25 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Jul 08 2025 10:50:52 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
-  id                           String                     @id @default(uuid())
-  examinationId                String                     @map("examination_id")
-  producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
-  bomId                        String                     @map("bom_id")
-  itemId                       String                     @map("item_id")
-  totalMaterialCost            Float                      @map("total_material_cost")
-  materialPrice                Float                      @map("material_price")
-  materialPriceOrigin          String                     @map("material_price_origin")
-  upcomingPriceUsed            Boolean                    @map("upcoming_price_used")
-  upcomingPriceUomId           String                     @map("upcoming_price_uom_id")
-  arrivalCost                  Float                      @map("arrival_cost")
-  unforeseenDifficultiesCost   Float                      @map("unforeseen_difficulties_cost")
-  productionUsageCost          Float                      @map("production_usage_cost")
-  overallItemCostPerLb         Float                      @map("overall_item_cost_per_lb")
-  overallItemCostPerBatch      Float                      @map("overall_item_cost_per_batch")
-  createdAt                    DateTime                   @default(now()) @map("created_at")
-  updatedAt                    DateTime                   @updatedAt @map("updated_at")
-  producedPricingDataArchive   ProducedPricingDataArchive @relation(fields: [producedPricingDataArchiveId], references: [id])
-  examination                  PricingExamination         @relation(fields: [examinationId], references: [id])
-  bom                          BillOfMaterial             @relation(fields: [bomId], references: [id])
-  item                         Item                       @relation(fields: [itemId], references: [id])
-  upcomingPriceUom             UnitOfMeasurement          @relation(fields: [upcomingPriceUomId], references: [id])
+    id                           String                     @id @default(uuid())
+    examinationId                String                     @map("examination_id")
+    producedPricingDataArchiveId String                     @map("produced_pricing_data_archive_id")
+    bomId                        String                     @map("bom_id")
+    itemId                       String                     @map("item_id")
+    totalMaterialCost            Float                      @map("total_material_cost")
+    materialPrice                Float                      @map("material_price")
+    materialPriceOrigin          String                     @map("material_price_origin")
+    upcomingPriceUsed            Boolean                    @map("upcoming_price_used")
+    upcomingPriceUomId           String                     @map("upcoming_price_uom_id")
+    arrivalCost                  Float                      @map("arrival_cost")
+    unforeseenDifficultiesCost   Float                      @map("unforeseen_difficulties_cost")
+    productionUsageCost          Float                      @map("production_usage_cost")
+    overallItemCostPerLb         Float                      @map("overall_item_cost_per_lb")
+    overallItemCostPerBatch      Float                      @map("overall_item_cost_per_batch")
+    createdAt                    DateTime                   @default(now()) @map("created_at")
+    updatedAt                    DateTime                   @updatedAt @map("updated_at")
+    producedPricingDataArchive   ProducedPricingDataArchive @relation(fields: [producedPricingDataArchiveId], references: [id])
+    examination                  PricingExamination         @relation(fields: [examinationId], references: [id])
+    bom                          BillOfMaterial             @relation(fields: [bomId], references: [id])
+    item                         Item                       @relation(fields: [itemId], references: [id])
+    upcomingPriceUom             UnitOfMeasurement          @relation(fields: [upcomingPriceUomId], references: [id])
 
-  @@map("bom_pricing_data_archives")
+    @@map("bom_pricing_data_archives")
 }
-
 model ConsumerContainerArchive {
-  id                           String                         @id @default(uuid())
-  examinationId                String                         @map("examination_id")
-  currentConsumerContaineId    String                         @map("current_consumer_container_id")
-  containerItemId              String                         @map("container_item_id")
-  containerCost                Float                          @map("container_cost")
-  fillLaborCost                Float                          @map("fill_labor_cost")
-  shippingCost                 Float                          @map("shipping_cost")
-  freeShippingCost             Float                          @map("free_shipping_cost")
-  createdAt                    DateTime                       @default(now()) @map("created_at")
-  updatedAt                    DateTime                       @updatedAt @map("updated_at")
-  containerItem                Item                           @relation(fields: [containerItemId], references: [id])
-  filledConsumerContainer      ItemConsumerContainer[]
-  examination                  PricingExamination             @relation(fields: [examinationId], references: [id])
-  currentConsumerContainer     ConsumerContainer              @relation(fields: [currentConsumerContaineId], references: [id])
-  ItemConsumerContainerArchive ItemConsumerContainerArchive[]
+    id                        String                  @id @default(uuid())
+    examinationId             String                  @map("examination_id")
+    currentConsumerContaineId String                  @map("current_consumer_container_id")
+    containerItemId           String                  @map("container_item_id")
+    containerCost             Float                   @map("container_cost")
+    fillLaborCost             Float                   @map("fill_labor_cost")
+    shippingCost              Float                   @map("shipping_cost")
+    freeShippingCost          Float                   @map("free_shipping_cost")
+    createdAt                 DateTime                @default(now()) @map("created_at")
+    updatedAt                 DateTime                @updatedAt @map("updated_at")
+    containerItem             Item                    @relation(fields: [containerItemId], references: [id])
+    filledConsumerContainer   ItemConsumerContainer[]
+    examination               PricingExamination      @relation(fields: [examinationId], references: [id])
+    currentConsumerContainer  ConsumerContainer       @relation(fields: [currentConsumerContaineId], references: [id])
 
-  @@map("consumer_containers_archives")
+    @@map("consumer_containers_archives")
 }
-
 model ConsumerContainer {
-  id                      String                     @id @default(uuid())
-  containerItemId         String                     @map("container_item_id")
-  containerCost           Float                      @map("container_cost")
-  fillLaborCost           Float                      @map("fill_labor_cost")
-  freeShippingCost        Float                      @map("free_shipping_cost")
-  createdAt               DateTime                   @default(now()) @map("created_at")
-  updatedAt               DateTime                   @updatedAt @map("updated_at")
-  containerItem           Item                       @relation(fields: [containerItemId], references: [id])
-  filledConsumerContainer ItemConsumerContainer[]
-  archives                ConsumerContainerArchive[]
+    id                      String                     @id @default(uuid())
+    containerItemId         String                     @map("container_item_id")
+    containerCost           Float                      @map("container_cost")
+    fillLaborCost           Float                      @map("fill_labor_cost")
+    freeShippingCost        Float                      @map("free_shipping_cost")
+    createdAt               DateTime                   @default(now()) @map("created_at")
+    updatedAt               DateTime                   @updatedAt @map("updated_at")
+    containerItem           Item                       @relation(fields: [containerItemId], references: [id])
+    filledConsumerContainer ItemConsumerContainer[]
+    archives                ConsumerContainerArchive[]
 
-  @@map("consumer_containers")
+    @@map("consumer_containers")
 }
-
 model FinishedProductArchive {
-  id                       String                     @id @default(uuid())
-  pricingExaminationId     String                     @map("pricing_examination_id")
-  currentFinishedProductId String                     @map("current_finished_product_id")
-  name                     String
-  filledWithItemId         String                     @map("filled_with_item_id")
-  fillQuantity             Float                      @map("fill_quantity")
-  declaredQuantity         Float                      @map("declared_quantity")
-  freeShippingCost         Float                      @map("free_shipping_cost")
-  fillUomId                String                     @map("fill_uom_id")
-  difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
-  finishedProductTotalCost Float                      @map("finished_product_total_cost")
-  auxiliariesTotalCost     Float                      @map("auxiliaries_total_cost")
-  productFillCost          Float                      @map("product_fill_cost")
-  consumerPrice            Float                      @map("consumer_price")
-  markup                   Float                      @map("markup")
-  profit                   Float                      @map("profit")
-  profitPercentage         Float                      @map("profit_percentage")
-  createdAt                DateTime                   @default(now()) @map("created_at")
-  updatedAt                DateTime                   @updatedAt @map("updated_at")
-  filledWithItem           Item                       @relation(fields: [filledWithItemId], references: [id])
-  fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
-  pricingExamination       PricingExamination         @relation(fields: [pricingExaminationId], references: [id])
-  currentFinishedProduct   FinishedProduct            @relation(fields: [currentFinishedProductId], references: [id])
-  auxiliaries              FinishedProductAuxiliary[]
+    id                       String                     @id @default(uuid())
+    pricingExaminationId     String                     @map("pricing_examination_id")
+    currentFinishedProductId String                     @map("current_finished_product_id")
+    name                     String
+    filledWithItemId         String                     @map("filled_with_item_id")
+    fillQuantity             Float                      @map("fill_quantity")
+    declaredQuantity         Float                      @map("declared_quantity")
+    freeShippingCost         Float                      @map("free_shipping_cost")
+    fillUomId                String                     @map("fill_uom_id")
+    difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+    finishedProductTotalCost Float                      @map("finished_product_total_cost")
+    auxiliariesTotalCost     Float                      @map("auxiliaries_total_cost")
+    productFillCost          Float                      @map("product_fill_cost")
+    consumerPrice            Float                      @map("consumer_price")
+    markup                   Float                      @map("markup")
+    profit                   Float                      @map("profit")
+    profitPercentage         Float                      @map("profit_percentage")
+    createdAt                DateTime                   @default(now()) @map("created_at")
+    updatedAt                DateTime                   @updatedAt @map("updated_at")
+    filledWithItem           Item                       @relation(fields: [filledWithItemId], references: [id])
+    fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+    pricingExamination       PricingExamination         @relation(fields: [pricingExaminationId], references: [id])
+    currentFinishedProduct   FinishedProduct            @relation(fields: [currentFinishedProductId], references: [id])
+    auxiliaries              FinishedProductAuxiliary[]
 
-  @@map("finished_product_archives")
+    @@map("finished_product_archives")
 }
-
 model FinishedProductAuxiliary {
-  id                       String                  @id @default(uuid())
-  apartOfFinishedProductId String                  @map("apart_of_finished_product_id")
-  auxiliaryItemId          String                  @map("auxiliary_item_id")
-  quantity                 Int
-  difficultyAdjustmentCost Float                   @map("difficulty_adjustment_cost")
-  createdAt                DateTime                @default(now()) @map("created_at")
-  updatedAt                DateTime                @updatedAt @map("updated_at")
-  apartOfFinishedProduct   FinishedProduct         @relation(fields: [apartOfFinishedProductId], references: [id])
-  auxiliaryItem            Item                    @relation(fields: [auxiliaryItemId], references: [id])
-  FinishedProductArchive   FinishedProductArchive? @relation(fields: [finishedProductArchiveId], references: [id])
-  finishedProductArchiveId String?
+    id                       String          @id @default(uuid())
+    apartOfFinishedProductId String          @map("apart_of_finished_product_id")
+    auxiliaryItemId          String          @map("auxiliary_item_id")
+    quantity                 Int
+    difficultyAdjustmentCost Float           @map("difficulty_adjustment_cost")
+    createdAt                DateTime        @default(now()) @map("created_at")
+    updatedAt                DateTime        @updatedAt @map("updated_at")
+    apartOfFinishedProduct   FinishedProduct @relation(fields: [apartOfFinishedProductId], references: [id])
+    auxiliaryItem            Item            @relation(fields: [auxiliaryItemId], references: [id])
 
-  @@map("finished_product_auxiliaries")
+    @@map("finished_product_auxiliaries")
 }
-
 model FinishedProductAuxiliaryArchive {
-  id                            String            @id @default(uuid())
-  apartOfFinishedProductId      String            @map("apart_of_finished_product_id")
-  auxiliaryItemId               String            @map("auxiliary_item_id")
-  quantity                      Int
-  difficultyAdjustmentCost      Float             @map("difficulty_adjustment_cost")
-  ipdArrivalCost                Float             @map("ipd_arrival_cost")
-  ipdProductionUsageCost        Float             @map("ipd_production_usage_cost")
-  ipdAuxiliaryUsageCost         Float             @map("ipd_auxiliary_usage_cost")
-  ipdUnforeseenDifficultiesCost Float             @map("ipd_unforeseen_difficulties_cost")
-  ipdUpcomingPrice              Float             @map("ipd_upcoming_price")
-  ipdUpcomingPriceUomId         String            @map("ipd_upcoming_price_uom_id")
-  ipdIsUpcomingPriceActive      Boolean           @map("ipd_is_upcoming_price_active")
-  createdAt                     DateTime          @default(now()) @map("created_at")
-  updatedAt                     DateTime          @updatedAt @map("updated_at")
-  apartOfFinishedProduct        FinishedProduct   @relation(fields: [apartOfFinishedProductId], references: [id])
-  auxiliaryItem                 Item              @relation(fields: [auxiliaryItemId], references: [id])
-  ipdUpcomingPriceUom           UnitOfMeasurement @relation(fields: [ipdUpcomingPriceUomId], references: [id])
+    id                            String            @id @default(uuid())
+    apartOfFinishedProductId      String            @map("apart_of_finished_product_id")
+    auxiliaryItemId               String            @map("auxiliary_item_id")
+    quantity                      Int
+    difficultyAdjustmentCost      Float             @map("difficulty_adjustment_cost")
+    ipdArrivalCost                Float             @map("ipd_arrival_cost")
+    ipdProductionUsageCost        Float             @map("ipd_production_usage_cost")
+    ipdAuxiliaryUsageCost         Float             @map("ipd_auxiliary_usage_cost")
+    ipdUnforeseenDifficultiesCost Float             @map("ipd_unforeseen_difficulties_cost")
+    ipdUpcomingPrice              Float             @map("ipd_upcoming_price")
+    ipdUpcomingPriceUomId         String            @map("ipd_upcoming_price_uom_id")
+    ipdIsUpcomingPriceActive      Boolean           @map("ipd_is_upcoming_price_active")
+    createdAt                     DateTime          @default(now()) @map("created_at")
+    updatedAt                     DateTime          @updatedAt @map("updated_at")
+    apartOfFinishedProduct        FinishedProduct   @relation(fields: [apartOfFinishedProductId], references: [id])
+    auxiliaryItem                 Item              @relation(fields: [auxiliaryItemId], references: [id])
+    ipdUpcomingPriceUom           UnitOfMeasurement @relation(fields: [ipdUpcomingPriceUomId], references: [id])
 
-  @@map("finished_product_auxiliary_archives")
+    @@map("finished_product_auxiliary_archives")
 }
-
 model FinishedProduct {
-  id                              String                            @id @default(uuid())
-  recordStatusId                  String                            @map("record_status_id")
-  name                            String
-  filledWithItemId                String                            @map("filled_with_item_id")
-  fillQuantity                    Float                             @map("fill_quantity")
-  declaredQuantity                Float                             @map("declared_quantity")
-  freeShippingCost                Float                             @map("free_shipping_cost")
-  fillUomId                       String                            @map("fill_uom_id")
-  difficultyAdjustmentCost        Float                             @map("difficulty_adjustment_cost")
-  finishedProductTotalCost        Float                             @map("finished_product_total_cost")
-  auxiliariesTotalCost            Float                             @map("auxiliaries_total_cost")
-  productFillCost                 Float                             @map("product_fill_cost")
-  consumerPrice                   Float                             @map("consumer_price")
-  markup                          Float                             @map("markup")
-  profit                          Float                             @map("profit")
-  profitPercentage                Float                             @map("profit_percentage")
-  createdAt                       DateTime                          @default(now()) @map("created_at")
-  updatedAt                       DateTime                          @updatedAt @map("updated_at")
-  filledWithItem                  Item                              @relation(fields: [filledWithItemId], references: [id])
-  fillUom                         UnitOfMeasurement                 @relation(fields: [fillUomId], references: [id])
-  recordStatus                    RecordStatus                      @relation(fields: [recordStatusId], references: [id])
-  auxiliaries                     FinishedProductAuxiliary[]
-  FinishedProductArchive          FinishedProductArchive[]
-  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
+    id                       String                     @id @default(uuid())
+    recordStatusId           String                     @map("record_status_id")
+    name                     String
+    filledWithItemId         String                     @map("filled_with_item_id")
+    fillQuantity             Float                      @map("fill_quantity")
+    declaredQuantity         Float                      @map("declared_quantity")
+    freeShippingCost         Float                      @map("free_shipping_cost")
+    fillUomId                String                     @map("fill_uom_id")
+    difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+    finishedProductTotalCost Float                      @map("finished_product_total_cost")
+    auxiliariesTotalCost     Float                      @map("auxiliaries_total_cost")
+    productFillCost          Float                      @map("product_fill_cost")
+    consumerPrice            Float                      @map("consumer_price")
+    markup                   Float                      @map("markup")
+    profit                   Float                      @map("profit")
+    profitPercentage         Float                      @map("profit_percentage")
+    createdAt                DateTime                   @default(now()) @map("created_at")
+    updatedAt                DateTime                   @updatedAt @map("updated_at")
+    filledWithItem           Item                       @relation(fields: [filledWithItemId], references: [id])
+    fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+    recordStatus             RecordStatus               @relation(fields: [recordStatusId], references: [id])
+    auxiliaries              FinishedProductAuxiliary[]
 
-  @@map("finished_products")
+    @@map("finished_products")
 }
-
 model ItemConsumerContainerArchive {
-  id                             String                   @id @default(uuid())
-  examinationId                  String                   @map("examination_id")
-  currentItemConsumerContainerId String                   @map("current_item_consumer_container_id")
-  consumerContainerArchiveId     String                   @map("consumer_container_archive_id")
-  fillQuantity                   Float                    @map("fill_quantity")
-  declaredQuantity               Float                    @map("declared_quantity")
-  difficultiesCost               Float                    @map("difficulties_cost")
-  uomId                          String                   @map("uom_id")
-  consumerPrice                  Float                    @default(0) @map("consumer_price")
-  createdAt                      DateTime                 @default(now()) @map("created_at")
-  updatedAt                      DateTime                 @updatedAt @map("updated_at")
-  consumerContainerArchive       ConsumerContainerArchive @relation(fields: [consumerContainerArchiveId], references: [id])
-  uom                            UnitOfMeasurement        @relation(fields: [uomId], references: [id])
-  examination                    PricingExamination       @relation(fields: [examinationId], references: [id])
-  currentItemConsumerContainer   ItemConsumerContainer    @relation(fields: [currentItemConsumerContainerId], references: [id])
+    id                             String                   @id @default(uuid())
+    examinationId                  String                   @map("examination_id")
+    currentItemConsumerContainerId String                   @map("current_item_consumer_container_id")
+    consumerContainerArchiveId     String                   @map("consumer_container_archive_id")
+    fillQuantity                   Float                    @map("fill_quantity")
+    declaredQuantity               Float                    @map("declared_quantity")
+    difficultiesCost               Float                    @map("difficulties_cost")
+    uomId                          String                   @map("uom_id")
+    consumerPrice                  Float                    @default(0) @map("consumer_price")
+    createdAt                      DateTime                 @default(now()) @map("created_at")
+    updatedAt                      DateTime                 @updatedAt @map("updated_at")
+    consumerContainerArchive       ConsumerContainerArchive @relation(fields: [consumerContainerArchiveId], references: [id])
+    uom                            UnitOfMeasurement        @relation(fields: [uomId], references: [id])
+    examination                    PricingExamination       @relation(fields: [examinationId], references: [id])
+    currentItemConsumerContainer   ItemConsumerContainer    @relation(fields: [currentItemConsumerContainerId], references: [id])
 
-  @@map("item_consumer_container_archives")
+    @@map("item_consumer_container_archives")
 }
-
 model ItemConsumerContainer {
-  id                         String                         @id @default(uuid())
-  itemId                     String                         @map("item_id")
-  recordStatusId             String                         @default("d7b0a804-52c6-4586-b4f4-0fe49895f794") @map("record_status_id")
-  consumerContainerId        String                         @map("consumer_container_id")
-  fillQuantity               Float                          @map("fill_quantity")
-  declaredQuantity           Float                          @map("declared_quantity")
-  difficultiesCost           Float                          @map("difficulties_cost")
-  uomId                      String                         @map("uom_id")
-  consumerPrice              Float                          @default(0) @map("consumer_price")
-  createdAt                  DateTime                       @default(now()) @map("created_at")
-  updatedAt                  DateTime                       @updatedAt @map("updated_at")
-  item                       Item                           @relation(fields: [itemId], references: [id])
-  consumerContainer          ConsumerContainer              @relation(fields: [consumerContainerId], references: [id])
-  uom                        UnitOfMeasurement              @relation(fields: [uomId], references: [id])
-  recordStatus               RecordStatus                   @relation(fields: [recordStatusId], references: [id])
-  archives                   ItemConsumerContainerArchive[]
-  ConsumerContainerArchive   ConsumerContainerArchive?      @relation(fields: [consumerContainerArchiveId], references: [id])
-  consumerContainerArchiveId String?
+    id                  String                         @id @default(uuid())
+    itemId              String                         @map("item_id")
+    recordStatusId      String                         @default("d7b0a804-52c6-4586-b4f4-0fe49895f794") @map("record_status_id")
+    consumerContainerId String                         @map("consumer_container_id")
+    fillQuantity        Float                          @map("fill_quantity")
+    declaredQuantity    Float                          @map("declared_quantity")
+    difficultiesCost    Float                          @map("difficulties_cost")
+    uomId               String                         @map("uom_id")
+    consumerPrice       Float                          @default(0) @map("consumer_price")
+    createdAt           DateTime                       @default(now()) @map("created_at")
+    updatedAt           DateTime                       @updatedAt @map("updated_at")
+    item                Item                           @relation(fields: [itemId], references: [id])
+    consumerContainer   ConsumerContainer              @relation(fields: [consumerContainerId], references: [id])
+    uom                 UnitOfMeasurement              @relation(fields: [uomId], references: [id])
+    recordStatus        RecordStatus                   @relation(fields: [recordStatusId], references: [id])
+    archives            ItemConsumerContainerArchive[]
 
-  @@map("item_consumer_containers")
+    @@map("item_consumer_containers")
 }
-
 model ItemCostDetermination {
-  id                String          @id @default(uuid())
-  itemId            String          @map("item_id")
-  itemPricingDataId String          @map("item_pricing_data_id")
-  itemCost          Float           @map("item_cost")
-  upcomingCostUsed  Boolean         @map("upcoming_cost_used")
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
-  item              Item            @relation(fields: [itemId], references: [id])
-  itemPricingData   ItemPricingData @relation(fields: [itemPricingDataId], references: [id])
+    id                String          @id @default(uuid())
+    itemId            String          @map("item_id")
+    itemPricingDataId String          @map("item_pricing_data_id")
+    itemCost          Float           @map("item_cost")
+    upcomingCostUsed  Boolean         @map("upcoming_cost_used")
+    createdAt         DateTime        @default(now()) @map("created_at")
+    updatedAt         DateTime        @updatedAt @map("updated_at")
+    item              Item            @relation(fields: [itemId], references: [id])
+    itemPricingData   ItemPricingData @relation(fields: [itemPricingDataId], references: [id])
 
-  @@map("item_cost_determinations")
+    @@map("item_cost_determinations")
 }
-
 model ItemPricingData {
-  id                         String                   @id @default(uuid())
-  itemId                     String                   @map("item_id")
-  arrivalCost                Float                    @map("arrival_cost")
-  productionUsageCost        Float                    @map("productionUsageCost")
-  auxiliaryUsageCost         Float                    @default(0) @map("auxiliary_usage_cost")
-  unforeseenDifficultiesCost Float                    @map("unforeseen_difficulties_cost")
-  isUpcomingPriceActive      Boolean                  @map("isUpcomingPriceActive")
-  upcomingPrice              Float                    @map("upcomingPrice")
-  upcomingPriceUomId         String                   @map("upcoming_price_uom_id")
-  overallItemCost            Float                    @default(0) @map("overall_item_cost")
-  createdAt                  DateTime                 @default(now()) @map("created_at")
-  updatedAt                  DateTime                 @updatedAt @map("updated_at")
-  item                       Item                     @relation(fields: [itemId], references: [id])
-  upcomingPriceUom           UnitOfMeasurement        @relation(fields: [upcomingPriceUomId], references: [id])
-  ItemPricingDataArchives    ItemPricingDataArchive[]
-  ItemCostDetermination      ItemCostDetermination[]
+    id                         String                   @id @default(uuid())
+    itemId                     String                   @map("item_id")
+    arrivalCost                Float                    @map("arrival_cost")
+    productionUsageCost        Float                    @map("productionUsageCost")
+    auxiliaryUsageCost         Float                    @default(0) @map("auxiliary_usage_cost")
+    unforeseenDifficultiesCost Float                    @map("unforeseen_difficulties_cost")
+    isUpcomingPriceActive      Boolean                  @map("isUpcomingPriceActive")
+    upcomingPrice              Float                    @map("upcomingPrice")
+    upcomingPriceUomId         String                   @map("upcoming_price_uom_id")
+    overallItemCost            Float                    @default(0) @map("overall_item_cost")
+    createdAt                  DateTime                 @default(now()) @map("created_at")
+    updatedAt                  DateTime                 @updatedAt @map("updated_at")
+    item                       Item                     @relation(fields: [itemId], references: [id])
+    upcomingPriceUom           UnitOfMeasurement        @relation(fields: [upcomingPriceUomId], references: [id])
+    ItemPricingDataArchives    ItemPricingDataArchive[]
 
-  @@map("item_pricing_data")
+    @@map("item_pricing_data")
 }
-
 model ItemPricingDataArchive {
-  id                         String             @id @default(uuid())
-  examinationId              String             @map("examination_id")
-  currentItemPricingDataId   String             @map("current_item_pricing_data_id")
-  arrivalCost                Float              @map("arrival_cost")
-  productionUsageCost        Float              @map("productionUsageCost")
-  auxiliaryUsageCost         Float              @map("auxiliary_usage_cost")
-  unforeseenDifficultiesCost Float              @map("unforeseen_difficulties_cost")
-  isUpcomingPriceActive      Boolean            @map("isUpcomingPriceActive")
-  upcomingPrice              Float              @map("upcomingPrice")
-  upcomingPriceUomId         String             @map("upcoming_price_uom_id")
-  createdAt                  DateTime           @default(now()) @map("created_at")
-  updatedAt                  DateTime           @updatedAt @map("updated_at")
-  overallItemCost            Float              @default(0) @map("overall_item_cost")
-  upcomingPriceUom           UnitOfMeasurement  @relation(fields: [upcomingPriceUomId], references: [id])
-  examination                PricingExamination @relation(fields: [examinationId], references: [id])
-  currentItemPricingData     ItemPricingData?   @relation(fields: [currentItemPricingDataId], references: [id])
+    id                         String             @id @default(uuid())
+    examinationId              String             @map("examination_id")
+    currentItemPricingDataId   String             @map("current_item_pricing_data_id")
+    arrivalCost                Float              @map("arrival_cost")
+    productionUsageCost        Float              @map("productionUsageCost")
+    auxiliaryUsageCost         Float              @map("auxiliary_usage_cost")
+    unforeseenDifficultiesCost Float              @map("unforeseen_difficulties_cost")
+    isUpcomingPriceActive      Boolean            @map("isUpcomingPriceActive")
+    upcomingPrice              Float              @map("upcomingPrice")
+    upcomingPriceUomId         String             @map("upcoming_price_uom_id")
+    createdAt                  DateTime           @default(now()) @map("created_at")
+    updatedAt                  DateTime           @updatedAt @map("updated_at")
+    overallItemCost            Float              @default(0) @map("overall_item_cost")
+    upcomingPriceUom           UnitOfMeasurement  @relation(fields: [upcomingPriceUomId], references: [id])
+    examination                PricingExamination @relation(fields: [examinationId], references: [id])
+    currentItemPricingData     ItemPricingData ?   @relation(fields: [currentItemPricingDataId], references: [id])
 
-  @@map("item_pricing_data_archives")
+    @@map("item_pricing_data_archives")
 }
-
 model PaymentMethod {
-  id                     String                  @id @default(uuid())
-  name                   String
-  type                   String
-  identifier             String
-  image                  String
-  limit                  Float
-  createdAt              DateTime                @default(now()) @map("created_at")
-  updatedAt              DateTime                @updatedAt @map("updated_at")
-  supplierPaymentMethods SupplierPaymentMethod[]
-  purchaseOrders         PurchaseOrder[]
+    id                     String                  @id @default(uuid())
+    name                   String
+    type                   String
+    identifier             String
+    image                  String
+    limit                  Float
+    createdAt              DateTime                @default(now()) @map("created_at")
+    updatedAt              DateTime                @updatedAt @map("updated_at")
+    supplierPaymentMethods SupplierPaymentMethod[]
+    purchaseOrders         PurchaseOrder[]
+    poAccountingDetails    PoAccountingDetail[]
 
-  @@map("payment_methods")
+    @@map("payment_methods")
 }
+model PoAccountingDetail {
+    id                    String             @id @default(uuid())
+    statusId              String             @map("status_id")
+    purchaseOrderId       String             @map("purchase_order_id")
+    paid                  Boolean?
+    paymentMethodId       String?            @map("payment_method_id")
+    packingSlipReceived   Boolean?           @map("packing_slip_received")
+    paperworkGivenToAdmin Boolean?           @map("paperwork_given_to_admin")
+    createdAt             DateTime           @default(now()) @map("created_at")
+    updatedAt             DateTime           @updatedAt @map("updated_at")
+    status                PoAccountingStatus @relation(fields: [statusId], references: [id])
+    purchaseOrder         PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id])
+    paymentMethod         PaymentMethod      @relation(fields: [paymentMethodId], references: [id])
 
+    @@map("po_accounting_details")
+}
+model PoAccountingFileType {
+    id                String             @id @default(uuid())
+    name              String
+    abbreviaton       String?
+    description       String?
+    bgColor           String             @map("bg_color")
+    textColor         String             @map("text_color")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    poAccountingFiles PoAccountingFile[]
+
+    @@map("po_accounting_file_types")
+}
+model PoAccountingFile {
+    id              String               @id @default(uuid())
+    fileTypeId      String               @map("file_type_id")
+    fileId          String               @map("file_id")
+    purchaseOrderId String               @map("purchase_order_id")
+    createdAt       DateTime             @default(now()) @map("created_at")
+    updatedAt       DateTime             @updatedAt @map("updated_at")
+    fileType        PoAccountingFileType @relation(fields: [fileTypeId], references: [id])
+    file            File                 @relation(fields: [fileId], references: [id])
+    purchaseOrder   PurchaseOrder        @relation(fields: [purchaseOrderId], references: [id])
+
+    @@map("po_accounting_files")
+}
+model PoAccountingNoteType {
+    id                String             @id @default(uuid())
+    name              String
+    description       String
+    bgColor           String             @map("bg_color")
+    textColor         String             @map("text_color")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    poAccountingNotes PoAccountingNote[]
+
+    @@map("po_accounting_note_types")
+}
+model PoAccountingNote {
+    id              String               @id @default(uuid())
+    purchaseOrderId String               @map("purchase_order_id")
+    noteTypeId      String               @map("note_type_id")
+    userId          String               @map("user_id")
+    content         String
+    createdAt       DateTime             @default(now()) @map("created_at")
+    updatedAt       DateTime             @updatedAt @map("updated_at")
+    purchaseOrder   PurchaseOrder        @relation(fields: [purchaseOrderId], references: [id])
+    user            User                 @relation(fields: [userId], references: [id])
+    noteType        PoAccountingNoteType @relation(fields: [noteTypeId], references: [id])
+
+    @@map("po_accounting_notes")
+}
+model PoAccountingStatus {
+    id                  String               @id @default(uuid())
+    name                String
+    description         String?
+    sequence            Int                  @unique
+    bgColor             String               @default("#333333") @map("bg_color")
+    textColor           String               @default("#ffffff") @map("text_color")
+    createdAt           DateTime             @default(now()) @map("created_at")
+    updatedAt           DateTime             @updatedAt @map("updated_at")
+    poAccountingDetails PoAccountingDetail[]
+
+    @@map("po_accounting_statuses")
+}
 model PricingExaminationNoteType {
-  id               String                   @id @default(uuid())
-  name             String
-  description      String
-  bgColor          String                   @map("bg_color")
-  textColor        String                   @map("text_color")
-  createdAt        DateTime                 @default(now()) @map("created_at")
-  updatedAt        DateTime                 @updatedAt @map("updated_at")
-  examinationNotes PricingExaminationNote[]
+    id               String                   @id @default(uuid())
+    name             String
+    description      String
+    bgColor          String                   @map("bg_color")
+    textColor        String                   @map("text_color")
+    createdAt        DateTime                 @default(now()) @map("created_at")
+    updatedAt        DateTime                 @updatedAt @map("updated_at")
+    examinationNotes PricingExaminationNote[]
 
-  @@map("pricing_examination_note_types")
+    @@map("pricing_examination_note_types")
 }
-
 model PricingExaminationNote {
-  id                   String                     @id @default(uuid())
-  pricingExaminationId String                     @map("pricing_examination_id")
-  noteTypeId           String                     @map("note_type_id")
-  userId               String                     @map("user_id")
-  content              String
-  createdAt            DateTime                   @default(now()) @map("created_at")
-  updatedAt            DateTime                   @updatedAt @map("updated_at")
-  pricingExamination   PricingExamination         @relation(fields: [pricingExaminationId], references: [id])
-  user                 User                       @relation(fields: [userId], references: [id])
-  noteType             PricingExaminationNoteType @relation(fields: [noteTypeId], references: [id])
+    id                   String                     @id @default(uuid())
+    pricingExaminationId String                     @map("pricing_examination_id")
+    noteTypeId           String                     @map("note_type_id")
+    userId               String                     @map("user_id")
+    content              String
+    createdAt            DateTime                   @default(now()) @map("created_at")
+    updatedAt            DateTime                   @updatedAt @map("updated_at")
+    pricingExamination   PricingExamination         @relation(fields: [pricingExaminationId], references: [id])
+    user                 User                       @relation(fields: [userId], references: [id])
+    noteType             PricingExaminationNoteType @relation(fields: [noteTypeId], references: [id])
 
-  @@map("pricing_examination_notes")
+    @@map("pricing_examination_notes")
 }
-
 model PricingExaminationValidation {
-  id                                 String             @id @default(uuid())
-  examinationId                      String             @map("examination_id")
-  allContainersReviewed              Boolean            @map("all_containers_reviewed")
-  allContainersExceedProfitThreshold Boolean            @map("all_containers_exceed_profit_threshold")
-  createdAt                          DateTime           @default(now()) @map("created_at")
-  updatedAt                          DateTime           @updatedAt @map("updated_at")
-  examination                        PricingExamination @relation(fields: [examinationId], references: [id])
+    id                                 String             @id @default(uuid())
+    examinationId                      String             @map("examination_id")
+    allContainersReviewed              Boolean            @map("all_containers_reviewed")
+    allContainersExceedProfitThreshold Boolean            @map("all_containers_exceed_profit_threshold")
+    createdAt                          DateTime           @default(now()) @map("created_at")
+    updatedAt                          DateTime           @updatedAt @map("updated_at")
+    examination                        PricingExamination @relation(fields: [examinationId], references: [id])
 
-  @@map("pricing_examination_validations")
+    @@map("pricing_examination_validations")
 }
-
 model PricingExamination {
-  id                              String                         @id @default(uuid())
-  approved                        Boolean                        @default(false)
-  rejected                        Boolean                        @default(false)
-  examinedItemId                  String                         @map("examined_item_id")
-  userId                          String                         @map("user_id")
-  createdAt                       DateTime                       @default(now()) @map("created_at")
-  updatedAt                       DateTime                       @updatedAt @map("updated_at")
-  examinedItem                    Item                           @relation(fields: [examinedItemId], references: [id])
-  user                            User                           @relation(fields: [userId], references: [id])
-  itemPricingDataArchive          ItemPricingDataArchive[]
-  consumerContainerArchive        ConsumerContainerArchive[]
-  filledConsumerContainerArchives ItemConsumerContainerArchive[]
-  validation                      PricingExaminationValidation[]
-  producedPricingDataArchives     ProducedPricingDataArchive[]
-  BomPricingDataArchive           BomPricingDataArchive[]
-  FinishedProductArchive          FinishedProductArchive[]
-  PricingExaminationNote          PricingExaminationNote[]
+    id                              String                         @id @default(uuid())
+    approved                        Boolean                        @default(false)
+    rejected                        Boolean                        @default(false)
+    examinedItemId                  String                         @map("examined_item_id")
+    userId                          String                         @map("user_id")
+    createdAt                       DateTime                       @default(now()) @map("created_at")
+    updatedAt                       DateTime                       @updatedAt @map("updated_at")
+    examinedItem                    Item                           @relation(fields: [examinedItemId], references: [id])
+    user                            User                           @relation(fields: [userId], references: [id])
+    itemPricingDataArchive          ItemPricingDataArchive[]
+    consumerContainerArchive        ConsumerContainerArchive[]
+    filledConsumerContainerArchives ItemConsumerContainerArchive[]
+    validation                      PricingExaminationValidation[]
+    producedPricingDataArchives     ProducedPricingDataArchive[]
 
-  @@map("pricing_examinations")
+    @@map("pricing_examinations")
 }
-
 model PricingQueue {
-  id          String   @id @default(uuid())
-  itemId      String   @map("item_id")
-  isCompleted Boolean  @map("is_completed")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  item        Item     @relation(fields: [itemId], references: [id])
+    id          String   @id @default(uuid())
+    itemId      String   @map("item_id")
+    isCompleted Boolean  @map("is_completed")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    item Item @relation(fields: [itemId], references: [id])
 
-  @@map("pricing_queue")
+    @@map("pricing_queue")
 }
-
 model PricingTemplateAuxiliary {
-  id                                      String                         @id @default(uuid())
-  apartOfPricingTemplateFinishedProductId String                         @map("apart_of_pricing_template_finished_product_id")
-  auxiliaryItemId                         String                         @map("auxiliary_item_id")
-  quantity                                Int
-  difficultyAdjustmentCost                Float                          @map("difficulty_adjustment_cost")
-  createdAt                               DateTime                       @default(now()) @map("created_at")
-  updatedAt                               DateTime                       @updatedAt @map("updated_at")
-  apartOfPricingTemplateFinishedProduct   PricingTemplateFinishedProduct @relation(fields: [apartOfPricingTemplateFinishedProductId], references: [id])
-  auxiliaryItem                           Item                           @relation(fields: [auxiliaryItemId], references: [id])
+    id                                      String                         @id @default(uuid())
+    apartOfPricingTemplateFinishedProductId String                         @map("apart_of_pricing_template_finished_product_id")
+    auxiliaryItemId                         String                         @map("auxiliary_item_id")
+    quantity                                Int
+    difficultyAdjustmentCost                Float                          @map("difficulty_adjustment_cost")
+    createdAt                               DateTime                       @default(now()) @map("created_at")
+    updatedAt                               DateTime                       @updatedAt @map("updated_at")
+    apartOfPricingTemplateFinishedProduct   PricingTemplateFinishedProduct @relation(fields: [apartOfPricingTemplateFinishedProductId], references: [id])
+    auxiliaryItem                           Item                           @relation(fields: [auxiliaryItemId], references: [id])
 
-  @@map("pricing_template_auxiliary")
+    @@map("pricing_template_auxiliary")
 }
-
 model PricingTemplateFinishedProduct {
-  id                       String                     @id @default(uuid())
-  apartOfPricingTemplateId String                     @map("apart_of_pricing_template_id")
-  name                     String
-  fillQuantity             Float                      @map("fill_quantity")
-  declaredQuantity         Float                      @map("declared_quantity")
-  freeShippingCost         Float                      @map("free_shipping_cost")
-  fillUomId                String                     @map("fill_uom_id")
-  difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
-  createdAt                DateTime                   @default(now()) @map("created_at")
-  updatedAt                DateTime                   @updatedAt @map("updated_at")
-  apartOfPricingTemplate   PricingTemplate            @relation(fields: [apartOfPricingTemplateId], references: [id])
-  fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
-  auxiliaries              PricingTemplateAuxiliary[]
+    id                       String                     @id @default(uuid())
+    apartOfPricingTemplateId String                     @map("apart_of_pricing_template_id")
+    name                     String
+    fillQuantity             Float                      @map("fill_quantity")
+    declaredQuantity         Float                      @map("declared_quantity")
+    freeShippingCost         Float                      @map("free_shipping_cost")
+    fillUomId                String                     @map("fill_uom_id")
+    difficultyAdjustmentCost Float                      @map("difficulty_adjustment_cost")
+    createdAt                DateTime                   @default(now()) @map("created_at")
+    updatedAt                DateTime                   @updatedAt @map("updated_at")
+    apartOfPricingTemplate   PricingTemplate            @relation(fields: [apartOfPricingTemplateId], references: [id])
+    fillUom                  UnitOfMeasurement          @relation(fields: [fillUomId], references: [id])
+    auxiliaries              PricingTemplateAuxiliary[]
 
-  @@map("pricing_template_finished_products")
+    @@map("pricing_template_finished_products")
 }
-
 model PricingTemplate {
-  id               String                           @id @default(uuid())
-  name             String
-  description      String
-  forItemTypeId    String?                          @map("for_item_type_id")
-  createdAt        DateTime                         @default(now()) @map("created_at")
-  updatedAt        DateTime                         @updatedAt @map("updated_at")
-  forItemType      ItemType?                        @relation(fields: [forItemTypeId], references: [id])
-  finishedProducts PricingTemplateFinishedProduct[]
+    id               String                           @id @default(uuid())
+    name             String
+    description      String
+    forItemTypeId    String?                          @map("for_item_type_id")
+    createdAt        DateTime                         @default(now()) @map("created_at")
+    updatedAt        DateTime                         @updatedAt @map("updated_at")
+    forItemType      ItemType?                        @relation(fields: [forItemTypeId], references: [id])
+    finishedProducts PricingTemplateFinishedProduct[]
 
-  @@map("pricing_template")
+    @@map("pricing_template")
 }
-
 model ProducedPricingDataArchive {
-  id                             String                      @id @default(uuid())
-  examinationId                  String                      @map("examination_id")
-  mbprId                         String                      @map("mbpr_id")
-  mbprVersionLabel               String                      @map("mbpr_version_label")
-  batchSizeId                    String                      @map("batch_size_id")
-  batchSizeQuantity              Float                       @map("batch_size_quantity")
-  compoundingVesselId            String                      @map("compounding_vessel_id")
-  compoundingVesselEquipmentName String                      @map("compounding_vessel_equipment_name")
-  compoundingTankTime            Float                       @map("compounding_tank_time")
-  bomCount                       Int                         @map("bom_count")
-  totalBomCostPerBatch           Float                       @map("total_bom_cost_per_batch")
-  totalBomCostPerLb              Float                       @map("total_bom_cost_per_lb")
-  totalCostPerBatch              Float                       @map("total_cost_per_batch")
-  totalCostPerLb                 Float                       @map("total_cost_per_lb")
-  createdAt                      DateTime                    @default(now()) @map("created_at")
-  updatedAt                      DateTime                    @updatedAt @map("updated_at")
-  examination                    PricingExamination          @relation(fields: [examinationId], references: [id])
-  mbpr                           MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  batchSize                      BatchSize                   @relation(fields: [batchSizeId], references: [id])
-  compoundingVessel              CompoundingVessel           @relation(fields: [compoundingVesselId], references: [id])
-  bomPricingDataArchives         BomPricingDataArchive[]
+    id                             String                      @id @default(uuid())
+    examinationId                  String                      @map("examination_id")
+    mbprId                         String                      @map("mbpr_id")
+    mbprVersionLabel               String                      @map("mbpr_version_label")
+    batchSizeId                    String                      @map("batch_size_id")
+    batchSizeQuantity              Float                       @map("batch_size_quantity")
+    compoundingVesselId            String                      @map("compounding_vessel_id")
+    compoundingVesselEquipmentName String                      @map("compounding_vessel_equipment_name")
+    compoundingTankTime            Float                       @map("compounding_tank_time")
+    bomCount                       Int                         @map("bom_count")
+    totalBomCostPerBatch           Float                       @map("total_bom_cost_per_batch")
+    totalBomCostPerLb              Float                       @map("total_bom_cost_per_lb")
+    totalCostPerBatch              Float                       @map("total_cost_per_batch")
+    totalCostPerLb                 Float                       @map("total_cost_per_lb")
+    createdAt                      DateTime                    @default(now()) @map("created_at")
+    updatedAt                      DateTime                    @updatedAt @map("updated_at")
+    examination                    PricingExamination          @relation(fields: [examinationId], references: [id])
+    mbpr                           MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+    batchSize                      BatchSize                   @relation(fields: [batchSizeId], references: [id])
+    compoundingVessel              CompoundingVessel           @relation(fields: [compoundingVesselId], references: [id])
+    bomPricingDataArchives         BomPricingDataArchive[]
 
-  @@map("produced_pricing_data_archives")
+    @@map("produced_pricing_data_archives")
 }
-
 model AppConfigGroup {
-  id          String   @id @default(uuid())
-  name        String   @map("name")
-  description String   @map("description")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  configs     Config[]
+    id          String   @id @default(uuid())
+    name        String   @map("name")
+    description String   @map("description")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    configs     Config[]
 
-  @@map("app_config_groups")
+    @@map("app_config_groups")
 }
-
 model Config {
-  id            String         @id @default(uuid())
-  key           String
-  value         String
-  dataType      String         @map("data_type")
-  description   String
-  configGroupId String         @default("f8b6d7ef-672c-4751-9f08-21c7c3790136") @map("config_group_id")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-  configGroup   AppConfigGroup @relation(fields: [configGroupId], references: [id])
+    id            String         @id @default(uuid())
+    key           String
+    value         String
+    dataType      String         @map("data_type")
+    description   String
+    configGroupId String         @default("f8b6d7ef-672c-4751-9f08-21c7c3790136") @map("config_group_id")
+    createdAt     DateTime       @default(now()) @map("created_at")
+    updatedAt     DateTime       @updatedAt @map("updated_at")
+    configGroup   AppConfigGroup @relation(fields: [configGroupId], references: [id])
 
-  @@map("configs")
+    @@map("configs")
 }
+model File {
+    id                String             @id @default(uuid())
+    name              String
+    objectName        String             @unique @map("object_name")
+    bucketName        String             @map("bucket_name")
+    etag              String
+    versionId         String?            @map("version_id")
+    size              Int
+    mimeType          String             @map("mime_type")
+    uploadedById      String             @map("uploaded_by_id")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    uploadedBy        User               @relation(fields: [uploadedById], references: [id])
+    poAccountingFiles PoAccountingFile[]
 
+    @@map("files")
+}
 model RecordStatus {
-  id                          String                        @id @default(uuid())
-  name                        String
-  bgColor                     String                        @default("#000000") @map("bg_color")
-  textColor                   String                        @default("#ffffff") @map("text_color")
-  description                 String
-  createdAt                   DateTime                      @default(now()) @map("created_at")
-  updatedAt                   DateTime                      @updatedAt @map("updated_at")
-  itemConsumerContainers      ItemConsumerContainer[]
-  FinishedProduct             FinishedProduct[]
-  BatchSize                   BatchSize[]
-  MasterBatchProductionRecord MasterBatchProductionRecord[]
+    id                     String                  @id @default(uuid())
+    name                   String
+    bgColor                String                  @default("#000000") @map("bg_color")
+    textColor              String                  @default("#ffffff") @map("text_color")
+    description            String
+    createdAt              DateTime                @default(now()) @map("created_at")
+    updatedAt              DateTime                @updatedAt @map("updated_at")
+    itemConsumerContainers ItemConsumerContainer[]
 
-  @@map("record_statuses")
+    @@map("record_statuses")
 }
 
 model ActivityLog {
-  id         String   @id @default(uuid())
-  userId     String   @map("user_id")
-  action     String
-  entityType String?  @map("entity_type")
-  entityId   String?  @map("entity_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  details    Json
-  user       User     @relation(fields: [userId], references: [id])
+    id         String   @id @default(uuid())
+    userId     String   @map("user_id")
+    action     String
+    entityType String?  @map("entity_type")
+    entityId   String?     @map("entity_id")
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
+    details    Json
+    user       User     @relation(fields: [userId], references: [id])
 
-  @@map("activity_logs")
+    @@map("activity_logs")
 }
 
 generator client {
-  provider = "prisma-client-js"
+provider = "prisma-client-js"
 }
-
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+provider = "postgresql"
+url      = env("DATABASE_URL")
 }
-
 model Equipment {
-  id                String              @id @default(uuid())
-  name              String
-  identifier        String
-  equipmentTypeId   String              @map("equipment_type_id")
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-  equipmentType     EquipmentType       @relation(fields: [equipmentTypeId], references: [id])
-  compoundingVessel CompoundingVessel[]
-  StepEquipment     StepEquipment[]
+    id              String        @id @default(uuid())
+    name            String
+    identifier      String
+    equipmentTypeId String        @map("equipment_type_id")
+    createdAt       DateTime      @default(now()) @map("created_at")
+    updatedAt       DateTime      @updatedAt @map("updated_at")
+    equipmentType   EquipmentType @relation(fields: [equipmentTypeId], references: [id])
+    compoundingVessel CompoundingVessel[]
 
-  @@map("equipment")
+    @@map("equipment")
 }
-
 model EquipmentType {
-  id        String      @id @default(uuid())
-  name      String
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  equipment Equipment[]
+    id        String      @id @default(uuid())
+    name      String
+    createdAt DateTime    @default(now()) @map("created_at")
+    updatedAt DateTime    @updatedAt @map("updated_at")
+    equipment Equipment[]
 
-  @@map("equipment_types")
+    @@map("equipment_types")
 }
-
 model AuditRequestNoteType {
-  id                String             @id @default(uuid())
-  name              String
-  description       String?
-  bgColor           String             @map("bg_color")
-  textColor         String             @map("text_color")
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt @map("updated_at")
-  auditRequestNotes AuditRequestNote[]
+    id                String             @id @default(uuid())
+    name              String
+    description       String?
+    bgColor           String             @map("bg_color")
+    textColor         String             @map("text_color")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    auditRequestNotes AuditRequestNote[]
 
-  @@map("audit_request_note_types")
+    @@map("audit_request_note_types")
 }
-
 model AuditRequestNote {
-  id         String               @id @default(uuid())
-  requestId  String               @map("request_id")
-  noteTypeId String               @map("note_type_id")
-  userId     String               @map("user_id")
-  content    String
-  createdAt  DateTime             @default(now()) @map("created_at")
-  updatedAt  DateTime             @updatedAt @map("updated_at")
-  request    AuditRequest         @relation(fields: [requestId], references: [id])
-  user       User                 @relation(fields: [userId], references: [id])
-  noteType   AuditRequestNoteType @relation(fields: [noteTypeId], references: [id])
+    id         String               @id @default(uuid())
+    requestId  String               @map("request_id")
+    noteTypeId String               @map("note_type_id")
+    userId     String               @map("user_id")
+    content    String
+    createdAt  DateTime             @default(now()) @map("created_at")
+    updatedAt  DateTime             @updatedAt @map("updated_at")
+    request    AuditRequest         @relation(fields: [requestId], references: [id])
+    user       User                 @relation(fields: [userId], references: [id])
+    noteType   AuditRequestNoteType @relation(fields: [noteTypeId], references: [id])
 
-  @@map("audit_request_notes")
+    @@map("audit_request_notes")
 }
-
 model AuditRequestStatus {
-  id          String         @id @default(uuid())
-  name        String
-  description String?
-  sequence    Int            @unique
-  bgColor     String         @default("#333333") @map("bg_color")
-  textColor   String         @default("#ffffff") @map("text_color")
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @updatedAt @map("updated_at")
-  requests    AuditRequest[]
+    id          String         @id @default(uuid())
+    name        String
+    description String?
+    sequence    Int            @unique
+    bgColor     String         @default("#333333") @map("bg_color")
+    textColor   String         @default("#ffffff") @map("text_color")
+    createdAt   DateTime       @default(now()) @map("created_at")
+    updatedAt   DateTime       @updatedAt @map("updated_at")
+    requests    AuditRequest[]
 
-  @@map("audit_request_statuses")
+    @@map("audit_request_statuses")
 }
 
 model AuditRequest {
-  id               String             @id @default(uuid())
-  requestById      String             @map("request_by_id")
-  inventoryAuditId String?            @map("inventory_audit_id")
-  statusId         String             @map("status_id")
-  itemId           String             @map("item_id")
-  createdAt        DateTime           @default(now()) @map("created_at")
-  updatedAt        DateTime           @updatedAt @map("updated_at")
-  requestedBy      User               @relation(fields: [requestById], references: [id])
-  item             Item               @relation(fields: [itemId], references: [id])
-  inventoryAudit   InventoryAudit?    @relation(fields: [inventoryAuditId], references: [id])
-  status           AuditRequestStatus @relation(fields: [statusId], references: [id])
-  notes            AuditRequestNote[]
+    id               String             @id @default(uuid())
+    requestById      String             @map("request_by_id")
+    inventoryAuditId String?            @map("inventory_audit_id")
+    statusId         String             @map("status_id")
+    itemId           String             @map("item_id")
+    createdAt        DateTime           @default(now()) @map("created_at")
+    updatedAt        DateTime           @updatedAt @map("updated_at")
+    requestedBy      User               @relation(fields: [requestById], references: [id])
+    item             Item               @relation(fields: [itemId], references: [id])
+    inventoryAudit   InventoryAudit?    @relation(fields: [inventoryAuditId], references: [id])
+    status           AuditRequestStatus @relation(fields: [statusId], references: [id])
+    notes            AuditRequestNote[]
 
-  @@map("audit_requests")
+    @@map("audit_requests")
 }
 
 model ContainerType {
-  id                      String                    @id @default(uuid())
-  name                    String
-  createdAt               DateTime                  @default(now()) @map("created_at")
-  updatedAt               DateTime                  @updatedAt @map("updated_at")
-  Container               Container[]
-  PurchaseOrderItemDetail PurchaseOrderItemDetail[]
+    id        String      @id @default(uuid())
+    name      String
+    createdAt DateTime    @default(now()) @map("created_at")
+    updatedAt DateTime    @updatedAt @map("updated_at")
+    Container Container[]
 
-  @@map("container_types")
+    @@map("container_types")
 }
+
+
+
 
 model Container {
-  id              String            @id @default(uuid())
-  lotId           String            @map("lot_id")
-  containerTypeId String            @map("container_type_id")
-  uomId           String            @map("uom_id")
-  containerWeight Float             @map("container_weight")
-  containerType   ContainerType     @relation(fields: [containerTypeId], references: [id])
-  uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-  lot             Lot               @relation(fields: [lotId], references: [id])
+    id              String            @id @default(uuid())
+    lotId           String            @map("lot_id")
+    containerTypeId String            @map("container_type_id")
+    uomId           String            @map("uom_id")
+    containerWeight Float             @map("container_weight")
+    containerType   ContainerType     @relation(fields: [containerTypeId], references: [id])
+    uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    createdAt       DateTime          @default(now()) @map("created_at")
+    updatedAt       DateTime          @updatedAt @map("updated_at")
+    lot             Lot               @relation(fields: [lotId], references: [id])
 
-  @@map("containers")
+    @@map("containers")
 }
-
 model GenericUnitConversionFactor {
-  id               String            @id @default(uuid())
-  itemId           String            @map("item_id")
-  supplierId       String            @map("supplier_id")
-  convertToUomId   String            @map("convert_to_uom_id")
-  conversionFactor Float             @map("conversion_factor")
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  item             Item              @relation(fields: [itemId], references: [id])
-  supplier         Supplier          @relation(fields: [supplierId], references: [id])
-  convertToUom     UnitOfMeasurement @relation(fields: [convertToUomId], references: [id])
+    id               String            @id @default(uuid())
+    itemId           String            @map("item_id")
+    supplierId       String            @map("supplier_id")
+    convertToUomId   String            @map("convert_to_uom_id")
+    conversionFactor Float             @map("conversion_factor")
+    createdAt        DateTime          @default(now()) @map("created_at")
+    updatedAt        DateTime          @updatedAt @map("updated_at")
+    item             Item              @relation(fields: [itemId], references: [id])
+    supplier         Supplier          @relation(fields: [supplierId], references: [id])
+    convertToUom     UnitOfMeasurement @relation(fields: [convertToUomId], references: [id])
 
-  @@unique([itemId, supplierId], name: "item_supplier_unique")
-  @@map("generic_unit_conversion_factors")
+    @@unique([itemId, supplierId], name: "item_supplier_unique")
+    @@map("generic_unit_conversion_factors")
 }
-
 model InventoryAudit {
-  id            String         @id @default(uuid())
-  itemId        String         @map("item_id")
-  conductedById String         @map("conducted_by_id")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-  item          Item           @relation(fields: [itemId], references: [id])
-  user          User           @relation(fields: [conductedById], references: [id])
-  requests      AuditRequest[]
+    id         String   @id @default(uuid())
+    itemId String @map("item_id")
+    conductedById String @map("conducted_by_id")
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
+    item Item @relation(fields: [itemId], references: [id])
+    user User @relation(fields: [conductedById], references: [id])
+    requests AuditRequest[]
 
-  @@map("inventory_audits")
+    @@map("inventory_audits")
 }
-
 model LotOrigin {
-  id              String                 @id @default(uuid())
-  lotId           String                 @map("lot_id")
-  purchaseOrderId String?                @map("purchase_order_id")
-  bprId           String?                @map("bpr_id")
-  originType      String                 @map("origin_type")
-  createdAt       DateTime               @default(now()) @map("created_at")
-  updatedAt       DateTime               @updatedAt @map("updated_at")
-  purchaseOrder   PurchaseOrder?         @relation(fields: [purchaseOrderId], references: [id])
-  bpr             BatchProductionRecord? @relation(fields: [bprId], references: [id])
-  lot             Lot                    @relation(fields: [lotId], references: [id])
+    id              String                 @id @default(uuid())
+    lotId           String                 @map("lot_id")
+    purchaseOrderId String?                @map("purchase_order_id")
+    bprId           String?                @map("bpr_id")
+    originType      String                 @map("origin_type")
+    createdAt       DateTime               @default(now()) @map("created_at")
+    updatedAt       DateTime               @updatedAt @map("updated_at")
+    purchaseOrder   PurchaseOrder?         @relation(fields: [purchaseOrderId], references: [id])
+    bpr             BatchProductionRecord? @relation(fields: [bprId], references: [id])
+    lot             Lot                    @relation(fields: [lotId], references: [id])
 
-  @@map("lot_origins")
+    @@map("lot_origins")
 }
 
 model Lot {
-  id              String            @id @default(uuid())
-  itemId          String            @map("item_id")
-  lotNumber       String            @map("lot_number")
-  initialQuantity Float             @map("initial_quantity")
-  uomId           String            @map("uom_id")
-  item            Item              @relation(fields: [itemId], references: [id])
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-  containers      Container[]
-  transactions    Transaction[]
-  lotOrigin       LotOrigin[]
-  uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
-  qcRecords       QcRecord[]
-  BprStaging      BprStaging[]
+    id              String            @id @default(uuid())
+    itemId          String            @map("item_id")
+    lotNumber       String            @map("lot_number")
+    initialQuantity Float             @map("initial_quantity")
+    uomId           String            @map("uom_id")
+    item            Item              @relation(fields: [itemId], references: [id])
+    createdAt       DateTime          @default(now()) @map("created_at")
+    updatedAt       DateTime          @updatedAt @map("updated_at")
+    containers      Container[]
+    transactions    Transaction[]
+    lotOrigin       LotOrigin[]
+    uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    qcRecords       QcRecord[]
 
-  @@map("lots")
+    @@map("lots")
 }
 
 model TransactionType {
-  id           String        @id @default(uuid())
-  name         String
-  deduction    Boolean
-  transactions Transaction[]
+    id           String        @id @default(uuid())
+    name         String
+    deduction    Boolean
+    transactions Transaction[]
 
-  @@map("transaction_types")
+    @@map("transaction_types")
 }
 
 model Transaction {
-  id                String            @id @default(uuid())
-  lotId             String            @map("lot_id")
-  transactionTypeId String            @map("transaction_type_id")
-  userId            String            @map("user_id")
-  uomId             String            @map("uom_id")
-  amount            Float
-  systemNote        String            @map("system_note")
-  userNote          String            @map("user_note")
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
-  transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
-  user              User              @relation(fields: [userId], references: [id])
-  unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])
-  lot               Lot               @relation(fields: [lotId], references: [id])
+    id                String            @id @default(uuid())
+    lotId             String            @map("lot_id")
+    transactionTypeId String            @map("transaction_type_id")
+    userId            String            @map("user_id")
+    uomId             String            @map("uom_id")
+    amount            Float
+    systemNote        String            @map("system_note")
+    userNote          String            @map("user_note")
+    createdAt         DateTime          @default(now()) @map("created_at")
+    updatedAt         DateTime          @updatedAt @map("updated_at")
+    transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
+    user              User              @relation(fields: [userId], references: [id])
+    unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    lot               Lot               @relation(fields: [lotId], references: [id])
 
-  @@map("transactions")
+    @@map("transactions")
 }
+
 
 model UnitOfMeasurementConversion {
-  id               String            @id @default(uuid())
-  uomAId           String            @map("uom_a_id")
-  uomBId           String            @map("uom_b_id")
-  conversionFactor Float             @map("conversion_factor")
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  uomA             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomA", fields: [uomAId], references: [id])
-  uomB             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomB", fields: [uomBId], references: [id])
+    id               String            @id @default(uuid())
+    uomAId           String            @map("uom_a_id")
+    uomBId           String            @map("uom_b_id")
+    conversionFactor Float             @map("conversion_factor")
+    createdAt        DateTime          @default(now()) @map("created_at")
+    updatedAt        DateTime          @updatedAt @map("updated_at")
+    uomA             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomA", fields: [uomAId], references: [id])
+    uomB             UnitOfMeasurement @relation("UnitOfMeasurementConversionUomB", fields: [uomBId], references: [id])
 
-  @@map("unit_of_measurement_conversions")
+    @@map("unit_of_measurement_conversions")
 }
-
 model UnitOfMeasurement {
-  id                              String                            @id @default(uuid())
-  name                            String
-  abbreviation                    String
-  uomA                            UnitOfMeasurementConversion[]     @relation("UnitOfMeasurementConversionUomA")
-  uomB                            UnitOfMeasurementConversion[]     @relation("UnitOfMeasurementConversionUomB")
-  createdAt                       DateTime                          @default(now()) @map("created_at")
-  updatedAt                       DateTime                          @updatedAt @map("updated_at")
-  lots                            Lot[]
-  transactions                    Transaction[]
-  container                       Container[]
-  purchaseOrderItem               PurchaseOrderItem[]
-  genericUnitConversionFactors    GenericUnitConversionFactor[]
-  BomPricingDataArchive           BomPricingDataArchive[]
-  FinishedProductArchive          FinishedProductArchive[]
-  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
-  FinishedProduct                 FinishedProduct[]
-  ItemConsumerContainerArchive    ItemConsumerContainerArchive[]
-  ItemConsumerContainer           ItemConsumerContainer[]
-  ItemPricingData                 ItemPricingData[]
-  ItemPricingDataArchive          ItemPricingDataArchive[]
-  PricingTemplateFinishedProduct  PricingTemplateFinishedProduct[]
-  BatchSize                       BatchSize[]
-  BprBillOfMaterials              BprBillOfMaterials[]
-  BprStaging                      BprStaging[]
-  PurchaseOrderItemDetail         PurchaseOrderItemDetail[]
+    id                           String                        @id @default(uuid())
+    name                         String
+    abbreviation                 String
+    uomA                         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
+    uomB                         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+    createdAt                    DateTime                      @default(now()) @map("created_at")
+    updatedAt                    DateTime                      @updatedAt @map("updated_at")
+    lots                         Lot[]
+    transactions                 Transaction[]
+    container                    Container[]
+    purchaseOrderItem            PurchaseOrderItem[]
+    genericUnitConversionFactors GenericUnitConversionFactor[]
 
-  @@map("units_of_measurement")
+    @@map("units_of_measurement")
 }
-
 model AliasType {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  Alias     Alias[]
+    id        String   @id @default(uuid())
+    name      String
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    Alias     Alias[]
 
-  @@map("alias_types")
+    @@map("alias_types")
 }
 
 model Alias {
-  id            String          @id @default(uuid())
-  name          String
-  aliasTypeId   String          @map("alias_type_id")
-  itemId        String          @map("item_id")
-  aliasType     AliasType       @relation(fields: [aliasTypeId], references: [id])
-  item          Item            @relation(fields: [itemId], references: [id])
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
-  supplierAlias SupplierAlias[]
+    id            String          @id @default(uuid())
+    name          String
+    aliasTypeId   String          @map("alias_type_id")
+    itemId        String          @map("item_id")
+    aliasType     AliasType       @relation(fields: [aliasTypeId], references: [id])
+    item          Item            @relation(fields: [itemId], references: [id])
+    createdAt     DateTime        @default(now()) @map("created_at")
+    updatedAt     DateTime        @updatedAt @map("updated_at")
+    supplierAlias SupplierAlias[]
 
-  @@map("aliases")
+    @@map("aliases")
 }
 
 model InventoryType {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  items     Item[]
+    id        String   @id @default(uuid())
+    name      String
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    items     Item[]
 
-  @@map("inventory_types")
+    @@map("inventory_types")
 }
-
 model ItemType {
-  id               String            @id @default(uuid())
-  name             String
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  items            Item[]
-  pricingTemplates PricingTemplate[]
+    id               String            @id @default(uuid())
+    name             String
+    createdAt        DateTime          @default(now()) @map("created_at")
+    updatedAt        DateTime          @updatedAt @map("updated_at")
+    items            Item[]
+    pricingTemplates PricingTemplate[]
 
-  @@map("item_types")
+
+    @@map("item_types")
 }
 
 model Item {
-  id                              String                            @id @default(uuid())
-  name                            String
-  referenceCode                   String                            @unique @map("reference_code")
-  itemTypeId                      String                            @map("item_type_id")
-  procurementTypeId               String                            @map("procurement_type_id")
-  inventoryTypeId                 String                            @map("inventory_type_id")
-  createdAt                       DateTime                          @default(now()) @map("created_at")
-  updatedAt                       DateTime                          @updatedAt @map("updated_at")
-  itemType                        ItemType                          @relation(fields: [itemTypeId], references: [id])
-  procurementType                 ProcurementType                   @relation(fields: [procurementTypeId], references: [id])
-  inventoryType                   InventoryType                     @relation(fields: [inventoryTypeId], references: [id])
-  lot                             Lot[]
-  aliases                         Alias[]
-  purchaseOrderItem               PurchaseOrderItem[]
-  itemPricingData                 ItemPricingData[]
-  itemCostDeterminations          ItemCostDetermination[]
-  requests                        PurchasingRequest[]
-  audits                          InventoryAudit[]
-  auditRequests                   AuditRequest[]
-  consumerContainers              ConsumerContainer[]
-  pricingExaminations             PricingExamination[]
-  consumerContainerArchives       ConsumerContainerArchive[]
-  qcItemParameters                QcItemParameter[]
-  genericUnitConversionFactors    GenericUnitConversionFactor[]
-  BomPricingDataArchive           BomPricingDataArchive[]
-  FinishedProductArchive          FinishedProductArchive[]
-  FinishedProductAuxiliary        FinishedProductAuxiliary[]
-  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
-  FinishedProduct                 FinishedProduct[]
-  ItemConsumerContainer           ItemConsumerContainer[]
-  PricingQueue                    PricingQueue[]
-  PricingTemplateAuxiliary        PricingTemplateAuxiliary[]
-  BillOfMaterial                  BillOfMaterial[]
-  MasterBatchProductionRecord     MasterBatchProductionRecord[]
+    id                           String                        @id @default(uuid())
+    name                         String
+    referenceCode                String                        @unique @map("reference_code")
+    itemTypeId                   String                        @map("item_type_id")
+    procurementTypeId            String                        @map("procurement_type_id")
+    inventoryTypeId              String                        @map("inventory_type_id")
+    createdAt                    DateTime                      @default(now()) @map("created_at")
+    updatedAt                    DateTime                      @updatedAt @map("updated_at")
+    itemType                     ItemType                      @relation(fields: [itemTypeId], references: [id])
+    procurementType              ProcurementType               @relation(fields: [procurementTypeId], references: [id])
+    inventoryType                InventoryType                 @relation(fields: [inventoryTypeId], references: [id])
+    lot                          Lot[]
+    aliases                      Alias[]
+    purchaseOrderItem            PurchaseOrderItem[]
+    itemPricingData              ItemPricingData[]
+    itemCostDeterminations       ItemCostDetermination[]
+    requests                     PurchasingRequest[]
+    audits                       InventoryAudit[]
+    auditRequests                AuditRequest[]
+    consumerContainers           ConsumerContainer[]
+    pricingExaminations          PricingExamination[]
+    consumerContainerArchives    ConsumerContainerArchive[]
+    qcItemParameters             QcItemParameter[]
+    genericUnitConversionFactors GenericUnitConversionFactor[]
 
-  @@map("items")
+    @@map("items")
 }
 
 model ProcurementType {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  items     Item[]
+    id        String   @id @default(uuid())
+    name      String
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    items     Item[]
 
-  @@map("procurement_types")
+    @@map("procurement_types")
 }
-
 model NotionBpr {
-  id           String   @id @default(uuid())
-  lumexiaBprId String   @map("lumexia_bpr_id")
-  notionPageId String   @map("notion_page_id")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+    id              String   @id @default(uuid())
+    lumexiaBprId    String @map("lumexia_bpr_id")
+    notionPageId    String @map("notion_page_id")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
 
-  bpr                 BatchProductionRecord @relation(fields: [lumexiaBprId], references: [id])
-  PurchasingRequest   PurchasingRequest?    @relation(fields: [purchasingRequestId], references: [id])
-  purchasingRequestId String?
-
-  @@map("notion_bprs")
+    bpr   BatchProductionRecord  @relation(fields: [lumexiaBprId], references: [id])
+    @@map("notion_bprs")
 }
-
 model NotionPurchaseOrder {
-  id           String        @id @default(uuid())
-  notionPageId String        @map("notion_page_id")
-  lumexiaPoId  String        @map("lumexia_po_id")
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  lumexiaPo    PurchaseOrder @relation(fields: [lumexiaPoId], references: [id])
+    id           String        @id @default(uuid())
+    notionPageId String        @map("notion_page_id")
+    lumexiaPoId  String        @map("lumexia_po_id")
+    createdAt    DateTime      @default(now()) @map("created_at")
+    updatedAt    DateTime      @updatedAt @map("updated_at")
+    lumexiaPo    PurchaseOrder @relation(fields: [lumexiaPoId], references: [id])
 
-  @@map("notion_purchase_orders")
+    @@map("notion_purchase_orders")
 }
-
 model NotionPurchasingRequest {
-  id                         String            @id @default(uuid())
-  notionPageId               String            @map("notion_page_id")
-  lumexiaPurchasingRequestId String            @map("lumexia_purchasing_request_id")
-  createdAt                  DateTime          @default(now()) @map("created_at")
-  updatedAt                  DateTime          @updatedAt @map("updated_at")
-  lumexiaPurchasingRequest   PurchasingRequest @relation(fields: [lumexiaPurchasingRequestId], references: [id])
+    id                         String            @id @default(uuid())
+    notionPageId               String            @map("notion_page_id")
+    lumexiaPurchasingRequestId String            @map("lumexia_purchasing_request_id")
+    createdAt                  DateTime          @default(now()) @map("created_at")
+    updatedAt                  DateTime          @updatedAt @map("updated_at")
+    lumexiaPurchasingRequest   PurchasingRequest @relation(fields: [lumexiaPurchasingRequestId], references: [id])
 
-  @@map("notion_purchasing_requests")
+    @@map("notion_purchasing_requests")
 }
-
 model BatchProductionRecord {
-  id                String    @id @default(uuid())
-  mbprId            String    @map("mbpr_id")
-  bprStatusId       String    @map("bpr_status_id")
-  batchSizeId       String    @map("batch_size_id")
-  scheduledForStart DateTime? @map("scheduled_for_start")
-  scheduledForEnd   DateTime? @map("scheduled_for_end")
-  completedAt       DateTime? @map("completed_at")
-  releasedAt        DateTime? @map("released_at")
-  referenceCode     Int       @default(autoincrement()) @map("reference_code")
-  createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime  @updatedAt @map("updated_at")
+    id                String    @id @default(uuid())
+    mbprId            String    @map("mbpr_id")
+    bprStatusId       String    @map("bpr_status_id")
+    batchSizeId       String    @map("batch_size_id")
+    scheduledForStart DateTime? @map("scheduled_for_start")
+    scheduledForEnd   DateTime? @map("scheduled_for_end")
+    completedAt       DateTime? @map("completed_at")
+    releasedAt        DateTime? @map("released_at")
+    referenceCode     Int       @default(autoincrement()) @map("reference_code")
+    createdAt         DateTime  @default(now()) @map("created_at")
+    updatedAt         DateTime  @updatedAt @map("updated_at")
 
-  mbpr      MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  status    BprStatus                   @relation(fields: [bprStatusId], references: [id])
-  batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
+    mbpr      MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+    status    BprStatus                   @relation(fields: [bprStatusId], references: [id])
+    batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
-  bprBatchSteps      BprBatchStep[]
-  lotOrigin          LotOrigin[]
-  qcRecords          QcRecord[]
-  NotionBpr          NotionBpr[]
-  BprBillOfMaterials BprBillOfMaterials[]
-  BprNote            BprNote[]
-  RequestBpr         RequestBpr[]
-  MicroSubmission    MicroSubmission[]
+    bprBatchSteps BprBatchStep[]
+    lotOrigin     LotOrigin[]
+    qcRecords     QcRecord[]
 
-  @@map("batch_production_records")
+    @@map("batch_production_records")
 }
-
 model BatchSizeCompoundingVessel {
-  id                  String            @id @default(uuid())
-  tankTime            Float             @map("tank_time")
-  compoundingVesselId String            @map("compounding_vessel_id")
-  batchSizeId         String            @map("batch_size_id")
-  createdAt           DateTime          @default(now()) @map("created_at")
-  updatedAt           DateTime          @updatedAt @map("updated_at")
-  compoundingVessel   CompoundingVessel @relation(fields: [compoundingVesselId], references: [id])
-  batchSize           BatchSize         @relation(fields: [batchSizeId], references: [id])
+    id                  String            @id @default(uuid())
+    tankTime            Float             @map("tank_time")
+    compoundingVesselId String            @map("compounding_vessel_id")
+    batchSizeId         String            @map("batch_size_id")
+    createdAt           DateTime          @default(now()) @map("created_at")
+    updatedAt           DateTime          @updatedAt @map("updated_at")
+    compoundingVessel   CompoundingVessel @relation(fields: [compoundingVesselId], references: [id])
+    batchSize           BatchSize         @relation(fields: [batchSizeId], references: [id])
 
-  @@map("batch_size_compounding_vessels")
+    @@map("batch_size_compounding_vessels")
 }
-
 model BatchSize {
-  id             String   @id @default(uuid())
-  mbprId         String   @map("mbpr_id")
-  quantity       Float
-  uomId          String   @map("uom_id")
-  recordStatusId String   @map("record_status_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+    id             String   @id @default(uuid())
+    mbprId         String   @map("mbpr_id")
+    quantity       Float
+    uomId          String   @map("uom_id")
+    recordStatusId String   @map("record_status_id")
+    createdAt      DateTime @default(now()) @map("created_at")
+    updatedAt      DateTime @updatedAt @map("updated_at")
 
-  mbpr                        MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
-  uom                         UnitOfMeasurement            @relation(fields: [uomId], references: [id])
-  recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
-  batchSizeCompoundingVessels BatchSizeCompoundingVessel[]
-  producedPricingDataArchives ProducedPricingDataArchive[]
-  BatchProductionRecord       BatchProductionRecord[]
+    mbpr                        MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
+    uom                         UnitOfMeasurement            @relation(fields: [uomId], references: [id])
+    recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
+    batchSizeCompoundingVessels BatchSizeCompoundingVessel[]
+    producedPricingDataArchives ProducedPricingDataArchive[]
 
-  @@map("batch_sizes")
+    @@map("batch_sizes")
 }
-
 model BatchStep {
   id        String   @id @default(uuid())
   mbprId    String   @map("mbpr_id")
@@ -922,17 +934,10 @@ model BatchStep {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  mbpr            MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  BillOfMaterial  BillOfMaterial[]
-  BprBatchStep    BprBatchStep[]
-  StepActionable  StepActionable[]
-  StepAddendum    StepAddendum[]
-  StepEquipment   StepEquipment[]
-  StepInstruction StepInstruction[]
+  mbpr MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
 
   @@map("batch_steps")
 }
-
 model BillOfMaterial {
   id            String   @id @default(uuid())
   itemId        String   @map("item_id")
@@ -943,33 +948,31 @@ model BillOfMaterial {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  item                  Item                        @relation(fields: [itemId], references: [id])
-  mbpr                  MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
-  step                  BatchStep                   @relation(fields: [stepId], references: [id])
-  BomPricingDataArchive BomPricingDataArchive[]
-  BprBillOfMaterials    BprBillOfMaterials[]
+  item Item                        @relation(fields: [itemId], references: [id])
+  mbpr MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  step BatchStep                   @relation(fields: [stepId], references: [id])
+
 
   @@map("bill_of_materials")
 }
-
 model BprBatchStep {
-  id          String    @id @default(uuid())
-  batchStepId String    @map("batch_step_id")
-  bprId       String    @map("bpr_id")
+  id        String   @id @default(uuid())
+  batchStepId    String   @map("batch_step_id")
+  bprId String @map("bpr_id")
   completedAt DateTime? @map("completed_at")
-  statusId    String
-  isComplete  Boolean
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
+  statusId String
+  isComplete Boolean
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  batchStep          BatchStep             @relation(fields: [batchStepId], references: [id])
-  bpr                BatchProductionRecord @relation(fields: [bprId], references: [id])
+  batchStep BatchStep @relation(fields: [batchStepId], references: [id])
+  bpr BatchProductionRecord @relation(fields: [bprId], references: [id])
   bprStepActionables BprStepActionable[]
-  status             BprBatchStepStatus    @relation(fields: [statusId], references: [id])
+  status BprBatchStepStatus @relation(fields: [statusId], references: [id])
+
 
   @@map("bpr_batch_steps")
 }
-
 model BprBatchStepStatus {
   id          String   @id @default(uuid())
   name        String
@@ -977,9 +980,8 @@ model BprBatchStepStatus {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  BprBatchStep BprBatchStep[]
-
   @@map("bpr_batch_step_statuses")
+
 }
 
 model BprBillOfMaterials {
@@ -992,77 +994,68 @@ model BprBillOfMaterials {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
-  bom        BillOfMaterial        @relation(fields: [bomId], references: [id])
-  uom        UnitOfMeasurement     @relation(fields: [uomId], references: [id])
-  status     BprStagingStatus      @relation(fields: [statusId], references: [id])
-  BprStaging BprStaging[]
+  bpr    BatchProductionRecord @relation(fields: [bprId], references: [id])
+  bom    BillOfMaterial        @relation(fields: [bomId], references: [id])
+  uom    UnitOfMeasurement     @relation(fields: [uomId], references: [id])
+  status BprStagingStatus      @relation(fields: [statusId], references: [id])
 
   @@map("bpr_bills_of_materials")
 }
-
 model BprNoteType {
-  id          String    @id @default(uuid())
-  name        String
-  description String
-  bgColor     String    @map("bg_color")
-  textColor   String    @map("text_color")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  bprNotes    BprNote[]
+    id          String    @id @default(uuid())
+    name        String
+    description String
+    bgColor     String    @map("bg_color")
+    textColor   String    @map("text_color")
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @updatedAt @map("updated_at")
+    bprNotes    BprNote[]
 
-  @@map("bpr_note_types")
+    @@map("bpr_note_types")
 }
-
 model BprNote {
-  id         String                @id @default(uuid())
-  bprId      String                @map("request_id")
-  noteTypeId String                @map("note_type_id")
-  userId     String                @map("user_id")
-  content    String
-  createdAt  DateTime              @default(now()) @map("created_at")
-  updatedAt  DateTime              @updatedAt @map("updated_at")
-  bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
-  user       User                  @relation(fields: [userId], references: [id])
-  noteType   BprNoteType           @relation(fields: [noteTypeId], references: [id])
+    id         String                @id @default(uuid())
+    bprId      String                @map("request_id")
+    noteTypeId String                @map("note_type_id")
+    userId     String                @map("user_id")
+    content    String
+    createdAt  DateTime              @default(now()) @map("created_at")
+    updatedAt  DateTime              @updatedAt @map("updated_at")
+    bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
+    user       User                  @relation(fields: [userId], references: [id])
+    noteType   BprNoteType           @relation(fields: [noteTypeId], references: [id])
 
-  @@map("bpr_notes")
+    @@map("bpr_notes")
 }
-
 model BprStaging {
-  id                 String   @id @default(uuid())
-  bprBomId           String   @map("bpr_bom_id")
-  lotId              String   @map("lot_id")
-  pulledByUserId     String   @map("pulled_by_user_id")
-  quantity           Float
-  uomId              String   @map("uom_id")
-  bprStagingStatusId String   @map("bpr_staging_status_id")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+    id              String   @id @default(uuid())
+    bprBomId       String   @map("bpr_bom_id")
+    lotId String @map("lot_id")
+    pulledByUserId String @map("pulled_by_user_id")
+    quantity Float
+    uomId String @map("uom_id")
+    bprStagingStatusId String @map("bpr_staging_status_id")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
 
-  bprBom                 BprBillOfMaterials       @relation(fields: [bprBomId], references: [id])
-  lot                    Lot                      @relation(fields: [lotId], references: [id])
-  pulledByUser           User                     @relation(fields: [pulledByUserId], references: [id])
-  uom                    UnitOfMeasurement        @relation(fields: [uomId], references: [id])
-  status                 BprStagingStatus         @relation(fields: [bprStagingStatusId], references: [id])
-  BprStagingVerification BprStagingVerification[]
+    bprBom   BprBillOfMaterials  @relation(fields: [bprBomId], references: [id])
+    lot Lot @relation(fields: [lotId], references: [id])
+    pulledByUser User @relation(fields: [pulledByUserId], references: [id])
+    uom UnitOfMeasurement @relation(fields: [uomId], references: [id])
+    status BprStagingStatus @relation(fields: [bprStagingStatusId], references: [id])
 
-  @@map("bpr_stagings")
+    @@map("bpr_stagings")
 }
-
 model BprStagingStatus {
-  id                 String               @id @default(uuid())
-  name               String
-  sequence           Int                  @default(0)
-  description        String
-  createdAt          DateTime             @default(now()) @map("created_at")
-  updatedAt          DateTime             @updatedAt @map("updated_at")
-  BprBillOfMaterials BprBillOfMaterials[]
-  BprStaging         BprStaging[]
+    id          String   @id @default(uuid())
+    name        String
+    sequence    Int      @default(0)
+    description String
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  @@map("bpr_staging_statuses")
+    @@map("bpr_staging_statuses")
 }
-
 model BprStagingVerification {
   id           String   @id @default(uuid())
   userId       String   @map("user_id")
@@ -1075,53 +1068,50 @@ model BprStagingVerification {
 
   @@map("bpr_staging_verifications")
 }
-
 model BprStatus {
-  id                    String                  @id @default(uuid())
-  name                  String
-  description           String
-  textColor             String                  @default("#000000") @map("text_color")
-  bgColor               String                  @default("#077202") @map("bg_color")
-  sequence              Int                     @unique
-  createdAt             DateTime                @default(now()) @map("created_at")
-  updatedAt             DateTime                @updatedAt @map("updated_at")
-  BatchProductionRecord BatchProductionRecord[]
+    id          String   @id @default(uuid())
+    name        String
+    description String
+    textColor   String   @default("#000000") @map("text_color")
+    bgColor     String   @default("#077202") @map("bg_color")
+    sequence    Int      @unique
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  @@map("bpr_statuses")
+    @@map("bpr_statuses")
 }
-
 model BprStepActionable {
-  id                    String   @id @default(uuid())
-  bprBatchStepId        String   @map("bpr_batch_step_id")
-  batchStepActionableId String   @map("batch_step_actionable_id")
-  statusId              String   @map("status_id")
-  isCompounded          Boolean  @map("isCompounded")
-  isVerified            Boolean  @map("isVerified")
-  isSecondarilyVerified Boolean  @map("isSecondarilyVerified")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(uuid())
+  bprBatchStepId    String   @map("bpr_batch_step_id")
+  batchStepActionableId String @map("batch_step_actionable_id")
+  statusId String @map("status_id")
+  isCompounded Boolean @map("isCompounded")
+  isVerified Boolean @map("isVerified")
+  isSecondarilyVerified Boolean @map("isSecondarilyVerified")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  bprBatchStep                  BprBatchStep                    @relation(fields: [bprBatchStepId], references: [id])
-  stepActionable                StepActionable                  @relation(fields: [batchStepActionableId], references: [id])
-  status                        BprStepActionableStatus         @relation(fields: [statusId], references: [id])
-  completion                    BprStepActionableCompletion[]
-  BprStepActionableVerification BprStepActionableVerification[]
+  bprBatchStep BprBatchStep @relation(fields: [bprBatchStepId], references: [id])
+  stepActionable StepActionable @relation(fields: [batchStepActionableId], references: [id])
+  status BprStepActionableStatus @relation(fields: [statusId], references: [id])
+  completion BprStepActionableCompletion[]
+
 
   @@map("bpr_step_actionables")
 }
-
 model BprStepActionableCompletion {
-  id                  String   @id @default(uuid())
-  completedByUserId   String   @map("completed_by_user_id")
-  bprStepActionableId String   @map("bpr_step_actionable_id")
-  value               String
-  createdAt           DateTime @default(now()) @map("created_at")
-  updatedAt           DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(uuid())
+  completedByUserId String @map("completed_by_user_id")
+  bprStepActionableId String @map("bpr_step_actionable_id")
+  value String
+    createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-  completedByUser   User              @relation(fields: [completedByUserId], references: [id])
+
+  completedByUser User @relation(fields: [completedByUserId], references: [id])
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
-  @@map("bpr_step_action_completions")
+@@map("bpr_step_action_completions")
 }
 
 model BprStepActionableStatus {
@@ -1131,94 +1121,82 @@ model BprStepActionableStatus {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  BprStepActionable BprStepActionable[]
-
   @@map("bpr_step_actionable_statuses")
+
 }
 
 model BprStepActionableVerification {
-  id                  String   @id @default(uuid())
-  completedByUserId   String   @map("completed_by_user_id")
-  bprStepActionableId String   @map("bpr_step_actionable_id")
-  type                String
-  createdAt           DateTime @default(now()) @map("created_at")
-  updatedAt           DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(uuid())
+  completedByUserId String @map("completed_by_user_id")
+  bprStepActionableId String @map("bpr_step_actionable_id")
+  type String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  completedByUser   User              @relation(fields: [completedByUserId], references: [id])
+  completedByUser User @relation(fields: [completedByUserId], references: [id])
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
   @@map("bpr_step_actionable_verifications")
-}
 
+}
 model CompoundingVessel {
-  id                          String                       @id @default(uuid())
-  equipmentId                 String                       @map("equipment_id")
-  capacityMinimum             Float                        @map("capacity_minimum")
-  capacityMaximum             Float                        @map("capacity_maximum")
-  operationalCost             Float                        @map("operational_cost")
-  createdAt                   DateTime                     @default(now()) @map("created_at")
-  updatedAt                   DateTime                     @updatedAt @map("updated_at")
-  equipment                   Equipment                    @relation(fields: [equipmentId], references: [id])
-  BatchSizeCompoundingVessels BatchSizeCompoundingVessel[]
-  ProducedPricingDataArchive  ProducedPricingDataArchive[]
+    id                          String                       @id @default(uuid())
+    equipmentId                 String                       @map("equipment_id")
+    capacityMinimum             Float                        @map("capacity_minimum")
+    capacityMaximum             Float                        @map("capacity_maximum")
+    operationalCost             Float                        @map("operational_cost")
+    createdAt                   DateTime                     @default(now()) @map("created_at")
+    updatedAt                   DateTime                     @updatedAt @map("updated_at")
+    equipment                   Equipment                    @relation(fields: [equipmentId], references: [id])
+    BatchSizeCompoundingVessels BatchSizeCompoundingVessel[]
 
-  @@map("compounding_vessels")
+    @@map("compounding_vessels")
 }
-
 model MasterBatchProductionRecord {
-  id                 String   @id @default(uuid())
-  producesItemId     String   @map("produces_item_id")
-  recordStatusId     String   @map("record_status_id")
-  versionLabel       String?  @map("version_label")
-  estimatedTotalTime Float?   @map("estimated_total_time")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+    id                 String   @id @default(uuid())
+    producesItemId     String   @map("produces_item_id")
+    recordStatusId     String   @map("record_status_id")
+    versionLabel       String?  @map("version_label")
+    estimatedTotalTime Float?   @map("estimated_total_time")
+    createdAt          DateTime @default(now()) @map("created_at")
+    updatedAt          DateTime @updatedAt @map("updated_at")
 
-  producesItem                Item                         @relation(fields: [producesItemId], references: [id])
-  recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
-  producedPricingDataArchives ProducedPricingDataArchive[]
-  BatchProductionRecord       BatchProductionRecord[]
-  BatchSize                   BatchSize[]
-  BatchStep                   BatchStep[]
-  BillOfMaterial              BillOfMaterial[]
+    producesItem                Item                         @relation(fields: [producesItemId], references: [id])
+    recordStatus                RecordStatus                 @relation(fields: [recordStatusId], references: [id])
+    producedPricingDataArchives ProducedPricingDataArchive[]
 
-  @@map("master_batch_production_records")
+    @@map("master_batch_production_records")
 }
-
 model StepActionable {
-  id                            String   @id @default(uuid())
-  stepId                        String   @map("step_id")
-  actionableTypeId              String   @map("actionable_type_id")
-  required                      Boolean
-  verificationRequired          Boolean  @map("verification_required")
-  secondaryVerificationRequired Boolean  @map("secondary_verification_required")
-  createdAt                     DateTime @default(now()) @map("created_at")
-  updatedAt                     DateTime @updatedAt @map("updated_at")
+  id               String   @id @default(uuid())
+  stepId           String   @map("step_id")
+  actionableTypeId String   @map("actionable_type_id")
+  required         Boolean
+  verificationRequired Boolean @map("verification_required")
+  secondaryVerificationRequired Boolean @map("secondary_verification_required")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
-  step              BatchStep           @relation(fields: [stepId], references: [id])
-  actionableType    StepActionableType  @relation(fields: [actionableTypeId], references: [id])
-  BprStepActionable BprStepActionable[]
+  step           BatchStep          @relation(fields: [stepId], references: [id])
+  actionableType StepActionableType @relation(fields: [actionableTypeId], references: [id])
 
   @@map("step_actionables")
 }
-
 model StepActionableType {
-  id          String   @id @default(uuid())
-  name        String
-  userRoleId  String   @map("user_role_id")
-  bgColor     String   @default("#333333") @map("bg_color")
-  textColor   String   @default("#ffffff") @map("text_color")
-  description String?
-  dataType    String   @map("data_type")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+    id          String   @id @default(uuid())
+    name        String
+    userRoleId  String   @map("user_role_id")
+    bgColor     String   @default("#333333") @map("bg_color")
+    textColor   String   @default("#ffffff") @map("text_color")
+    description String?
+    dataType    String   @map("data_type")
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  userRole       UserRole         @relation(fields: [userRoleId], references: [id])
-  StepActionable StepActionable[]
+    userRole UserRole @relation(fields: [userRoleId], references: [id])
 
-  @@map("step_actionable_types")
+    @@map("step_actionable_types")
 }
-
 model StepAddendum {
   id             String   @id @default(uuid())
   stepId         String   @map("step_id")
@@ -1232,20 +1210,17 @@ model StepAddendum {
 
   @@map("step_addendums")
 }
-
 model StepAddendumType {
-  id           String         @id @default(uuid())
-  name         String
-  bgColor      String         @default("#333333") @map("bg_color")
-  textColor    String         @default("#ffffff") @map("text_color")
-  description  String?
-  createdAt    DateTime       @default(now()) @map("created_at")
-  updatedAt    DateTime       @updatedAt @map("updated_at")
-  StepAddendum StepAddendum[]
+    id          String   @id @default(uuid())
+    name        String
+    bgColor     String   @default("#333333") @map("bg_color")
+    textColor   String   @default("#ffffff") @map("text_color")
+    description String?
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
 
-  @@map("step_addendum_types")
+    @@map("step_addendum_types")
 }
-
 model StepEquipment {
   id          String   @id @default(uuid())
   stepId      String   @map("step_id")
@@ -1258,7 +1233,6 @@ model StepEquipment {
 
   @@map("step_equipment")
 }
-
 model StepInstruction {
   id                 String   @id @default(uuid())
   stepId             String   @map("step_id")
@@ -1270,540 +1244,515 @@ model StepInstruction {
 
   @@map("step_instructions")
 }
-
 model PurchaseOrderItemDetail {
-  id                   String            @id @default(uuid())
-  poItemId             String            @map("po_item_id")
-  containerTypeId      String            @map("container_type_id")
-  weightPerContainer   Float             @map("weight_per_container")
-  weightUomId          String            @map("weight_uom_id")
-  quantityOfContainers Int               @map("quantity_of_containers")
-  expectedDateStart    DateTime?         @map("expected_date_start")
-  expectedDateEnd      DateTime?         @map("expected_date_end")
-  createdAt            DateTime          @default(now()) @map("created_at")
-  updatedAt            DateTime          @updatedAt @map("updated_at")
-  poItem               PurchaseOrderItem @relation(fields: [poItemId], references: [id])
-  containerType        ContainerType     @relation(fields: [containerTypeId], references: [id])
-  uom                  UnitOfMeasurement @relation(fields: [weightUomId], references: [id])
+    id                   String            @id @default(uuid())
+    poItemId             String            @map("po_item_id")
+    containerTypeId      String            @map("container_type_id")
+    weightPerContainer   Float             @map("weight_per_container")
+    weightUomId          String            @map("weight_uom_id")
+    quantityOfContainers Int               @map("quantity_of_containers")
+    expectedDateStart    DateTime?         @map("expected_date_start")
+    expectedDateEnd      DateTime?         @map("expected_date_end")
+    createdAt            DateTime          @default(now()) @map("created_at")
+    updatedAt            DateTime          @updatedAt @map("updated_at")
+    poItem               PurchaseOrderItem @relation(fields: [poItemId], references: [id])
+    containerType        ContainerType     @relation(fields: [containerTypeId], references: [id])
+    uom                  UnitOfMeasurement @relation(fields: [weightUomId], references: [id])
 
-  @@map("purchase_order_item_details")
+
+    @@map("purchase_order_item_details")
 }
 
 model PurchaseOrderItem {
-  id                    String                    @id @default(uuid())
-  purchaseOrderId       String                    @map("purchase_order_id")
-  itemId                String                    @map("item_id")
-  quantity              Float
-  pricePerUnit          Float                     @map("price_per_unit")
-  uomId                 String                    @map("uom_id")
-  purchaseOrderStatusId String                    @map("purchase_order_status_id")
-  createdAt             DateTime                  @default(now()) @map("created_at")
-  updatedAt             DateTime                  @updatedAt @map("updated_at")
-  purchaseOrders        PurchaseOrder             @relation(fields: [purchaseOrderId], references: [id])
-  item                  Item                      @relation(fields: [itemId], references: [id])
-  uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
-  purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
-  details               PurchaseOrderItemDetail[]
-  qcRecords             QcRecord[]
+    id                    String                    @id @default(uuid())
+    purchaseOrderId       String                    @map("purchase_order_id")
+    itemId                String                    @map("item_id")
+    quantity              Float
+    pricePerUnit          Float                     @map("price_per_unit")
+    uomId                 String                    @map("uom_id")
+    purchaseOrderStatusId String                    @map("purchase_order_status_id")
+    createdAt             DateTime                  @default(now()) @map("created_at")
+    updatedAt             DateTime                  @updatedAt @map("updated_at")
+    purchaseOrders        PurchaseOrder             @relation(fields: [purchaseOrderId], references: [id])
+    item                  Item                      @relation(fields: [itemId], references: [id])
+    uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
+    purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
+    details               PurchaseOrderItemDetail[]
+    qcRecords             QcRecord[]
 
-  @@map("purchase_order_items")
+    @@map("purchase_order_items")
 }
-
 model PurchaseOrderNote {
-  id              String        @id @default(uuid())
-  purchaseOrderId String
-  userId          String
-  content         String
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  user            User          @relation(fields: [userId], references: [id])
-  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+    id              String        @id @default(uuid())
+    purchaseOrderId String
+    userId          String
+    content         String
+    createdAt       DateTime      @default(now()) @map("created_at")
+    updatedAt       DateTime      @updatedAt @map("updated_at")
+    user            User          @relation(fields: [userId], references: [id])
+    purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
 
-  @@map("purchase_order_notes")
+    @@map("purchase_order_notes")
 }
 
 model PurchaseOrderStatus {
-  id                String              @id @default(uuid())
-  sequence          Int                 @unique
-  name              String              @unique
-  purchaseOrders    PurchaseOrder[]
-  purchaseOrderItem PurchaseOrderItem[]
+    id                String              @id @default(uuid())
+    sequence          Int                 @unique
+    name              String              @unique
+    purchaseOrders    PurchaseOrder[]
+    purchaseOrderItem PurchaseOrderItem[]
 
-  @@map("purchase_order_status")
+    @@map("purchase_order_status")
 }
-
 model PurchaseOrder {
-  id                   String                 @id @default(uuid())
-  referenceCode        Int                    @default(autoincrement()) @map("reference_code")
-  submittingUserId     String                 @map("submitting_user_id")
-  supplierId           String                 @map("supplier_id")
-  statusId             String                 @map("status_id")
-  paymentMethodId      String?                @map("payment_method_id")
-  createdAt            DateTime               @default(now()) @map("created_at")
-  updatedAt            DateTime               @updatedAt @map("updated_at")
-  supplier             Supplier               @relation(fields: [supplierId], references: [id])
-  user                 User                   @relation(fields: [submittingUserId], references: [id])
-  paymentMethod        PaymentMethod?         @relation(fields: [paymentMethodId], references: [id])
-  status               PurchaseOrderStatus    @relation(fields: [statusId], references: [id])
-  purchaseOrderItems   PurchaseOrderItem[]
-  purchaseOrderNotes   PurchaseOrderNote[]
-  lotOrigins           LotOrigin[]
-  NotionPurchaseOrder  NotionPurchaseOrder[]
-  RequestPurchaseOrder RequestPurchaseOrder[]
+    id                 String               @id @default(uuid())
+    referenceCode      Int                  @default(autoincrement()) @map("reference_code")
+    submittingUserId   String               @map("submitting_user_id")
+    supplierId         String               @map("supplier_id")
+    statusId           String               @map("status_id")
+    paymentMethodId    String?              @map("payment_method_id")
+    createdAt          DateTime             @default(now()) @map("created_at")
+    updatedAt          DateTime             @updatedAt @map("updated_at")
+    supplier           Supplier             @relation(fields: [supplierId], references: [id])
+    user               User                 @relation(fields: [submittingUserId], references: [id])
+    paymentMethod      PaymentMethod?       @relation(fields: [paymentMethodId], references: [id])
+    status             PurchaseOrderStatus  @relation(fields: [statusId], references: [id])
+    purchaseOrderItems PurchaseOrderItem[]
+    purchaseOrderNotes PurchaseOrderNote[]
+    lotOrigins         LotOrigin[]
+    poAccountingDetail PoAccountingDetail[]
+    poAccountingNotes  PoAccountingNote[]
+    poAccountingFiles  PoAccountingFile[]
 
-  @@map("purchase_orders")
+    @@map("purchase_orders")
 }
-
 model PurchasingRequest {
-  id                        String                     @id @default(uuid())
-  requestingUserId          String                     @map("requesting_user_id")
-  statusId                  String                     @map("status_id")
-  priorityId                String                     @map("priority_id")
-  referenceCode             Int                        @default(autoincrement()) @map("reference_code")
-  itemId                    String                     @map("item_id")
-  title                     String
-  createdAt                 DateTime                   @default(now()) @map("created_at")
-  updatedAt                 DateTime                   @updatedAt @map("updated_at")
-  status                    RequestStatus              @relation(fields: [statusId], references: [id])
-  requestingUser            User                       @relation(fields: [requestingUserId], references: [id])
-  item                      Item                       @relation(fields: [itemId], references: [id])
-  requestInventorySnapshots RequestInventorySnapshot[]
-  priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
-  bprs                      RequestBpr[]
-  pos                       RequestPurchaseOrder[]
-  notionRequests            NotionPurchasingRequest[]
-  notionBprs                NotionBpr[]
-  RequestNote               RequestNote[]
+    id                        String                     @id @default(uuid())
+    requestingUserId          String                     @map("requesting_user_id")
+    statusId                  String                     @map("status_id")
+    priorityId                String                     @map("priority_id")
+    referenceCode             Int                        @default(autoincrement()) @map("reference_code")
+    itemId                    String                     @map("item_id")
+    title                     String
+    createdAt                 DateTime                   @default(now()) @map("created_at")
+    updatedAt                 DateTime                   @updatedAt @map("updated_at")
+    status                    RequestStatus              @relation(fields: [statusId], references: [id])
+    requestingUser User @relation(fields: [requestingUserId], references: [id])
+    item                      Item                       @relation(fields: [itemId], references: [id])
+    requestInventorySnapshots RequestInventorySnapshot[]
+    priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
+    bprs                      RequestBpr[]
+    pos                       RequestPurchaseOrder[]
+    notionRequests            NotionPurchasingRequest[]
+    notionBprs                NotionBpr[]
 
-  @@map("purchasing_requests")
+    @@map("purchasing_requests")
 }
-
 // bprs linked to this request
 
 model RequestBpr {
-  id        String                @id @default(uuid())
-  requestId String                @map("request_id")
-  bprId     String                @map("bpr_id")
-  createdAt DateTime              @default(now()) @map("created_at")
-  updatedAt DateTime              @updatedAt @map("updated_at")
-  request   PurchasingRequest     @relation(fields: [requestId], references: [id])
-  bpr       BatchProductionRecord @relation(fields: [bprId], references: [id])
+    id         String   @id @default(uuid())
+    requestId String @map("request_id")
+    bprId String @map("bpr_id")
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
+    request PurchasingRequest @relation(fields: [requestId])
+    bpr BatchProductionRecord @relation(fields: [bprId], references: [id])
 
-  @@map("request_bprs")
+    @@map("request_bprs")
 }
-
 model RequestInventorySnapshot {
-  id                String            @id @default(uuid())
-  requestId         String            @map("request_id")
-  objectName        String            @map("object_name") //was for a screenshot
-  onHandQuantity    Float             @map("on_hand_quantity")
-  warningShown      Boolean           @map("warning_shown")
-  warningOverridden Boolean           @map("warning_overridden")
-  allocatedQuantity Float             @map("allocated_quantity")
-  availableQuantity Float             @map("available_quantity")
-  allocatedBprIds   String[]
-  pendingPoIds      String[]
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
-  request           PurchasingRequest @relation(fields: [requestId], references: [id])
+    id                String            @id @default(uuid())
+    requestId         String            @map("request_id")
+    objectName        String            @map("object_name") //was for a screenshot
+    onHandQuantity    Float             @map("on_hand_quantity")
+    warningShown      Boolean           @map("warning_shown")
+    warningOverridden Boolean           @map("warning_overridden")
+    allocatedQuantity Float             @map("allocated_quantity")
+    availableQuantity Float             @map("available_quantity")
+    allocatedBprIds   String[]
+    pendingPoIds      String[]
+    createdAt         DateTime          @default(now()) @map("created_at")
+    updatedAt         DateTime          @updatedAt @map("updated_at")
+    request           PurchasingRequest @relation(fields: [requestId], references: [id])
 
-  @@map("request_inventory_snapshots")
+    @@map("request_inventory_snapshots")
 }
-
 model RequestNoteType {
-  id           String        @id @default(uuid())
-  name         String
-  description  String
-  bgColor      String        @map("bg_color")
-  textColor    String        @map("text_color")
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
-  requestNotes RequestNote[]
+    id           String        @id @default(uuid())
+    name         String
+    description  String
+    bgColor      String        @map("bg_color")
+    textColor    String        @map("text_color")
+    createdAt    DateTime      @default(now()) @map("created_at")
+    updatedAt    DateTime      @updatedAt @map("updated_at")
+    requestNotes RequestNote[]
 
-  @@map("request_note_types")
+    @@map("request_note_types")
 }
-
 model RequestNote {
-  id         String            @id @default(uuid())
-  requestId  String            @map("request_id")
-  noteTypeId String            @map("note_type_id")
-  userId     String            @map("user_id")
-  content    String
-  createdAt  DateTime          @default(now()) @map("created_at")
-  updatedAt  DateTime          @updatedAt @map("updated_at")
-  request    PurchasingRequest @relation(fields: [requestId], references: [id])
-  user       User              @relation(fields: [userId], references: [id])
-  noteType   RequestNoteType   @relation(fields: [noteTypeId], references: [id])
+    id         String            @id @default(uuid())
+    requestId  String            @map("request_id")
+    noteTypeId String            @map("note_type_id")
+    userId     String            @map("user_id")
+    content    String
+    createdAt  DateTime          @default(now()) @map("created_at")
+    updatedAt  DateTime          @updatedAt @map("updated_at")
+    request    PurchasingRequest @relation(fields: [requestId], references: [id])
+    user       User              @relation(fields: [userId], references: [id])
+    noteType   RequestNoteType   @relation(fields: [noteTypeId], references: [id])
 
-  @@map("request_notes")
+    @@map("request_notes")
 }
-
 model RequestPriority {
-  id                 String              @id @default(uuid())
-  name               String
-  bgColor            String              @default("#c4b5fd") @map("bg_color")
-  textColor          String              @default("#FFFFFF") @map("text_color")
-  description        String
-  sequence           Int
-  createdAt          DateTime            @default(now()) @map("created_at")
-  updatedAt          DateTime            @updatedAt @map("updated_at")
-  purchasingRequests PurchasingRequest[]
+    id          String   @id @default(uuid())
+    name        String
+    bgColor     String              @map("bg_color") @default("#c4b5fd")
+    textColor   String              @map("text_color") @default("#FFFFFF")
+    description String
+    sequence    Int
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    purchasingRequests PurchasingRequest[]
 
-  @@map("request_priorities")
+    @@map("request_priorities")
 }
-
 model RequestPurchaseOrder {
-  id        String            @id @default(uuid())
-  requestId String            @map("request_id")
-  poId      String            @map("po_id")
-  createdAt DateTime          @default(now()) @map("created_at")
-  updatedAt DateTime          @updatedAt @map("updated_at")
-  request   PurchasingRequest @relation(fields: [requestId], references: [id])
-  po        PurchaseOrder     @relation(fields: [poId], references: [id])
+    id        String            @id @default(uuid())
+    requestId String            @map("request_id")
+    poId      String            @map("po_id")
+    createdAt DateTime          @default(now()) @map("created_at")
+    updatedAt DateTime          @updatedAt @map("updated_at")
+    request   PurchasingRequest @relation(fields: [requestId])
+    po        PurchaseOrder     @relation(fields: [poId], references: [id])
 
-  @@map("request_purchase_orders")
+    @@map("request_purchase_orders")
 }
-
 model RequestStatus {
-  id        String @id @default(uuid())
-  name      String
-  bgColor   String @default("#c4b5fd") @map("bg_color")
-  textColor String @default("#FFFFFF") @map("text_color")
+    id          String              @id @default(uuid())
+    name        String
+    bgColor     String              @map("bg_color") @default("#c4b5fd")
+    textColor   String              @map("text_color") @default("#FFFFFF")
 
-  description String
-  sequence    Int
-  createdAt   DateTime            @default(now()) @map("created_at")
-  updatedAt   DateTime            @updatedAt @map("updated_at")
-  requests    PurchasingRequest[]
+    description String
+    sequence    Int
+    createdAt   DateTime            @default(now()) @map("created_at")
+    updatedAt   DateTime            @updatedAt @map("updated_at")
+    requests    PurchasingRequest[]
 
-  @@map("request_statuses")
+    @@map("request_statuses")
 }
 
 model SupplierAlias {
-  id         String   @id @default(uuid())
-  aliasId    String   @map("alias_id")
-  supplierId String   @map("supplier_id")
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  alias      Alias    @relation(fields: [aliasId], references: [id])
+    id         String   @id @default(uuid())
+    aliasId    String   @map("alias_id")
+    supplierId String   @map("supplier_id")
+    supplier   Supplier @relation(fields: [supplierId], references: [id])
+    alias      Alias    @relation(fields: [aliasId], references: [id])
 
-  @@map("supplier_aliases")
+    @@map("supplier_aliases")
 }
-
 model SupplierContactNote {
-  id                String          @id @default(uuid())
-  supplierContactId String          @map("supplier_contact_id")
-  content           String
-  supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
+	    id        	      String   @id @default(uuid())
+	    supplierContactId String   @map("supplier_contact_id")
+	    content	      String    
+            supplierContact   SupplierContact @relation(fields: [supplierContactId], references: [id], onDelete: Cascade)
+	    createdAt  	      DateTime @default(now()) @map("created_at")
+	    updatedAt 	      DateTime @updatedAt @map("updated_at")
 
-  @@map("supplier_contact_notes")
+	    @@map("supplier_contact_notes")
 }
 
 model SupplierContact {
-  id                   String                @id @default(uuid())
-  supplierId           String                @map("supplier_id")
-  firstName            String                @map("first_name")
-  lastName             String?               @map("last_name")
-  email                String?
-  phone                String?
-  type                 String?
-  supplier             Supplier              @relation(fields: [supplierId], references: [id])
-  createdAt            DateTime              @default(now()) @map("created_at")
-  updatedAt            DateTime              @updatedAt @map("updated_at")
-  supplierContactNotes SupplierContactNote[]
+    id                   String                @id @default(uuid())
+    supplierId           String                @map("supplier_id")
+    firstName            String                @map("first_name")
+    lastName             String?               @map("last_name")
+    email                String?
+    phone                String?
+    type                 String?
+    supplier             Supplier              @relation(fields: [supplierId], references: [id])
+    createdAt            DateTime              @default(now()) @map("created_at")
+    updatedAt            DateTime              @updatedAt @map("updated_at")
+    supplierContactNotes SupplierContactNote[]
 
-  @@map("supplier_contacts")
+    @@map("supplier_contacts")
 }
 
 model SupplierNote {
-  id         String   @id @default(uuid())
-  supplierId String
-  content    String
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+    id         String   @id @default(uuid())
+    supplierId String
+    content    String
+    supplier   Supplier @relation(fields: [supplierId], references: [id])
+    createdAt  DateTime @default(now()) @map("created_at")
+    updatedAt  DateTime @updatedAt @map("updated_at")
 
-  @@map("supplier_notes")
+    @@map("supplier_notes")
 }
 
 model SupplierPaymentMethod {
-  id              String   @id @default(uuid())
-  supplierId      String   @map("supplier_id")
-  paymentMethodId String   @map("payment_method_id")
-  createdAt       DateTime @default(now()) @map("created_at")
+    id              String   @id @default(uuid())
+    supplierId      String @map("supplier_id")
+    paymentMethodId String @map("payment_method_id")
+    createdAt       DateTime @default(now()) @map("created_at")
 
-  updatedAt     DateTime      @updatedAt @map("updated_at")
-  supplier      Supplier      @relation(fields: [supplierId], references: [id])
-  paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+    updatedAt     DateTime      @updatedAt @map("updated_at")
+    supplier      Supplier      @relation(fields: [supplierId], references: [id])
+    paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id])
 
-  @@map("supplier_payment_methods")
+@@map("supplier_payment_methods")
 }
 
 model Supplier {
-  id                           String                        @id @default(uuid())
-  name                         String
-  addressStreet1               String                        @map("address_street1")
-  addressStreet2               String?                       @map("address_street2")
-  addressCity                  String                        @map("address_city")
-  addressState                 String                        @map("address_state")
-  addressZip                   String                        @map("address_zip")
-  phone                        String
-  purchaseOrders               PurchaseOrder[]
-  supplierAlias                SupplierAlias[]
-  supplierNotes                SupplierNote[]
-  SupplierPaymentMethod        SupplierPaymentMethod[]
-  genericUnitConversionFactors GenericUnitConversionFactor[]
-  SupplierContact              SupplierContact[]
+    id                           String                        @id @default(uuid())
+    name                         String
+    addressStreet1               String                        @map("address_street1")
+    addressStreet2               String?                       @map("address_street2")
+    addressCity                  String                        @map("address_city")
+    addressState                 String                        @map("address_state")
+    addressZip                   String                        @map("address_zip")
+    phone                        String
+    purchaseOrders               PurchaseOrder[]
+    supplierAlias                SupplierAlias[]
+    supplierNotes                SupplierNote[]
+    SupplierPaymentMethod        SupplierPaymentMethod[]
+    genericUnitConversionFactors GenericUnitConversionFactor[]
 
-  @@map("suppliers")
+    @@map("suppliers")
 }
-
 model MicroSubmission {
-  id               String                @id @default(uuid())
-  bprId            String                @map("bpr_id")
-  submissionNumber Int                   @default(autoincrement()) @map("submission_number")
-  bpr              BatchProductionRecord @relation(fields: [bprId], references: [id])
+    id               String                @id @default(uuid())
+    bprId            String @map("bpr_id")
+    submissionNumber Int                   @default(autoincrement()) @map("submission_number")
+    bpr              BatchProductionRecord @relation(fields: [bprId], references: [id])
 
-  @@map("micro_submissions")
+    @@map("micro_submissions")
 }
-
 model QcAuditLog {
-  id              String   @id @default(uuid())
-  qcRecordId      String   @map("qc_record_id")
-  editedById      String   @map("edited_by_id")
-  action          String
-  editedTableName String   @map("edited_table_name")
-  recordId        String   @map("record_id")
-  fieldName       String   @map("field_name")
-  oldValue        String   @map("old_value")
-  newValue        String   @map("new_value")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
-  qcRecord        QcRecord @relation(fields: [qcRecordId], references: [id])
-  editedBy        User     @relation(fields: [editedById], references: [id])
+    id              String   @id @default(uuid())
+    qcRecordId      String   @map("qc_record_id")
+    editedById      String   @map("edited_by_id")
+    action          String
+    editedTableName String   @map("edited_table_name")
+    recordId        String   @map("record_id")
+    fieldName       String   @map("field_name")
+    oldValue        String   @map("old_value")
+    newValue        String   @map("new_value")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
+    qcRecord        QcRecord @relation(fields: [qcRecordId], references: [id])
+    editedBy        User     @relation(fields: [editedById], references: [id])
 
-  @@map("qc_audit_logs")
+    @@map("qc_audit_logs")
 }
-
 model QcExaminationType {
-  id           String   @id @default(uuid())
-  name         String   @map("name")
-  abbreviation String   @map("abbreviation")
-  description  String?  @map("description")
-  bgColor      String   @map("bg_color")
-  textColor    String   @map("text_color")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+    id           String   @id @default(uuid())
+    name         String   @map("name")
+    abbreviation String   @map("abbreviation")
+    description  String?  @map("description")
+    bgColor      String   @map("bg_color")
+    textColor    String   @map("text_color")
+    createdAt    DateTime @default(now()) @map("created_at")
+    updatedAt    DateTime @updatedAt @map("updated_at")
 
-  qcRecords         QcRecord[]
-  qcParameterGroups QcParameterGroup[]
+    qcRecords         QcRecord[]
+    qcParameterGroups QcParameterGroup[]
 
-  @@map("qc_examination_types")
+    @@map("qc_examination_types")
 }
-
 model QcGroupParameter {
-  id          String           @id @default(uuid())
-  groupId     String           @map("group_id")
-  parameterId String           @map("parameter_id")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  group       QcParameterGroup @relation(fields: [groupId], references: [id])
-  parameter   QcParameter      @relation(fields: [parameterId], references: [id])
+    id          String           @id @default(uuid())
+    groupId     String           @map("group_id")
+    parameterId String           @map("parameter_id")
+    createdAt   DateTime         @default(now()) @map("created_at")
+    updatedAt   DateTime         @updatedAt @map("updated_at")
+    group       QcParameterGroup @relation(fields: [groupId], references: [id])
+    parameter   QcParameter      @relation(fields: [parameterId], references: [id])
 
-  @@map("qc_group_parameters")
+    @@map("qc_group_parameters")
 }
-
 model QcItemParameter {
-  id                      String      @id @default(uuid())
-  itemId                  String      @map("item_id")
-  parameterId             String      @map("parameter_id")
-  specification           Json?
-  calculatedSpecification Json?       @map("calculated_specification")
-  createdAt               DateTime    @default(now()) @map("created_at")
-  updatedAt               DateTime    @updatedAt @map("updated_at")
-  item                    Item        @relation(fields: [itemId], references: [id])
-  parameter               QcParameter @relation(fields: [parameterId], references: [id])
+    id                      String      @id @default(uuid())
+    itemId                  String      @map("item_id")
+    parameterId             String      @map("parameter_id")
+    specification           Json?
+    calculatedSpecification Json?       @map("calculated_specification")
+    createdAt               DateTime    @default(now()) @map("created_at")
+    updatedAt               DateTime    @updatedAt @map("updated_at")
+    item                    Item        @relation(fields: [itemId], references: [id])
+    parameter               QcParameter @relation(fields: [parameterId], references: [id])
 
-  @@unique([itemId, parameterId])
-  @@map("qc_item_parameters")
+    @@unique([itemId, parameterId])
+    @@map("qc_item_parameters")
 }
-
 model QcParameterGroup {
-  id                String            @id @default(uuid())
-  name              String
-  abbreviation      String
-  examinationTypeId String            @map("examination_type_id")
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
-  examinationType   QcExaminationType @relation(fields: [examinationTypeId], references: [id])
+    id                String            @id @default(uuid())
+    name              String
+    abbreviation      String
+    examinationTypeId String            @map("examination_type_id")
+    createdAt         DateTime          @default(now()) @map("created_at")
+    updatedAt         DateTime          @updatedAt @map("updated_at")
+    examinationType   QcExaminationType @relation(fields: [examinationTypeId], references: [id])
 
-  parameters QcGroupParameter[]
+    parameters QcGroupParameter[]
 
-  @@map("qc_parameter_groups")
+    @@map("qc_parameter_groups")
 }
-
 model QcParameterResult {
-  id            String      @id @default(uuid())
-  qcRecordId    String      @map("qc_record_id")
-  qcParameterId String      @map("qc_parameter_id")
-  resultsData   Json        @map("results_data")
-  note          String?
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
-  qcRecord      QcRecord    @relation(fields: [qcRecordId], references: [id])
-  qcParameter   QcParameter @relation(fields: [qcParameterId], references: [id])
+    id            String   @id @default(uuid())
+    qcRecordId    String   @map("qc_record_id")
+    qcParameterId String   @map("qc_parameter_id")
+    resultsData   Json     @map("results_data")
+    note          String?
+    createdAt     DateTime @default(now()) @map("created_at")
+    updatedAt     DateTime @updatedAt @map("updated_at")
+    qcRecord QcRecord @relation(fields: [qcRecordId], references: [id])
+    qcParameter QcParameter @relation(fields: [qcParameterId], references: [id])
 
-  @@map("qc_parameter_results")
+    @@map("qc_parameter_results")
 }
-
 model QcParameter {
-  id              String   @id @default(uuid())
-  name            String
-  uom             String
-  dataType        String   @map("data_type")
-  description     String?
-  inputDefinition Json?
-  isWetParameter  Boolean  @map("is_wet_parameter")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+    id              String   @id @default(uuid())
+    name            String
+    uom             String
+    dataType        String   @map("data_type")
+    description     String?
+    inputDefinition Json?
+    isWetParameter  Boolean  @map("is_wet_parameter")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
 
-  qcItemParameters     QcItemParameter[]
-  qcParameterResults   QcParameterResult[]
-  qcTemplateParameters QcTemplateParameter[]
-  qcGroupParameters    QcGroupParameter[]
+    qcItemParameters     QcItemParameter[]
+    qcParameterResults   QcParameterResult[]
+    qcTemplateParameters QcTemplateParameter[]
+    qcGroupParameters    QcGroupParameter[]
 
-  @@map("qc_parameters")
+    @@map("qc_parameters")
 }
-
 model QcRecordNoteType {
-  id            String         @id @default(uuid())
-  name          String
-  description   String?
-  bgColor       String         @map("bg_color")
-  textColor     String         @map("text_color")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-  qcRecordNotes QcRecordNote[]
+    id            String               @id @default(uuid())
+    name          String
+    description   String?
+    bgColor       String               @map("bg_color")
+    textColor     String               @map("text_color")
+    createdAt     DateTime             @default(now()) @map("created_at")
+    updatedAt     DateTime             @updatedAt @map("updated_at")
+    qcRecordNotes QcRecordNote[]
 
-  @@map("qc_record_note_types")
+    @@map("qc_record_note_types")
 }
-
 model QcRecordNote {
-  id          String           @id @default(uuid())
-  qcRecordId  String           @map("qc_record_id")
-  createdById String           @map("created_by_id")
-  content     String           @map("content")
-  noteTypeId  String           @map("note_type_id")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  qcRecord    QcRecord         @relation(fields: [qcRecordId], references: [id])
-  createdBy   User             @relation(fields: [createdById], references: [id])
-  noteType    QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
+    id          String           @id @default(uuid())
+    qcRecordId  String           @map("qc_record_id")
+    createdById String           @map("created_by_id")
+    content     String           @map("content")
+    noteTypeId  String           @map("note_type_id")
+    createdAt   DateTime         @default(now()) @map("created_at")
+    updatedAt   DateTime         @updatedAt @map("updated_at")
+    qcRecord    QcRecord         @relation(fields: [qcRecordId], references: [id])
+    createdBy   User             @relation(fields: [createdById], references: [id])
+    noteType    QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
 
-  @@map("qc_record_notes")
+    @@map("qc_record_notes")
 }
-
 model QcRecordStatus {
-  id          String     @id @default(uuid())
-  name        String
-  sequence    Int        @unique
-  description String?
-  bgColor     String     @map("bg_color")
-  textColor   String     @map("text_color")
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  qcRecords   QcRecord[]
+    id          String     @id @default(uuid())
+    name        String
+    sequence    Int        @unique
+    description String?
+    bgColor     String     @map("bg_color")
+    textColor   String     @map("text_color")
+    createdAt   DateTime   @default(now()) @map("created_at")
+    updatedAt   DateTime   @updatedAt @map("updated_at")
+    qcRecords   QcRecord[]
 
-  @@map("qc_record_statuses")
+    @@map("qc_record_statuses")
 }
-
 model QcRecord {
-  id                        String                 @id @default(uuid())
-  referenceCode             Int                    @default(autoincrement()) @map("reference_code")
-  conductedById             String                 @map("conducted_by_id")
-  statusId                  String                 @map("status_id")
-  examinationTypeId         String                 @map("examination_type_id")
-  examinedLotId             String                 @map("examined_lot_id")
-  linkedBprId               String?                @map("linked_bpr_id")
-  linkedPurchaseOrderItemId String?                @map("linked_purchase_order_item_id")
-  coaSupplierDocumentUrl    String?                @map("coa_supplier_document_url")
-  coaPublicDocumentUrl      String?                @map("coa_public_document_url")
-  coaParsedData             String?                @map("coa_parsed_data")
-  createdAt                 DateTime               @default(now()) @map("created_at")
-  updatedAt                 DateTime               @updatedAt @map("updated_at")
-  status                    QcRecordStatus         @relation(fields: [statusId], references: [id])
-  conductedBy               User                   @relation(fields: [conductedById], references: [id])
-  examinedLot               Lot                    @relation(fields: [examinedLotId], references: [id])
-  linkedPurchaseOrderItem   PurchaseOrderItem?     @relation(fields: [linkedPurchaseOrderItemId], references: [id])
-  linkedBpr                 BatchProductionRecord? @relation(fields: [linkedBprId], references: [id])
-  examinationType           QcExaminationType      @relation(fields: [examinationTypeId], references: [id])
-  qcParameterResults        QcParameterResult[]
-  qcRecordNotes             QcRecordNote[]
-  qcAuditLogs               QcAuditLog[]
+    id                        String                 @id @default(uuid())
+    referenceCode             Int                    @default(autoincrement()) @map("reference_code")
+    conductedById             String                 @map("conducted_by_id")
+    statusId                  String                 @map("status_id")
+    examinationTypeId         String                 @map("examination_type_id")
+    examinedLotId             String                 @map("examined_lot_id")
+    linkedBprId               String?                @map("linked_bpr_id")
+    linkedPurchaseOrderItemId String?                @map("linked_purchase_order_item_id")
+    coaSupplierDocumentUrl    String?                @map("coa_supplier_document_url")
+    coaPublicDocumentUrl      String?                @map("coa_public_document_url")
+    coaParsedData             String?                @map("coa_parsed_data")
+    createdAt                 DateTime               @default(now()) @map("created_at")
+    updatedAt                 DateTime               @updatedAt @map("updated_at")
+    status                    QcRecordStatus         @relation(fields: [statusId], references: [id])
+    conductedBy               User                   @relation(fields: [conductedById], references: [id])
+    examinedLot               Lot                    @relation(fields: [examinedLotId], references: [id])
+    linkedPurchaseOrderItem   PurchaseOrderItem?     @relation(fields: [linkedPurchaseOrderItemId], references: [id])
+    linkedBpr                 BatchProductionRecord? @relation(fields: [linkedBprId], references: [id])
+    examinationType           QcExaminationType      @relation(fields: [examinationTypeId], references: [id])
+    qcParameterResults        QcParameterResult[]
+    qcRecordNotes             QcRecordNote[]
+    qcAuditLogs               QcAuditLog[]
 
-  @@map("qc_records")
+    @@map("qc_records")
 }
-
 model QcTemplateParameter {
-  id          String      @id @default(uuid())
-  templateId  String      @map("template_id")
-  parameterId String      @map("parameter_id")
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
-  template    QcTemplate  @relation(fields: [templateId], references: [id])
-  parameter   QcParameter @relation(fields: [parameterId], references: [id])
+    id          String      @id @default(uuid())
+    templateId  String      @map("template_id")
+    parameterId String      @map("parameter_id")
+    createdAt   DateTime    @default(now()) @map("created_at")
+    updatedAt   DateTime    @updatedAt @map("updated_at")
+    template    QcTemplate  @relation(fields: [templateId], references: [id])
+    parameter   QcParameter @relation(fields: [parameterId], references: [id])
 
-  @@map("qc_template_parameters")
+    @@map("qc_template_parameters")
 }
-
 model QcTemplate {
-  id          String                @id @default(uuid())
-  name        String
-  description String
-  createdAt   DateTime              @default(now()) @map("created_at")
-  updatedAt   DateTime              @updatedAt @map("updated_at")
-  parameters  QcTemplateParameter[]
+    id          String                @id @default(uuid())
+    name        String
+    description String
+    createdAt   DateTime              @default(now()) @map("created_at")
+    updatedAt   DateTime              @updatedAt @map("updated_at")
+    parameters  QcTemplateParameter[]
 
-  @@map("qc_templates")
+    @@map("qc_templates")
 }
-
 model Account {
-  id                String   @id @default(cuid())
-  userId            String   @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String   @map("provider_account_id")
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?  @db.Text
-  session_state     String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
 
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
 
+
 model Authenticator {
-  id                   String  @id @default(cuid())
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
+    id                   String  @id @default(cuid())
+    credentialID         String  @unique
+    userId               String
+    providerAccountId    String
+    credentialPublicKey  String
+    counter              Int
+    credentialDeviceType String
+    credentialBackedUp   Boolean
+    transports           String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("authenticators")
+    @@map("authenticators")
 }
 
 model Session {
@@ -1812,35 +1761,33 @@ model Session {
   userId       String   @map("user_id")
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@map("sessions")
 }
 
 model UserConfigGroup {
-  id          String       @id @default(uuid())
-  name        String       @map("name")
-  description String
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
-  userConfigs UserConfig[]
+    id          String   @id @default(uuid())
+    name        String   @map("name")
+    description String
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    userConfigs UserConfig[]
 
-  @@map("user_config_groups")
+    @@map("user_config_groups")
 }
-
 model UserConfig {
-  id            String          @id @default(uuid())
-  userId        String          @map("user_id")
-  configGroupId String          @map("config_group_id")
-  name          String
-  value         String
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
-  user          User            @relation(fields: [userId], references: [id])
-  configGroup   UserConfigGroup @relation(fields: [configGroupId], references: [id])
+    id            String          @id @default(uuid())
+    userId        String          @map("user_id")
+    configGroupId String          @map("config_group_id")
+    name          String
+    value         String
+    createdAt     DateTime        @default(now()) @map("created_at")
+    updatedAt     DateTime        @updatedAt @map("updated_at")
+    user          User            @relation(fields: [userId], references: [id])
+    configGroup   UserConfigGroup @relation(fields: [configGroupId], references: [id])
 
-  @@map("user_configs")
+    @@map("user_configs")
 }
-
 model UserRoleAssignment {
   id         String   @id @default(uuid())
   userId     String   @map("user_id")
@@ -1853,59 +1800,46 @@ model UserRoleAssignment {
 
   @@map("user_role_assignments")
 }
-
 model UserRole {
-  id                 String               @id @default(uuid())
-  name               String
-  createdAt          DateTime             @default(now()) @map("created_at")
-  updatedAt          DateTime             @updatedAt @map("updated_at")
-  StepActionableType StepActionableType[]
-  UserRoleAssignment UserRoleAssignment[]
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user_roles")
 }
-
 model User {
-  id                            String                          @id @default(cuid())
-  name                          String?
-  email                         String?                         @unique
-  emailVerified                 DateTime?                       @map("email_verified")
-  image                         String?
-  accounts                      Account[]
-  sessions                      Session[]
-  createdAt                     DateTime                        @default(now())
-  updatedAt                     DateTime                        @updatedAt
-  purchaseOrders                PurchaseOrder[]
-  transactions                  Transaction[]
-  purchaseOrderNotes            PurchaseOrderNote[]
-  activityLogs                  ActivityLog[]
-  userConfigs                   UserConfig[]
-  purchasingRequests            PurchasingRequest[]
-  requestNotes                  RequestNote[]
-  auditRequests                 AuditRequest[]
-  auditRequestNotes             AuditRequestNote[]
-  pricingExaminations           PricingExamination[]
-  qcRecords                     QcRecord[]
-  qcRecordNotes                 QcRecordNote[]
-  qcAuditLog                    QcAuditLog[]
-  PricingExaminationNote        PricingExaminationNote[]
-  InventoryAudit                InventoryAudit[]
-  BprNote                       BprNote[]
-  BprStaging                    BprStaging[]
-  BprStagingVerification        BprStagingVerification[]
-  BprStepActionableCompletion   BprStepActionableCompletion[]
-  BprStepActionableVerification BprStepActionableVerification[]
-  Authenticator                 Authenticator[]
-  UserRoleAssignment            UserRoleAssignment[]
+    id                  String               @id @default(cuid())
+    name                String?
+    email               String?              @unique
+    emailVerified       DateTime?            @map("email_verified")
+    image               String?
+    accounts            Account[]
+    sessions            Session[]
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    purchaseOrders      PurchaseOrder[]
+    transactions        Transaction[]
+    purchaseOrderNotes  PurchaseOrderNote[]
+    activityLogs        ActivityLog[]
+    userConfigs         UserConfig[]
+    purchasingRequests  PurchasingRequest[]
+    requestNotes        RequestNote[]
+    auditRequests       AuditRequest[]
+    auditRequestNotes   AuditRequestNote[]
+    pricingExaminations PricingExamination[]
+    qcRecords           QcRecord[]
+    qcRecordNotes       QcRecordNote[]
+    qcAuditLog          QcAuditLog[]
+    files               File[]
 
-  @@map("users")
+    @@map("users")
 }
-
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
-
+ 
   @@id([identifier, token])
   @@map("verification_tokens")
 }

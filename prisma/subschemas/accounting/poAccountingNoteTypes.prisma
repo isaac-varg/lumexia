@@ -1,0 +1,12 @@
+model PoAccountingNoteType {
+    id                String             @id @default(uuid())
+    name              String
+    description       String
+    bgColor           String             @map("bg_color")
+    textColor         String             @map("text_color")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    poAccountingNotes PoAccountingNote[]
+
+    @@map("po_accounting_note_types")
+}

@@ -1,58 +1,77 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { s3 } from '@/lib/s3'; // Adjust path if necessary
+import { s3 } from '@/lib/s3';
 import { Buffer } from 'buffer';
+import { randomUUID } from 'crypto';
+import path from 'path';
+import { getUserId } from '@/actions/users/getUserId';
+import prisma from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
         const file = formData.get('file') as File | null;
+        const pathPrefix = formData.get('pathPrefix') as string | null;
 
         if (!file) {
             return NextResponse.json({ error: 'No file uploaded.' }, { status: 400 });
         }
 
-        const bucketName = process.env.S3_BUCKET_NAME!;
-        if (!bucketName) {
-            throw new Error("MINIO_BUCKET environment variable is not set.");
+        if (!pathPrefix) {
+            return NextResponse.json({ error: 'No path prefix specified.' }, { status: 400 })
         }
 
-        // Check if the bucket exists, and create it if it doesn't.
+        const bucketName = process.env.S3_BUCKET_NAME!;
+        if (!bucketName) {
+            throw new Error("S3_BUCKET_NAME environment variable is not set.");
+        }
+
+        // TODO ensure that bucket exists on app startup not every time we upload
         const bucketExists = await s3.bucketExists(bucketName);
         if (!bucketExists) {
             await s3.makeBucket(bucketName);
             console.log(`Bucket ${bucketName} created.`);
         }
 
-        // Convert file to buffer
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Create a unique object name
-        const objectName = `${Date.now()}-${file.name}`;
+        const fileExtension = path.extname(file.name);
+        const objectName = `${pathPrefix}/${randomUUID()}${fileExtension}`;
 
-        // Define metadata for the object
         const metaData = {
             'Content-Type': file.type,
         };
 
-        // Upload the file to MinIO
-        const object = await s3.putObject(bucketName, objectName, buffer, undefined, metaData);
-        console.log(object)
+        const uploadInfo = await s3.putObject(bucketName, objectName, buffer, file.size, metaData);
 
-        // Construct the file URL
-        const fileUrl = `${process.env.S3_END_POINT}:${process.env.S3_PORT}/${bucketName}/${objectName}`;
+        // create the response rather than provide just upload info
+        const responseData = {
+            name: file.name,
+            mimetype: file.type,
+            size: file.size,
+            bucket: bucketName,
+            objectName: objectName,
+            etag: uploadInfo.etag,
+            versionId: uploadInfo.versionId,
+        };
 
-        // Save the image metadata to the database
-        //  const savedImage = await prisma.image.create({
-        //      data: {
-        //          fileName: file.name,
-        //          url: fileUrl,
-        //          size: file.size,
-        //      },
-        //  });
 
-        return NextResponse.json(object, { status: 200 });
-        //        return NextResponse.json(savedImage, { status: 200 });
+        // handle posting to our db
+        const userId = await getUserId();
+        await prisma.file.create({
+            data: {
+                name: responseData.name,
+                objectName: responseData.objectName,
+                bucketName: responseData.bucket,
+                etag: responseData.etag,
+                versionId: responseData.versionId,
+                size: responseData.size,
+                mimeType: responseData.mimetype,
+                uploadedById: userId,
+            }
+        });
+
+        return NextResponse.json(responseData, { status: 200 });
 
     } catch (error) {
         console.error('Upload failed:', error);

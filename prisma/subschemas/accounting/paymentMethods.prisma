@@ -1,5 +1,3 @@
-import { SupplierPaymentMethod } from "../purchasing/supplierPaymentMethods"
-import { PurchaseOrder } from "../purchasing/purchaseOrders"
 model PaymentMethod {
     id                     String                  @id @default(uuid())
     name                   String
@@ -11,8 +9,7 @@ model PaymentMethod {
     updatedAt              DateTime                @updatedAt @map("updated_at")
     supplierPaymentMethods SupplierPaymentMethod[]
     purchaseOrders         PurchaseOrder[]
+    poAccountingDetails    PoAccountingDetail[]
 
     @@map("payment_methods")
 }
-
-

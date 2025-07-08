@@ -8,7 +8,7 @@ type UploadProps = {
     pathPrefix?: string;
 }
 
-const ImageUpload = ({ pathPrefix = 'general' }: UploadProps) => {
+const Uploader = ({ pathPrefix = 'general' }: UploadProps) => {
 
     const [uploadedFile, setUploadedFile] = useState<{
         fileName: string;
@@ -97,21 +97,10 @@ const ImageUpload = ({ pathPrefix = 'general' }: UploadProps) => {
                         <TbCheck className="w-5 h-5 mr-2 flex-shrink-0" />
                         <p className="font-semibold">Upload successful!</p>
                     </div>
-                    <div className="mt-2 pl-7 text-sm text-gray-700">
-                        <p className="truncate"><strong>File:</strong> {uploadedFile.fileName}</p>
-                        <a
-                            href={uploadedFile.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
-                        >
-                            View Uploaded Image
-                        </a>
-                    </div>
                 </div>
             )}
         </div>
     );
 };
 
-export default ImageUpload;
+export default Uploader;

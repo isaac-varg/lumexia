@@ -1,27 +1,22 @@
-import {  Supplier } from "./suppliers" 
-import { User } from "../users/users"
-import { PurchaseOrderStatus } from "./purchaseOrderStatuses"
-import { PurchaseOrderItem } from "./purchaseOrderItems"
-import { PurchaseOrderNote } from "./purchaseOrderNotes"
-import { PaymentMethod } from "../accounting/paymentMethods"
-import { LotOrigin } from "../inventory/lotOrigins"
-
 model PurchaseOrder {
-    id                 String              @id @default(uuid())
-    referenceCode      Int                 @default(autoincrement()) @map("reference_code")
-    submittingUserId   String              @map("submitting_user_id")
-    supplierId         String              @map("supplier_id")
-    statusId           String              @map("status_id")
-    paymentMethodId    String?             @map("payment_method_id")
-    createdAt          DateTime            @default(now()) @map("created_at")
-    updatedAt          DateTime            @updatedAt @map("updated_at")
-    supplier           Supplier            @relation(fields: [supplierId], references: [id])
-    user               User                @relation(fields: [submittingUserId], references: [id])
-    paymentMethod      PaymentMethod?      @relation(fields: [paymentMethodId], references: [id])
-    status             PurchaseOrderStatus @relation(fields: [statusId], references: [id])
+    id                 String               @id @default(uuid())
+    referenceCode      Int                  @default(autoincrement()) @map("reference_code")
+    submittingUserId   String               @map("submitting_user_id")
+    supplierId         String               @map("supplier_id")
+    statusId           String               @map("status_id")
+    paymentMethodId    String?              @map("payment_method_id")
+    createdAt          DateTime             @default(now()) @map("created_at")
+    updatedAt          DateTime             @updatedAt @map("updated_at")
+    supplier           Supplier             @relation(fields: [supplierId], references: [id])
+    user               User                 @relation(fields: [submittingUserId], references: [id])
+    paymentMethod      PaymentMethod?       @relation(fields: [paymentMethodId], references: [id])
+    status             PurchaseOrderStatus  @relation(fields: [statusId], references: [id])
     purchaseOrderItems PurchaseOrderItem[]
     purchaseOrderNotes PurchaseOrderNote[]
-    lotOrigins        	LotOrigin[]        
+    lotOrigins         LotOrigin[]
+    poAccountingDetail PoAccountingDetail[]
+    poAccountingNotes  PoAccountingNote[]
+    poAccountingFiles  PoAccountingFile[]
 
     @@map("purchase_orders")
 }

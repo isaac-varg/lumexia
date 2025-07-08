@@ -21,6 +21,7 @@ model User {
     qcRecords           QcRecord[]
     qcRecordNotes       QcRecordNote[]
     qcAuditLog          QcAuditLog[]
+    files               File[]
 
     @@map("users")
 }
