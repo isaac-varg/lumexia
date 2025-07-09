@@ -1,16 +1,40 @@
+'use client'
 import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { PoWithAccounting } from "../../_actions/getPoWithAccountingDetails"
+import { accountingActions } from "@/actions/accounting"
+import { staticRecords } from "@/configs/staticRecords"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 const AccountingDetails = ({ po }: { po: PoWithAccounting }) => {
+
+    const router = useRouter();
+    const handleChange = async (fieldName: string, value: boolean) => {
+
+        if (!po.poAccountingDetail) return;
+
+        await accountingActions.pos.details.update(po.poAccountingDetail.id, {
+            [fieldName]: value,
+        })
+
+
+        router.refresh()
+    }
+
+
     return (
         <Panels.Root>
             <SectionTitle size="small">Accounting</SectionTitle>
 
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-2">
 
-                <DetailRow label="Paid" value={po.poAccountingDetail[0]?.paid || false} />
+                <DetailRow label="Paid" fieldName="paid" onDetailChange={handleChange} value={po.poAccountingDetail?.paid || false} />
+
+                <DetailRow label="Packing Slip Received " fieldName="packingSlipReceived" onDetailChange={handleChange} value={po.poAccountingDetail?.packingSlipReceived || false} />
+
+                <DetailRow label="Paperwork Handed Off" fieldName="paperworkGivenToAdmin" onDetailChange={handleChange} value={po.poAccountingDetail?.paperworkGivenToAdmin || false} />
             </div>
 
 
@@ -18,22 +42,34 @@ const AccountingDetails = ({ po }: { po: PoWithAccounting }) => {
     )
 }
 
-const DetailRow = ({ label, value }: { label: string, value: boolean }) => {
+const DetailRow = ({ label, value, fieldName, onDetailChange }: { label: string, value: boolean, fieldName: string, onDetailChange: (fieldName: string, value: boolean) => void }) => {
 
-    const buttonBase = 'flex p-6 w-40 items-center justify-center rounded-xl font-poppins text-lg font-semibold';
+    const buttonBase = 'flex p-4 w-20 items-center justify-center rounded-xl font-poppins text-md font-semibold';
     const unseletedButton = 'bg-neutral-200 hover:bg-neutral-300 hover:cursor-pointer'
 
-    return (
-        <div className="flex justify-between items-center p-6 rounded-xl">
 
-            <div className="font-poppins text-2xl font-semibold">
+    return (
+        <div className="flex justify-between items-center p-4 rounded-xl">
+
+            <div className="font-poppins text-xl font-semibold">
                 {label}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <div className={`${buttonBase} ${value ? 'bg-green-200 hover:cursor-not-allowed ' : unseletedButton}`}>Yes</div>
+                <div
+                    className={`${buttonBase} ${value ? 'bg-green-200 hover:cursor-not-allowed ' : unseletedButton}`}
+                    onClick={() => onDetailChange(fieldName, true)}
+                >
+                    Yes
+                </div>
 
-                <div className={`${buttonBase} ${!value ? 'bg-rose-300 hover:cursor-not-allowed' : unseletedButton}`}>No</div>
+                <div
+                    className={`${buttonBase} ${!value ? 'bg-rose-300 hover:cursor-not-allowed' : unseletedButton}`}
+
+                    onClick={() => onDetailChange(fieldName, false)}
+                >
+                    No
+                </div>
             </div>
 
         </div>

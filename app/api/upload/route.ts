@@ -6,6 +6,17 @@ import path from 'path';
 import { getUserId } from '@/actions/users/getUserId';
 import prisma from '@/lib/prisma';
 
+export type FileResponseData = {
+    name: string
+    mimetype: string
+    size: number
+    bucket: string
+    objectName: string
+    etag: string
+    versionId: string | null
+    fileId: string
+}
+
 export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
@@ -58,7 +69,7 @@ export async function POST(request: NextRequest) {
 
         // handle posting to our db
         const userId = await getUserId();
-        await prisma.file.create({
+        const fileEntry = await prisma.file.create({
             data: {
                 name: responseData.name,
                 objectName: responseData.objectName,
@@ -71,7 +82,10 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        return NextResponse.json(responseData, { status: 200 });
+        return NextResponse.json({
+            ...responseData,
+            fileId: fileEntry.id,
+        }, { status: 200 });
 
     } catch (error) {
         console.error('Upload failed:', error);

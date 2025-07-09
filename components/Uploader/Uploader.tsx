@@ -1,14 +1,16 @@
 'use client';
 
+import { FileResponseData } from '@/app/api/upload/route';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { TbCheck, TbPhoto, TbX } from 'react-icons/tb';
 
 type UploadProps = {
     pathPrefix?: string;
+    onComplete?: (FileResponse: FileResponseData) => void;
 }
 
-const Uploader = ({ pathPrefix = 'general' }: UploadProps) => {
+const Uploader = ({ pathPrefix = 'general', onComplete }: UploadProps) => {
 
     const [uploadedFile, setUploadedFile] = useState<{
         fileName: string;
@@ -42,14 +44,18 @@ const Uploader = ({ pathPrefix = 'general' }: UploadProps) => {
             }
 
             const data = await response.json();
-            console.log('data', data)
+
+            if (onComplete) {
+                onComplete(data)
+            }
+
             setUploadedFile({ fileName: data.fileName, url: data.url });
         } catch (err: any) {
             setError(err.message);
         } finally {
             setIsUploading(false);
         }
-    }, []);
+    }, [onComplete, pathPrefix]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,

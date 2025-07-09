@@ -38,6 +38,8 @@ import { getAllByItemType } from "./finishedProducts/templates/getAllByItemType"
 import { getOnePricingTemplate } from "./finishedProducts/templates/getOne";
 import { updatePricingTemplate } from "./finishedProducts/templates/update";
 import { updateFinishedProduct } from "./finishedProducts/update";
+import { createPoAccountingDetail } from "./pos/details/create";
+import { updatePoAccountingDetails } from "./pos/details/update";
 import { createPricingQueue } from "./pricing/createQueue";
 import { getItemPricingData } from "./pricing/getItemPricingData";
 import { getLastItemPrice } from "./pricing/getLastItemPrice";
@@ -121,5 +123,11 @@ export const accountingActions = {
         getOne: getOnePricingExamination,
         getAll: getAllPricingExaminations,
         upsert: upsertPricingExamination,
+    },
+    pos: {
+        details: {
+            update: updatePoAccountingDetails,
+            create: createPoAccountingDetail,
+        }
     }
 }

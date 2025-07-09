@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jul 08 2025 10:54:06 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jul 09 2025 10:29:39 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -275,7 +275,7 @@ model PaymentMethod {
 model PoAccountingDetail {
   id                    String             @id @default(uuid())
   statusId              String             @map("status_id")
-  purchaseOrderId       String             @map("purchase_order_id")
+  purchaseOrderId       String             @unique @map("purchase_order_id")
   paid                  Boolean?
   paymentMethodId       String?            @map("payment_method_id")
   packingSlipReceived   Boolean?           @map("packing_slip_received")
@@ -1454,7 +1454,7 @@ model PurchaseOrder {
   purchaseOrderItems   PurchaseOrderItem[]
   purchaseOrderNotes   PurchaseOrderNote[]
   lotOrigins           LotOrigin[]
-  poAccountingDetail   PoAccountingDetail[]
+  poAccountingDetail   PoAccountingDetail?
   poAccountingNotes    PoAccountingNote[]
   poAccountingFiles    PoAccountingFile[]
   NotionPurchaseOrder  NotionPurchaseOrder[]

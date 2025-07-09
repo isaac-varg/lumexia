@@ -1,7 +1,7 @@
 model PoAccountingDetail {
     id                    String             @id @default(uuid())
     statusId              String             @map("status_id")
-    purchaseOrderId       String             @map("purchase_order_id")
+    purchaseOrderId       String             @unique @map("purchase_order_id")
     paid                  Boolean?
     paymentMethodId       String?            @map("payment_method_id")
     packingSlipReceived   Boolean?           @map("packing_slip_received")

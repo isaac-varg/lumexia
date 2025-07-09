@@ -206,5 +206,12 @@ export const staticRecords = {
                 oos: '0b02109c-dadb-42b6-888b-247b8b0a5d68',
             }
         }
+    },
+    accounting: {
+        pos: {
+            statuses: {
+                default: '846f1580-06a9-4de3-956b-989933d947e6'
+            }
+        }
     }
 }

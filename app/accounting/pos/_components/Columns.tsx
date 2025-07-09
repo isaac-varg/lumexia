@@ -44,12 +44,13 @@ export const poAccountingColumns = [
         header: 'Total ($)',
         cell: (row) => toFracitonalDigits.curreny(row.row.original.total),
     }),
-    columnHelper.accessor("poAccountingDetail.status.name", {
+    columnHelper.accessor("poAccountingDetail.status.id", {
+        id: 'status',
         header: "Status",
         cell: (row) => {
-            const hasData = row.row.original.poAccountingDetail.length !== 0;
-            if (hasData) {
-                const status = row.row.original.poAccountingDetail[0].status;
+            const details = row.row.original.poAccountingDetail
+            if (details && Object.keys(details).length !== 0 ) {
+                const status = details.status
                 return < Tag bgColor={status.bgColor} textColor={status.textColor} label={status.name} tooltip={status?.description || ''} />
             }
 
@@ -61,9 +62,9 @@ export const poAccountingColumns = [
     columnHelper.accessor("poAccountingDetail.paid", {
         header: "Paid",
         cell: (row) => {
-            const hasData = row.row.original.poAccountingDetail.length !== 0;
-            if (hasData) {
-                const value = row.row.original.poAccountingDetail[0].paid;
+            const details = row.row.original.poAccountingDetail
+            if (details) {
+                const value = details.paid
                 const color: TagColor = value ? 'green' : 'rose';
                 const label = value ? 'paid' : 'not paid'
                 return < Tag color={color} label={label} />
@@ -75,11 +76,11 @@ export const poAccountingColumns = [
     columnHelper.accessor("poAccountingDetail.packingSlipReceived", {
         header: "Packing Slip",
         cell: (row) => {
-            const hasData = row.row.original.poAccountingDetail.length !== 0;
-            if (hasData) {
-                const value = row.row.original.poAccountingDetail[0].packingSlipReceived;
+            const details = row.row.original.poAccountingDetail
+            if (details) {
+                const value = details.packingSlipReceived;
                 const color: TagColor = value ? 'green' : 'rose';
-                const label = value ? 'paid' : 'not paid'
+                const label = value ? 'Recieved' : 'Missing'
                 return < Tag color={color} label={label} />
             }
 
@@ -89,11 +90,11 @@ export const poAccountingColumns = [
     columnHelper.accessor("poAccountingDetail.paperworkGivenToAdmin", {
         header: "Paperwork",
         cell: (row) => {
-            const hasData = row.row.original.poAccountingDetail.length !== 0;
-            if (hasData) {
-                const value = row.row.original.poAccountingDetail[0].paperworkGivenToAdmin;
+            const details = row.row.original.poAccountingDetail
+            if (details) {
+                const value = details.paperworkGivenToAdmin;
                 const color: TagColor = value ? 'green' : 'rose';
-                const label = value ? 'paid' : 'not paid'
+                const label = value ? 'Handed Off' : 'Not Yet'
                 return < Tag color={color} label={label} />
             }
 
