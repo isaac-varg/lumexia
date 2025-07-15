@@ -6,16 +6,27 @@ import { accountingActions } from "@/actions/accounting"
 import { staticRecords } from "@/configs/staticRecords"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { createAccountingAuditLog } from "../../_actions/createAccountingAuditLog"
+import { getUserId } from "@/actions/users/getUserId"
 
-const AccountingDetails = ({ po }: { po: PoWithAccounting }) => {
+const AccountingDetails = ({ po, title = 'Accounting' }: { po: PoWithAccounting, title?: string }) => {
 
     const router = useRouter();
     const handleChange = async (fieldName: string, value: boolean) => {
 
         if (!po.poAccountingDetail) return;
 
+        const userId = await getUserId();
+
         await accountingActions.pos.details.update(po.poAccountingDetail.id, {
             [fieldName]: value,
+        })
+
+        await createAccountingAuditLog({
+            poId: po.id,
+            userId,
+            action: 'Modify Accounting Details',
+            context: `${fieldName} was changed to ${value}`,
         })
 
 
@@ -25,7 +36,7 @@ const AccountingDetails = ({ po }: { po: PoWithAccounting }) => {
 
     return (
         <Panels.Root>
-            <SectionTitle size="small">Accounting</SectionTitle>
+            <SectionTitle size="small">{title}</SectionTitle>
 
 
             <div className="grid grid-cols-1 gap-2">

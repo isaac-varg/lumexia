@@ -10,16 +10,27 @@ import FileButton from "@/components/Uploader/FileButton"
 import useDialog from "@/hooks/useDialog"
 import { AccountingFileTypes } from "../../_actions/getAccountingFileTags"
 import { deleteAccountingFile } from "../../_actions/deleteAccountingFile"
+import { createAccountingAuditLog } from "../../_actions/createAccountingAuditLog"
+import { getUserId } from "@/actions/users/getUserId"
 
-const AccountingFiles = ({ files, poId, fileTypes }: { files: AccountingFile[], poId: string, fileTypes: AccountingFileTypes[] }) => {
+const AccountingFiles = ({ files, poId, fileTypes, span = 2 }: { files: AccountingFile[], poId: string, fileTypes: AccountingFileTypes[], span?: 1 | 2 | 3 }) => {
 
     const router = useRouter();
 
+
     const handleComplete = async (data: FileResponseData) => {
+        const userId = await getUserId()
         await createPoAccountingFile({
             fileTypeId: '9b24e26b-3ce5-469b-96a2-37ebe779b783',
             fileId: data.fileId,
             purchaseOrderId: poId,
+        })
+
+        await createAccountingAuditLog({
+            poId: poId,
+            userId,
+            action: 'Add File',
+            context: `${data.name} was added.`
         })
 
         router.refresh();
@@ -29,12 +40,22 @@ const AccountingFiles = ({ files, poId, fileTypes }: { files: AccountingFile[], 
     }
 
     const handleDelete = async (file: AccountingFile) => {
+
+        const userId = await getUserId()
+
         await deleteAccountingFile(file)
+        await createAccountingAuditLog({
+            poId,
+            userId,
+            action: 'Remove File',
+            context: `${file.file.name} was deleted.`
+        })
+
         router.refresh()
     }
 
     return (
-        <Panels.Root span={2}>
+        <Panels.Root span={span}>
             <SectionTitle size="small">Files</SectionTitle>
 
 

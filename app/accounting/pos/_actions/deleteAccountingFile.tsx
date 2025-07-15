@@ -2,12 +2,10 @@
 
 import prisma from "@/lib/prisma"
 import { AccountingFile } from "./getAccountingFilesByPo"
-import { getUserId } from "@/actions/users/getUserId"
 
 export const deleteAccountingFile = async (file: AccountingFile) => {
 
-    const userId = await getUserId()
-    const accountingFileRes = await prisma.poAccountingFile.delete({
+    await prisma.poAccountingFile.delete({
         where: { id: file.id },
     })
 
@@ -15,13 +13,6 @@ export const deleteAccountingFile = async (file: AccountingFile) => {
         where: { id: file.file.id }
     })
 
-    const res = await prisma.poAccountingAuditLog.create({
-        data: {
-            userId,
-            action: 'Remove File',
-            context: `${file.file.name} was removed`
-        }
-    })
 
-    return res;
+    return fileRes;
 }

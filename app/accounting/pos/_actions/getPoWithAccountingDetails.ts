@@ -8,7 +8,8 @@ const poWithAccountingDetailsArgs = Prisma.validator<Prisma.PurchaseOrderDefault
     include: {
         poAccountingDetail: {
             include: {
-                status: true
+                status: true,
+                paymentMethod: true,
             }
         },
         supplier: true,
@@ -21,6 +22,7 @@ const poWithAccountingDetailsArgs = Prisma.validator<Prisma.PurchaseOrderDefault
         },
         poAccountingNotes: {
             include: {
+                user: true,
                 noteType: true
             }
         }

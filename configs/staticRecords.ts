@@ -212,6 +212,11 @@ export const staticRecords = {
             statuses: {
                 default: '846f1580-06a9-4de3-956b-989933d947e6'
             }
+        },
+        notes: {
+            types: {
+                default: '7bc51425-a1f7-41d3-922d-fbb836c00340'
+            }
         }
     }
 }

@@ -15,6 +15,13 @@ import { getActivity } from "./_functions/getActivity";
 import ViewMode from "./_components/viewMode/ViewMode";
 import { appActions } from "@/actions/app";
 import { getUser } from "@/actions/users/getUser";
+import AccountingPanel from "./_components/accounting/AccountingPanel";
+import { getPoWithAccountingDetails } from "@/app/accounting/pos/_actions/getPoWithAccountingDetails";
+import { getAccountingFilesByPo } from "@/app/accounting/pos/_actions/getAccountingFilesByPo";
+import { getAccountingFileTags } from "@/app/accounting/pos/_actions/getAccountingFileTags";
+import { accountingActions } from "@/actions/accounting";
+import { getAllPoAccountingStatuses } from "@/app/accounting/pos/_actions/getAllAccountingStatuses";
+import { getAllAccountingNoteTypes } from "@/app/accounting/pos/_actions/getAllAccountingNoteTypes";
 
 type PurchaseOrderDetailsProps = {
     searchParams: {
@@ -33,6 +40,14 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
     const activity = await getActivity(purchaseOrder.id)
     const company = await appActions.configs.getByGroup('company');
     const user = await getUser();
+    // for accounting
+    const poWithAccounting = await getPoWithAccountingDetails(searchParams.id)
+    const files = await getAccountingFilesByPo(searchParams.id)
+    const fileTypes = await getAccountingFileTags();
+    const allPaymentMethods = await accountingActions.paymentMethods.getAll();
+    const allAccountingStatuses = await getAllPoAccountingStatuses();
+    const allAccountingNoteTypes = await getAllAccountingNoteTypes();
+
 
 
     const flattenedOrderItems = flattenOrderItems(orderItems)
@@ -65,8 +80,11 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
                 />
                 <Totals purchaseOrderItems={orderItems} />
 
-                <ActivityPanelCard activity={activity} />
                 <Correspondant purchaseOrder={purchaseOrder} />
+                <ActivityPanelCard activity={activity} />
+
+
+                <AccountingPanel accounting={poWithAccounting} files={files} fileTypes={fileTypes} allMethods={allPaymentMethods} allAccountingNoteTypes={allAccountingNoteTypes} allAccountingStatuses={allAccountingStatuses} />
             </div>
 
 

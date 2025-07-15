@@ -1,11 +1,13 @@
 model PoAccountingAuditLog {
     id        String   @id @default(uuid())
+    poId      String   @map("po_id")
     userId    String   @map("user_id")
     action    String
     context   String
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
     user      User     @relation(fields: [userId], references: [id])
+    po PurchaseOrder @relation(fields: [poId] , references: [id])
 
-    @@map("po_acocunting_audit_logs")
+    @@map("po_accounting_audit_logs")
 }

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jul 15 2025 10:39:49 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Jul 15 2025 16:09:42 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -279,15 +279,17 @@ model PaymentMethod {
 }
 
 model PoAccountingAuditLog {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
+  id        String        @id @default(uuid())
+  poId      String        @map("po_id")
+  userId    String        @map("user_id")
   action    String
   context   String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  user      User          @relation(fields: [userId], references: [id])
+  po        PurchaseOrder @relation(fields: [poId], references: [id])
 
-  @@map("po_acocunting_audit_logs")
+  @@map("po_accounting_audit_logs")
 }
 
 model PoAccountingDetail {
@@ -1457,26 +1459,27 @@ model PurchaseOrderStatus {
 }
 
 model PurchaseOrder {
-  id                   String                 @id @default(uuid())
-  referenceCode        Int                    @default(autoincrement()) @map("reference_code")
-  submittingUserId     String                 @map("submitting_user_id")
-  supplierId           String                 @map("supplier_id")
-  statusId             String                 @map("status_id")
-  paymentMethodId      String?                @map("payment_method_id")
-  createdAt            DateTime               @default(now()) @map("created_at")
-  updatedAt            DateTime               @updatedAt @map("updated_at")
-  supplier             Supplier               @relation(fields: [supplierId], references: [id])
-  user                 User                   @relation(fields: [submittingUserId], references: [id])
-  paymentMethod        PaymentMethod?         @relation(fields: [paymentMethodId], references: [id])
-  status               PurchaseOrderStatus    @relation(fields: [statusId], references: [id])
-  purchaseOrderItems   PurchaseOrderItem[]
-  purchaseOrderNotes   PurchaseOrderNote[]
-  lotOrigins           LotOrigin[]
-  poAccountingDetail   PoAccountingDetail?
-  poAccountingNotes    PoAccountingNote[]
-  poAccountingFiles    PoAccountingFile[]
-  NotionPurchaseOrder  NotionPurchaseOrder[]
-  RequestPurchaseOrder RequestPurchaseOrder[]
+  id                    String                 @id @default(uuid())
+  referenceCode         Int                    @default(autoincrement()) @map("reference_code")
+  submittingUserId      String                 @map("submitting_user_id")
+  supplierId            String                 @map("supplier_id")
+  statusId              String                 @map("status_id")
+  paymentMethodId       String?                @map("payment_method_id")
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+  supplier              Supplier               @relation(fields: [supplierId], references: [id])
+  user                  User                   @relation(fields: [submittingUserId], references: [id])
+  paymentMethod         PaymentMethod?         @relation(fields: [paymentMethodId], references: [id])
+  status                PurchaseOrderStatus    @relation(fields: [statusId], references: [id])
+  purchaseOrderItems    PurchaseOrderItem[]
+  purchaseOrderNotes    PurchaseOrderNote[]
+  lotOrigins            LotOrigin[]
+  poAccountingDetail    PoAccountingDetail?
+  poAccountingNotes     PoAccountingNote[]
+  poAccountingFiles     PoAccountingFile[]
+  poAccountingAuditLogs PoAccountingAuditLog[]
+  NotionPurchaseOrder   NotionPurchaseOrder[]
+  RequestPurchaseOrder  RequestPurchaseOrder[]
 
   @@map("purchase_orders")
 }

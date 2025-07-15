@@ -30,7 +30,7 @@ const Correspondant = async ({
   const supplierNotes = await supplierNoteActions.getAll({supplierId: purchaseOrder.supplierId});
 
   return (
-    <>
+    <div>
       <PaymentMethodForm
         methods={supplierPaymentMethods}
         purchaseOrderId={purchaseOrder.id}
@@ -41,16 +41,7 @@ const Correspondant = async ({
 
         <SupplierNameTag supplier={purchaseOrder.supplier} />
 
-
       
-          <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
-          <h1 className="text-xl font-poppins font-semibold">Payment Method</h1>
-
-          <PaymentMethodSelector
-            method={poWithPaymentMethod}
-            supplierPaymentMethods={supplierPaymentMethods}
-          />
-
           <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
           <h1 className="text-xl font-poppins font-semibold">Supplier Notes</h1>
           <ul className="list-disc px-4">
@@ -61,7 +52,7 @@ const Correspondant = async ({
         </ul>
         </Card.Root>
       </div>
-    </>
+    </div>
   );
 };
 
