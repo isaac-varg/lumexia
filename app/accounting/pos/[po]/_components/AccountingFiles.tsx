@@ -7,8 +7,11 @@ import { FileResponseData } from "@/app/api/upload/route"
 import { createPoAccountingFile } from "../../_actions/createPoAccountingFile"
 import { useRouter } from "next/navigation"
 import FileButton from "@/components/Uploader/FileButton"
+import useDialog from "@/hooks/useDialog"
+import { AccountingFileTypes } from "../../_actions/getAccountingFileTags"
+import { deleteAccountingFile } from "../../_actions/deleteAccountingFile"
 
-const AccountingFiles = ({ files, poId }: { files: AccountingFile[], poId: string }) => {
+const AccountingFiles = ({ files, poId, fileTypes }: { files: AccountingFile[], poId: string, fileTypes: AccountingFileTypes[] }) => {
 
     const router = useRouter();
 
@@ -22,15 +25,24 @@ const AccountingFiles = ({ files, poId }: { files: AccountingFile[], poId: strin
         router.refresh();
     }
 
+    const handleEdit = (file: AccountingFile) => {
+    }
+
+    const handleDelete = async (file: AccountingFile) => {
+        await deleteAccountingFile(file)
+        router.refresh()
+    }
+
     return (
         <Panels.Root span={2}>
             <SectionTitle size="small">Files</SectionTitle>
 
-            <Uploader pathPrefix="/accounting/pos" onComplete={handleComplete} />
 
 
             <div className="grid grid-cols-3 gap-4">
-                {files.map(file => <FileButton label={file.file.name} url={file.url} mimeType={file.file.mimeType} />)}
+
+                <Uploader pathPrefix="/accounting/pos" onComplete={handleComplete} />
+                {files.map(file => <FileButton key={file.id} shape="vertical" label={file.file.name} url={file.url} mimeType={file.file.mimeType} onEditClick={() => handleEdit(file)} onDeleteClick={() => handleDelete(file)} fileTag={{ label: file.fileType.name, bgColor: file.fileType.bgColor, textColor: file.fileType.textColor }} uploadedByName={file.file.uploadedBy.name || ''} uploadedByImage={file.file.uploadedBy.image || ''} />)}
             </div>
 
         </Panels.Root>

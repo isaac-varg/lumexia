@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jul 09 2025 10:29:39 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Jul 15 2025 10:39:49 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -258,11 +258,17 @@ model ItemPricingDataArchive {
 
 model PaymentMethod {
   id                     String                  @id @default(uuid())
-  name                   String
-  type                   String
+  methodName             String                  @map("method_name")
+  associatedName         String                  @map("associated_name")
+  paymentType            String                  @map("payment_type")
   identifier             String
-  image                  String
+  accountEndingIn        String?                 @map("account_ending_in")
+  expiry                 String?
   limit                  Float
+  bgColorA               String                  @map("bg_color_a")
+  bgColorB               String                  @map("bg_color_b")
+  circleColorA           String?                 @map("circle_color_a")
+  circleColorB           String?                 @map("circle_color_b")
   createdAt              DateTime                @default(now()) @map("created_at")
   updatedAt              DateTime                @updatedAt @map("updated_at")
   supplierPaymentMethods SupplierPaymentMethod[]
@@ -270,6 +276,18 @@ model PaymentMethod {
   poAccountingDetails    PoAccountingDetail[]
 
   @@map("payment_methods")
+}
+
+model PoAccountingAuditLog {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  action    String
+  context   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("po_acocunting_audit_logs")
 }
 
 model PoAccountingDetail {
@@ -1998,6 +2016,7 @@ model User {
   qcRecordNotes                 QcRecordNote[]
   qcAuditLog                    QcAuditLog[]
   files                         File[]
+  poAccountingAuditLogd         PoAccountingAuditLog[]
   PoAccountingNote              PoAccountingNote[]
   PricingExaminationNote        PricingExaminationNote[]
   InventoryAudit                InventoryAudit[]

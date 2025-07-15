@@ -5,6 +5,7 @@ import { BiBuildings } from "react-icons/bi";
 import { MdOilBarrel } from "react-icons/md";
 import { FaBacteria } from "react-icons/fa";
 import { HiCheckBadge } from "react-icons/hi2";
+import { IconBase } from "react-icons/lib";
 
 
 
@@ -116,6 +117,11 @@ export const sidebar = [
                 label: "Pricing",
                 icon: <TbShoppingBag />,
                 path: "/accounting/pricing"
+            },
+            {
+                label: 'Payments',
+                icon: <TbCreditCard />,
+                path: '/accounting/payments'
             }
         ]
     },

@@ -38,6 +38,10 @@ import { getAllByItemType } from "./finishedProducts/templates/getAllByItemType"
 import { getOnePricingTemplate } from "./finishedProducts/templates/getOne";
 import { updatePricingTemplate } from "./finishedProducts/templates/update";
 import { updateFinishedProduct } from "./finishedProducts/update";
+import { createPaymentMethod } from "./paymentMethods/create";
+import { getAllPaymentMethods } from "./paymentMethods/getAll";
+import { getOnePaymentMethod } from "./paymentMethods/getOne";
+import { updatePaymentMethod } from "./paymentMethods/update";
 import { createPoAccountingDetail } from "./pos/details/create";
 import { updatePoAccountingDetails } from "./pos/details/update";
 import { createPricingQueue } from "./pricing/createQueue";
@@ -54,6 +58,12 @@ export const accountingActions = {
         },
         createQueue: createPricingQueue,
         getQueue: getQueue,
+    },
+    paymentMethods: {
+        create: createPaymentMethod,
+        getAll: getAllPaymentMethods,
+        update: updatePaymentMethod,
+        getOne: getOnePaymentMethod,
     },
     finishedProducts: {
         templates: {

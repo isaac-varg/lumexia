@@ -1,10 +1,16 @@
 model PaymentMethod {
     id                     String                  @id @default(uuid())
-    name                   String
-    type                   String
+    methodName             String                  @map("method_name")
+    associatedName         String                  @map("associated_name")
+    paymentType            String                  @map("payment_type")
     identifier             String
-    image                  String
+    accountEndingIn        String?                 @map("account_ending_in")
+    expiry                 String?
     limit                  Float
+    bgColorA               String                  @map("bg_color_a")
+    bgColorB               String                  @map("bg_color_b")
+    circleColorA           String?                 @map("circle_color_a")
+    circleColorB           String?                 @map("circle_color_b")
     createdAt              DateTime                @default(now()) @map("created_at")
     updatedAt              DateTime                @updatedAt @map("updated_at")
     supplierPaymentMethods SupplierPaymentMethod[]
