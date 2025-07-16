@@ -3,23 +3,19 @@ import React from "react";
 import { flattenPurchaseOrders } from "./_functions/flattenPurchaseOrders";
 import PurchaseOrderTable from "./_components/PurchaseOrderTable";
 import NewPurchaseOrderDialog from "./_components/NewPurchaseOrderDialog";
+import { getPurchaseOrdersForDashboard } from "./_functions/getPurchaseOrders";
 
 const PurchasingPage = async () => {
-  const purchaseOrders = await purchaseOrderActions.getAll(
-    {},
-    ["supplier", "status"],
-    [{ referenceCode: "desc" }],
-  );
+    
+    const purchaseOrders = await getPurchaseOrdersForDashboard();
 
-  const flattenedPurchaseOrders = flattenPurchaseOrders(purchaseOrders);
+    return (
+        <div>
+            <PurchaseOrderTable purchaseOrders={purchaseOrders} />
 
-  return (
-    <div>
-      <PurchaseOrderTable purchaseOrders={flattenedPurchaseOrders} />
-
-      <NewPurchaseOrderDialog />
-    </div>
-  );
+            <NewPurchaseOrderDialog />
+        </div>
+    );
 };
 
 export default PurchasingPage;

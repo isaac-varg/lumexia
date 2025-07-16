@@ -29,14 +29,18 @@ const AuditLog = ({ log, index }: { log: AccountingLog, index: number }) => {
     return (
         <div className={`${isEven ? 'bg-lilac-200' : 'bg-blue-200'} p-6 rounded-xl flex flex-col gap-y-4`}>
 
-            <div className="flex gap-x-4">
-                <img className="w-12 h-12 rounded-full" src={log.user.image || ''} />
-                <h3 className='font-poppins font-medium text-sm'>{log.user.name}</h3>
+            <div className="flex justify-between">
+                <div className="flex items-center gap-x-4">
+                    <img className="w-12 h-12 rounded-full" src={log.user.image || ''} />
+                    <h3 className='font-poppins font-medium text-sm'>{log.user.name}</h3>
+                </div>
+
+                <h2 className="font-poppins font-medium text-sm uppercase">
+                    {DateTime.fromJSDate(log.createdAt).toFormat(dateFormatString)}
+                </h2>
+
             </div>
 
-            <h2 className="font-poppins font-medium text-sm uppercase">
-                {DateTime.fromJSDate(log.createdAt).toFormat(dateFormatString)}
-            </h2>
 
             <h2 className="font-poppins font-medium text-sm uppercase">
                 {log.action}

@@ -1,10 +1,12 @@
 import { PurchaseOrder } from "./purchaseOrders"
-import { PurchaseOrderItem } from "./purchaseOrderItems"
+import { PurchaseOrderItem }from "./purchaseOrderItems"
 
 model PurchaseOrderStatus {
     id                String              @id @default(uuid())
     sequence          Int                 @unique
     name              String              @unique
+    bgColor           String              @default("#333333") @map("bg_color")
+    textColor         String              @default("#ffffff") @map("text_color")
     purchaseOrders    PurchaseOrder[]
     purchaseOrderItem PurchaseOrderItem[]
 

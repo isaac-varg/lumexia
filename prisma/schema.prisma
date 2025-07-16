@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Jul 15 2025 16:09:42 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jul 16 2025 10:43:16 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1452,6 +1452,8 @@ model PurchaseOrderStatus {
   id                String              @id @default(uuid())
   sequence          Int                 @unique
   name              String              @unique
+  bgColor           String              @default("#333333") @map("bg_color")
+  textColor         String              @default("#ffffff") @map("text_color")
   purchaseOrders    PurchaseOrder[]
   purchaseOrderItem PurchaseOrderItem[]
 
