@@ -14,7 +14,7 @@ const Sidebar =  () => {
     return (
         <div className="px-4 py-8 shadow-lg min-h-dvh">
             <div className="flex flex-col gap-y-8">
-                <div className="flex flex-row justify-center items-center ">
+                <div className="flex flex-row  justify-center items-center ">
                     <Image
                         src={icon}
                         alt="Lumexia icon"

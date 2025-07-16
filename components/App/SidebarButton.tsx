@@ -22,7 +22,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({ label, icon, path, badge 
             className="px-4 py-2 bg-tasman-100 hover:bg-tasman-200 rounded-lg hover:cursor-pointer flex justify-between items-center text-2xl text-tasman-900"
             onClick={handleClick}
         >
-            <div className="flex gap-x-2">
+            <div className="flex gap-x-2 items-center">
                 <span>{icon}</span>
                 <span>{label}</span>
             </div>
