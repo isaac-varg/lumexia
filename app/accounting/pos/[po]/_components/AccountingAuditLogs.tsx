@@ -14,7 +14,7 @@ const AccountingAuditLogs = ({ logs }: { logs: AccountingLog[] }) => {
 
             <div className="max-h-[600px] overflow-auto grid grid-cols-3 gap-6">
 
-                {logs.map((log, i) => <AuditLog log={log} index={i} />)}
+                {logs.map((log, i) => <AuditLog key={log.id} log={log} index={i} />)}
 
             </div>
         </Panels.Root>

@@ -33,7 +33,7 @@ const AccountingPanel = ({ accounting, files, fileTypes, allMethods, allAccounti
                 <div className="grid grid-cols-3 gap-4">
                     <AccountingDetails po={accounting} title="Process" />
                     <AccountingStatus po={accounting} statuses={allAccountingStatuses} />
-                    <PaymentMethodPanel paymentMethod={accounting.poAccountingDetail?.paymentMethod} allMethods={allMethods} accountingDetailId={accounting.poAccountingDetail?.id} />
+                    <PaymentMethodPanel poId={accounting.id} paymentMethod={accounting.poAccountingDetail?.paymentMethod} allMethods={allMethods} accountingDetailId={accounting.poAccountingDetail?.id} />
 
 
                     <AccountingFiles span={3} files={files} poId={accounting.id} fileTypes={fileTypes} />
