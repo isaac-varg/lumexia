@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jul 16 2025 10:43:16 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jul 16 2025 14:02:16 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -549,19 +549,20 @@ model Config {
 }
 
 model File {
-  id                String             @id @default(uuid())
-  name              String
-  objectName        String             @unique @map("object_name")
-  bucketName        String             @map("bucket_name")
-  etag              String
-  versionId         String?            @map("version_id")
-  size              Int
-  mimeType          String             @map("mime_type")
-  uploadedById      String             @map("uploaded_by_id")
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt @map("updated_at")
-  uploadedBy        User               @relation(fields: [uploadedById], references: [id])
-  poAccountingFiles PoAccountingFile[]
+  id                  String               @id @default(uuid())
+  name                String
+  objectName          String               @unique @map("object_name")
+  bucketName          String               @map("bucket_name")
+  etag                String
+  versionId           String?              @map("version_id")
+  size                Int
+  mimeType            String               @map("mime_type")
+  uploadedById        String               @map("uploaded_by_id")
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+  uploadedBy          User                 @relation(fields: [uploadedById], references: [id])
+  poAccountingFiles   PoAccountingFile[]
+  generalRequestFiles GeneralRequestFile[]
 
   @@map("files")
 }
@@ -1397,6 +1398,75 @@ model StepInstruction {
   @@map("step_instructions")
 }
 
+model GeneralRequestFile {
+  id               String         @id @default(uuid())
+  fileId           String         @map("file_id")
+  generalRequestId String         @map("general_request_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  file             File           @relation(fields: [fileId], references: [id])
+  generalRequest   GeneralRequest @relation(fields: [generalRequestId], references: [id])
+
+  @@map("general_request_files")
+}
+
+model GeneralRequestNoteType {
+  id           String               @id @default(uuid())
+  name         String
+  description  String
+  bgColor      String               @map("bg_color")
+  textColor    String               @map("text_color")
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
+  requestNotes GeneralRequestNote[]
+
+  @@map("general_request_note_types")
+}
+
+model GeneralRequestNote {
+  id         String                 @id @default(uuid())
+  requestId  String                 @map("request_id")
+  noteTypeId String                 @map("note_type_id")
+  userId     String                 @map("user_id")
+  content    String
+  createdAt  DateTime               @default(now()) @map("created_at")
+  updatedAt  DateTime               @updatedAt @map("updated_at")
+  request    GeneralRequest         @relation(fields: [requestId], references: [id])
+  user       User                   @relation(fields: [userId], references: [id])
+  noteType   GeneralRequestNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("general_request_notes")
+}
+
+model GeneralRequestStatus {
+  id              String           @id @default(uuid())
+  name            String
+  bgColor         String           @default("#c4b5fd") @map("bg_color")
+  textColor       String           @default("#FFFFFF") @map("text_color")
+  description     String
+  sequence        Int
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  generalRequests GeneralRequest[]
+
+  @@map("general_request_statuses")
+}
+
+model GeneralRequest {
+  id                 String               @id @default(uuid())
+  title              String
+  statusId           String               @map("status_id")
+  userId             String               @map("user_id")
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
+  status             GeneralRequestStatus @relation(fields: [statusId], references: [id])
+  user               User                 @relation(fields: [userId], references: [id])
+  notes              GeneralRequestNote[]
+  GeneralRequestFile GeneralRequestFile[]
+
+  @@map("general_requests")
+}
+
 model PurchaseOrderItemDetail {
   id                   String            @id @default(uuid())
   poItemId             String            @map("po_item_id")
@@ -2022,6 +2092,8 @@ model User {
   qcAuditLog                    QcAuditLog[]
   files                         File[]
   poAccountingAuditLogd         PoAccountingAuditLog[]
+  generalRequests               GeneralRequest[]
+  generalRequestNotes           GeneralRequestNote[]
   PoAccountingNote              PoAccountingNote[]
   PricingExaminationNote        PricingExaminationNote[]
   InventoryAudit                InventoryAudit[]

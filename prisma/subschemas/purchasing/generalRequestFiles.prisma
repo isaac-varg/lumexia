@@ -1,0 +1,11 @@
+model GeneralRequestFile {
+    id               String         @id @default(uuid())
+    fileId           String         @map("file_id")
+    generalRequestId String         @map("general_request_id")
+    createdAt        DateTime       @default(now()) @map("created_at")
+    updatedAt        DateTime       @updatedAt @map("updated_at")
+    file             File           @relation(fields: [fileId], references: [id])
+    generalRequest   GeneralRequest @relation(fields: [generalRequestId], references: [id])
+
+    @@map("general_request_files")
+}

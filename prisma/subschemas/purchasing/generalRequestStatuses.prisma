@@ -1,0 +1,13 @@
+model GeneralRequestStatus {
+    id              String           @id @default(uuid())
+    name            String
+    bgColor         String           @default("#c4b5fd") @map("bg_color")
+    textColor       String           @default("#FFFFFF") @map("text_color")
+    description     String
+    sequence        Int
+    createdAt       DateTime         @default(now()) @map("created_at")
+    updatedAt       DateTime         @updatedAt @map("updated_at")
+    generalRequests GeneralRequest[]
+
+    @@map("general_request_statuses")
+}

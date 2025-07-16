@@ -6,7 +6,7 @@ import { inventoryActions } from '@/actions/inventory'
 
 const NewRequestPage = async () => {
 
-    const items = await inventoryActions.getPurchasedItems(); 
+    const items = await inventoryActions.getPurchasedItems();
 
     return (
         <div className='flex flex-col gap-y-6'>
@@ -20,7 +20,7 @@ const NewRequestPage = async () => {
                 </div>
             </div>
 
-            
+
 
             <MainPanel items={items} />
         </div>

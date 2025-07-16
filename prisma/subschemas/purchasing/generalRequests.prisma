@@ -1,0 +1,13 @@
+model GeneralRequest {
+    id        String               @id @default(uuid())
+    title     String
+    statusId  String               @map("status_id")
+    userId    String               @map("user_id")
+    createdAt DateTime             @default(now()) @map("created_at")
+    updatedAt DateTime             @updatedAt @map("updated_at")
+    status    GeneralRequestStatus @relation(fields: [statusId], references: [id])
+    user      User                 @relation(fields: [userId], references: [id])
+    notes     GeneralRequestNote[]
+
+    @@map("general_requests")
+}

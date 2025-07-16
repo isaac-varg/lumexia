@@ -23,6 +23,8 @@ model User {
     qcAuditLog            QcAuditLog[]
     files                 File[]
     poAccountingAuditLogd PoAccountingAuditLog[]
+    generalRequests       GeneralRequest[]
+    generalRequestNotes   GeneralRequestNote[]
 
     @@map("users")
 }

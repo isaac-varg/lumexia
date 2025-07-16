@@ -2,6 +2,7 @@ import { PurchasedItem } from '@/actions/inventory/getPurchasedItems';
 import Search from '@/components/Search/Search'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import ScanListener from './ScanListener';
+import GeneralRequests from './GeneralRequests';
 
 type ItemStepProps = {
     items: PurchasedItem[];
@@ -22,13 +23,17 @@ const ItemStep = ({ items, nextStep, currentStep, setItem }: ItemStepProps) => {
         return null
     }
     return (
-        <div className='grid grid-cols-2 gap-8'>
+        <div className='grid grid-cols-3 gap-8'>
             <Search
                 data={items}
                 keys={['name', 'aliases']}
                 onClick={handleItemSelection}
             />
-            <ScanListener handleItemSelection={handleItemSelection}/>
+
+            <GeneralRequests />
+
+
+            <ScanListener handleItemSelection={handleItemSelection} />
         </div>
     )
 }
