@@ -36,6 +36,7 @@ export default function FilterBar<TData>({
     const tableFacetState = useTableFacets()
 
     const isFiltered = table.getState().columnFilters.length > 0;
+    const globalFilterValue = table.getState().globalFilter ?? "";
 
     const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && table.getRowModel().rows.length === 1) {
@@ -71,13 +72,48 @@ export default function FilterBar<TData>({
             <div className="flex flex-1 items-center space-x-2">
                 <div className="flex items-center justify-between py-4 ">
 
+
+                    <div className="flex bg-lilac-100 w-full px-4 py-2 min-w-20 rounded-xl">
+                        <DebouncedInput
+                            value={globalFilterValue}
+                            onChange={(value) => handleFilterChange(value)}
+                            onKeyDown={handleEnterPress}
+                            placeholder="Search all"
+                            className='w-full bg-lilac-100 focus:outline-none '
+                        />
+                        {globalFilterValue ? (
+                            <button
+                                onClick={() => handleFilterChange("")}
+                                className="text-gray-500 hover:text-gray-800"
+                                aria-label="Clear search"
+                            >
+                                <RxCross2 className="h-6 w-6" />
+                            </button>
+                        ) : (<div className="w-6 h-6" />)}
+                    </div>
+
+
+                    {/*
+                <div className="flex">
                     <DebouncedInput
-                        value={table.getState().globalFilter ?? ""}
+                        value={globalFilterValue}
                         onChange={(value) => handleFilterChange(value)}
                         onKeyDown={handleEnterPress}
                         placeholder="Search all"
-                        className="h-10 w-[150px] lg:w-[250px] bg-bay-leaf-100 rounded-lg px-2 lg:px-3 focus:outline-none focus:ring-2 focus:ring-bay-leaf-600 focus:ring-opacity-50 transition-all duration-200 ease-in-out text-bay-leaf-950 font-poppins"
+                        className="h-10 w-[150px] lg:w-[250px] bg-bay-leaf-100 rounded-lg pl-2 pr-8 lg:pl-3 focus:outline-none focus:ring-2 focus:ring-bay-leaf-600 focus:ring-opacity-50 transition-all duration-200 ease-in-out text-bay-leaf-950 font-poppins"
                     />
+                    {globalFilterValue && (
+                        <button
+                            onClick={() => handleFilterChange("")}
+                            className="text-gray-500 hover:text-gray-800"
+                            aria-label="Clear search"
+                        >
+                            <RxCross2 className="h-4 w-4" />
+                        </button>
+                    )}
+                    </div>
+
+*/}
                 </div>
 
                 {filters && (
