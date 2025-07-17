@@ -6,14 +6,17 @@ import TitlePanel from "./TitlePanel"
 import { GeneralRequestNote } from "../_actions/getAllGeneralRequestNotes"
 import { GeneralRequestNoteType } from "../_actions/getAllGeneralRequestNoteTypes"
 import NotesPanel from "./NotesPanel"
+import FilesPanel from "./FilesPanel"
+import { GeneralRequestFile } from "../_actions/getAllGeneralRequestFiles"
 
 type RequestMainProps = {
     notes: GeneralRequestNote[],
     noteTypes: GeneralRequestNoteType[]
+    files: GeneralRequestFile[]
     requestId: string
 }
 
-const RequestMain = ({ notes, noteTypes, requestId }: RequestMainProps) => {
+const RequestMain = ({ notes, noteTypes, files, requestId }: RequestMainProps) => {
 
     const [title, setTitle] = useState<string>('');
 
@@ -26,6 +29,8 @@ const RequestMain = ({ notes, noteTypes, requestId }: RequestMainProps) => {
                 <InfoPanel />
 
                 <TitlePanel onChange={setTitle} value={title} />
+
+                <FilesPanel files={files} />
 
                 <NotesPanel notes={notes} noteTypes={noteTypes} requestId={requestId} />
 
