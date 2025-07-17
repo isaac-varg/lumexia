@@ -3,8 +3,17 @@ import { useState } from "react"
 import ActionsPanel from "./ActionsPanel"
 import InfoPanel from "./InfoPanel"
 import TitlePanel from "./TitlePanel"
+import { GeneralRequestNote } from "../_actions/getAllGeneralRequestNotes"
+import { GeneralRequestNoteType } from "../_actions/getAllGeneralRequestNoteTypes"
+import NotesPanel from "./NotesPanel"
 
-const RequestMain = () => {
+type RequestMainProps = {
+    notes: GeneralRequestNote[],
+    noteTypes: GeneralRequestNoteType[]
+    requestId: string
+}
+
+const RequestMain = ({ notes, noteTypes, requestId }: RequestMainProps) => {
 
     const [title, setTitle] = useState<string>('');
 
@@ -17,6 +26,8 @@ const RequestMain = () => {
                 <InfoPanel />
 
                 <TitlePanel onChange={setTitle} value={title} />
+
+                <NotesPanel notes={notes} noteTypes={noteTypes} requestId={requestId} />
 
             </div>
         </div>

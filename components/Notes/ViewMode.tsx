@@ -1,11 +1,12 @@
 import { DateTime } from "luxon";
 import { TbGhost2 } from "react-icons/tb";
+import { Note } from "@/types/note";
 
-interface ViewModeProps<TNote> {
-    notes: TNote[]
+interface ViewModeProps<TNote extends Note> {
+    notes: TNote[];
 }
 
-const NotesViewMode = <TNote,>({ notes }: ViewModeProps<TNote>) => {
+const NotesViewMode = <TNote extends Note>({ notes }: ViewModeProps<TNote>) => {
 
     return (
         <div className='grid grid-cols-1 gap-4 max-h-72 overflow-y-auto'>

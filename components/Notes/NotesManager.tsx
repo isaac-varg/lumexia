@@ -1,32 +1,37 @@
 'use client'
-import { Panels } from "@/components/Panels";
 import Text from "@/components/Text";
 import { useState } from "react";
+import NotesViewMode from "./ViewMode";
+import { Note, NoteType } from "@/types/note";
+import NotesAddMode, { NoteInputs } from "./NotesAddMode";
+import CreateNoteTypeForm, { NoteTypeInputs } from "./CreateNoteTypeForm";
 
 
-interface NotesManagerProps<TNote, TNoteType> {
+interface NotesManagerProps<TNote extends Note, TNoteType extends NoteType> {
     notes: TNote[];
     noteTypes: TNoteType[];
-    notesBelongToId: string;
+    onNoteAdd: (note: NoteInputs) => Promise<void>;
+    onNoteTypeAdd: (noteType: NoteTypeInputs) => Promise<void>;
 }
 
-const NotesManager = <TNote, TNoteType>({ notes, noteTypes, notesBelongToId }: NotesManagerProps<TNote, TNoteType>) => {
+const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes,  onNoteAdd, onNoteTypeAdd }: NotesManagerProps<TNote, TNoteType>) => {
 
     const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
     return (
-        <Panels.Root span={3}>
+        <div>
             <div className="flex justify-between items-center">
 
                 <Text.SectionTitle size="small">Notes</Text.SectionTitle>
                 {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn">Add Note</button>}
             </div>
 
-            {mode === 'view' && <NotesViewMode notes={notes} />}
-            {mode === 'addNote' && <NotesAddMode poId={poId} noteTypes={noteTypes} setMode={setMode} />}
-            {mode === 'addType' && <CreateNoteTypeForm setMode={setMode} />}
+            {mode === 'view' && <NotesViewMode<TNote> notes={notes} />}
 
-        </Panels.Root>
+            {mode === 'addNote' && onNoteAdd && <NotesAddMode<TNoteType> onNoteAdd={onNoteAdd} noteTypes={noteTypes} setMode={setMode} />}
+            {mode === 'addType' && onNoteTypeAdd && <CreateNoteTypeForm onNoteTypeAdd={onNoteTypeAdd} setMode={setMode} />}
+
+        </div>
     )
 }
 
