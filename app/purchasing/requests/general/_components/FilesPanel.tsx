@@ -1,3 +1,4 @@
+'use client'
 import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
 import FileManager from "@/components/Uploader/FileManager"

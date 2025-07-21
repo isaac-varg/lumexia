@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jul 16 2025 14:02:16 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Jul 21 2025 13:29:06 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1410,6 +1410,18 @@ model GeneralRequestFile {
   @@map("general_request_files")
 }
 
+model GeneralRequestLink {
+  id                  String            @id @default(uuid())
+  generalRequestId    String            @map("general_request_id")
+  purchasingRequestId String            @map("purchasing_request_id")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+  generalRequest      GeneralRequest    @relation(fields: [generalRequestId], references: [id])
+  purchasingRequest   PurchasingRequest @relation(fields: [purchasingRequestId], references: [id])
+
+  @@map("general_request_links")
+}
+
 model GeneralRequestNoteType {
   id           String               @id @default(uuid())
   name         String
@@ -1453,16 +1465,17 @@ model GeneralRequestStatus {
 }
 
 model GeneralRequest {
-  id                 String               @id @default(uuid())
-  title              String
-  statusId           String               @map("status_id")
-  userId             String               @map("user_id")
-  createdAt          DateTime             @default(now()) @map("created_at")
-  updatedAt          DateTime             @updatedAt @map("updated_at")
-  status             GeneralRequestStatus @relation(fields: [statusId], references: [id])
-  user               User                 @relation(fields: [userId], references: [id])
-  notes              GeneralRequestNote[]
-  GeneralRequestFile GeneralRequestFile[]
+  id                    String               @id @default(uuid())
+  title                 String
+  statusId              String               @map("status_id")
+  userId                String               @map("user_id")
+  createdAt             DateTime             @default(now()) @map("created_at")
+  updatedAt             DateTime             @updatedAt @map("updated_at")
+  status                GeneralRequestStatus @relation(fields: [statusId], references: [id])
+  user                  User                 @relation(fields: [userId], references: [id])
+  notes                 GeneralRequestNote[]
+  purchasingRequestLink GeneralRequestLink[]
+  GeneralRequestFile    GeneralRequestFile[]
 
   @@map("general_requests")
 }
@@ -1575,6 +1588,7 @@ model PurchasingRequest {
   pos                       RequestPurchaseOrder[]
   notionRequests            NotionPurchasingRequest[]
   notionBprs                NotionBpr[]
+  generalRequestLink        GeneralRequestLink[]
   RequestNote               RequestNote[]
 
   @@map("purchasing_requests")

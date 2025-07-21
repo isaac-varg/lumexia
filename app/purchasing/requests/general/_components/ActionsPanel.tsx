@@ -2,13 +2,17 @@ import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { updateGeneralRequest } from "../_actions/updateGeneralRequest"
 import { useRouter } from "next/navigation"
+import { staticRecords } from "@/configs/staticRecords"
+
+
+const { requested } = staticRecords.purchasing.generalRequests.statuses
 
 const ActionsPanel = ({ requestId, title }: { requestId: string, title: string }) => {
 
     const router = useRouter();
 
     const handleCommit = async () => {
-        await updateGeneralRequest(requestId, title);
+        await updateGeneralRequest(requestId, { title, statusId: requested });
         router.back()
     }
 

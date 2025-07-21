@@ -9,7 +9,7 @@ model PurchasingRequest {
     createdAt                 DateTime                   @default(now()) @map("created_at")
     updatedAt                 DateTime                   @updatedAt @map("updated_at")
     status                    RequestStatus              @relation(fields: [statusId], references: [id])
-    requestingUser User @relation(fields: [requestingUserId], references: [id])
+    requestingUser            User                       @relation(fields: [requestingUserId], references: [id])
     item                      Item                       @relation(fields: [itemId], references: [id])
     requestInventorySnapshots RequestInventorySnapshot[]
     priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
@@ -17,6 +17,7 @@ model PurchasingRequest {
     pos                       RequestPurchaseOrder[]
     notionRequests            NotionPurchasingRequest[]
     notionBprs                NotionBpr[]
+    generalRequestLink        GeneralRequestLink[]
 
     @@map("purchasing_requests")
 }

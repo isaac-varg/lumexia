@@ -12,15 +12,17 @@ import BySupplierPanel from "./BySupplierPanel"
 import RequestsCalendar from "./RequestsCalendar"
 import { useState } from "react"
 import Searchbar from "@/components/App/Searchbar"
+import { GeneralRequestMinimal } from "../general/_actions/getAllGeneralRequests"
 
 type RequestTabsProps = {
     requests: RequestForDashboard[]
     statuses: RequestStatus[]
     priorities: RequestPriority[]
+    generalRequests: GeneralRequestMinimal[]
 }
 
 
-const RequestTabs = ({ requests, statuses, priorities }: RequestTabsProps) => {
+const RequestTabs = ({ requests, statuses, priorities, generalRequests }: RequestTabsProps) => {
 
     const newRequests = requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)
 
@@ -52,7 +54,7 @@ const RequestTabs = ({ requests, statuses, priorities }: RequestTabsProps) => {
 
             <TabsPanel.Content identifier="new">
                 <div className='grid grid-cols-2 gap-x-4'>
-                    <NewRequestsPanel statuses={statuses} priorities={priorities} requests={requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)} />
+                    <NewRequestsPanel statuses={statuses} priorities={priorities} generalRequests={generalRequests} requests={requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)} />
 
                     <InfographicPanel requests={requests} />
                 </div>

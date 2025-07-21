@@ -1,0 +1,11 @@
+model GeneralRequestLink {
+    id                  String            @id @default(uuid())
+    generalRequestId    String            @map("general_request_id")
+    purchasingRequestId String            @map("purchasing_request_id")
+    createdAt           DateTime          @default(now()) @map("created_at")
+    updatedAt           DateTime          @updatedAt @map("updated_at")
+    generalRequest      GeneralRequest    @relation(fields: [generalRequestId], references: [id])
+    purchasingRequest   PurchasingRequest @relation(fields: [purchasingRequestId], references: [id])
+
+    @@map("general_request_links")
+}

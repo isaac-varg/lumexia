@@ -1,18 +1,19 @@
+'use client'
 import NotesManager from "@/components/Notes/NotesManager"
 import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
-import { GeneralRequestNote } from "../new/_actions/getAllGeneralRequestNotes"
-import { GeneralRequestNoteType } from "../new/_actions/getAllGeneralRequestNoteTypes"
 import { NoteTypeInputs } from "@/components/Notes/CreateNoteTypeForm"
 import { NoteInputs } from "@/components/Notes/NotesAddMode"
 import { createGeneralRequestNoteType } from "../_actions/createGeneralRequestNoteType"
 import { createGeneralRequestNote } from "../_actions/createGeneralRequestNote"
 import { getUserId } from "@/actions/users/getUserId"
 import { useRouter } from "next/navigation"
+import { GeneralRequestNote } from "../_actions/getAllGeneralRequestNotes"
+import { GeneralRequestNoteType } from "../_actions/getAllGeneralRequestNoteTypes"
 
 const NotesPanel = ({ notes, noteTypes, requestId }: { notes: GeneralRequestNote[], noteTypes: GeneralRequestNoteType[], requestId: string }) => {
 
-    const router = useRouter( )
+    const router = useRouter()
     const handleNoteTypeAdd = async (data: NoteTypeInputs) => {
         await createGeneralRequestNoteType(data)
     }

@@ -6,9 +6,16 @@ import { Filter } from "@/types/filter";
 import { toFacetFilter } from "@/utils/data/toFacetFilter";
 import { Row } from "@tanstack/react-table";
 import { columns } from "./Columns";
+import { GeneralRequestMinimal } from "../../general/_actions/getAllGeneralRequests";
 
-const Datatable = ({ requests }: { requests: Requests[] }) => {
+interface MergedRequests {
 
+}
+
+const Datatable = ({ requests, generalRequests }: { requests: Requests[], generalRequests: GeneralRequestMinimal[] }) => {
+
+
+    const mergedRequested = [];
 
     const filters: Filter[] = [
         {
@@ -29,7 +36,7 @@ const Datatable = ({ requests }: { requests: Requests[] }) => {
     ];
 
     const handleRowClick = (row: Row<Requests>) => {
-
+        // router.push()
     }
 
 

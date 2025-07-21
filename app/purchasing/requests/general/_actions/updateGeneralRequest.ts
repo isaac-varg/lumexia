@@ -2,20 +2,17 @@
 
 import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
+import { Prisma } from "@prisma/client"
 
 
-const { requested } = staticRecords.purchasing.generalRequests.statuses
 
-export const updateGeneralRequest = async (requestId: string, title: string) => {
+export const updateGeneralRequest = async (requestId: string, data: Prisma.GeneralRequestUncheckedUpdateInput) => {
 
     const res = await prisma.generalRequest.update({
         where: {
             id: requestId,
         },
-        data: {
-            title,
-            statusId: requested,
-        }
+        data,
     });
 
     return res

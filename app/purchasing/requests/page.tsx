@@ -7,12 +7,14 @@ import { getRequestStatuses } from './[referenceCode]/_functions/getRequestStatu
 import { getPriorities } from './_functions/getPriorities'
 import CreateRequestButton from './_components/CreateRequestButton'
 import ArchiveButton from './_components/ArchiveButton'
+import { getAllGeneralRequests } from './general/_actions/getAllGeneralRequests'
 
 const RequestsPage = async () => {
 
     const requests = await getRequests()
     const statuses = await getRequestStatuses();
     const priorities = await getPriorities();
+    const generalRequests = await getAllGeneralRequests(false);
 
 
     return (
@@ -24,12 +26,12 @@ const RequestsPage = async () => {
                     <PageBreadcrumbs />
                 </div>
                 <div className='flex gap-x-2'>
-                   <CreateRequestButton />  
-                   <ArchiveButton />
+                    <CreateRequestButton />
+                    <ArchiveButton />
                 </div>
             </div>
 
-            <RequestTabs requests={requests} statuses={statuses} priorities={priorities} />
+            <RequestTabs requests={requests} statuses={statuses} generalRequests={generalRequests} priorities={priorities} />
 
 
         </div>

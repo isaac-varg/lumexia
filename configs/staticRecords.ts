@@ -180,7 +180,10 @@ export const staticRecords = {
         generalRequests: {
             statuses: {
                 draft: 'ac412826-a79f-439c-9558-196c910a638b',
-                requested: '226db3a6-2756-4a5d-a6c5-b741339baeea'
+                requested: '226db3a6-2756-4a5d-a6c5-b741339baeea',
+                linked: 'ebd4b314-8596-4ac9-b114-c6a29ab49644',
+                rejected: 'f9229772-62e8-45e7-b7dd-dd42a6a7b751', 
+
             }
         }
     },
