@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jul 21 2025 13:29:06 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Jul 21 2025 15:20:37 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1466,6 +1466,7 @@ model GeneralRequestStatus {
 
 model GeneralRequest {
   id                    String               @id @default(uuid())
+  referenceCode         Int                  @default(autoincrement()) @map("reference_code")
   title                 String
   statusId              String               @map("status_id")
   userId                String               @map("user_id")

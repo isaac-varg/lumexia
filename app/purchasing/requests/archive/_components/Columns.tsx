@@ -1,23 +1,20 @@
 "use client";
-import { Requests } from "@/actions/purchasing/getAllRequests";
 import { SortableHeaderType } from "@/components/DataTable/SortableHeaderType";
 import { dateFormatString } from "@/configs/data/dateFormatString";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
+import { MergedRequests } from "./Datatable";
 
-const columnHelper = createColumnHelper<Requests>();
+const columnHelper = createColumnHelper<MergedRequests>();
 
 export const columns = [
     columnHelper.accessor("referenceCode", {
         header: SortableHeaderType("#")
     }),
 
-    columnHelper.accessor("item.id", {
-        id: "item.id",
-        header: SortableHeaderType("Item"),
-        cell: (row) => {
-            return row.row.original.item.name;
-        },
+    columnHelper.accessor("name", {
+        id: "name",
+        header: SortableHeaderType("Name"),
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
         },
@@ -45,10 +42,18 @@ export const columns = [
         },
     }),
     columnHelper.accessor("createdAt", {
-        // id: "itemType",
         header: "Created",
         cell: (row) => {
             return DateTime.fromJSDate(row.row.original.createdAt).toFormat(dateFormatString);
+        },
+        filterFn: (row, id, value) => {
+            return value.includes(row.getValue(id));
+        },
+    }),
+    columnHelper.accessor("requestType", {
+        header: "Type",
+        cell: (row) => {
+            return row.row.original.requestType === "general" ? "General" : "Standard"
         },
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id));
