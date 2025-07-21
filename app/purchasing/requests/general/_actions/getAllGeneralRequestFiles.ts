@@ -1,5 +1,6 @@
 'use server'
 
+import { fileActions } from "@/actions/files";
 import prisma from "@/lib/prisma"
 
 export const getAllGeneralRequestFiles = async (requestId: string) => {
@@ -17,7 +18,16 @@ export const getAllGeneralRequestFiles = async (requestId: string) => {
         }
     });
 
-    return files
+    const transformedData = await Promise.all(files.map(async (file) => {
+        const url = await fileActions.getUrl(file.file.bucketName, file.file.objectName);
+
+        return {
+            ...file,
+            url,
+        }
+    }))
+
+    return transformedData;
 
 }
 

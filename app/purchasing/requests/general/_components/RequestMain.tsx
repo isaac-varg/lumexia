@@ -24,13 +24,13 @@ const RequestMain = ({ notes, noteTypes, files, requestId }: RequestMainProps) =
         <div className="flex items-center px-40">
             <div className="grid grid-cols-2 gap-8">
 
-                <ActionsPanel />
+                <ActionsPanel requestId={requestId} title={title} />
 
                 <InfoPanel />
 
                 <TitlePanel onChange={setTitle} value={title} />
 
-                <FilesPanel files={files} />
+                <FilesPanel files={files} requestId={requestId} />
 
                 <NotesPanel notes={notes} noteTypes={noteTypes} requestId={requestId} />
 

@@ -27,9 +27,10 @@ interface FileManagerProps<TFile extends ManagerFile, TFileTypes extends Manager
     fileTypes?: TFileTypes[]
     span?: 1 | 2 | 3
     onFileComplete: (fileRespons: FileResponseData) => void;
+    onFileDelete: (file: TFile) => void;
 }
 
-const FileManager = <TFile extends ManagerFile, TFileTypes extends ManagerFileType = ManagerFileType>({ files, fileTypes, span = 2, onFileComplete }: FileManagerProps<TFile, TFileTypes>) => {
+const FileManager = <TFile extends ManagerFile, TFileTypes extends ManagerFileType = ManagerFileType>({ files, fileTypes, span = 2, onFileComplete, onFileDelete }: FileManagerProps<TFile, TFileTypes>) => {
 
     const router = useRouter();
 
@@ -42,8 +43,8 @@ const FileManager = <TFile extends ManagerFile, TFileTypes extends ManagerFileTy
     const handleEdit = (file: any) => {
     }
 
-    const handleDelete = async (file: any) => {
-        console.log('deleted!')
+    const handleDelete = async (file: TFile) => {
+        onFileDelete(file);
         router.refresh()
     }
 
@@ -65,14 +66,14 @@ const FileManager = <TFile extends ManagerFile, TFileTypes extends ManagerFileTy
                         mimeType={file.file.mimeType}
                         onEditClick={() => handleEdit(file)}
                         onDeleteClick={() => handleDelete(file)}
-                         {...(file.fileType
+                        {...(file.fileType
                             ? {
                                 fileTag: {
                                     label: file.fileType.name,
                                     bgColor: file.fileType.bgColor,
                                     textColor: file.fileType.textColor,
                                 },
-                              }
+                            }
                             : {})}
                         uploadedByName={file.file.uploadedBy.name || ''}
                         uploadedByImage={file.file.uploadedBy.image || ''} />))}

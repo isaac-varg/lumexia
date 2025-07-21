@@ -176,6 +176,12 @@ export const staticRecords = {
             replacementIngredientFound: "454eceee-9597-400e-8754-f12e64a64ff9",
             delivered: "45f46d11-af6c-43e6-b263-556a5bab3562",
             requested: "226db3a6-2756-4a5d-a6c5-b741339baeea"
+        },
+        generalRequests: {
+            statuses: {
+                draft: 'ac412826-a79f-439c-9558-196c910a638b',
+                requested: '226db3a6-2756-4a5d-a6c5-b741339baeea'
+            }
         }
     },
     configs: {
