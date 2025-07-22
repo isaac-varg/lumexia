@@ -8,13 +8,13 @@ const PaymentMethodDisplay = ({ method, onClick }: { method: PaymentMethod, onCl
     const type = method.paymentType;
 
     const handleClick = () => {
-        onClick?.(method);
+        onClick(method)
     };
 
     if (type === 'visa' || type === 'mastercard' || type === 'amex') {
         return (
             <div
-                className="flex items-center justify-center cursor-pointer" 
+                className="flex items-center justify-center cursor-pointer"
                 onClick={handleClick}
             >
                 <CreditCard
@@ -35,7 +35,7 @@ const PaymentMethodDisplay = ({ method, onClick }: { method: PaymentMethod, onCl
         return (
             <div
                 className="flex items-center justify-center cursor-pointer"
-                onClick={handleClick} 
+                onClick={handleClick}
             >
                 <BankTransfer
                     key={method.id}
