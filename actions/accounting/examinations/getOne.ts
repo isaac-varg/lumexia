@@ -22,6 +22,12 @@ export const getOnePricingExamination = async (id: string) => {
 
                 },
             },
+            PricingExaminationNote: {
+                include: {
+                    user: true,
+                    noteType: true,
+                }
+            }
         },
     });
 
@@ -30,4 +36,8 @@ export const getOnePricingExamination = async (id: string) => {
 
 export type SinglePricingExaminationCombined = Awaited<ReturnType<typeof getOnePricingExamination>>
 
+
 export type SinglePricingFinishedProduct = Awaited<ReturnType<typeof getOnePricingExamination>>["FinishedProductArchive"][number]
+
+
+export type SinglePricingExamNote = SinglePricingExaminationCombined['PricingExaminationNote'][number];

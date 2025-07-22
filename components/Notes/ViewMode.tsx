@@ -4,12 +4,22 @@ import { Note } from "@/types/note";
 
 interface ViewModeProps<TNote extends Note> {
     notes: TNote[];
+    maxHeight?: NotesManagerHeight
 }
 
-const NotesViewMode = <TNote extends Note>({ notes }: ViewModeProps<TNote>) => {
+const classes = {
+    maxHeight: {
+        small: 'max-h-72',
+        max: '',
+    }
+}
+
+export type NotesManagerHeight = keyof typeof classes.maxHeight;
+
+const NotesViewMode = <TNote extends Note>({ notes, maxHeight = 'small' }: ViewModeProps<TNote>) => {
 
     return (
-        <div className='grid grid-cols-1 gap-4 max-h-72 overflow-y-auto'>
+        <div className={`grid grid-cols-1 gap-4 ${classes.maxHeight[maxHeight]} overflow-y-auto`}>
             {notes.map((note) => {
                 return (
                     <div key={note.id} className='flex flex-col gap-y-4 bg-lilac-100 p-6 rounded-xl'>

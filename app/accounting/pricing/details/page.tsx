@@ -6,6 +6,7 @@ import BasicsPanel from './_components/BasicsPanel'
 import ActionsPanel from './_components/ActionsPanel'
 import ApprovalStatus from './_components/ApprovalStatus'
 import FinishedProductsPanel from './_components/FinishedProductsPanel'
+import NotesPanel from './_components/NotesPanel'
 
 interface PricingDetailsProps {
     searchParams: {
@@ -17,6 +18,7 @@ const PricingDetailsPage = async ({ searchParams }: PricingDetailsProps) => {
 
     const examId = searchParams.id
     const examination = await accountingActions.examinations.getOne(examId);
+    const noteTypes = await accountingActions.examinations.notes.getAllNoteTypes();
 
 
     return (
@@ -30,10 +32,14 @@ const PricingDetailsPage = async ({ searchParams }: PricingDetailsProps) => {
                 <BasicsPanel exam={examination} />
                 {(!examination.approved && !examination.rejected) && <ActionsPanel examId={examId} />}
                 {(examination.approved || (!examination.approved && examination.rejected)) && <ApprovalStatus exam={examination} />}
+
+
+                <FinishedProductsPanel finishedProducts={examination.FinishedProductArchive} />
+                <NotesPanel pricingExaminationId={examId} notes={examination.PricingExaminationNote} noteTypes={noteTypes} />
+
             </div>
 
 
-            <FinishedProductsPanel finishedProducts={examination.FinishedProductArchive} />
 
 
 

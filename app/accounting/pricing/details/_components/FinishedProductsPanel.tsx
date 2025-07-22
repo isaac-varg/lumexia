@@ -1,9 +1,10 @@
 'use client'
 import { SinglePricingFinishedProduct } from '@/actions/accounting/examinations/getOne'
 import Card from '@/components/Card'
+import { Panels } from '@/components/Panels'
+import SectionTitle from '@/components/Text/SectionTitle'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 import React from 'react'
-import { finished } from 'stream'
 
 const DataBox = ({ bigNumber, label, sublabel, isBad }: { bigNumber: string | number, label: string, sublabel: string, isBad?: boolean }) => {
 
@@ -41,21 +42,21 @@ const FinishedProductsPanel = ({ finishedProducts }: { finishedProducts: SingleP
                     const isBad = profitPercentage < 25;
 
                     return (
-                        <div
+                        <Panels.Root
                             key={fp.id}
-                            className='bg-lilac-100 p-6 rounded-xl flex flex-col gap-y-4'
                         >
 
-                            <h1 className='font-poppins font-semibold text-lg'>{fp.name}</h1>
+                        <SectionTitle size='normal'>{fp.name}</SectionTitle>
 
 
-                            <div className='grid grid-cols-3 gap-4'>
+                            <div className='grid grid-cols-2 gap-4'>
 
+                                <DataBox bigNumber={toFracitonalDigits.curreny(fp.consumerPrice)} label='$/container' sublabel='Consumer Price' />
                                 <DataBox bigNumber={toFracitonalDigits.curreny(fp.finishedProductTotalCost)} label={'$/container'} sublabel={'Cost'} isBad={isBad} />
                                 <DataBox bigNumber={toFracitonalDigits.curreny(profit)} label='$' sublabel='Profit' isBad={isBad} />
                                 <DataBox bigNumber={toFracitonalDigits.curreny(profitPercentage)} label='%' sublabel='Profit %' isBad={isBad} />
                             </div>
-                        </div>
+                        </Panels.Root>
                     )
                 })}
 

@@ -11,6 +11,9 @@ const ActionsPanel = ({ examId }: { examId: string }) => {
 
         await updatePricingExam(examId, payload);
 
+
+
+
         location.reload()
     }
 

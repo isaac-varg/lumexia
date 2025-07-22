@@ -1,7 +1,7 @@
 'use client'
 import Text from "@/components/Text";
 import { useState } from "react";
-import NotesViewMode from "./ViewMode";
+import NotesViewMode, { NotesManagerHeight } from "./ViewMode";
 import { Note, NoteType } from "@/types/note";
 import NotesAddMode, { NoteInputs } from "./NotesAddMode";
 import CreateNoteTypeForm, { NoteTypeInputs } from "./CreateNoteTypeForm";
@@ -12,9 +12,10 @@ interface NotesManagerProps<TNote extends Note, TNoteType extends NoteType> {
     noteTypes: TNoteType[];
     onNoteAdd: (note: NoteInputs) => Promise<void>;
     onNoteTypeAdd: (noteType: NoteTypeInputs) => Promise<void>;
+    maxHeight?: NotesManagerHeight
 }
 
-const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes,  onNoteAdd, onNoteTypeAdd }: NotesManagerProps<TNote, TNoteType>) => {
+const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes, onNoteAdd, onNoteTypeAdd, maxHeight = 'small' }: NotesManagerProps<TNote, TNoteType>) => {
 
     const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
@@ -26,7 +27,7 @@ const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, n
                 {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn">Add Note</button>}
             </div>
 
-            {mode === 'view' && <NotesViewMode<TNote> notes={notes} />}
+            {mode === 'view' && <NotesViewMode<TNote> notes={notes} maxHeight={maxHeight} />}
 
             {mode === 'addNote' && onNoteAdd && <NotesAddMode<TNoteType> onNoteAdd={onNoteAdd} noteTypes={noteTypes} setMode={setMode} />}
             {mode === 'addType' && onNoteTypeAdd && <CreateNoteTypeForm onNoteTypeAdd={onNoteTypeAdd} setMode={setMode} />}
