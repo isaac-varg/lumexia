@@ -4,9 +4,10 @@ import React from 'react'
 import MainPanel from './_components/MainPanel'
 import { inventoryActions } from '@/actions/inventory'
 
-const NewRequestPage = async () => {
+const NewRequestPage = async ({ searchParams }: { searchParams: { itemId: string } }) => {
 
     const items = await inventoryActions.getPurchasedItems();
+
 
     return (
         <div className='flex flex-col gap-y-6'>
@@ -22,7 +23,7 @@ const NewRequestPage = async () => {
 
 
 
-            <MainPanel items={items} />
+            <MainPanel items={items} incomingItemId={searchParams.itemId} />
         </div>
 
     )

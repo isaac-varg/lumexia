@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ItemStep from "./ItemStep"
 import ActiveRequestsStep from "./ActiveRequestsStep"
 import StepLabel from "./StepLabel"
@@ -11,6 +11,7 @@ import { PurchasedItem } from "@/actions/inventory/getPurchasedItems"
 
 type MainPanelProps = {
     items: PurchasedItem[],
+    incomingItemId: string
 }
 
 export type InterimNote = {
@@ -23,16 +24,28 @@ export type InterimSnapshotWarnings = {
 }
 
 
-const MainPanel = ({ items }: MainPanelProps) => {
+const MainPanel = ({ items, incomingItemId }: MainPanelProps) => {
 
     const [step, setStep] = useState(0);
     const [item, setItem] = useState('');
     const [snapshotWarnings, setSnapshotWarnings] = useState({ warningShown: false, warningOverridden: false });
     const [notes, setNotes] = useState<InterimNote[]>([])
 
+
     const nextStep = () => {
         setStep((prev) => prev + 1);
     }
+
+
+    useEffect(() => {
+        if (incomingItemId) {
+            setItem(incomingItemId);
+            nextStep();
+        }
+
+    }, [incomingItemId])
+
+
 
 
     return (

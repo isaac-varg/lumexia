@@ -1,15 +1,22 @@
 'use client'
 
+import { useRouter } from "next/navigation"
 import AuditDialog from "./AuditDialog"
 import useDialog from "@/hooks/useDialog"
 
 const TopActions = ({ itemId }: { itemId: string }) => {
     const { showDialog } = useDialog()
+    const router = useRouter();
+
     const handleAudit = () => {
         showDialog('inventoryMainAuditDialog')
     }
+
+    const handlePurchaseRequest = () => {
+        router.push(`/purchasing/requests/new?itemId=${itemId}`)
+    }
     return (
-        <div className="flex">
+        <div className="flex gap-6">
             <AuditDialog itemId={itemId} />
 
             <button
@@ -17,6 +24,13 @@ const TopActions = ({ itemId }: { itemId: string }) => {
                 className="btn">
                 Inventory Audit
             </button>
+
+            <button
+                onClick={() => handlePurchaseRequest()}
+                className="btn">
+                Request Purchase
+            </button>
+
         </div>
     )
 }
