@@ -25,12 +25,14 @@ type RequestTabsProps = {
 const RequestTabs = ({ requests, statuses, priorities, generalRequests }: RequestTabsProps) => {
 
     const newRequests = requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)
+    const allNewRequestsLength = newRequests.length + generalRequests.length;
+
 
     const tabs = [
         {
             identifier: 'new',
             label: 'New',
-            badge: newRequests.length
+            badge: allNewRequestsLength
         },
         {
             identifier: 'byStatus',

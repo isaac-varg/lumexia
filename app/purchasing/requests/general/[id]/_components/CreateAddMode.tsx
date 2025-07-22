@@ -11,12 +11,12 @@ type Inputs = {
     name: string
 }
 
-const CreateAddMode = ({ setMode, requestId, itemTypes }: { setMode: Dispatch<SetStateAction<'add' | 'view'>>, requestId: string, itemTypes: ItemType[] }) => {
+const CreateAddMode = ({ setMode, requestId, itemTypes, requestReferenceCode }: { setMode: Dispatch<SetStateAction<'add' | 'view'>>, requestId: string, itemTypes: ItemType[], requestReferenceCode: number }) => {
     const form = useForm<Inputs>();
     const router = useRouter()
 
     const handleSubmit = async (data: Inputs) => {
-        await createNewItemAndRequest(requestId, data.itemTypeId, data.referenceCode, data.name);
+        await createNewItemAndRequest(requestId, data.itemTypeId, data.referenceCode, data.name, requestReferenceCode);
         router.refresh();
         setMode('view')
     }

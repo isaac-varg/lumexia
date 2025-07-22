@@ -11,9 +11,10 @@ type Props = {
     links: RequestLink[]
     requestId: string
     itemTypes: ItemType[]
+    generalRequestReferenceCode: number
 }
 
-const CreatePanel = ({ links, requestId, itemTypes }: Props) => {
+const CreatePanel = ({ links, requestId, itemTypes, generalRequestReferenceCode }: Props) => {
 
     const [mode, setMode] = useState<'view' | 'add'>('view');
 
@@ -23,7 +24,7 @@ const CreatePanel = ({ links, requestId, itemTypes }: Props) => {
             <SectionTitle size="small">Items & Requests</SectionTitle>
 
             {mode === 'view' && <CreateViewMode setMode={setMode} links={links} />}
-            {mode === 'add' && <CreateAddMode setMode={setMode} requestId={requestId} itemTypes={itemTypes} />}
+            {mode === 'add' && <CreateAddMode setMode={setMode} requestId={requestId} requestReferenceCode={generalRequestReferenceCode} itemTypes={itemTypes} />}
 
         </Panels.Root>
     )

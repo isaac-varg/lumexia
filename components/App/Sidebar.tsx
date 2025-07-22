@@ -6,10 +6,12 @@ import Image from "next/image";
 import icon from "@/configs/assets/icon.svg"
 import SidebarGroupTitle from "./SidebarGroupTitle";
 import { useAuditRequest } from "@/hooks/appQuery/useAuditRequest";
+import { useAllPurchasingRequests } from "@/hooks/appQuery/useAllPurchasingRequests";
 
-const Sidebar =  () => {
+const Sidebar = () => {
 
-    const {data: auditRequests, isLoading} = useAuditRequest(); 
+    const { data: auditRequests } = useAuditRequest();
+    const { data: purchasingRequests } = useAllPurchasingRequests();
 
     return (
         <div className="px-4 py-8 shadow-lg min-h-dvh">
@@ -39,6 +41,9 @@ const Sidebar =  () => {
                                     switch (sidebarItem.label) {
                                         case 'Audit':
                                             badgeData = auditRequests
+                                            break;
+                                        case 'Requests':
+                                            badgeData = purchasingRequests
                                             break;
                                         default:
                                             break;

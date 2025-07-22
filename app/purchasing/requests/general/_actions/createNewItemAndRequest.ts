@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 
 
 
-export const createNewItemAndRequest = async (generalRequestId: string, itemTypeId: string, referenceCode: string, name: string) => {
+export const createNewItemAndRequest = async (generalRequestId: string, itemTypeId: string, referenceCode: string, name: string, generalRequestReferenceCode: number) => {
 
     const item = await prisma.item.create({
         data: {
@@ -38,7 +38,7 @@ export const createNewItemAndRequest = async (generalRequestId: string, itemType
         data: {
             requestId: request.id,
             userId: staticRecords.app.lumexia,
-            content: `This was automagically created from General Requst #${request.referenceCode}`,
+            content: `This was automagically created from General Requst #${generalRequestReferenceCode}`,
             noteTypeId: 'bdf7c7b0-3524-4f2c-a43b-b9a6c8c77322',
 
 

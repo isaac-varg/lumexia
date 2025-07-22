@@ -26,7 +26,7 @@ const GeneralRequestPage = async ({ searchParams }: { searchParams: { id: string
 
                     <BasicsPanel title={request.title} user={request.user} createdAt={request.createdAt} />
                     <StatusPanel requestId={request.id} status={request.status} statuses={statuses} />
-                    <CreatePanel requestId={request.id} links={links} itemTypes={itemTypes} />
+                    <CreatePanel requestId={request.id} generalRequestReferenceCode={request.referenceCode} links={links} itemTypes={itemTypes} />
                     <NotesPanel requestId={request.id} noteTypes={noteTypes} notes={request.notes} />
                     <FilesPanel requestId={request.id} files={request.transformedFiles} />
 
