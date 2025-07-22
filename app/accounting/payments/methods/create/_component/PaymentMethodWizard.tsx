@@ -88,7 +88,14 @@ const PaymentMethodWizard = ({ existingMethod }: { existingMethod: PaymentMethod
 
             <Panels.Root >
                 <StepType selectedType={selectedType} setSelectedType={setSelecteType} nextStep={nextStep} step={step} />
-                <StepCardInfo data={data} setData={setData} nextStep={nextStep} step={step} />
+                <StepCardInfo initialData={existingMethod ? ({
+                    identifier: existingMethod.identifier,
+                    limit: existingMethod.limit,
+                    expiry: existingMethod.expiry || '',
+                    accountEndingIn: existingMethod.accountEndingIn,
+                    associatedName: existingMethod.associatedName,
+                    methodName: existingMethod.methodName,
+                }) : null} setData={setData} nextStep={nextStep} step={step} />
                 <StepColors setColors={setColors} nextStep={nextStep} step={step} colors={colors} />
                 <Submission step={step} existingMethod={existingMethod} data={data} type={selectedType} colors={colors} />
 

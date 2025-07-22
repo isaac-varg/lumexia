@@ -2,16 +2,17 @@ import { Dispatch, SetStateAction, useEffect } from "react"
 import { PaymentMethodData } from "./PaymentMethodWizard"
 import { useForm } from "react-hook-form"
 import Form from "@/components/Form"
-import { defaultHead } from "next/head"
 
-const StepCardInfo = ({ setData, nextStep, step, data }: { setData: Dispatch<SetStateAction<PaymentMethodData>>, nextStep: () => void, step: number, data: PaymentMethodData }) => {
+const StepCardInfo = ({ setData, nextStep, step, initialData }: { setData: Dispatch<SetStateAction<PaymentMethodData>>, nextStep: () => void, step: number, initialData: PaymentMethodData | null }) => {
 
-    const form = useForm<PaymentMethodData>({ defaultValues: { ...data } })
+    const form = useForm<PaymentMethodData>({
+        defaultValues: initialData || undefined,
+    });
 
     const handleSubmit = (data: PaymentMethodData) => {
-        setData(data);
-        nextStep()
-    }
+        setData(prevData => ({ ...prevData, ...data }));
+        nextStep();
+    };
 
     const { watch } = form;
 
@@ -22,6 +23,8 @@ const StepCardInfo = ({ setData, nextStep, step, data }: { setData: Dispatch<Set
 
         return () => subscription.unsubscribe();
     }, [watch, setData]);
+
+
 
     if (step !== 1) return false
 
