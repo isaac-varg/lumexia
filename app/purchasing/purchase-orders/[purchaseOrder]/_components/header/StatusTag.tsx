@@ -1,34 +1,11 @@
-import TagLabel from '@/components/Text/TagLabel'
 import React from 'react'
 import { PurchaseOrderDetails } from '../../_functions/getPurchaseOrder'
+import Tag from '@/components/Text/Tag'
 
 const StatusTag = ({purchaseOrder}: {purchaseOrder: PurchaseOrderDetails} ) => {
-
-	let color = 'neutral'
-	
-	switch (purchaseOrder.status.sequence) {
-		case 1:
-			color = 'draft'	
-			break;
-		case 2:
-			color = 'amber'
-			break;
-		case 3:
-			color = 'orange'
-			break;
-		case 4:
-			color = 'bayLeaf'
-			break;
-		case 5:
-			color = 'orange'
-			break;
-		default:
-			color = 'neutral'
-			break;
-	}
 	
   return (
-  <TagLabel color={color as any} size='big'>{purchaseOrder.status.name}</TagLabel>
+      <Tag text='large' bgColor={purchaseOrder.status.bgColor} textColor={purchaseOrder.status.textColor} label={purchaseOrder.status.name} tooltip={purchaseOrder.status.name} />
  
   )
 }

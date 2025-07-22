@@ -7,6 +7,8 @@ const classes = {
     },
     text: {
         base: 'uppercase text-sm font-medium',
+        large: 'uppercase text-lg font-medium',
+        larger: 'uppercase text-xl font-medium',
     },
     colors: {
         default: 'bg-neutral-200 text-neutral-900 hover:bg-neutral-300',
