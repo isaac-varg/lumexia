@@ -22,13 +22,13 @@ export const getBomItemCost = async (bom: PricingBOM[], batchSize: number) => {
 
         // item cost calculated 
         let convertedPrice = price;
-        if (priceUom === staticRecords.inventory.uom.units) {
+        if (priceUom === staticRecords.inventory.uom.units || priceUom === staticRecords.inventory.uom.case) {
             const converted = await getGenericUnitsConvertedPrice(i.item.id, i.item.purchaseOrderItem[0].purchaseOrders.supplierId, price)
             convertedPrice = converted
         }
 
-        if (priceUom !== lb && priceUom !== staticRecords.inventory.uom.units) {
-            const converted = await getConvertedPrice(priceUom, price);
+        if (priceUom !== lb && priceUom !== staticRecords.inventory.uom.units && priceUom !== staticRecords.inventory.uom.case) {
+            const converted = await getConvertedPrice(priceUom, price, i.item);
             convertedPrice = converted;
         }
 
@@ -63,11 +63,12 @@ export const getBomItemCost = async (bom: PricingBOM[], batchSize: number) => {
 
 export type PricingBomItemCost = Awaited<ReturnType<typeof getBomItemCost>>[number]
 
-const getConvertedPrice = async (currentUomId: string, price: number) => {
+const getConvertedPrice = async (currentUomId: string, price: number, item: any) => {
     const conversionFactor = await getConversionFactor(currentUomId, lb);
 
     if (!conversionFactor) {
-        throw new Error(`Conversion factor not found for ${currentUomId} `)
+        console.error('the item in question', item)
+        throw new Error(`Conversion factor not found for ${currentUomId}; `)
     }
 
     return price / conversionFactor;
