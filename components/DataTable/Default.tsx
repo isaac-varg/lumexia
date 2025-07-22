@@ -11,6 +11,7 @@ import {
     getSortedRowModel,
     getPaginationRowModel,
     Updater,
+    FilterFn,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import FilterBar from "./FilterBar";
@@ -35,6 +36,28 @@ type DataTableDefaultProps = {
     tableStateName: TableStateName;
     disableFilters?: boolean
     disablePagination?: boolean
+};
+
+const globalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
+    const search = String(filterValue).toLowerCase();
+
+    const searchInObject = (obj: any): boolean => {
+        if (obj === null || obj === undefined) {
+            return false;
+        }
+
+        if (Array.isArray(obj)) {
+            return obj.some(searchInObject);
+        }
+
+        if (typeof obj === 'object') {
+            return Object.values(obj).some(searchInObject);
+        }
+
+        return String(obj).toLowerCase().includes(search);
+    };
+
+    return searchInObject(row.original);
 };
 
 const Default = ({
@@ -95,6 +118,7 @@ const Default = ({
         onColumnFiltersChange: setColumnFilters,
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: handlePaginationChange,
+        globalFilterFn,
     });
 
     return (
