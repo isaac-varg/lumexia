@@ -8,6 +8,9 @@ const PaymentMethodDisplay = ({ method, onClick }: { method: PaymentMethod, onCl
     const type = method.paymentType;
 
     const handleClick = () => {
+        if (!onClick) {
+            return;
+        }
         onClick(method)
     };
 

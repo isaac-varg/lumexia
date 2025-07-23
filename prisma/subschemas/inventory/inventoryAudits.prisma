@@ -1,12 +1,13 @@
 model InventoryAudit {
-    id         String   @id @default(uuid())
-    itemId String @map("item_id")
-    conductedById String @map("conducted_by_id")
-    createdAt  DateTime @default(now()) @map("created_at")
-    updatedAt  DateTime @updatedAt @map("updated_at")
-    item Item @relation(fields: [itemId], references: [id])
-    user User @relation(fields: [conductedById], references: [id])
-    requests AuditRequest[]
+    id            String                      @id @default(uuid())
+    itemId        String                      @map("item_id")
+    conductedById String                      @map("conducted_by_id")
+    createdAt     DateTime                    @default(now()) @map("created_at")
+    updatedAt     DateTime                    @updatedAt @map("updated_at")
+    item          Item                        @relation(fields: [itemId], references: [id])
+    user          User                        @relation(fields: [conductedById], references: [id])
+    requests      AuditRequest[]
+    transactions  InventoryAuditTransaction[]
 
     @@map("inventory_audits")
 }

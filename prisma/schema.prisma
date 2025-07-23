@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jul 21 2025 15:20:37 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jul 23 2025 12:03:16 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -731,15 +731,28 @@ model GenericUnitConversionFactor {
   @@map("generic_unit_conversion_factors")
 }
 
+model InventoryAuditTransaction {
+  id               String         @id @default(uuid())
+  transactionId    String         @unique @map("transaction_id")
+  inventoryAuditId String         @map("inventory_audit_id")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  transaction      Transaction    @relation(fields: [transactionId], references: [id])
+  inventoryAudit   InventoryAudit @relation(fields: [inventoryAuditId], references: [id])
+
+  @@map("inventory_audit_transactions")
+}
+
 model InventoryAudit {
-  id            String         @id @default(uuid())
-  itemId        String         @map("item_id")
-  conductedById String         @map("conducted_by_id")
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-  item          Item           @relation(fields: [itemId], references: [id])
-  user          User           @relation(fields: [conductedById], references: [id])
+  id            String                      @id @default(uuid())
+  itemId        String                      @map("item_id")
+  conductedById String                      @map("conducted_by_id")
+  createdAt     DateTime                    @default(now()) @map("created_at")
+  updatedAt     DateTime                    @updatedAt @map("updated_at")
+  item          Item                        @relation(fields: [itemId], references: [id])
+  user          User                        @relation(fields: [conductedById], references: [id])
   requests      AuditRequest[]
+  transactions  InventoryAuditTransaction[]
 
   @@map("inventory_audits")
 }
@@ -788,20 +801,21 @@ model TransactionType {
 }
 
 model Transaction {
-  id                String            @id @default(uuid())
-  lotId             String            @map("lot_id")
-  transactionTypeId String            @map("transaction_type_id")
-  userId            String            @map("user_id")
-  uomId             String            @map("uom_id")
+  id                String                     @id @default(uuid())
+  lotId             String                     @map("lot_id")
+  transactionTypeId String                     @map("transaction_type_id")
+  userId            String                     @map("user_id")
+  uomId             String                     @map("uom_id")
   amount            Float
-  systemNote        String            @map("system_note")
-  userNote          String            @map("user_note")
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
-  transactionType   TransactionType   @relation(fields: [transactionTypeId], references: [id])
-  user              User              @relation(fields: [userId], references: [id])
-  unitOfMeasurement UnitOfMeasurement @relation(fields: [uomId], references: [id])
-  lot               Lot               @relation(fields: [lotId], references: [id])
+  systemNote        String                     @map("system_note")
+  userNote          String                     @map("user_note")
+  createdAt         DateTime                   @default(now()) @map("created_at")
+  updatedAt         DateTime                   @updatedAt @map("updated_at")
+  transactionType   TransactionType            @relation(fields: [transactionTypeId], references: [id])
+  user              User                       @relation(fields: [userId], references: [id])
+  unitOfMeasurement UnitOfMeasurement          @relation(fields: [uomId], references: [id])
+  lot               Lot                        @relation(fields: [lotId], references: [id])
+  audit             InventoryAuditTransaction?
 
   @@map("transactions")
 }

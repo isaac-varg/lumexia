@@ -1,0 +1,11 @@
+model InventoryAuditTransaction {
+    id               String         @id @default(uuid())
+    transactionId    String         @unique @map("transaction_id")
+    inventoryAuditId String         @map("inventory_audit_id")
+    createdAt        DateTime       @default(now()) @map("created_at")
+    updatedAt        DateTime       @updatedAt @map("updated_at")
+    transaction      Transaction    @relation(fields: [transactionId], references: [id])
+    inventoryAudit   InventoryAudit @relation(fields: [inventoryAuditId], references: [id])
+
+    @@map("inventory_audit_transactions")
+}
