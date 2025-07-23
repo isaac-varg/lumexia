@@ -42,25 +42,25 @@ export const getInventory = async (itemId: string) => {
         }
     })
 
- const purchases = await prisma.purchaseOrderItem.findMany({
-            where: {
-                itemId,
+    const purchases = await prisma.purchaseOrderItem.findMany({
+        where: {
+            itemId,
+        },
+        orderBy: {
+            purchaseOrders: {
+                referenceCode: 'desc',
             },
-            orderBy: {
-                purchaseOrders: {
-                    referenceCode: 'desc',
-                },
+        },
+        include: {
+            purchaseOrders: {
+                include: {
+                    status: true
+                }
             },
-            include: {
-                purchaseOrders: {
-                    include: {
-                        status: true
-                    }
-                },
-                purchaseOrderStatus: true
-            },
-            take: 5
-        })
+            purchaseOrderStatus: true
+        },
+        take: 5
+    })
 
     const totalOnHand = lots.reduce(
         (accumulator: number, current: any) => accumulator + current.totalQuantityOnHand, 0

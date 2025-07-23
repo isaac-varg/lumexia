@@ -7,7 +7,6 @@ const InventoryLayout = ({
   }>) => {
   return (
     <div>
-        <PageBreadcrumbs />
         {children}
     </div>
   )

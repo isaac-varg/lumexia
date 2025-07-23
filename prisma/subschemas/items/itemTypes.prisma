@@ -1,11 +1,11 @@
 model ItemType {
-    id               String            @id @default(uuid())
-    name             String
-    createdAt        DateTime          @default(now()) @map("created_at")
-    updatedAt        DateTime          @updatedAt @map("updated_at")
-    items            Item[]
-    pricingTemplates PricingTemplate[]
-
+    id                String             @id @default(uuid())
+    name              String
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    items             Item[]
+    pricingTemplates  PricingTemplate[]
+    discrepancyAudits DiscrepancyAudit[]
 
     @@map("item_types")
 }

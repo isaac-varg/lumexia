@@ -6,6 +6,7 @@ import { inventoryActions } from "@/actions/inventory";
 import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
 import Layout from "@/components/Layout";
 import RecentAuditsPanel from "./_components/RecentAuditsPanel";
+import DiscrepancyButton from "./_components/DiscrepancyButton";
 
 const ScanPage = async () => {
 
@@ -15,7 +16,14 @@ const ScanPage = async () => {
 
     return (
         <div className='flex flex-col gap-y-6'>
-            <PageTitle>Inventory Audit</PageTitle>
+            <div className="flex justify-between">
+                <PageTitle>Inventory Audit</PageTitle>
+
+                <div className="flex gap-x-2">
+                    <DiscrepancyButton />
+                </div>
+
+            </div>
 
             <ScanPanel />
 

@@ -1,0 +1,13 @@
+model DiscrepancyAudit {
+    id          String                 @id @default(uuid())
+    completedOn String?                @map("completed_on")
+    itemTypeId  String?                @map("item_type_id")
+    statusId    String                 @map("status_id")
+    createdAt   DateTime               @default(now()) @map("created_at")
+    updatedAt   DateTime               @updatedAt @map("updated_at")
+    itemType    ItemType?              @relation(fields: [itemTypeId], references: [id])
+    status      DiscrepancyAuditStatus @relation(fields: [statusId], references: [id])
+    items       DiscrepancyAuditItem[]
+
+    @@map("discrepancy_audits")
+}

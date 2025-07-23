@@ -51,7 +51,7 @@ const FinishedProductsPanel = ({ finishedProducts }: { finishedProducts: SingleP
 
                             <div className='grid grid-cols-2 gap-4'>
 
-                                <DataBox bigNumber={toFracitonalDigits.curreny(fp.consumerPrice)} label='$/container' sublabel='Consumer Price' />
+                                <DataBox bigNumber={toFracitonalDigits.curreny(fp.consumerPrice)} label='$/container' sublabel='Website Price' />
                                 <DataBox bigNumber={toFracitonalDigits.curreny(fp.finishedProductTotalCost)} label={'$/container'} sublabel={'Cost'} isBad={isBad} />
                                 <DataBox bigNumber={toFracitonalDigits.curreny(profit)} label='$' sublabel='Profit' isBad={isBad} />
                                 <DataBox bigNumber={toFracitonalDigits.curreny(profitPercentage)} label='%' sublabel='Profit %' isBad={isBad} />

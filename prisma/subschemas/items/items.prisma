@@ -1,10 +1,3 @@
-import { ItemType } from "itemTypes"
-import { ProcurementType }from "procurementTypes"
-import { InventoryType } from "inventoryTypes"
-import { Lot }from "../inventory/lots"
-import { Alias } from "./aliases"
-import { PurchaseOrderItem }from "../purchasing/purchaseOrderItems"
-
 model Item {
     id                           String                        @id @default(uuid())
     name                         String
@@ -30,6 +23,7 @@ model Item {
     consumerContainerArchives    ConsumerContainerArchive[]
     qcItemParameters             QcItemParameter[]
     genericUnitConversionFactors GenericUnitConversionFactor[]
+    discrepancyAuditItems        DiscrepancyAuditItem[]
 
     @@map("items")
 }

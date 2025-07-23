@@ -1,0 +1,14 @@
+model DiscrepancyAuditItemNote {
+    id          String                       @id @default(uuid())
+    auditItemId String                       @map("audit_item_id")
+    noteTypeId  String                       @map("note_type_id")
+    userId      String                       @map("user_id")
+    content     String
+    createdAt   DateTime                     @default(now()) @map("created_at")
+    updatedAt   DateTime                     @updatedAt @map("updated_at")
+    auditItem   DiscrepancyAuditItem         @relation(fields: [auditItemId], references: [id])
+    user        User                         @relation(fields: [userId], references: [id])
+    noteType    DiscrepancyAuditItemNoteType @relation(fields: [noteTypeId], references: [id])
+
+    @@map("discrepancy_audit_item_notes")
+}

@@ -1,0 +1,22 @@
+model DiscrepancyAuditItem {
+    id                        String                     @id @default(uuid())
+    itemId                    String                     @map("item_id")
+    statusId                  String                     @map("status_id")
+    discrepancyAuditId        String                     @map("discrepancy_audit_id")
+    startingTotalQuantity     Float                      @map("starting_total_quantity")
+    endingTotalQuantity       Float?                     @map("ending_total_quantity")
+    quantitiesUomId           String                     @map("quantities_uom_id")
+    startingLotsCount         Int                        @map("starting_lots_count")
+    endingLotsCount           Int?                       @map("ending_lots_count")
+    startingDepletedLotsCount Int                        @map("starting_depleted_lots_count")
+    endingDepletedLotsCount   Int?                       @map("ending_depleted_lots_count")
+    createdAt                 DateTime                   @default(now()) @map("created_at")
+    updatedAt                 DateTime                   @updatedAt @map("updated_at")
+    item                      Item                       @relation(fields: [itemId], references: [id])
+    status                    DiscrepancyAuditItemStatus @relation(fields: [statusId], references: [id])
+    discrepancyAudit          DiscrepancyAudit           @relation(fields: [discrepancyAuditId], references: [id])
+    quantitiesUom             UnitOfMeasurement          @relation(fields: [quantitiesUomId], references: [id])
+    notes                     DiscrepancyAuditItemNote[]
+
+    @@map("discrepancy_audit_items")
+}

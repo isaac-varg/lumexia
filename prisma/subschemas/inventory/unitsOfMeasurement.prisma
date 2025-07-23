@@ -11,6 +11,7 @@ model UnitOfMeasurement {
     container                    Container[]
     purchaseOrderItem            PurchaseOrderItem[]
     genericUnitConversionFactors GenericUnitConversionFactor[]
+    discrepancyAuditItems        DiscrepancyAuditItem[]
 
     @@map("units_of_measurement")
 }

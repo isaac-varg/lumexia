@@ -2,9 +2,6 @@
 // e.g., produced procurement type should always be present in the application.
 // i didn't want to hard code these in but since they are the same and essential, i didn't want to call the db every time we used them
 
-import loadJsConfig from "next/dist/build/load-jsconfig";
-import { loadEnvFile } from "process";
-
 export const staticRecords = {
     inventory: {
         transactionTypes: {
@@ -15,6 +12,8 @@ export const staticRecords = {
             produced: '82aca833-c8e4-42c8-8488-a2bb15088f8e'
         },
         itemTypes: {
+            labSupplies: 'e8ddb5af-5cb3-4de1-81c7-7d6328e0f1f5',
+            productionBase: '5cf17e61-ed2a-47e5-ac4b-cb41c4b847d2',
             packaging: '4dae8a77-150b-4ea3-9c60-237adb843179',
             officeSupplies: 'd1bc1ea3-133c-4075-8a0e-aaefc6831468',
             warehouseSupplies: 'a00c8cb3-8c0f-4951-9bcf-e18bca7910f4',
@@ -182,7 +181,7 @@ export const staticRecords = {
                 draft: 'ac412826-a79f-439c-9558-196c910a638b',
                 requested: '226db3a6-2756-4a5d-a6c5-b741339baeea',
                 linked: 'ebd4b314-8596-4ac9-b114-c6a29ab49644',
-                rejected: 'f9229772-62e8-45e7-b7dd-dd42a6a7b751', 
+                rejected: 'f9229772-62e8-45e7-b7dd-dd42a6a7b751',
 
             }
         }

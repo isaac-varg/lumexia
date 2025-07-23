@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jul 23 2025 12:03:16 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Jul 23 2025 13:31:00 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -715,6 +715,112 @@ model Container {
   @@map("containers")
 }
 
+model DiscrepancyAuditItemNoteType {
+  id          String                     @id @default(uuid())
+  name        String
+  description String
+  bgColor     String                     @map("bg_color")
+  textColor   String                     @map("text_color")
+  createdAt   DateTime                   @default(now()) @map("created_at")
+  updatedAt   DateTime                   @updatedAt @map("updated_at")
+  notes       DiscrepancyAuditItemNote[]
+
+  @@map("discrepancy_audit_item_note_types")
+}
+
+model DiscrepancyAuditItemNote {
+  id          String                       @id @default(uuid())
+  auditItemId String                       @map("audit_item_id")
+  noteTypeId  String                       @map("note_type_id")
+  userId      String                       @map("user_id")
+  content     String
+  createdAt   DateTime                     @default(now()) @map("created_at")
+  updatedAt   DateTime                     @updatedAt @map("updated_at")
+  auditItem   DiscrepancyAuditItem         @relation(fields: [auditItemId], references: [id])
+  user        User                         @relation(fields: [userId], references: [id])
+  noteType    DiscrepancyAuditItemNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("discrepancy_audit_item_notes")
+}
+
+model DiscrepancyAuditItemStatus {
+  id          String                 @id @default(uuid())
+  name        String
+  description String?
+  sequence    Int                    @unique
+  bgColor     String                 @default("#333333") @map("bg_color")
+  textColor   String                 @default("#ffffff") @map("text_color")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+  items       DiscrepancyAuditItem[]
+
+  @@map("discrepancy_audit_item_statuses")
+}
+
+model DiscrepancyAuditItemTransaction {
+  id            String               @id @default(uuid())
+  auditItemId   String               @map("audit_item_id")
+  transactionId String               @unique @map("transaction_id")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+  auditItem     DiscrepancyAuditItem @relation(fields: [auditItemId], references: [id])
+  transaction   Transaction          @relation(fields: [transactionId], references: [id])
+
+  @@map("discrepancy_audit_item_transactions")
+}
+
+model DiscrepancyAuditItem {
+  id                              String                            @id @default(uuid())
+  itemId                          String                            @map("item_id")
+  statusId                        String                            @map("status_id")
+  discrepancyAuditId              String                            @map("discrepancy_audit_id")
+  startingTotalQuantity           Float                             @map("starting_total_quantity")
+  endingTotalQuantity             Float?                            @map("ending_total_quantity")
+  quantitiesUomId                 String                            @map("quantities_uom_id")
+  startingLotsCount               Int                               @map("starting_lots_count")
+  endingLotsCount                 Int?                              @map("ending_lots_count")
+  startingDepletedLotsCount       Int                               @map("starting_depleted_lots_count")
+  endingDepletedLotsCount         Int?                              @map("ending_depleted_lots_count")
+  createdAt                       DateTime                          @default(now()) @map("created_at")
+  updatedAt                       DateTime                          @updatedAt @map("updated_at")
+  item                            Item                              @relation(fields: [itemId], references: [id])
+  status                          DiscrepancyAuditItemStatus        @relation(fields: [statusId], references: [id])
+  discrepancyAudit                DiscrepancyAudit                  @relation(fields: [discrepancyAuditId], references: [id])
+  quantitiesUom                   UnitOfMeasurement                 @relation(fields: [quantitiesUomId], references: [id])
+  notes                           DiscrepancyAuditItemNote[]
+  DiscrepancyAuditItemTransaction DiscrepancyAuditItemTransaction[]
+
+  @@map("discrepancy_audit_items")
+}
+
+model DiscrepancyAuditStatus {
+  id                String             @id @default(uuid())
+  name              String
+  description       String?
+  sequence          Int                @unique
+  bgColor           String             @default("#333333") @map("bg_color")
+  textColor         String             @default("#ffffff") @map("text_color")
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  discrepancyAudits DiscrepancyAudit[]
+
+  @@map("discrepancy_audit_statuses")
+}
+
+model DiscrepancyAudit {
+  id          String                 @id @default(uuid())
+  completedOn String?                @map("completed_on")
+  itemTypeId  String?                @map("item_type_id")
+  statusId    String                 @map("status_id")
+  createdAt   DateTime               @default(now()) @map("created_at")
+  updatedAt   DateTime               @updatedAt @map("updated_at")
+  itemType    ItemType?              @relation(fields: [itemTypeId], references: [id])
+  status      DiscrepancyAuditStatus @relation(fields: [statusId], references: [id])
+  items       DiscrepancyAuditItem[]
+
+  @@map("discrepancy_audits")
+}
+
 model GenericUnitConversionFactor {
   id               String            @id @default(uuid())
   itemId           String            @map("item_id")
@@ -801,21 +907,22 @@ model TransactionType {
 }
 
 model Transaction {
-  id                String                     @id @default(uuid())
-  lotId             String                     @map("lot_id")
-  transactionTypeId String                     @map("transaction_type_id")
-  userId            String                     @map("user_id")
-  uomId             String                     @map("uom_id")
-  amount            Float
-  systemNote        String                     @map("system_note")
-  userNote          String                     @map("user_note")
-  createdAt         DateTime                   @default(now()) @map("created_at")
-  updatedAt         DateTime                   @updatedAt @map("updated_at")
-  transactionType   TransactionType            @relation(fields: [transactionTypeId], references: [id])
-  user              User                       @relation(fields: [userId], references: [id])
-  unitOfMeasurement UnitOfMeasurement          @relation(fields: [uomId], references: [id])
-  lot               Lot                        @relation(fields: [lotId], references: [id])
-  audit             InventoryAuditTransaction?
+  id                              String                           @id @default(uuid())
+  lotId                           String                           @map("lot_id")
+  transactionTypeId               String                           @map("transaction_type_id")
+  userId                          String                           @map("user_id")
+  uomId                           String                           @map("uom_id")
+  amount                          Float
+  systemNote                      String                           @map("system_note")
+  userNote                        String                           @map("user_note")
+  createdAt                       DateTime                         @default(now()) @map("created_at")
+  updatedAt                       DateTime                         @updatedAt @map("updated_at")
+  transactionType                 TransactionType                  @relation(fields: [transactionTypeId], references: [id])
+  user                            User                             @relation(fields: [userId], references: [id])
+  unitOfMeasurement               UnitOfMeasurement                @relation(fields: [uomId], references: [id])
+  lot                             Lot                              @relation(fields: [lotId], references: [id])
+  audit                           InventoryAuditTransaction?
+  discrepancyAuditItemTransaction DiscrepancyAuditItemTransaction?
 
   @@map("transactions")
 }
@@ -846,6 +953,7 @@ model UnitOfMeasurement {
   container                       Container[]
   purchaseOrderItem               PurchaseOrderItem[]
   genericUnitConversionFactors    GenericUnitConversionFactor[]
+  discrepancyAuditItems           DiscrepancyAuditItem[]
   BomPricingDataArchive           BomPricingDataArchive[]
   FinishedProductArchive          FinishedProductArchive[]
   FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
@@ -898,12 +1006,13 @@ model InventoryType {
 }
 
 model ItemType {
-  id               String            @id @default(uuid())
-  name             String
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
-  items            Item[]
-  pricingTemplates PricingTemplate[]
+  id                String             @id @default(uuid())
+  name              String
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  items             Item[]
+  pricingTemplates  PricingTemplate[]
+  discrepancyAudits DiscrepancyAudit[]
 
   @@map("item_types")
 }
@@ -933,6 +1042,7 @@ model Item {
   consumerContainerArchives       ConsumerContainerArchive[]
   qcItemParameters                QcItemParameter[]
   genericUnitConversionFactors    GenericUnitConversionFactor[]
+  discrepancyAuditItems           DiscrepancyAuditItem[]
   BomPricingDataArchive           BomPricingDataArchive[]
   FinishedProductArchive          FinishedProductArchive[]
   FinishedProductAuxiliary        FinishedProductAuxiliary[]
@@ -2125,6 +2235,7 @@ model User {
   generalRequestNotes           GeneralRequestNote[]
   PoAccountingNote              PoAccountingNote[]
   PricingExaminationNote        PricingExaminationNote[]
+  DiscrepancyAuditItemNote      DiscrepancyAuditItemNote[]
   InventoryAudit                InventoryAudit[]
   BprNote                       BprNote[]
   BprStaging                    BprStaging[]

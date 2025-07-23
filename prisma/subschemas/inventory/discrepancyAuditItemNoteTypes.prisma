@@ -1,0 +1,12 @@
+model DiscrepancyAuditItemNoteType {
+    id          String                     @id @default(uuid())
+    name        String
+    description String
+    bgColor     String                     @map("bg_color")
+    textColor   String                     @map("text_color")
+    createdAt   DateTime                   @default(now()) @map("created_at")
+    updatedAt   DateTime                   @updatedAt @map("updated_at")
+    notes       DiscrepancyAuditItemNote[]
+
+    @@map("discrepancy_audit_item_note_types")
+}

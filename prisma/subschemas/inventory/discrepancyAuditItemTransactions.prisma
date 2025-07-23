@@ -1,0 +1,11 @@
+model DiscrepancyAuditItemTransaction {
+    id            String               @id @default(uuid())
+    auditItemId   String               @map("audit_item_id")
+    transactionId String               @unique @map("transaction_id")
+    createdAt     DateTime             @default(now()) @map("created_at")
+    updatedAt     DateTime             @updatedAt @map("updated_at")
+    auditItem     DiscrepancyAuditItem @relation(fields: [auditItemId], references: [id])
+    transaction   Transaction          @relation(fields: [transactionId], references: [id])
+
+    @@map("discrepancy_audit_item_transactions")
+}
