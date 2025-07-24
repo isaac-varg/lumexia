@@ -1,14 +1,38 @@
 'use client'
 import Dialog from "@/components/Dialog"
 import { ItemType } from "@prisma/client"
+import { beginDiscrepancyAuditCascade } from "../_actions/beginDiscrepancyAuditCascade"
+import { useState } from "react"
+import { Loader } from "@/components/Loading"
+import useDialog from "@/hooks/useDialog"
 
 const NewAuditDialog = ({ itemTypes }: { itemTypes: ItemType[] }) => {
 
-    const handleClick = (itemTypeId: string | null) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const { resetDialogContext } = useDialog()
 
-        if (!itemTypeId) console.log('none')
+    const handleClick = async (itemTypeId: string | null) => {
 
-        if (itemTypeId) console.log('has it')
+        setIsLoading(true)
+        try {
+            // wait a little to show animation lol 
+            await new Promise((resolve) => setTimeout(resolve, 8000));
+
+            if (!itemTypeId) {
+                beginDiscrepancyAuditCascade(null)
+            }
+
+            if (itemTypeId) {
+                beginDiscrepancyAuditCascade(itemTypeId)
+            }
+
+        } catch (error) {
+            console.error("Failed", error)
+        } finally {
+            resetDialogContext()
+            setIsLoading(false)
+        }
+
 
     }
 
@@ -17,7 +41,7 @@ const NewAuditDialog = ({ itemTypes }: { itemTypes: ItemType[] }) => {
 
             <Dialog.Title>New Discrepancy Audit</Dialog.Title>
 
-            <div className="grid grid-cols-3 gap-4">
+            {!isLoading ? (<div className="grid grid-cols-3 gap-4">
 
                 <button className="btn" onClick={() => handleClick(null)}>All</button>
                 {itemTypes.map(it => {
@@ -28,8 +52,9 @@ const NewAuditDialog = ({ itemTypes }: { itemTypes: ItemType[] }) => {
                     )
                 })}
 
-            </div>
-
+            </div>) : (
+                <Loader.Silly isLoading={isLoading} />
+            )}
         </Dialog.Root>
     )
 }

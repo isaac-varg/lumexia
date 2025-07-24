@@ -8,12 +8,14 @@ const NewButton = () => {
 
     return (
 
-        <button
-            className="btn"
-            onClick={() => showDialog('newDiscrepancyAuditDialog')}
-        >
-            New Audit
-        </button>
+        <div>
+            <button
+                className="btn"
+                onClick={() => showDialog('newDiscrepancyAuditDialog')}
+            >
+                New Audit
+            </button>
+        </div>
 
     )
 }

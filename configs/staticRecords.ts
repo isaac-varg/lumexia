@@ -41,6 +41,16 @@ export const staticRecords = {
                 supplier: '7173f88e-057a-43a7-aa37-6b9b97707b08'
             }
         },
+        discrepancyAudits: {
+            statuses: {
+                open: '85c7ee3f-8b73-4d31-b7d0-7f0c487312f4',
+            },
+            items: {
+                statuses: {
+                    notChecked: '85c7ee3f-8b73-4d31-b7d0-7f0c487312f4'
+                }
+            }
+        },
         auditRequests: {
             requestNoteTypes: {
                 default: '33a6124d-2b9a-4d9a-9e40-bdbe2dea23be',
