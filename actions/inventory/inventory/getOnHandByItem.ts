@@ -13,11 +13,25 @@ export const getOnHandByItem = async (itemId: string) => {
         (accumulator: number, current: any) => accumulator + current.totalQuantityOnHand, 0
     );
 
-     
+    const lastAudited = await prisma.inventoryAudit.findFirst({
+        where: {
+            itemId,
+        },
+        include: {
+            user: true,
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+        take: 1
+    });
+
+
 
     return {
         item,
         lots,
+        lastAudited,
         totalQuantityOnHand: totalOnHand,
     }
 
