@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Jul 23 2025 13:31:00 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Jul 28 2025 14:09:18 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -788,7 +788,7 @@ model DiscrepancyAuditItem {
   discrepancyAudit                DiscrepancyAudit                  @relation(fields: [discrepancyAuditId], references: [id])
   quantitiesUom                   UnitOfMeasurement                 @relation(fields: [quantitiesUomId], references: [id])
   notes                           DiscrepancyAuditItemNote[]
-  DiscrepancyAuditItemTransaction DiscrepancyAuditItemTransaction[]
+  discrepancyAuditItemTransaction DiscrepancyAuditItemTransaction[]
 
   @@map("discrepancy_audit_items")
 }

@@ -3,11 +3,11 @@
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem";
 import prisma from "@/lib/prisma"
 
-export const getDisrepancyItem = async (itemId: string) => {
+export const getAllDiscrepancyAuditItems = async (auditId: string) => {
 
-    const item = await prisma.discrepancyAuditItem.findFirstOrThrow({
+    const items = await prisma.discrepancyAuditItem.findMany({
         where: {
-            itemId,
+            discrepancyAuditId: auditId,
         },
         include: {
             notes: {
@@ -17,7 +17,7 @@ export const getDisrepancyItem = async (itemId: string) => {
                 }
             },
             item: true,
-            status: true,
+            status: true, 
             discrepancyAuditItemTransaction: {
                 include: {
                     transaction: {
@@ -34,18 +34,21 @@ export const getDisrepancyItem = async (itemId: string) => {
         }
     });
 
-    const inventory = await getOnHandByItem(item.itemId);
-    const lastInventoryAudit = inventory.lastAudited;
-    const lastDiscrepancyAudit = item.discrepancyAuditItemTransaction.length > 0 ? item.discrepancyAuditItemTransaction[0] : null;
+    const transformedItems = await Promise.all(items.map(async (item) => {
+        const inventory = await getOnHandByItem(item.itemId);
+        const lastInventoryAudit = inventory.lastAudited;
+        const lastDiscrepancyAudit = item.discrepancyAuditItemTransaction.length > 0 ? item.discrepancyAuditItemTransaction[0] : null;
 
-    return {
-        ...item,
-        lots: inventory.lots,
-        lastInventoryAudit,
-        lastDiscrepancyAudit,
-    }
+        return {
+            ...item,
+            lots: inventory.lots,
+            lastInventoryAudit,
+            lastDiscrepancyAudit,
+        }
+    }));
+
+
+    return transformedItems;
+
 
 }
-
-
-export type DiscrepancyItem = Awaited<ReturnType<typeof getDisrepancyItem>>

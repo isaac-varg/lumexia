@@ -26,7 +26,10 @@ const NotesPanel = ({ notes, noteTypes, pricingExaminationId }: { notes: SingleP
     }
 
     const handleNoteTypeAdd = async (values: NoteTypeInputs) => {
+
         await accountingActions.examinations.notes.createNoteType(values);
+
+         
 
     }
 

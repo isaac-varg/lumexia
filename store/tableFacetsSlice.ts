@@ -29,6 +29,7 @@ type State = {
     qcTemplates: FilterArray
     audits: FilterArray
     poAccounting: FilterArray
+discrepancyAudit: FilterArray
 
 };
 
@@ -68,6 +69,7 @@ export const useTableFacets = create<State & Actions>((set) => ({
     qcTemplates: [],
     audits: [],
     poAccounting: [],
+    discrepancyAudit: [],
 
 
     setFilter: (tableState, value) =>

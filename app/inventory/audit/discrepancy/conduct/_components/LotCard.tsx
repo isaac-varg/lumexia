@@ -7,7 +7,7 @@ import { useDiscrepancyActions, useDiscrepancySelection } from "@/store/discrepa
 const LotCard = ({ lot }: { lot: DiscrepancyItem['lots'][number] }) => {
     const [isAdjust, setIsAdjust] = useState(false)
     const [newQuantity, setNewQuantity] = useState<string>('');
-    const { adjustLotQuantity } = useDiscrepancyActions()
+    const { adjustLotQuantity  } = useDiscrepancyActions()
     const { isAdjustmentLoading } = useDiscrepancySelection()
 
     const handleAdjustment = (value: string) => {
@@ -35,6 +35,12 @@ const LotCard = ({ lot }: { lot: DiscrepancyItem['lots'][number] }) => {
                 {lot.lotNumber}
             </h1>
 
+            
+            <h1 className="font-sans font-semibold text-lg tracking-wider">
+                {lot.totalQuantityOnHand}
+            </h1>
+
+
             {!isAdjust ? (isAdjustmentLoading ? <button className="btn skeleton">Loading. . . </button> : < button className="btn bg-blue-400 hover:bg-blue-400/80" onClick={() => setIsAdjust(true)}>
                 Adjust
             </button>) : (
@@ -47,11 +53,6 @@ const LotCard = ({ lot }: { lot: DiscrepancyItem['lots'][number] }) => {
                 </div>
             )
             }
-
-
-
-
-
 
 
         </div >

@@ -1,22 +1,18 @@
 import PageWrapper from "@/components/App/PageWrapper"
-import ScanPanel from "./_components/ScanPanel"
-import ItemView from "./_components/ItemView"
-import StatusPanel from "./_components/StatusPanel"
-import ActionsPanel from "./_components/ActionsPanel"
+import StateSetter from "./_components/StateSetter"
+import Main from "./_components/Main"
+import ViewMode from "./_components/ViewMode"
 
-const ConductDiscrepancyAuditPage = () => {
+const ConductDiscrepancyAuditPage = ({ searchParams }: { searchParams: { id: string } }) => {
 
     return (
         <PageWrapper pageTitle={'Conduct Discrepancy Audit'}>
 
-            <div className="grid grid-cols-3 gap-6">
-                <StatusPanel />
-                <ActionsPanel />
-                <ScanPanel />
 
-            </div>
+            <StateSetter auditId={searchParams.id} />
+            <Main />
+            <ViewMode />
 
-            <ItemView />
 
         </PageWrapper>
     )

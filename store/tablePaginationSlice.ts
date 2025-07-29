@@ -33,6 +33,7 @@ type State = {
     qcTemplates: StateData,
     audits: StateData,
     poAccounting: StateData,
+discrepancyAudit: StateData,
 }
 
 
@@ -67,6 +68,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
     qcGroups: { pageSize: 20, pageIndex: 0 },
     audits: { pageSize: 20, pageIndex: 0 },
     poAccounting: { pageSize: 30, pageIndex: 0 },
+    discrepancyAudit: { pageSize: 20, pageIndex: 0 },
 
 
     setPagination: (filterName, value) =>
