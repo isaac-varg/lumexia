@@ -1,6 +1,7 @@
 'use server'
 
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem";
+import { staticRecords } from "@/configs/staticRecords";
 import prisma from "@/lib/prisma"
 
 export const getAllDiscrepancyAuditItems = async (auditId: string) => {
@@ -17,7 +18,7 @@ export const getAllDiscrepancyAuditItems = async (auditId: string) => {
                 }
             },
             item: true,
-            status: true, 
+            status: true,
             discrepancyAuditItemTransaction: {
                 include: {
                     transaction: {
@@ -36,12 +37,28 @@ export const getAllDiscrepancyAuditItems = async (auditId: string) => {
 
     const transformedItems = await Promise.all(items.map(async (item) => {
         const inventory = await getOnHandByItem(item.itemId);
+        const lastPo = await prisma.purchaseOrderItem.findFirst({
+            where: {
+                itemId: item.item.id,
+                purchaseOrderStatusId: staticRecords.purchasing.poStatuses.received,
+            },
+            include: {
+               purchaseOrders: true, 
+            },
+            orderBy: {
+                updatedAt: 'desc',
+            },
+        });
+
+
+
         const lastInventoryAudit = inventory.lastAudited;
         const lastDiscrepancyAudit = item.discrepancyAuditItemTransaction.length > 0 ? item.discrepancyAuditItemTransaction[0] : null;
 
         return {
             ...item,
             lots: inventory.lots,
+            lastPo,
             lastInventoryAudit,
             lastDiscrepancyAudit,
         }

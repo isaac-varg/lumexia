@@ -46,10 +46,18 @@ export const staticRecords = {
         discrepancyAudits: {
             statuses: {
                 open: '85c7ee3f-8b73-4d31-b7d0-7f0c487312f4',
+                closed: 'cb1af09f-ea5a-4ec5-b7a7-9235ea810fa0'
             },
             items: {
                 statuses: {
-                    notChecked: '85c7ee3f-8b73-4d31-b7d0-7f0c487312f4'
+                    notChecked: '85c7ee3f-8b73-4d31-b7d0-7f0c487312f4',
+                    audited: 'a8c7478f-c813-4530-a847-e2ef2f437a2c',
+                    incomplete: 'cabb7f80-c841-4c14-b294-593bb33114f8'
+                },
+                notes: {
+                    types: {
+                        automated: '2c35a5bc-f72a-45e0-b837-0aeec75205a5'
+                    }
                 }
             }
         },

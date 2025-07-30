@@ -5,6 +5,7 @@ import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
 
 const { warehouseSupplies, productionBase, officeSupplies, labSupplies, packaging } = staticRecords.inventory.itemTypes
+const { purchased } = staticRecords.inventory.procurementTypes;
 
 
 export const beginDiscrepancyAuditCascade = async (itemTypeId: string | null) => {
@@ -20,7 +21,8 @@ export const beginDiscrepancyAuditCascade = async (itemTypeId: string | null) =>
                     labSupplies,
                     packaging
                 ]
-            }
+            },
+            procurementTypeId: purchased,
         },
         select: {
             id: true

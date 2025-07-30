@@ -1,46 +1,44 @@
 import DataTable from "@/components/DataTable"
-import { useDiscrepancySelection } from "@/store/discrepancySlice"
+import { useDiscrepancyActions, useDiscrepancySelection } from "@/store/discrepancySlice"
 import { auditItemColumns } from "./AuditItemColumns"
 import { DiscrepancyItem } from "../_actions/getDiscrepancyItem"
-import { RowSelectionHandlerMethod } from "@/utils/auxiliary/rowSelectionHandler"
 import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
+import { Filter } from "@/types/filter"
+import { toFacetFilter } from "@/utils/data/toFacetFilter"
 
 const AuditItemTable = () => {
 
     const { auditItems } = useDiscrepancySelection()
+    const { setDiscrepancyAppMode, setSeletedItemFromApp } = useDiscrepancyActions()
 
-    //    const filters: Filter[] = [
-    //        {
-    //            columnName: "supplierName",
-    //            filterLabel: "Supplier",
-    //            options: toFacetFilter(purchaseOrders, "supplierName", "supplierName"),
-    //        },
-    //        {
-    //            columnName: "statusName",
-    //            filterLabel: "Status",
-    //            options: toFacetFilter(purchaseOrders, "statusName", "statusName"),
-    //        },
-    //    ];
-    //
+    const filters: Filter[] = [
+        {
+            columnName: "status",
+            filterLabel: "Status",
+            options: toFacetFilter(auditItems, "status.id", "status.name"),
+        },
+    ];
+
 
     const handleRowClick = (row: DiscrepancyItem) => {
 
-        console.log(row)
+        setSeletedItemFromApp(row)
+        setDiscrepancyAppMode('item')
     }
 
     return (
-        <Panels.Root>
+        <Panels.Root span={3}>
             <SectionTitle size="small">Audit Items</SectionTitle>
             <DataTable.Default
                 data={auditItems}
                 columns={auditItemColumns}
-                filters={[]}
+                filters={filters}
                 //onRowClick={(row, method) => handleRowClick(row, method)}
                 onRowClick={(row) => handleRowClick(row.original)}
                 initialSortBy={[{
-                    id: 'referenceCode',
-                    desc: true,
+                    id: 'item',
+                    desc: false,
                 }]}
                 tableStateName="discrepancyAudit"
             />

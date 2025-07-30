@@ -2,19 +2,15 @@
 
 import { useDiscrepancyActions, useDiscrepancySelection } from "@/store/discrepancySlice"
 import { useEffect } from "react"
-import { getDiscrepancyAudit } from "../_actions/getDiscrepancyAudit"
 
 const StateSetter = ({ auditId }: { auditId: string }) => {
 
-    const { item, auditItems } = useDiscrepancySelection()
-    const { getNoteTypes, getNotes, clearAuditItems } = useDiscrepancyActions()
+    const { item } = useDiscrepancySelection()
+    const { getNoteTypes, getNotes, getDiscrepancyAudit } = useDiscrepancyActions()
 
     useEffect(() => {
-        getDiscrepancyAudit(auditId);
+        getDiscrepancyAudit(auditId)
 
-        if (auditItems.length !== 0) {
-            clearAuditItems()
-        }
     }, [auditId])
 
     useEffect(() => {

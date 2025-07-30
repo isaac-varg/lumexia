@@ -12,7 +12,7 @@ const Main = () => {
 
     return (
 
-        <div>
+        <div className="flex flex-col gap-y-8">
             <div className="grid grid-cols-3 gap-6">
                 <StatusPanel />
                 <ActionsPanel />

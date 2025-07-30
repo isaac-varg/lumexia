@@ -1,9 +1,7 @@
-import { getUserId } from "@/actions/users/getUserId";
 import { DiscrepancyItem, getDisrepancyItem } from "@/app/inventory/audit/discrepancy/conduct/_actions/getDiscrepancyItem";
 import { handleDiscrepancyAuditAdjustment } from "@/app/inventory/audit/discrepancy/conduct/_actions/handleDiscrepencyAuditAdjustment";
 import { getItemIdFromLot } from "@/app/purchasing/requests/new/_functions/getItemIdFromLot";
 import { create } from "zustand"
-import { v4 as uuidv4 } from 'uuid';
 import { AuditItemNoteType, getAuditItemNoteTypes } from "@/app/inventory/audit/discrepancy/conduct/_actions/getAuditItemNoteTypes";
 import { AuditItemNote, getAuditItemNotes } from "@/app/inventory/audit/discrepancy/conduct/_actions/getAuditItemNotes";
 import { DiscrepancyAudit, getDiscrepancyAudit } from "@/app/inventory/audit/discrepancy/conduct/_actions/getDiscrepancyAudit";
@@ -27,6 +25,7 @@ type State = {
 type Actions = {
     actions: {
         setSelectedItem: (id: string) => void;
+        setSeletedItemFromApp: (item: DiscrepancyItem) => void;
         adjustLotQuantity: (lotId: string, newQuantity: number, currentQuantity: number) => void;
         getNoteTypes: () => void;
         getNotes: () => void;
@@ -35,6 +34,7 @@ type Actions = {
         zeroDepletions: (lots: string[]) => void;
         setDiscrepancyAppMode: (mode: DiscrepancyAppMode) => void;
         clearAuditItems: () => void;
+        clearItem: () => void;
     }
 }
 
@@ -67,6 +67,10 @@ export const useDiscrepancySelection = create<State & Actions>((set, get) => ({
             } finally {
                 set(() => ({ isItemLoading: false }))
             };
+        },
+
+        setSeletedItemFromApp: (item) => {
+            set(() => ({ item: item, itemLots: item.lots }))
         },
 
         setDiscrepancyAppMode: (mode) => {
@@ -124,6 +128,7 @@ export const useDiscrepancySelection = create<State & Actions>((set, get) => ({
 
         getAuditItems: async () => {
             const { audit } = get()
+
             if (!audit) return;
 
             const auditItems = await getAllDiscrepancyAuditItems(audit.id);
@@ -133,6 +138,9 @@ export const useDiscrepancySelection = create<State & Actions>((set, get) => ({
 
         clearAuditItems: () => {
             set(() => ({ auditItems: [] }))
+        },
+        clearItem: () => {
+            set(() => ({ item: null }))
         }
 
 
