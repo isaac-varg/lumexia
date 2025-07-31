@@ -40,7 +40,7 @@ export default async function RootLayout({
                             <div className="flex flex-row h-full">
                                 <Sidebar />
 
-                                <div className="flex flex-col w-full px-8 py-8 gap-y-8">
+                                <div className="flex flex-col w-full bg-gray-100 px-28 py-8 gap-y-8">
                                     <Searchbar />
                                     <CommandPallet />
                                     {children}

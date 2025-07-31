@@ -32,7 +32,7 @@ interface RootProps {
 
 const Root = ({
     children,
-    bg = 'default',
+    bg = 'white',
     span = 1,
     gap = 'default',
     border = 'none'
