@@ -4,20 +4,24 @@ import purchaseOrderStatusActions from "@/actions/purchasing/purchaseOrderStatus
 import { getPOItems } from "./_functions/getPOItems";
 import { getPurchaseOrder } from "./_functions/getPurchaseOrder";
 import Header from "./_components/header/Header";
+import NotesPanel from "./_components/notes/NotesPanel";
+import Totals from "./_components/Totals";
+import Correspondant from "./_components/correspondant/Correspondant";
+import ActivityPanelCard from "./_components/activity/ActivityPanel";
 import { flattenItems } from "./_functions/flattenItems";
 import { getAllItems } from "./_functions/getAllItems";
 import { getOrderNotes } from "./_functions/getOrderNotes";
 import { getActivity } from "./_functions/getActivity";
+import ViewMode from "./_components/viewMode/ViewMode";
 import { appActions } from "@/actions/app";
 import { getUser } from "@/actions/users/getUser";
+import AccountingPanel from "./_components/accounting/AccountingPanel";
 import { getPoWithAccountingDetails } from "@/app/accounting/pos/_actions/getPoWithAccountingDetails";
 import { getAccountingFilesByPo } from "@/app/accounting/pos/_actions/getAccountingFilesByPo";
 import { getAccountingFileTags } from "@/app/accounting/pos/_actions/getAccountingFileTags";
 import { accountingActions } from "@/actions/accounting";
 import { getAllPoAccountingStatuses } from "@/app/accounting/pos/_actions/getAllAccountingStatuses";
 import { getAllAccountingNoteTypes } from "@/app/accounting/pos/_actions/getAllAccountingNoteTypes";
-import TabsMain from "./_components/TabsMain";
-import supplierNoteActions from "@/actions/purchasing/supplierNoteActions";
 
 type PurchaseOrderDetailsProps = {
     searchParams: {
@@ -43,7 +47,6 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
     const allPaymentMethods = await accountingActions.paymentMethods.getAll();
     const allAccountingStatuses = await getAllPoAccountingStatuses();
     const allAccountingNoteTypes = await getAllAccountingNoteTypes();
-    const supplierNotes = await supplierNoteActions.getAll({ supplierId: purchaseOrder.supplierId });
 
 
 
@@ -59,25 +62,40 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
                 company={company}
             />
 
-
-            <TabsMain
-                notes={notes}
+            <ViewMode
                 purchaseOrder={purchaseOrder}
-                orderItems={orderItems}
-                activity={activity}
-                poWithAccounting={poWithAccounting}
-                files={files}
-                fileTypes={fileTypes}
-                allMethods={allPaymentMethods}
-                allAccountingNoteTypes={allAccountingNoteTypes}
-                allAccountingStatuses={allAccountingStatuses}
-                supplierNotes={supplierNotes}
+                orderItems={flattenedOrderItems}
+                items={flattenItems(items)}
                 user={user}
-                items={flattenedOrderItems}
+
             />
 
 
-        </div >
+
+
+            <div className="grid grid-cols-2 gap-4">
+                <NotesPanel
+                    notes={notes}
+                    poId={purchaseOrder.id}
+                />
+                <Totals purchaseOrderItems={orderItems} />
+
+                <Correspondant purchaseOrder={purchaseOrder} />
+                <ActivityPanelCard activity={activity} />
+
+
+                <AccountingPanel accounting={poWithAccounting} files={files} fileTypes={fileTypes} allMethods={allPaymentMethods} allAccountingNoteTypes={allAccountingNoteTypes} allAccountingStatuses={allAccountingStatuses} />
+            </div>
+
+
+
+
+
+
+
+
+
+        </div>
 
     );
 };

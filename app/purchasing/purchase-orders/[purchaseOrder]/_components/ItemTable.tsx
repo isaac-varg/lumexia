@@ -150,7 +150,7 @@ const ItemTable = ({ orderItems, items, purchaseOrder, user }: ItemTableProps) =
 
 
     return (
-        <Card.Root >
+        <Card.Root>
             <Card.Title>Items</Card.Title>
             <AddItemDialog data={items} onItemSelection={handleItemSelection} />
             {isLocked ? <DataTable.Default data={orderItems} columns={ItemTableLockedColumns} onRowClick={(row) => handleRowClick(row)} tableStateName="poDetailsItems" /> : <DataTable.Editable
