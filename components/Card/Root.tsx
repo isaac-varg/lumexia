@@ -21,7 +21,7 @@ const classes = {
 	},
 	borderSize: {
 		base: "",
-		small: "border-[1px]",
+		small: "border",
         old: "border-2"
 	},
 	shadow: {

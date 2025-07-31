@@ -12,7 +12,7 @@ const Root = ({ children }: ScrollAreaProps) => (
       {children}
     </ScrollArea.Viewport>
     <ScrollArea.Scrollbar
-      className="flex w-full select-none touch-none bg-gray-700 transition-colors duration-[160ms] ease-out hover:bg-gray-500"
+      className="flex w-full select-none touch-none bg-gray-700 transition-colors duration-160 ease-out hover:bg-gray-500"
       orientation="horizontal"
     >
       <ScrollArea.Thumb className="flex-1 bg-gray-400 rounded-full" />

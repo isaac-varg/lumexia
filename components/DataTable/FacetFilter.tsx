@@ -65,7 +65,7 @@ export default function FacetedFilter<TData, TValue>({
                     {selectedValues?.size > 0 && (
                         <>
                             <Separator.Root
-                                className="bg-limed-spruce-900 mx-2 w-[1px] h-6"
+                                className="bg-limed-spruce-900 mx-2 w-px h-6"
                                 orientation="vertical"
                             />
                             <div className="hidden space-x-1 lg:flex">

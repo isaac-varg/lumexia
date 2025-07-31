@@ -32,7 +32,7 @@ const LabelDataPair = ({
 }) => {
 
     const containerClasses = `
-        flex justify-between border-b-[1px] items-center 
+        flex justify-between border-b items-center 
         border-dotted border-b-cutty-sark-500 
         rounded-tr-xl rounded-tl-xl py-1 px-2
         ${onClick ? 'hover:cursor-pointer hover:bg-lilac-200' : ''}

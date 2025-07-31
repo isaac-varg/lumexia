@@ -42,7 +42,7 @@ const Correspondant = async ({
         <SupplierNameTag supplier={purchaseOrder.supplier} />
 
       
-          <hr className="border-t-1 border-t-limed-spruce-400 my-4" />
+          <hr className="border-t border-t-limed-spruce-400 my-4" />
           <h1 className="text-xl font-poppins font-semibold">Supplier Notes</h1>
           <ul className="list-disc px-4">
             

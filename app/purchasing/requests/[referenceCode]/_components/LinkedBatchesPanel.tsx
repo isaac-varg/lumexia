@@ -30,7 +30,7 @@ const LinkedBatchesPanel = ({ bprs, linkedBprAmounts }: LinkedBprsPanelProps) =>
                     </button>
                 </div>
 
-                <div className="flex-grow grid grid-cols-2 gap-4">
+                <div className="grow grid grid-cols-2 gap-4">
                     {bprs.map((bpr) => (
                         <LinkedBprCard key={bpr.id} bpr={bpr} />
                     ))}

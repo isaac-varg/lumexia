@@ -3,7 +3,7 @@ import { QcExamination } from "@/actions/quality/qc/records/getAll"
 const ExaminationCard = ({ examination }: { examination: QcExamination }) => {
     return (
         <div
-            className="card rounded-xl hover:!opacity-80 hover:cursor-pointer"
+            className="card rounded-xl hover:opacity-80! hover:cursor-pointer"
             style={{ backgroundColor: examination.status.bgColor }}
         >
             <div

@@ -31,7 +31,7 @@ const LabelDataDropdown = ({
 
 
     return (
-        <div className="flex justify-between border-b-[1px] items-center border-dotted border-b-cutty-sark-500">
+        <div className="flex justify-between border-b items-center border-dotted border-b-cutty-sark-500">
             <div className="tooltip" data-tip={tooltip || label}>
                 <label className="font-inter font-medium text-lg text-neutral-600">
                     {label}
