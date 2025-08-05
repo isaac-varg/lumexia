@@ -37,7 +37,7 @@ export default async function RootLayout({
     const session = await auth();
 
     return (
-        <html lang="en" data-theme="cupcake">
+        <html lang="en" data-theme="nord">
             <body className={`${inter.variable} ${poppins.variable} ${roboto.variable}`}>
                 <Providers>
                     <AuthProvider session={session}>

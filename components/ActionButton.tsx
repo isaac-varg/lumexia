@@ -17,7 +17,7 @@ export const actionButtonClasses = {
         large: "py-4 px-6 text-4xl"
 	},
 	colors: {
-		default: "bg-bay-leaf-300 hover:bg-bay-leaf-400 text-white",
+		default: "btn btn-accent",
 		cuttySark: "bg-cutty-sark-300 hover:bg-cutty-sark-400 text-white",
 		cararra: "bg-cararra-300 hover:bg-cararra-400 text-white",
 		alert: "bg-rose-300 hover:bg-rose-400 text-white",
@@ -26,7 +26,7 @@ export const actionButtonClasses = {
 
 	},
 	shapes: {
-		default: "rounded",
+		default: "",
 	},
 };
 
@@ -42,7 +42,7 @@ const ActionButton = ({
 	return (
 		<button
 			type={buttonType}
-			className={`font-poppins shadow-bay-leaf-300 shadow-md ${actionButtonClasses.sizes[size]} ${actionButtonClasses.colors[color]} ${actionButtonClasses.shapes[shape]}`}
+			className={`font-poppins shadow-md ${actionButtonClasses.sizes[size]} ${actionButtonClasses.colors[color]} ${actionButtonClasses.shapes[shape]}`}
 			onClick={onClick}
 		>
 			{children || label}

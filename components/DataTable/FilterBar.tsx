@@ -73,18 +73,18 @@ export default function FilterBar<TData>({
                 <div className="flex items-center justify-between py-4 ">
 
 
-                    <div className="flex bg-lilac-100 w-full px-4 py-2 min-w-20 rounded-xl">
+                    <div className="flex bg-base-100 w-full px-4 py-2 min-w-20 rounded-xl">
                         <DebouncedInput
                             value={globalFilterValue}
                             onChange={(value) => handleFilterChange(value)}
                             onKeyDown={handleEnterPress}
                             placeholder="Search all"
-                            className='w-full bg-lilac-100 focus:outline-none '
+                            className='w-full focus:outline-none '
                         />
                         {globalFilterValue ? (
                             <button
                                 onClick={() => handleFilterChange("")}
-                                className="text-gray-500 hover:text-gray-800"
+                                className="text-base-content hover:text-accent-content"
                                 aria-label="Clear search"
                             >
                                 <RxCross2 className="h-6 w-6" />
@@ -93,27 +93,6 @@ export default function FilterBar<TData>({
                     </div>
 
 
-                    {/*
-                <div className="flex">
-                    <DebouncedInput
-                        value={globalFilterValue}
-                        onChange={(value) => handleFilterChange(value)}
-                        onKeyDown={handleEnterPress}
-                        placeholder="Search all"
-                        className="h-10 w-[150px] lg:w-[250px] bg-bay-leaf-100 rounded-lg pl-2 pr-8 lg:pl-3 focus:outline-none focus:ring-2 focus:ring-bay-leaf-600 focus:ring-opacity-50 transition-all duration-200 ease-in-out text-bay-leaf-950 font-poppins"
-                    />
-                    {globalFilterValue && (
-                        <button
-                            onClick={() => handleFilterChange("")}
-                            className="text-gray-500 hover:text-gray-800"
-                            aria-label="Clear search"
-                        >
-                            <RxCross2 className="h-4 w-4" />
-                        </button>
-                    )}
-                    </div>
-
-*/}
                 </div>
 
                 {filters && (

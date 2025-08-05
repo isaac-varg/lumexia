@@ -134,9 +134,9 @@ const Default = ({
             />}
             <div className="w-full">
                 <table className="min-w-full text-left text-lg font-light">
-                    <thead className="border-b font-medium dark:border-neutral-500">
+                    <thead className="border-b font-medium border-neutral text-base-content">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <tr key={headerGroup.id}>
+                            <tr className="px-2" key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
                                     <th key={header.id}>
                                         {header.isPlaceholder
@@ -156,10 +156,10 @@ const Default = ({
                                 <ContextMenu.Trigger asChild>
                                     <tr
                                         onClick={() => onRowClick(row, 'rowClick')}
-                                        className="border-b dark:border-neutral-500 hover:bg-bay-leaf-100"
+                                        className="border-b border-secondary hover:bg-accent hover:cursor-pointer"
                                     >
                                         {row.getVisibleCells().map((cell) => (
-                                            <td className="py-4" key={cell.id}>
+                                            <td className="py-4 px-2 text-base-content" key={cell.id}>
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
                                                     cell.getContext()
@@ -181,7 +181,7 @@ const Default = ({
                 </table>
                 {!disablePagination && <div className="flex flex-row justify-between mt-6">
                     <div>
-                        <span className="flex text-neutral-700 font-inter font-semibold items-center gap-1">
+                        <span className="flex text-base-content font-inter font-semibold items-center gap-1">
                             Jump To Page:
                             <input
                                 type="number"
@@ -192,40 +192,40 @@ const Default = ({
                                     const page = e.target.value ? Number(e.target.value) - 1 : 0;
                                     table.setPageIndex(page);
                                 }}
-                                className="border border-cararra-100 bg-cararra-100 p-2 rounded w-16"
+                                className="border border-secondary bg-base-100 p-2 rounded w-16"
                             />
                         </span>
                     </div>
 
                     <div className="flex gap-x-4 text-3xl">
                         <button
-                            className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+                            className="py-1 px-2 rounded-lg text-2xl text-base-content bg-secondary disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
                             onClick={() => table.setPageIndex(0)}
                             disabled={!table.getCanPreviousPage()}
                         >
                             <FiChevronsLeft />
                         </button>
                         <button
-                            className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+                            className="py-1 px-2 rounded-lg text-2xl text-base-content bg-secondary disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
                             onClick={() => table.previousPage()}
                             disabled={!table.getCanPreviousPage()}
                         >
                             <FiChevronLeft />
                         </button>
-                        <span className="flex items-center gap-1 font-inter font-semibold text-cararra-700 text-base">
+                        <span className="flex items-center gap-1 font-inter font-semibold text-base-content text-base">
                             <div>Page</div>
                             {table.getState().pagination.pageIndex + 1} of{' '}
                             {table.getPageCount().toLocaleString()}
                         </span>
                         <button
-                            className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+                            className="py-1 px-2 rounded-lg text-2xl text-base-content bg-secondary disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
                         >
                             <FiChevronRight />
                         </button>
                         <button
-                            className="py-1 px-2 rounded-lg text-2xl text-cararra-700 bg-cararra-200 disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
+                            className="py-1 px-2 rounded-lg text-2xl text-base-content bg-secondary disabled:opacity-40 font-inter font-semibold hover:bg-cararra-300"
                             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                             disabled={!table.getCanNextPage()}
                         >
@@ -237,10 +237,10 @@ const Default = ({
                         onChange={e => {
                             table.setPageSize(Number(e.target.value));
                         }}
-                        className="bg-cararra-200 hover:bg-cararra-300 rounded-lg px-2 py-1 font-inter text-base text-cararra-700 font-semibold w-32"
+                        className="bg-secondary hover:bg-cararra-300 rounded-lg px-2 py-1 font-inter text-base text-base-content font-semibold w-32"
                     >
                         {[10, 20, 30, 40, 50].map(pageSize => (
-                            <option key={pageSize} value={pageSize} className="font-inter text-base text-cararra-700 font-semibold">
+                            <option key={pageSize} value={pageSize} className="font-inter text-base text-base-content font-semibold">
                                 Show {pageSize}
                             </option>
                         ))}

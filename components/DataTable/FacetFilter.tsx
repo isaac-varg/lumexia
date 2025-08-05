@@ -36,7 +36,7 @@ export default function FacetedFilter<TData, TValue>({
 
         if (isSelected) {
             //for zunstand state
-            tableFacets.removeValueFromFilter(tableStateName, filterName, filterValue )
+            tableFacets.removeValueFromFilter(tableStateName, filterName, filterValue)
 
             // for tanstack
             selectedValues.delete(option.value as string);
@@ -59,13 +59,13 @@ export default function FacetedFilter<TData, TValue>({
     return (
         <Popover.Root>
             <Popover.Trigger asChild>
-                <button className="flex items-center text-normal font-poppins font-medium px-2 py-2 border-2 border-dotted border-limed-spruce-200 rounded-lg">
+                <button className="flex items-center text-normal font-poppins font-medium px-2 py-2 border-2 border-dotted border-accent rounded-lg">
                     <RxPlus className="mr-2 h-4 w-4" />
                     {title}
                     {selectedValues?.size > 0 && (
                         <>
                             <Separator.Root
-                                className="bg-limed-spruce-900 mx-2 w-px h-6"
+                                className="bg-accent mx-2 w-px h-6"
                                 orientation="vertical"
                             />
                             <div className="hidden space-x-1 lg:flex">
@@ -79,7 +79,7 @@ export default function FacetedFilter<TData, TValue>({
                                         .map((option) => (
                                             <span
                                                 key={option.value}
-                                                className=" bg-limed-spruce-100 px-2 font-normal rounded-lg"
+                                                className=" bg-accent px-2 font-normal rounded-lg"
                                             >
                                                 {option.label.length > 20 ? `${option.label.slice(0, 20)}...` : option.label}
                                             </span>
@@ -91,27 +91,30 @@ export default function FacetedFilter<TData, TValue>({
                 </button>
             </Popover.Trigger>
             <Popover.Portal>
-                <Popover.Content className="rounded px-2 py-2 w-[360px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade">
-                    <div className="flex flex-col gap-y-1 h-60 overflow-auto">
+                <Popover.Content
+                    className="rounded-xl bg-base-300"
+                // className="rounded px-2 py-2 w-[360px] bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade"
+                >
+                    <div className="flex flex-col gap-y-1 max-h-60 overflow-auto">
                         {sortedOptions.map((option) => {
                             const isSelected = selectedValues.has(option.value);
                             return (
                                 <button
-                                    className="font-inter text-lg text-neutral-800 px-2 py-1 bg-bay-leaf-100 rounded-lg"
+                                    className="font-inter text-lg text-accent-content px-2 py-1 bg-bay-leaf-100 rounded-lg"
                                     key={Math.random()}
                                     onClick={() => handleClick(isSelected, option)}
                                 >
                                     <div className="flex flex-row items-center ">
                                         <div
-                                            className={`mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-neutral-800" ${isSelected
-                                                ? "bg-bay-leaf-400 text-bay-leaf-950"
-                                                : "bg-bay-leaf-400 opacity-50 [&_svg]:invisible"
+                                            className={`mr-2 flex h-4 w-4 items-center justify-center rounded-lg border border-accent" ${isSelected
+                                                ? "bg-accent text-accent-content"
+                                                : "bg-accent opacity-50 [&_svg]:invisible"
                                                 }`}
                                         >
                                             <RxCheck />
                                         </div>
                                         {option.icon && (
-                                            <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                                            <option.icon className="mr-2 h-4 w-4 text-accent-content" />
                                         )}
                                         <span>  {option.label.length > 25 ? `${option.label.slice(0, 25)}...` : option.label}
                                         </span>
