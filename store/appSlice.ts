@@ -3,16 +3,19 @@ import { create } from "zustand"
 
 type State = {
     user: User | null
+    isSidebarCollapsed: boolean
 }
 
 type Actions = {
     actions: {
         getUser: () => void;
+        toggleSidebarCollapse: () => void;
     }
 }
 
 export const useAppSelection = create<State & Actions>((set) => ({
     user: null,
+    isSidebarCollapsed: false,
 
     actions: {
         getUser: async () => {
@@ -23,6 +26,10 @@ export const useAppSelection = create<State & Actions>((set) => ({
                 console.error(error);
             }
 
+        },
+
+        toggleSidebarCollapse: () => {
+            set((state) => ({ isSidebarCollapsed: !state.isSidebarCollapsed }))
         }
 
     },

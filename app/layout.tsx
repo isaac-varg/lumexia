@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
 import Searchbar from "@/components/App/Searchbar";
 import Providers from "@/context/Providers";
@@ -10,8 +10,13 @@ import CommandPallet from "@/components/CommandPallet/CommandPallet";
 import QueryProvider from "@/components/App/QueryProvider";
 import Sidebar from "./_components/sidebar/Sidebar";
 
+// fonts
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-
+const roboto = Roboto({
+    variable: "--font-roboto",
+    weight: ["100", "300", "400", "500", "700", "900"],
+    subsets: ["latin"],
+});
 const poppins = Poppins({
     subsets: ["latin"],
     display: "swap",
@@ -32,15 +37,15 @@ export default async function RootLayout({
     const session = await auth();
 
     return (
-        <html lang="en">
-            <body className={`${inter.variable} ${poppins.variable}`}>
+        <html lang="en" data-theme="cupcake">
+            <body className={`${inter.variable} ${poppins.variable} ${roboto.variable}`}>
                 <Providers>
                     <AuthProvider session={session}>
                         <QueryProvider>
                             <div className="flex flex-row h-full">
                                 <Sidebar />
 
-                                <div className="flex flex-col w-full bg-gray-100 px-28 py-8 gap-y-8">
+                                <div className="flex flex-col w-full bg-base-100 px-28 py-8 gap-y-8">
                                     <Searchbar />
                                     <CommandPallet />
                                     {children}

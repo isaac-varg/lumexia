@@ -1,6 +1,11 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake;
+    themes: all;
+}
+
+@theme inline {
+  --font-poppins: var(--font-poppins);
+  --font-roboto: var(--font-roboto);
 }
 
 @layer utilities {
