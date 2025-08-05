@@ -1,9 +1,39 @@
-import React from 'react'
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const SidebarGroupTitle = ({ children }: { children: React.ReactNode }) => {
+const SidebarGroupTitle = ({
+    children,
+    isSidebarCollapsed,
+}: {
+    children: React.ReactNode;
+    isSidebarCollapsed: boolean;
+}) => {
     return (
-        <div className='flex flex-row capitalize font-semibold tracking-wider font-poppins text-lg text-base-content' >{children}</div>
-    )
-}
+        <AnimatePresence>
+            {!isSidebarCollapsed && (
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                    className="flex flex-row capitalize font-semibold tracking-wider font-poppins text-lg text-base-content overflow-hidden whitespace-nowrap"
+                >
+                    {children}
+                </motion.div>
+            )}
 
-export default SidebarGroupTitle
+            {isSidebarCollapsed && (
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                >
+                    <div className="h-1 mb-3 bg-base-300 border-0" />
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
+
+export default SidebarGroupTitle;

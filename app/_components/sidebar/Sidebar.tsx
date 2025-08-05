@@ -7,6 +7,7 @@ import SidebarGroupTitle from "./SidebarGroupTitle";
 import SidebarButton from "./SidebarButton";
 import SidebarHeader from "./SidebarHeader";
 import { useAppSelection } from "@/store/appSlice";
+import { motion } from "framer-motion";
 
 const Sidebar = () => {
 
@@ -14,20 +15,39 @@ const Sidebar = () => {
     const { data: purchasingRequests } = useAllPurchasingRequests();
     const { isSidebarCollapsed } = useAppSelection()
 
+    const sidebarVariants = {
+        expanded: {
+            width: "18rem", // w-72
+            transition: {
+                duration: 0.3,
+                ease: "easeInOut",
+            },
+        },
+        collapsed: {
+            width: "5rem", // w-20
+            transition: {
+                duration: 0.3,
+                ease: "easeInOut",
+            },
+        },
+    };
+
     return (
-        <div className="px-4 pt-2 pb-8 shadow-xl bg-base-100 shadow-base-300 z-40 min-h-dvh">
+        <motion.div
+            variants={sidebarVariants}
+            animate={isSidebarCollapsed ? "collapsed" : "expanded"}
+            className="pt-2 pb-8 shadow-xl bg-base-100 shadow-base-300 z-40 min-h-dvh"
+        >
 
-            <SidebarHeader />
+            <SidebarHeader isSidebarCollapsed={isSidebarCollapsed} />
 
-
-
-            <div className="flex flex-col gap-y-8">
+            <div className="flex flex-col gap-y-8 px-4">
 
                 {sidebarElements.map((group) => {
 
                     return (
                         <div key={group.label} className="flex flex-col gap-y-3">
-                            <SidebarGroupTitle>{group.label}</SidebarGroupTitle>
+                            <SidebarGroupTitle isSidebarCollapsed={isSidebarCollapsed}>{group.label}</SidebarGroupTitle>
                             <div className="flex flex-col gap-y-2">
                                 {group.contents.map((sidebarItem) => {
 
@@ -44,7 +64,7 @@ const Sidebar = () => {
                                             break;
                                     }
                                     return (
-                                        <SidebarButton key={sidebarItem.label} {...sidebarItem} badge={badgeData} />
+                                        <SidebarButton key={sidebarItem.label} {...sidebarItem} badge={badgeData} isSidebarCollapsed={isSidebarCollapsed} />
                                     )
                                 })}
                             </div>
@@ -56,11 +76,9 @@ const Sidebar = () => {
                 })}
             </div>
 
-        </div>
+        </motion.div>
 
     );
 };
 
 export default Sidebar;
-
-
