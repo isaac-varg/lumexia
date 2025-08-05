@@ -1,14 +1,13 @@
 import prisma from "@/lib/prisma";
 import { getUserId } from "@/actions/users/getUserId";
 import { staticRecords } from "@/configs/staticRecords";
-import ConfigurationStateSetter from "./ConfigurationStateSetter";
-import SearchbarContent from "./SearchbarContent";
 import UserIcon from './UserIcon'
-import { TbSettings } from 'react-icons/tb'
-import AppQuery from "./AppQuery";
-import AppStateSetter from "./AppStateSetter";
+import ConfigurationStateSetter from "../state/ConfigurationStateSetter";
+import SearchbarContent from "./SearchBarContent";
+import AppQuery from "../state/AppQuery";
+import AppStateSetter from "../state/AppStateSetter";
 
-const Searchbar = async () => {
+const SearchBar = async () => {
 
 
     const userId = await getUserId()
@@ -41,4 +40,4 @@ const Searchbar = async () => {
     );
 };
 
-export default Searchbar;
+export default SearchBar;
