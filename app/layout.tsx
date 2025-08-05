@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/App/Sidebar";
 import Searchbar from "@/components/App/Searchbar";
 import Providers from "@/context/Providers";
 import { auth } from "@/auth";
@@ -9,6 +8,7 @@ import { AuthProvider } from "@/components/App/AuthProvider";
 import Toast from "@/components/Toast";
 import CommandPallet from "@/components/CommandPallet/CommandPallet";
 import QueryProvider from "@/components/App/QueryProvider";
+import Sidebar from "./_components/sidebar/Sidebar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
