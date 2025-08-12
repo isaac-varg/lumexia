@@ -26,7 +26,7 @@ const PricingErrorAlert = () => {
                 title="Pricing Error"
                 action={() => router.back()}
                 actionLabel="Acknowledge"
-                actionColor="alert"
+                actionColor="warning"
             >
                 <p className="font-poppins text-lg">
                     There was error while gathering the summations:

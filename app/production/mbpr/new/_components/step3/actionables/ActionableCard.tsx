@@ -25,7 +25,7 @@ const ActionableCard = ({ actionable }: { actionable: StepActionable }) => {
 
       <span className='flex justify-between'>
         <span className='font-poppins font-semibold text-lg'>{actionable.actionableType.name}</span>
-        <span><ActionButton color="alert" onClick={() => handleDelete()} ><TbX /></ActionButton></span>
+        <span><ActionButton color="warning" onClick={() => handleDelete()} ><TbX /></ActionButton></span>
       </span>
 
 

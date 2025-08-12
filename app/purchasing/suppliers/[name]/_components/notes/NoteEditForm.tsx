@@ -65,7 +65,7 @@ const NoteEditForm = ({
 		<Dialog.Root identifier={`updateNote${note.id}`}>
 			<Layout.Row>
 				<Dialog.Title>Edit Note</Dialog.Title>
-				<ActionButton color="alert" onClick={() => handleDelete()}>
+				<ActionButton color="warning" onClick={() => handleDelete()}>
 					<TbTrashX className="text-xl" />
 				</ActionButton>
 			</Layout.Row>

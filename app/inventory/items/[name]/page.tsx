@@ -15,60 +15,57 @@ import TopActions from "./_components/TopActions";
 import StateSetter from "./_components/StateSetter";
 
 type ItemDashboardProps = {
-    params: {
-        name: string;
-    };
-    searchParams: {
-        id: string;
-    };
+  searchParams: {
+    id: string;
+  };
 };
 
 export type ItemEditSelectables = {
-    itemTypes: ItemType[]
-    procurementTypes: ProcurementType[]
-    inventoryTypes: InventoryType[]
+  itemTypes: ItemType[]
+  procurementTypes: ProcurementType[]
+  inventoryTypes: InventoryType[]
 }
 
-const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
-    const item = await itemActions.getOne(searchParams.id, undefined, [
-        "itemType",
-        "procurementType",
-        "inventoryType",
-    ]);
+const ItemDashboard = async ({ searchParams }: ItemDashboardProps) => {
+  const item = await itemActions.getOne(searchParams.id, undefined, [
+    "itemType",
+    "procurementType",
+    "inventoryType",
+  ]);
 
-    const itemTypes = await itemTypeActions.getAll()
-    const procurementTypes = await procurementTypeActions.getAll();
-    const inventoryTypes = await inventoryTypeActions.getAll();
+  const itemTypes = await itemTypeActions.getAll()
+  const procurementTypes = await procurementTypeActions.getAll();
+  const inventoryTypes = await inventoryTypeActions.getAll();
 
-    const itemEditSelectables: ItemEditSelectables = {
-        itemTypes,
-        procurementTypes,
-        inventoryTypes,
-    }
-
-
-    const aliases = await getAliases(item.id)
-
-    return (
-        <div className="flex flex-col gap-y-6">
-            <StateSetter itemId={searchParams.id} />
-            <div className="flex justify-between items-center">
-                <PageTitle title={item.name} />
-
-                <TopActions itemId={item.id} />
-            </div>
-
-            <Layout.Grid>
-                <BasicsPanel item={item} itemEditSelectables={itemEditSelectables} />
-
-                <AliasesPanel aliases={aliases} item={item} />
-            </Layout.Grid>
-
-            <TabsPanel item={item} />
+  const itemEditSelectables: ItemEditSelectables = {
+    itemTypes,
+    procurementTypes,
+    inventoryTypes,
+  }
 
 
-        </div>
-    );
+  const aliases = await getAliases(item.id)
+
+  return (
+    <div className="flex flex-col gap-y-6">
+      <StateSetter itemId={searchParams.id} />
+      <div className="flex justify-between items-center">
+        <PageTitle title={item.name} />
+
+        <TopActions itemId={item.id} />
+      </div>
+
+      <Layout.Grid gap={6}>
+        <BasicsPanel item={item} itemEditSelectables={itemEditSelectables} />
+
+        <AliasesPanel aliases={aliases} item={item} />
+      </Layout.Grid>
+
+      <TabsPanel item={item} />
+
+
+    </div>
+  );
 };
 
 export default ItemDashboard;

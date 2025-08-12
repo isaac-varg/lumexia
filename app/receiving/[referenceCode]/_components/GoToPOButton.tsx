@@ -16,7 +16,7 @@ const GoToPOButton = ({
 		router.push(`/purchasing/purchase-orders/${purchaseOrder.referenceCode}?id=${purchaseOrder.id}`);
 	}
   return (
-    	<ActionButton color="cararra" onClick={() => handleButtonClick()}>
+    	<ActionButton color="secondarySoft" onClick={() => handleButtonClick()}>
 				<Layout.Row>
 					<TbCreditCard className="text-2xl" />
 					<p>Purchase Order</p>

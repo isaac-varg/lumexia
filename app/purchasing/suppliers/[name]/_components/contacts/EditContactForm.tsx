@@ -69,7 +69,7 @@ const EditContactForm = ({ contact }: { contact: SupplierContact }) => {
   return (
     <Dialog.Root identifier={`editContact${contact.id}`}>
       <Layout.Row justify="end">
-        <ActionButton color="alert" onClick={() => handleDelete()}>
+        <ActionButton color="warning" onClick={() => handleDelete()}>
           <TbTrashX className="text-xl" />
         </ActionButton>
       </Layout.Row>

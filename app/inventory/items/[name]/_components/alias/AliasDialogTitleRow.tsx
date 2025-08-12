@@ -12,35 +12,35 @@ import { useItemDashboardActions } from "@/store/itemDashboardSlice";
 import { Supplier } from "@/actions/purchasing/suppliers/getAll";
 
 const AliasDialogTitleRow = ({
-    item,
-    aliasTypes,
-    suppliers,
+  item,
+  aliasTypes,
+  suppliers,
 }: {
-    item: Item;
-    aliasTypes: AliasType[];
-    suppliers: Supplier[]
+  item: Item;
+  aliasTypes: AliasType[];
+  suppliers: Supplier[]
 }) => {
-    const dialog = useDialog();
+  const dialog = useDialog();
 
-    const { setAliasDialogMode, setSelectedAlias } = useItemDashboardActions()
-    const handleClick = () => {
-        setSelectedAlias(null)
-        setAliasDialogMode('create')
-        dialog.showDialog("aliasDialog")
-    }
+  const { setAliasDialogMode, setSelectedAlias } = useItemDashboardActions()
+  const handleClick = () => {
+    setSelectedAlias(null)
+    setAliasDialogMode('create')
+    dialog.showDialog("aliasDialog")
+  }
 
 
-    return (
-        <>
-            <AliasDialog item={item} aliasTypes={aliasTypes} suppliers={suppliers} />
-            <Layout.Row>
-                <Card.Title>Aliases</Card.Title>
-                <ActionButton onClick={() => handleClick()}>
-                    <TbPlus />
-                </ActionButton>
-            </Layout.Row>
-        </>
-    );
+  return (
+    <>
+      <AliasDialog item={item} aliasTypes={aliasTypes} suppliers={suppliers} />
+      <Layout.Row>
+        <Card.Title>Aliases</Card.Title>
+        <ActionButton color="secondarySoft" onClick={() => handleClick()}>
+          <TbPlus />
+        </ActionButton>
+      </Layout.Row>
+    </>
+  );
 };
 
 export default AliasDialogTitleRow;

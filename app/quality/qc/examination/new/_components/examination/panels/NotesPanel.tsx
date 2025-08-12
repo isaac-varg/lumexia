@@ -7,22 +7,22 @@ import CreateNoteTypeForm from "./NotesAddNoteTypeMode";
 
 const NotesPanel = () => {
 
-    const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
+  const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
-    return (
-        <Panels.Root span={2}>
-            <div className="flex justify-between items-center">
+  return (
+    <Panels.Root span={2}>
+      <div className="flex justify-between items-center">
 
-                <Text.SectionTitle size="small">Notes</Text.SectionTitle>
-                {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn">Add Note</button>}
-            </div>
+        <Text.SectionTitle size="small">Notes</Text.SectionTitle>
+        {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn btn-neutral btn-soft">Add Note</button>}
+      </div>
 
-            {mode === 'view' && <NotesViewMode />}
-            {mode === 'addNote' && <NotesAddMode setMode={setMode} />}
-            {mode === 'addType' && <CreateNoteTypeForm setMode={setMode} />}
+      {mode === 'view' && <NotesViewMode />}
+      {mode === 'addNote' && <NotesAddMode setMode={setMode} />}
+      {mode === 'addType' && <CreateNoteTypeForm setMode={setMode} />}
 
-        </Panels.Root>
-    )
+    </Panels.Root>
+  )
 }
 
 export default NotesPanel

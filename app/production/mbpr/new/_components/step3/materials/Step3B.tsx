@@ -77,7 +77,7 @@ const Step3B = ({ selectedItem }: { selectedItem?: Item | null }) => {
 
 
         <div className='flex justify-center gap-x-2' >
-          <ActionButton color='cararra' onClick={() => previousStep()}>Back</ActionButton>
+          <ActionButton color='secondarySoft' onClick={() => previousStep()}>Back</ActionButton>
           <ActionButton buttonType='submit' >Save</ActionButton>
         </div>
 

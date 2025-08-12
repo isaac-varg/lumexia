@@ -2,10 +2,10 @@ import React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 
 const classes = {
-    bg: {
-        default: '',
-        light: 'bg-slate-50',
-    }
+  bg: {
+    default: '',
+    light: 'bg-base-200',
+  }
 };
 
 const TabContent = ({

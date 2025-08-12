@@ -19,7 +19,7 @@ const PrintButton = ({ purchaseOrder, orderItems, company}: { purchaseOrder: Pur
   };
   return (
     <>
-      <ActionButton color="cararra" onClick={handleClick} ><Layout.Row><TbCloudDownload className="text-2xl" /> PO</Layout.Row></ActionButton>
+      <ActionButton color="secondarySoft" onClick={handleClick} ><Layout.Row><TbCloudDownload className="text-2xl" /> PO</Layout.Row></ActionButton>
     </>
   );
 };

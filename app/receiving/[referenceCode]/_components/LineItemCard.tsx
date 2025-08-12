@@ -11,47 +11,47 @@ import useDialog from "@/hooks/useDialog";
 import { ContainerType } from "@/types/containerType";
 import PartialDialog from "./PartialDialog";
 type LineItemCardProps = {
-	item: ExPurchaseOrderItem;
-	containerTypes: ContainerType[];
+  item: ExPurchaseOrderItem;
+  containerTypes: ContainerType[];
 };
 const LineItemCard = ({ item, containerTypes }: LineItemCardProps) => {
-	const { showDialog } = useDialog();
-	const isReceivable = item.purchaseOrderStatus.sequence !== 4;
+  const { showDialog } = useDialog();
+  const isReceivable = item.purchaseOrderStatus.sequence !== 4;
 
-	const handleReceiveButton = () => {
-		showDialog(`receiveDialog${item.id}`);
-	};
+  const handleReceiveButton = () => {
+    showDialog(`receiveDialog${item.id}`);
+  };
 
-	const handlePartialButton = () => {
-		showDialog(`partialDialog${item.id}`);
-	};
-	
-	return (
-		<>
-			<ReceiveDialog item={item} containerTypes={containerTypes} />
-			<PartialDialog item={item} containerTypes={containerTypes} />
-			<Card.Root bg="neutral" shadow="none">
-				<Card.Title>{item.item.name}</Card.Title>
+  const handlePartialButton = () => {
+    showDialog(`partialDialog${item.id}`);
+  };
 
-				<LabelDataPair
-					label="Quantity"
-					data={`${item.quantity} ${item.uom.abbreviation}`}
-				/>
+  return (
+    <>
+      <ReceiveDialog item={item} containerTypes={containerTypes} />
+      <PartialDialog item={item} containerTypes={containerTypes} />
+      <Card.Root shadow="none">
+        <Card.Title>{item.item.name}</Card.Title>
 
-				{isReceivable && (
-					<Layout.Row justify="start">
-						<ActionButton
-							label="Receive"
-							onClick={() => handleReceiveButton()}
-						/>
-						<ActionButton onClick={() => handlePartialButton()} color="cararra">
-							Partial
-						</ActionButton>
-					</Layout.Row>
-				)}
-			</Card.Root>
-		</>
-	);
+        <LabelDataPair
+          label="Quantity"
+          data={`${item.quantity} ${item.uom.abbreviation}`}
+        />
+
+        {isReceivable && (
+          <Layout.Row justify="start">
+            <ActionButton
+              label="Receive"
+              onClick={() => handleReceiveButton()}
+            />
+            <ActionButton onClick={() => handlePartialButton()} color="secondarySoft">
+              Partial
+            </ActionButton>
+          </Layout.Row>
+        )}
+      </Card.Root>
+    </>
+  );
 };
 
 export default LineItemCard;

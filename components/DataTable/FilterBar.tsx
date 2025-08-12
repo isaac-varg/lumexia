@@ -121,6 +121,7 @@ export default function FilterBar<TData>({
             </div>
             {dialogIdentifier && (
                 <ActionButton
+                    color="neutral"
                     label={actionButtonTitle ?? "Add"}
                     onClick={() => showDialog(dialogIdentifier)}
                 />

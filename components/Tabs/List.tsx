@@ -9,10 +9,10 @@ type TabsListProps = {
   panelStateName: PanelStates
 };
 
-const TabList = ({ tabTriggers , panelStateName }: TabsListProps) => {
+const TabList = ({ tabTriggers, panelStateName }: TabsListProps) => {
   return (
     <Tabs.List
-      className="shrink-0 flex border-b border-limed-spruce-500"
+      className="shrink-0 flex border-b border-accent/20"
 
     >
       {tabTriggers.map((tab) => (

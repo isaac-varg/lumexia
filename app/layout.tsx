@@ -13,50 +13,50 @@ import Sidebar from "./_components/sidebar/Sidebar";
 // fonts
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const roboto = Roboto({
-    variable: "--font-roboto",
-    weight: ["100", "300", "400", "500", "700", "900"],
-    subsets: ["latin"],
+  variable: "--font-roboto",
+  weight: ["100", "300", "400", "500", "700", "900"],
+  subsets: ["latin"],
 });
 const poppins = Poppins({
-    subsets: ["latin"],
-    display: "swap",
-    variable: "--font-poppins",
-    weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
-    title: "Lumexia",
-    description: "",
+  title: "Lumexia",
+  description: "",
 };
 
 export default async function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    const session = await auth();
+  const session = await auth();
 
-    return (
-        <html lang="en" data-theme="nord">
-            <body className={`${inter.variable} ${poppins.variable} ${roboto.variable}`}>
-                <Providers>
-                    <AuthProvider session={session}>
-                        <QueryProvider>
-                            <div className="flex flex-row h-full">
-                                <Sidebar />
+  return (
+    <html lang="en" data-theme="nord">
+      <body className={`${inter.variable} ${poppins.variable} ${roboto.variable}`}>
+        <Providers>
+          <AuthProvider session={session}>
+            <QueryProvider>
+              <div className="flex flex-row h-full">
+                <Sidebar />
 
-                                <div className="flex flex-col w-full bg-base-100 px-28 py-8 gap-y-8">
-                                    <Searchbar />
-                                    <CommandPallet />
-                                    {children}
-                                </div>
-                                <Toast.Toast />
-                            </div>
-                        </QueryProvider>
-                    </AuthProvider>
-                </Providers>
+                <div className="flex flex-col w-full bg-base-200 px-28 py-8 gap-y-8">
+                  <Searchbar />
+                  <CommandPallet />
+                  {children}
+                </div>
+                <Toast.Toast />
+              </div>
+            </QueryProvider>
+          </AuthProvider>
+        </Providers>
 
-            </body>
-        </html>
-    );
+      </body>
+    </html>
+  );
 }

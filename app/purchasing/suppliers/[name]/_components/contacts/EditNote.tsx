@@ -59,7 +59,7 @@ const EditNote = ({
     <Dialog.Root identifier={`addContactNote${note.id}`}>
       <Layout.Row justify="between">
 	<Dialog.Title>Edit Note</Dialog.Title>
-        <ActionButton color="alert" onClick={() => handleDelete()}>
+        <ActionButton color="warning" onClick={() => handleDelete()}>
           <TbTrashX className="text-xl" />
         </ActionButton>
       </Layout.Row>

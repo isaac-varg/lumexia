@@ -7,41 +7,41 @@ import { DateTime } from "luxon"
 
 const StatusPanel = () => {
 
-    const { item } = useDiscrepancySelection()
+  const { item } = useDiscrepancySelection()
 
-    return (
-        <Panels.Root>
+  return (
+    <Panels.Root>
 
-            <SectionTitle size="small">Status</SectionTitle>
-
-
-
-            <div>
-                <p className="text-sm uppercase font-poppins font-semibold">working on item</p>
-                <h1 className="font-poppins text-2xl font-semibold text-purple-900 animate-pulse">{item ? item?.item.name : 'Scan To Start'}</h1>
-            </div>
-
-            <div>
-                <p className="text-sm uppercase font-poppins font-semibold">last inventory audit</p>
-
-                <h1 className="font-poppins text-2xl font-semibold text-neutral-800">
-                    {(item && item.lastInventoryAudit) ? `${DateTime.fromJSDate(item.lastInventoryAudit.createdAt).toFormat(dateFormatString)} by ${item.lastInventoryAudit.user.name} ` : 'No Recorded Audit'}
-                </h1>
-            </div>
-
-            <div>
-                <p className="text-sm uppercase font-poppins font-semibold">last discrepancy audit</p>
-
-                <h1 className="font-poppins text-2xl font-semibold text-neutral-800">
-                    {(item && item.lastDiscrepancyAudit) ? `${DateTime.fromJSDate(item.lastDiscrepancyAudit.createdAt).toFormat(dateFormatString)} by ${item.lastDiscrepancyAudit.transaction.user.name} ` : 'No Recorded Audit'}
-                </h1>
-            </div>
+      <SectionTitle size="small">Status</SectionTitle>
 
 
 
+      <div>
+        <p className="text-sm uppercase font-poppins font-semibold">working on item</p>
+        <h1 className="font-poppins text-2xl font-semibold text-purple-900 animate-pulse">{item ? item?.item.name : 'Scan To Start'}</h1>
+      </div>
 
-        </Panels.Root>
-    )
+      <div>
+        <p className="text-sm uppercase font-poppins font-semibold">last inventory audit</p>
+
+        <h1 className="font-poppins text-2xl font-semibold text-base-content">
+          {(item && item.lastInventoryAudit) ? `${DateTime.fromJSDate(item.lastInventoryAudit.createdAt).toFormat(dateFormatString)} by ${item.lastInventoryAudit.user.name} ` : 'No Recorded Audit'}
+        </h1>
+      </div>
+
+      <div>
+        <p className="text-sm uppercase font-poppins font-semibold">last discrepancy audit</p>
+
+        <h1 className="font-poppins text-2xl font-semibold text-base-content">
+          {(item && item.lastDiscrepancyAudit) ? `${DateTime.fromJSDate(item.lastDiscrepancyAudit.createdAt).toFormat(dateFormatString)} by ${item.lastDiscrepancyAudit.transaction.user.name} ` : 'No Recorded Audit'}
+        </h1>
+      </div>
+
+
+
+
+    </Panels.Root>
+  )
 }
 
 export default StatusPanel

@@ -6,49 +6,49 @@ import { useItemDashboardActions } from "@/store/itemDashboardSlice"
 
 const ItemParametersAddMode = () => {
 
-    const [mode, setMode] = useState<"ai" | "single" | "template" | null>(null)
-    const { setItemParametersPanelMode } = useItemDashboardActions()
+  const [mode, setMode] = useState<"ai" | "single" | "template" | null>(null)
+  const { setItemParametersPanelMode } = useItemDashboardActions()
 
-    return (
-        <>
-            <div className="flex justify-between items-center">
+  return (
+    <>
+      <div className="flex justify-between items-center">
 
-                <Text.SectionTitle>Add QC Parameters</Text.SectionTitle>
+        <Text.SectionTitle>Add QC Parameters</Text.SectionTitle>
 
-            </div>
-
-
-            {!mode && (<div className="grid grid-cols-3 gap-6">
-                <button className="btn" onClick={() => setMode('ai')}>
-                    AI & PDF
-                </button>
-
-                <button className="btn" onClick={() => setMode('single')}>
-                    Single
-                </button>
-
-                <button className="btn" onClick={() => setMode('template')}>
-                    Template
-                </button>
+      </div>
 
 
-            </div>
+      {!mode && (<div className="grid grid-cols-3 gap-6">
+        <button className="btn btn-neutral btn-soft" onClick={() => setMode('ai')}>
+          AI & PDF
+        </button>
 
-            )}
+        <button className="btn btn-neutral btn-soft" onClick={() => setMode('single')}>
+          Single
+        </button>
+
+        <button className="btn btn-neutral btn-soft" onClick={() => setMode('template')}>
+          Template
+        </button>
 
 
-            {!mode && <div className="flex justify-end"><button onClick={() => setItemParametersPanelMode('view')} className="btn btn-warning">Cancel</button></div>}
+      </div>
+
+      )}
 
 
-
-            {mode === 'ai' && <AiEntry />}
-            {mode === 'template' && <TemplateEntry />}
+      {!mode && <div className="flex justify-end"><button onClick={() => setItemParametersPanelMode('view')} className="btn btn-warning">Cancel</button></div>}
 
 
 
+      {mode === 'ai' && <AiEntry />}
+      {mode === 'template' && <TemplateEntry />}
 
-        </>
-    )
+
+
+
+    </>
+  )
 }
 
 

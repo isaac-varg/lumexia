@@ -13,40 +13,40 @@ import NewEquipmentForm from './NewEquipmentForm';
 
 const EquipmentTable = ({ equipment, equipmentTypes }: { equipment: Equipment[], equipmentTypes: EquipmentType[] }) => {
 
-    const { showDialog } = useDialog()
-    const [selectedEquipment, setSelectedEquipment] = useState<Equipment>();
-    const filters: Filter[] = [
-        {
-            columnName: "equipmentType.id",
-            filterLabel: "Type",
-            options: toFacetFilter(equipment, "equipmentType.id", "equipmentType.name"),
-        },
-    ];
+  const { showDialog } = useDialog()
+  const [selectedEquipment, setSelectedEquipment] = useState<Equipment>();
+  const filters: Filter[] = [
+    {
+      columnName: "equipmentType.id",
+      filterLabel: "Type",
+      options: toFacetFilter(equipment, "equipmentType.id", "equipmentType.name"),
+    },
+  ];
 
 
 
-    return (
-        <Card.Root>
-            <NewEquipmentForm equipmentTypes={equipmentTypes} selectedEquipment={selectedEquipment} />
-            <div className='flex justify-between items-center'>
-                <Card.Title>Equipment</Card.Title>
+  return (
+    <Card.Root>
+      <NewEquipmentForm equipmentTypes={equipmentTypes} selectedEquipment={selectedEquipment} />
+      <div className='flex justify-between items-center'>
+        <Card.Title>Equipment</Card.Title>
 
-                <button className='btn' onClick={() => showDialog('addEquipment')}>Add Equipment</button>
-            </div>
-            <DataTable.Default
-                tableStateName='equipment'
-                columns={EquipmentTableColumns}
-                data={equipment}
-                filters={filters}
-                onRowClick={(row) => {
-                    setSelectedEquipment(row.original)
-                    showDialog('addEquipment')
-                }}
+        <button className='btn btn-neutral' onClick={() => showDialog('addEquipment')}>Add Equipment</button>
+      </div>
+      <DataTable.Default
+        tableStateName='equipment'
+        columns={EquipmentTableColumns}
+        data={equipment}
+        filters={filters}
+        onRowClick={(row) => {
+          setSelectedEquipment(row.original)
+          showDialog('addEquipment')
+        }}
 
-            />
-        </Card.Root>
+      />
+    </Card.Root>
 
-    )
+  )
 }
 
 export default EquipmentTable

@@ -26,7 +26,7 @@ const Content = ({ children, title, action, actionLabel = 'Deplete', actionColor
                     <div className="flex flex-row justify-end items-center gap-x-4 ">
                         {cancelAction && (
                             <AlertDialog.Cancel asChild>
-                                <ActionButton color="alert" onClick={cancelAction}>Cancel</ActionButton>
+                                <ActionButton color="warning" onClick={cancelAction}>Cancel</ActionButton>
                             </AlertDialog.Cancel>
                         )}
                         <AlertDialog.Action asChild>

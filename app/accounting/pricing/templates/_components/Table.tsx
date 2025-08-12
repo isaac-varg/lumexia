@@ -8,40 +8,40 @@ import { useRouter } from "next/navigation";
 
 const PricingTemplatesTable = ({ templates }: { templates: PricingTemplate[] }) => {
 
-    const router = useRouter()
-    const filters: Filter[] = [
-        {
-            columnName: "forItemType",
-            filterLabel: "For Item Type",
-            options: toFacetFilter(templates, "forItemType.id", "forItemType.name"),
-        },
+  const router = useRouter()
+  const filters: Filter[] = [
+    {
+      columnName: "forItemType",
+      filterLabel: "For Item Type",
+      options: toFacetFilter(templates, "forItemType.id", "forItemType.name"),
+    },
 
-    ];
+  ];
 
-    const handleClick = (row: any) => {
-        const path = `/accounting/pricing/templates/wizard?isExisting=true&templateId=${row.original.id}`
-        console.log(path)
-        router.push(path)
-    }
+  const handleClick = (row: any) => {
+    const path = `/accounting/pricing/templates/wizard?isExisting=true&templateId=${row.original.id}`
+    console.log(path)
+    router.push(path)
+  }
 
-    return (
-        <div className="gap-y-5 flex-col flex">
-            <div className="flex justify-start">
-                <button className="btn" onClick={() => router.push('/accounting/pricing/templates/wizard')}>
-                    Create Template
+  return (
+    <div className="gap-y-5 flex-col flex">
+      <div className="flex justify-start">
+        <button className="btn btn-neutral btn-soft" onClick={() => router.push('/accounting/pricing/templates/wizard')}>
+          Create Template
 
-                </button>
-            </div>
-            <DataTable.Default
-                filters={filters}
-                data={templates}
-                columns={pricingTemplateColumns}
-                onRowClick={(row) => handleClick(row)}
-                tableStateName='poRequests'
+        </button>
+      </div>
+      <DataTable.Default
+        filters={filters}
+        data={templates}
+        columns={pricingTemplateColumns}
+        onRowClick={(row) => handleClick(row)}
+        tableStateName='poRequests'
 
-            />
-        </div>
-    )
+      />
+    </div>
+  )
 }
 
 export default PricingTemplatesTable 

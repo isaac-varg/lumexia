@@ -19,101 +19,101 @@ import { useRouter } from "next/navigation"
 import DateSelector, { DatepickerRange } from "@/components/Dropdown/DateSelector"
 
 type LinkedPoDialogProps = {
-    containerTypes: Containers[]
-    purchaseOrder: LinkedPos
+  containerTypes: Containers[]
+  purchaseOrder: LinkedPos
 }
 
 type Inputs = {
-    weightPerContainer: number
-    containerTypeId: string
-    quantityOfContainers: number
+  weightPerContainer: number
+  containerTypeId: string
+  quantityOfContainers: number
 }
 
 const restructureAs = [
-    { key: "id", rename: "value" },
-    { key: "name", rename: "label" },
+  { key: "id", rename: "value" },
+  { key: "name", rename: "label" },
 ];
 
 const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) => {
 
-    const isNewDetailsEntry = purchaseOrder.po.purchaseOrderItems.length === 0 && purchaseOrder.po.purchaseOrderItems[0].details.length === 0
-    const detailId = purchaseOrder.po.purchaseOrderItems[0].details[0].id
+  const isNewDetailsEntry = purchaseOrder.po.purchaseOrderItems.length === 0 && purchaseOrder.po.purchaseOrderItems[0].details.length === 0
+  const detailId = purchaseOrder.po.purchaseOrderItems[0].details[0].id
 
-    const { weightPerContainer, containerTypeId, quantityOfContainers } = purchaseOrder.po.purchaseOrderItems[0].details[0] ? purchaseOrder.po.purchaseOrderItems[0].details[0] : { weightPerContainer: 0, containerTypeId: '', quantityOfContainers: 0 }
+  const { weightPerContainer, containerTypeId, quantityOfContainers } = purchaseOrder.po.purchaseOrderItems[0].details[0] ? purchaseOrder.po.purchaseOrderItems[0].details[0] : { weightPerContainer: 0, containerTypeId: '', quantityOfContainers: 0 }
 
-    const defaultFormValues: Inputs = {
-        weightPerContainer,
-        containerTypeId,
-        quantityOfContainers,
+  const defaultFormValues: Inputs = {
+    weightPerContainer,
+    containerTypeId,
+    quantityOfContainers,
+  }
+
+
+  const form = useForm<Inputs>({ defaultValues: defaultFormValues })
+  const router = useRouter()
+  const { resetDialogContext } = useDialog()
+
+  const containerTypeOptions = restructureData(containerTypes, restructureAs) as SelectOption[]
+
+  const handleSubmit = async (data: Inputs) => {
+
+
+
+    if (isNewDetailsEntry) {
+      const payload: Prisma.PurchaseOrderItemDetailUncheckedCreateInput = {
+        weightUomId: staticRecords.inventory.uom.lb,
+        poItemId: purchaseOrder.po.purchaseOrderItems[0].id,
+        containerTypeId: data.containerTypeId,
+        weightPerContainer: data.weightPerContainer,
+        quantityOfContainers: data.quantityOfContainers,
+      }
+
+      await createPoItemDetails(payload);
+      resetDialogContext()
+      return;
     }
 
-
-    const form = useForm<Inputs>({ defaultValues: defaultFormValues })
-    const router = useRouter()
-    const { resetDialogContext } = useDialog()
-
-    const containerTypeOptions = restructureData(containerTypes, restructureAs) as SelectOption[]
-
-    const handleSubmit = async (data: Inputs) => {
-
-
-
-        if (isNewDetailsEntry) {
-            const payload: Prisma.PurchaseOrderItemDetailUncheckedCreateInput = {
-                weightUomId: staticRecords.inventory.uom.lb,
-                poItemId: purchaseOrder.po.purchaseOrderItems[0].id,
-                containerTypeId: data.containerTypeId,
-                weightPerContainer: data.weightPerContainer,
-                quantityOfContainers: data.quantityOfContainers,
-            }
-
-            await createPoItemDetails(payload);
-            resetDialogContext()
-            return;
-        }
-
-        const payload: Prisma.PurchaseOrderItemDetailUncheckedUpdateInput = {
-            containerTypeId: data.containerTypeId,
-            weightPerContainer: data.weightPerContainer,
-            quantityOfContainers: data.quantityOfContainers,
-        }
-
-        if (!detailId) { throw new Error('No detail id was passed.') }
-
-        await updatePoItemDetails(detailId, payload)
-        resetDialogContext()
-
+    const payload: Prisma.PurchaseOrderItemDetailUncheckedUpdateInput = {
+      containerTypeId: data.containerTypeId,
+      weightPerContainer: data.weightPerContainer,
+      quantityOfContainers: data.quantityOfContainers,
     }
 
-    const handlePoTitleClick = () => {
-        router.push(`/purchasing/purchase-orders/${purchaseOrder.po.referenceCode}?id=${purchaseOrder.poId}`)
-    }
+    if (!detailId) { throw new Error('No detail id was passed.') }
 
-    return (
-        <Dialog.Root identifier={`linkedPoDialog-${purchaseOrder.po.purchaseOrderItems[0].id}`}>
-            <Dialog.Title>
-                <span>Details for PO# </span>
-                <span onClick={() => handlePoTitleClick()} className="underline decoration-wavy hover:cursor-pointer hover:text-sky-900 ">{`${purchaseOrder.po.referenceCode} - ${purchaseOrder.po.supplier.name}`}</span>
-            </Dialog.Title>
-            <p>You can specify pack sizes for the order item.</p>
+    await updatePoItemDetails(detailId, payload)
+    resetDialogContext()
+
+  }
+
+  const handlePoTitleClick = () => {
+    router.push(`/purchasing/purchase-orders/${purchaseOrder.po.referenceCode}?id=${purchaseOrder.poId}`)
+  }
+
+  return (
+    <Dialog.Root identifier={`linkedPoDialog-${purchaseOrder.po.purchaseOrderItems[0].id}`}>
+      <Dialog.Title>
+        <span>Details for PO# </span>
+        <span onClick={() => handlePoTitleClick()} className="underline decoration-wavy hover:cursor-pointer hover:text-sky-900 ">{`${purchaseOrder.po.referenceCode} - ${purchaseOrder.po.supplier.name}`}</span>
+      </Dialog.Title>
+      <p>You can specify pack sizes for the order item.</p>
 
 
 
-            <Form.Root form={form} onSubmit={(data) => handleSubmit(data)}>
+      <Form.Root form={form} onSubmit={(data) => handleSubmit(data)}>
 
 
-                <Form.Number form={form} label="Weight per Container" fieldName="weightPerContainer" required />
+        <Form.Number form={form} label="Weight per Container" fieldName="weightPerContainer" required />
 
-                <Form.Select form={form} label="Container Type" fieldName="containerTypeId" options={containerTypeOptions} />
+        <Form.Select form={form} label="Container Type" fieldName="containerTypeId" options={containerTypeOptions} />
 
-                <Form.Number form={form} label="Quantity of Containers" fieldName="quantityOfContainers" required />
+        <Form.Number form={form} label="Quantity of Containers" fieldName="quantityOfContainers" required />
 
-                <button className="btn" type="submit">Save</button>
+        <button className="btn btn-neutral btn-soft" type="submit">Save</button>
 
-            </Form.Root>
+      </Form.Root>
 
-        </Dialog.Root>
-    )
+    </Dialog.Root>
+  )
 }
 
 export default LinkedPoDialog

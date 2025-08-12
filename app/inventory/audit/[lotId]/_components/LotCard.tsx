@@ -34,8 +34,8 @@ const LotCard = ({
 						label="Containers Count"
 						data={lot.containers.length}
 					/>
-					<ActionButton color="cararra" onClick={handleAdjustment}>Adjust</ActionButton>
-					<ActionButton color="alert" onClick={handleDeplete}>
+					<ActionButton color="secondarySoft" onClick={handleAdjustment}>Adjust</ActionButton>
+					<ActionButton color="warning" onClick={handleDeplete}>
 						Deplete
 					</ActionButton>
 				</div>

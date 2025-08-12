@@ -8,46 +8,46 @@ import { useRouter } from "next/navigation";
 import { FlattenedPurchaseOrder } from "@/app/inventory/items/[name]/_functions/flattenPurchaseOrder";
 
 type AwaitingDeliveryTableProps = {
-    purchaseOrders: PurchaseOrder[] | any;
+  purchaseOrders: PurchaseOrder[] | any;
 };
 
 const AwaitingDeliveryTable = ({
-    purchaseOrders,
+  purchaseOrders,
 }: AwaitingDeliveryTableProps) => {
-    const orders = flattenPurchaseOrders(purchaseOrders);
-    const router = useRouter();
+  const orders = flattenPurchaseOrders(purchaseOrders);
+  const router = useRouter();
 
-    const handleRowClick = (order: FlattenedPurchaseOrder) => {
-        router.push(`/receiving/${order.referenceCode}?id=${order.id}`);
-    };
+  const handleRowClick = (order: FlattenedPurchaseOrder) => {
+    router.push(`/receiving/${order.referenceCode}?id=${order.id}`);
+  };
 
-    if (orders.length === 0) {
-        return (
-            <div className="flex flex-col h-full items-center justify-center">
-                <div className="flex flex-col items-center justify-center h-80 w-1/2 p-8 bg-neutral-100 rounded-lg">
-                    <h1 className="font-poppins text-5xl font-semibold text-neutral-800">
-                        Nothing to receive
-                    </h1>
-                </div>
-            </div>
-        );
-    }
-
+  if (orders.length === 0) {
     return (
-        <div>
-            <DataTable.Default
-                data={orders}
-                onRowClick={(row) => handleRowClick(row.original)}
-                columns={columns}
-                tableStateName="receivingRecentlyCompleted"
-                initialSortBy={[{
-                    id: 'referenceCode',
-                    desc: true,
-                }]}
-
-            />
+      <div className="flex flex-col h-full items-center justify-center">
+        <div className="flex flex-col items-center justify-center h-80 w-1/2 p-8 bg-neutral-100 rounded-lg">
+          <h1 className="font-poppins text-5xl font-semibold text-base-content">
+            Nothing to receive
+          </h1>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <div>
+      <DataTable.Default
+        data={orders}
+        onRowClick={(row) => handleRowClick(row.original)}
+        columns={columns}
+        tableStateName="receivingRecentlyCompleted"
+        initialSortBy={[{
+          id: 'referenceCode',
+          desc: true,
+        }]}
+
+      />
+    </div>
+  );
 };
 
 export default AwaitingDeliveryTable;

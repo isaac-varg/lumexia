@@ -34,13 +34,13 @@ const GoToReceivingButton = ({
 					title="Status Error"
 					action={() => handleButtonClick()}
 					actionLabel="Ok"
-					actionColor="cararra"
+					actionColor="secondarySoft"
 				>
 					There are no receivables. To add this purchase order to the receiving
 					dashboard ensure that the status is set to Awaiting Delivery.
 				</Alert.Content>
 			</Alert.Root>
-			<ActionButton color="cararra" onClick={() => handleButtonClick()}>
+			<ActionButton color="secondarySoft" onClick={() => handleButtonClick()}>
 				<Layout.Row>
 					<TbTruck className="text-2xl" />
 					<p>Receiving</p>

@@ -19,7 +19,7 @@ const BasicsCardTitle = ({item, itemEditSelectables} : { item: Item, itemEditSel
       <ItemEditForm item={item} itemEditSelectables={itemEditSelectables}/>
       <Layout.Row>
         <Card.Title>Basic Details</Card.Title>
-        <ActionButton color="cararra" onClick={() => showDialog("editItem")}>
+        <ActionButton color="secondarySoft" onClick={() => showDialog("editItem")}>
           <TbEdit />
         </ActionButton>
       </Layout.Row>

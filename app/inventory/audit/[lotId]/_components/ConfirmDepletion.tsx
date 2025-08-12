@@ -30,7 +30,7 @@ const ConfirmDepletion = ({ lot }: { lot: LotWithData }) => {
         title="Are You Sure?"
         action={() => handleConfirmDepletion()}
         actionLabel="Confirm"
-        actionColor="alert"
+        actionColor="warning"
         cancelAction={() => console.log("clicked confirm")}
 
       >

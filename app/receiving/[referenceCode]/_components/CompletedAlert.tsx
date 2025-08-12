@@ -66,7 +66,7 @@ const CompletedAlert = ({
                 title="Receiving Completed"
                 actionLabel="Complete"
                 action={() => handleCompletion()}
-                actionColor="bayLeaf"
+                actionColor="success"
                 cancelAction={() => console.log('Cancelled')}
 
             >

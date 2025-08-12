@@ -58,12 +58,12 @@ const ContainersTable = ({
             })}
           </Card.Root>
           <Card.Root shadow="none" borderSize="small" borderColor="light">
-              <h2 className="font-semibold text-base font-poppins uppercase">
-                On Hand
-              </h2>
-              <h1 className="text-center font-poppins font-semibold text-4xl text-neutral-800">
-                {toFracitonalDigits.weight(onHandTotal)} lbs
-              </h1>
+            <h2 className="font-semibold text-base font-poppins uppercase">
+              On Hand
+            </h2>
+            <h1 className="text-center font-poppins font-semibold text-4xl text-base-content">
+              {toFracitonalDigits.weight(onHandTotal)} lbs
+            </h1>
           </Card.Root>
         </Layout.Grid>
 
