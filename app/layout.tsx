@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Roboto } from "next/font/google";
 import "./globals.css";
-import Searchbar from "@/components/App/Searchbar";
 import Providers from "@/context/Providers";
 import { auth } from "@/auth";
 import { AuthProvider } from "@/components/App/AuthProvider";
@@ -9,6 +8,9 @@ import Toast from "@/components/Toast";
 import CommandPallet from "@/components/CommandPallet/CommandPallet";
 import QueryProvider from "@/components/App/QueryProvider";
 import Sidebar from "./_components/sidebar/Sidebar";
+import TopBar from "@/components/App/TopBar";
+import { getRandomIntBetween } from "@/utils/general/getRandomIntBetween";
+import { getUserConfig } from "@/actions/users/getUserConfig";
 
 // fonts
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -35,9 +37,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+  const theme = await getUserConfig('theme');
+  console.log('theme', theme)
 
   return (
-    <html lang="en" data-theme="nord">
+    <html lang="en" data-theme={theme?.value || 'light'}>
       <body className={`${inter.variable} ${poppins.variable} ${roboto.variable}`}>
         <Providers>
           <AuthProvider session={session}>
@@ -46,7 +50,7 @@ export default async function RootLayout({
                 <Sidebar />
 
                 <div className="flex flex-col w-full bg-base-200 px-28 py-8 gap-y-8">
-                  <Searchbar />
+                  <TopBar />
                   <CommandPallet />
                   {children}
                 </div>
