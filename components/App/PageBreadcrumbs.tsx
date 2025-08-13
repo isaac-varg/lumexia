@@ -12,10 +12,12 @@ const PageBreadcrumbs = () => {
   console.log(segments)
 
   return (
-    <div className="flex flex-row space-x-2 text-cararra-600 items-center mb-4">
-      <button onClick={() => router.back()}>
+    <div className="flex flex-row space-x-2 text-base-content items-center mb-4">
+
+      <button className="btn btn-ghost px-5" onClick={() => router.back()}>
         <TbArrowLeft className="text-3xl hover:text-cararra-800" />
       </button>
+
       {segments.map((segment, index) => {
         const isLast = index === segments.length - 1;
         return (

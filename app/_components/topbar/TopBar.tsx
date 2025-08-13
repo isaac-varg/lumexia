@@ -1,13 +1,13 @@
 import prisma from "@/lib/prisma";
 import { getUserId } from "@/actions/users/getUserId";
 import { staticRecords } from "@/configs/staticRecords";
-import ConfigurationStateSetter from "./ConfigurationStateSetter";
 import UserIcon from './UserIcon'
-import AppQuery from "./AppQuery";
-import AppStateSetter from "./AppStateSetter";
+import ConfigurationStateSetter from "../state/ConfigurationStateSetter";
+import AppQuery from "../state/AppQuery";
+import AppStateSetter from "../state/AppStateSetter";
+import ThemeChangerDialog from "@/components/Theme/ThemeChangerDialog";
 import PageBreadcrumbs from "./PageBreadcrumbs";
-import ThemeIcon from "../Theme/ThemeIcon";
-import ThemeChangerDialog from "../Theme/ThemeChangerDialog";
+import ThemeIcon from "@/components/Theme/ThemeIcon";
 
 const TopBar = async () => {
 
@@ -29,7 +29,7 @@ const TopBar = async () => {
       <AppStateSetter />
       <ThemeChangerDialog />
 
-      <div className="sticky top-0 z-10 flex items-center justify-between bg-base-200 p-4 rounded-lg" >
+      <div className="sticky top-0 z-10 flex items-center justify-between bg-base-200 py-4  rounded-lg" >
 
         <PageBreadcrumbs />
 
