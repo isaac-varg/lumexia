@@ -43,7 +43,7 @@ const ContainersTable = ({
 
       <div className="flex flex-col gap-y-6">
         <Layout.Grid>
-          <Card.Root shadow="none" borderSize="small" borderColor="light">
+          <Card.Root shadow="none" borderColor="base" bg="elevated">
             <h2 className="font-semibold text-base font-poppins uppercase">
               containers
             </h2>
@@ -57,7 +57,7 @@ const ContainersTable = ({
               );
             })}
           </Card.Root>
-          <Card.Root shadow="none" borderSize="small" borderColor="light">
+          <Card.Root shadow="none" borderColor="base" bg="elevated">
             <h2 className="font-semibold text-base font-poppins uppercase">
               On Hand
             </h2>
@@ -73,6 +73,7 @@ const ContainersTable = ({
           dialogIdentifier="createLot"
           onRowClick={(row) => handleRowClick(row)}
           tableStateName="itemDetailsLotDialog"
+          searchBg="elevated"
         />
       </div>
     </>

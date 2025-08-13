@@ -9,7 +9,7 @@ const ArchiveButton = () => {
 
   return (
     <button
-      className="btn btn-neutral btn-soft"
+      className="btn btn-secondary"
       onClick={() => router.push('/purchasing/requests/archive')}
     >
       <div className="flex items-center justify-start">

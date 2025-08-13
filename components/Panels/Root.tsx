@@ -3,9 +3,10 @@ const classes = {
   bg: {
     default: 'bg-base-100 ',
     white: 'bg-base-100',
+    elevated: 'bg-base-300',
 
   },
-  base: 'flex flex-col  p-6 rounded-lg',
+  base: 'flex flex-col p-6 rounded-lg',
   gap: {
     default: 'gap-y-4',
     noGap: ''

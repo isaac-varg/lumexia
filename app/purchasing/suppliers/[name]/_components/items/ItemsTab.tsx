@@ -58,7 +58,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
   return (
     <div className="flex gap-x-4">
       <div className="w-1/3">
-        <Card.Root>
+        <Card.Root shadow="none" bg="elevated">
           <Card.Title size="small">Items Supplied</Card.Title>
           <div className="flex flex-col gap-y-2 h-96 overflow-scroll">
             {sortedItems.map((item) => (
@@ -68,27 +68,27 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
         </Card.Root>
       </div>
       <div className="w-full">
-        <Card.Root>
-               <Layout.Row justify="end">
-                  <ActionButton
-                    color={dateRangeMode === "all" ? "cuttySark" : "cararra"}
-                    onClick={() => setDateRangeMode("all")}
-                  >
-                    All
-                  </ActionButton>
-                  <ActionButton
-                    color={dateRangeMode === "yearToDate" ? "cuttySark" : "cararra"}
-                    onClick={() => setDateRangeMode("yearToDate")}
-                  >
-                    This Year
-                  </ActionButton>
-                  <ActionButton
-                    color={dateRangeMode === "lastYear" ? "cuttySark" : "cararra"}
-                    onClick={() => setDateRangeMode("lastYear")}
-                  >
-                    Last Year
-                  </ActionButton>
-                </Layout.Row>
+        <Card.Root bg="elevated" shadow="none">
+          <Layout.Row justify="end">
+            <ActionButton
+              color={dateRangeMode === "all" ? "secondarySoft" : "default"}
+              onClick={() => setDateRangeMode("all")}
+            >
+              All
+            </ActionButton>
+            <ActionButton
+              color={dateRangeMode === "yearToDate" ? "secondarySoft" : "default"}
+              onClick={() => setDateRangeMode("yearToDate")}
+            >
+              This Year
+            </ActionButton>
+            <ActionButton
+              color={dateRangeMode === "lastYear" ? "secondarySoft" : "default"}
+              onClick={() => setDateRangeMode("lastYear")}
+            >
+              Last Year
+            </ActionButton>
+          </Layout.Row>
 
           {!itemData ? <Skeleton count={5} /> : (
             <div className="w-full flex flex-row gap-x-6 h-96">
@@ -103,7 +103,7 @@ const ItemsTab = ({ items }: { items: SupplierDetailsItems[] }) => {
               </div>
               <div className="w-full  ">
 
-             
+
                 <Card.Title size="small">Trends
 
 

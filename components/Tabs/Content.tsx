@@ -3,8 +3,8 @@ import * as Tabs from "@radix-ui/react-tabs";
 
 const classes = {
   bg: {
-    default: '',
-    light: 'bg-base-200',
+    default: 'bg-base-100 rounded-xl',
+    light: 'bg-base-100',
   }
 };
 

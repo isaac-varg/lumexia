@@ -38,7 +38,7 @@ const GeneralDropdown = ({
       <div
         ref={refs.setReference}
         onClick={(e) => handleLabelClick(e)}
-        className='btn btn-neutral'
+        className='btn btn-soft '
       //className="py-2 px-2 rounded-xl text-sm font-poppins font-semibold cursor-pointer"
       >
         {label}
@@ -47,7 +47,7 @@ const GeneralDropdown = ({
         <ul
           ref={refs.setFloating} style={floatingStyles}
           className={`${isActive ? '' : 'hidden'
-            }  bg-base-100 rounded-box w-52 p-2 shadow mt-2 flex flex-col gap-y-1`}
+            }  bg-base-300 rounded-box w-52 p-2 shadow mt-2 flex flex-col gap-y-1`}
         >
           {options.map((o) => {
             return (

@@ -9,7 +9,7 @@ const CreateRequestButton = () => {
 
   return (
     <button
-      className="btn btn-neutral btn-soft"
+      className="btn btn-secondary "
       onClick={() => router.push('/purchasing/requests/new')}
     >
       <div className="flex items-center justify-start">

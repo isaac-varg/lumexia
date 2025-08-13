@@ -15,7 +15,7 @@ const TotalCards = ({
 
   return (
     <div className="h-full flex flex-col gap-y-4">
-      <Card.Root>
+      <Card.Root bg="elevated" shadow="none" >
         <h2 className="font-semibold text-base font-poppins uppercase">
           PO Count
         </h2>
@@ -28,7 +28,7 @@ const TotalCards = ({
         })}
         <LabelDataPair label="Total" data={countTotal} />
       </Card.Root>
-      <Card.Root>
+      <Card.Root bg="elevated" shadow="none" >
         <h2 className="font-semibold text-base font-poppins uppercase">
           Quantity Ordered
         </h2>

@@ -18,22 +18,20 @@ const PricingTab = ({ pricing, itemId, uom }: { itemId: string, pricing: ItemPri
 
   return (
     <div>
-      <Card.Root>
-        <div className='flex justify-between'>
-          <Text.SectionTitle size='small'>Pricing Parameters</Text.SectionTitle>
-          <button className='btn btn-soft btn-secondary' onClick={() => handleEditPricingParameters()}>
-            <div className='flex items-center gap-2'>
-              <TbEdit />
-              <p>Edit</p>
-            </div>
-          </button>
+      <div className='flex justify-between'>
+        <Text.SectionTitle size='small'>Pricing Parameters</Text.SectionTitle>
+        <button className='btn btn-soft btn-secondary' onClick={() => handleEditPricingParameters()}>
+          <div className='flex items-center gap-2'>
+            <TbEdit />
+            <p>Edit</p>
+          </div>
+        </button>
 
-        </div>
+      </div>
 
-        {mode === 'edit' && <FormMode itemId={itemId} pricing={pricing} uom={uom} />}
-        {mode === 'view' && <ViewMode pricing={pricing} />}
+      {mode === 'edit' && <FormMode itemId={itemId} pricing={pricing} uom={uom} />}
+      {mode === 'view' && <ViewMode pricing={pricing} />}
 
-      </Card.Root>
     </div>
   )
 }

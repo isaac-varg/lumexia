@@ -27,6 +27,7 @@ const classes = {
     none: "",
   },
   bg: {
+    elevated: "bg-base-300",
     base: "bg-base-100",
   },
   type: {
