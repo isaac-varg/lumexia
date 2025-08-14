@@ -32,7 +32,7 @@ const PageBreadcrumbs = () => {
         }
 
         return (
-          <>
+          <React.Fragment key={index}>
             <TbSlash className="text-2xl text-base-content/40" />
             <button
               className="btn btn-ghost font-poppins items-center text-lg font-medium "
@@ -40,7 +40,7 @@ const PageBreadcrumbs = () => {
             >
               {segment}
             </button>
-          </>
+          </React.Fragment>
         )
       })}
 
