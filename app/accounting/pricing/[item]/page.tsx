@@ -13,41 +13,40 @@ import { getProducedPricingByItem } from "./_functions/getProducedPricingExamina
 import FinishedProductsChart from "./_components/FinishedProductChart";
 
 interface ItemPricingDashboardProps {
-    searchParams: {
-        id: string
-    }
+  searchParams: {
+    id: string
+  }
 }
 
 const ItemPricingDashboard = async ({ searchParams }: ItemPricingDashboardProps) => {
 
-    const item = await getItem(searchParams.id);
+  const item = await getItem(searchParams.id);
 
-    const examinations = await accountingActions.examinations.getAllByItem(searchParams.id);
-    const isProduced = item.procurementTypeId === staticRecords.inventory.procurementTypes.produced;
+  const examinations = await accountingActions.examinations.getAllByItem(searchParams.id);
+  const isProduced = item.procurementTypeId === staticRecords.inventory.procurementTypes.produced;
+  const producedExaminations = await getProducedPricingByItem(item.id)
 
-    const producedExaminations = await getProducedPricingByItem(item.id)
 
+  return (
+    <div className="flex flex-col gap-y-4">
 
-    return (
-        <div className="flex flex-col gap-y-4">
+      <PageTitle>Pricing Overview - {item.name}</PageTitle>
+      <PageBreadcrumbs />
 
-            <PageTitle>Pricing Overview - {item.name}</PageTitle>
-            <PageBreadcrumbs />
+      <ActionBar itemId={item.id} itemName={item.name} />
 
-            <ActionBar itemId={item.id} itemName={item.name} />
+      <div className="grid grid-cols-3 gap-4">
+        <LastExaminedPanel lastExamination={examinations[0] || null} />
+        {!isProduced && <OverallItemPriceChart pricingExaminations={examinations} />}
+        {isProduced && <OverallMbprPricingChart examinations={producedExaminations} />}
+        <FinishedProductsChart examinations={examinations} />
+      </div>
 
-            <div className="grid grid-cols-3 gap-4">
-                <LastExaminedPanel lastExamination={examinations[0] || null} />
-                {!isProduced && <OverallItemPriceChart pricingExaminations={examinations} />}
-                {isProduced && <OverallMbprPricingChart examinations={producedExaminations} />}
-                <FinishedProductsChart examinations={examinations} />
-            </div>
+      {isProduced && <BomPricingChart examinations={producedExaminations} />}
 
-            {isProduced && <BomPricingChart examinations={producedExaminations} />}
-
-            <ExaminationsTable pricingExaminations={examinations} />
-        </div>
-    )
+      <ExaminationsTable pricingExaminations={examinations} />
+    </div>
+  )
 }
 
 export default ItemPricingDashboard 

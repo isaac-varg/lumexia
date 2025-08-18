@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jul 28 2025 14:09:18 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Aug 18 2025 11:36:53 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1005,6 +1005,34 @@ model InventoryType {
   @@map("inventory_types")
 }
 
+model ItemNoteType {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  itemNotes   ItemNote[]
+
+  @@map("item_note_types")
+}
+
+model ItemNote {
+  id         String       @id @default(uuid())
+  itemId     String       @map("item_id")
+  noteTypeId String       @map("note_type_id")
+  userId     String       @map("user_id")
+  content    String
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  item       Item         @relation(fields: [itemId], references: [id])
+  user       User         @relation(fields: [userId], references: [id])
+  noteType   ItemNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("item_notes")
+}
+
 model ItemType {
   id                String             @id @default(uuid())
   name              String
@@ -1051,6 +1079,7 @@ model Item {
   ItemConsumerContainer           ItemConsumerContainer[]
   PricingQueue                    PricingQueue[]
   PricingTemplateAuxiliary        PricingTemplateAuxiliary[]
+  ItemNote                        ItemNote[]
   BillOfMaterial                  BillOfMaterial[]
   MasterBatchProductionRecord     MasterBatchProductionRecord[]
 
@@ -2237,6 +2266,7 @@ model User {
   PricingExaminationNote        PricingExaminationNote[]
   DiscrepancyAuditItemNote      DiscrepancyAuditItemNote[]
   InventoryAudit                InventoryAudit[]
+  ItemNote                      ItemNote[]
   BprNote                       BprNote[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]

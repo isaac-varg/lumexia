@@ -1,7 +1,9 @@
 'use client'
 
+import Activity from "./Activity"
 import Aliases from "./Aliases"
 import ItemProperties from "./ItemProperties"
+import Notes from "./Notes"
 
 const Basics = () => {
 
@@ -9,7 +11,12 @@ const Basics = () => {
     <div className="grid grid-cols-2 gap-6">
 
       <ItemProperties />
+
       <Aliases />
+      <Notes />
+      <Activity />
+
+
 
     </div>
   )

@@ -3,12 +3,17 @@ import StateSetter from "./_components/state/StateSetter";
 import TitleRow from "./_components/shared/TitleRow";
 import TabSelector from "./_components/shared/TabSelector";
 import TabsContainer from "./_components/shared/TabsContainer";
+import { getItemActivity } from "./_actions/basics/getActivity";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const aliases = await inventoryActions.aliases.getByItem(item.id);
+  const [aliases, notes, activity] = await Promise.all([
+    await inventoryActions.aliases.getByItem(item.id),
+    await inventoryActions.items.notes.getAllByItem(item.id),
+    await getItemActivity(item.id),
+  ])
 
 
 
@@ -18,6 +23,8 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
       <StateSetter
         item={item}
         aliases={aliases}
+        notes={notes}
+        activity={activity}
       />
 
       <TitleRow />

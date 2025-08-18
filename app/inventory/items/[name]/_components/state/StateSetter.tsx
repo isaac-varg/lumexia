@@ -2,25 +2,34 @@
 
 import { ItemAlias } from "@/actions/inventory/aliases/getByItem";
 import { SingleItem } from "@/actions/inventory/getOneItem";
+import { ItemNote } from "@/actions/inventory/items/notes/getAllByItem";
 import { useItemActions, useItemSelection } from "@/store/itemSlice";
 import { useEffect } from "react";
+import { ItemActivity } from "../../_actions/basics/getActivity";
 
 type StateSetterProps = {
+  activity: ItemActivity[],
   aliases: ItemAlias[]
   item: SingleItem | null
+  notes: ItemNote[],
 }
 
 
 const StateSetter = ({
+  activity,
   aliases,
   item,
+  notes,
+
 
 }: StateSetterProps) => {
 
   // state actions
   const {
+    setActivity,
     setAliases,
     setItem,
+    setNotes,
     getOptions,
   } = useItemActions();
 
@@ -43,7 +52,10 @@ const StateSetter = ({
     }
 
     // set states based off item 
+    setActivity(activity);
     setAliases(aliases);
+    setNotes(notes);
+
 
   }, [item]);
 

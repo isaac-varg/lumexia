@@ -7,6 +7,7 @@ interface CardRootProps {
   shadow?: keyof typeof classes.shadow;
   bg?: keyof typeof classes.bg;
   type?: keyof typeof classes.type;
+  span?: keyof typeof classes.span;
 
 }
 
@@ -33,6 +34,10 @@ const classes = {
   type: {
     old: 'rounded-lg p-6',
     dasiy: 'card'
+  },
+  span: {
+    base: '',
+    2: 'col-span-2',
   }
 };
 
@@ -48,10 +53,11 @@ const Root = ({
   shadow = "base",
   bg = "base",
   type = 'dasiy',
+  span = 'base',
 
 }: CardRootProps) => (
   <div
-    className={`  ${classes.type[type]} ${classes.borderSize[borderSize]} ${classes.borderColor[borderColor]} ${classes.shadow[shadow]} ${classes.bg[bg]}  h-full`}
+    className={`  ${classes.type[type]} ${classes.borderSize[borderSize]} ${classes.borderColor[borderColor]} ${classes.shadow[shadow]} ${classes.bg[bg]} ${classes.span[span]}  h-full`}
   >
     <div className={`${wrapper.daisy}`}>
       {children}

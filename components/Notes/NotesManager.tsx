@@ -20,7 +20,7 @@ const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, n
   const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
   return (
-    <div>
+    <div className="flex flex-col gap-y-6">
       <div className="flex justify-between items-center">
 
         <Text.SectionTitle size="small">Notes</Text.SectionTitle>

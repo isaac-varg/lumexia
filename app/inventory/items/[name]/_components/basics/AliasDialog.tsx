@@ -155,7 +155,7 @@ const AliasDialog = () => {
     await aliasActions.deleteOne({ id: selectedAlias.id });
 
     // log deletion
-    await createActivityLog('aliasDeleted', "itemId", selectedAlias.itemId, { context: `${selectedAlias.name} alias was removed` });
+    await createActivityLog('aliasDeleted', "item", selectedAlias.itemId, { context: `${selectedAlias.name} alias was removed` });
 
     setSelectedAlias(null)
     revalidatePage('/inventory/items/[item]')

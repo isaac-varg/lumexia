@@ -1,10 +1,14 @@
+import { inventoryActions } from "@/actions/inventory";
 import aliasTypeActions from "@/actions/inventory/aliasTypes";
 import { ItemAlias } from "@/actions/inventory/aliases/getByItem";
 import { SingleItem } from "@/actions/inventory/getOneItem"
 import inventoryTypeActions from "@/actions/inventory/inventoryTypeActions";
 import itemTypeActions from "@/actions/inventory/itemTypeActions";
+import { ItemNote } from "@/actions/inventory/items/notes/getAllByItem";
+import { ItemNoteType } from "@/actions/inventory/items/notes/types/getAllItemNoteTypes";
 import procurementTypeActions from "@/actions/inventory/procurementTypeActions";
 import supplierActions from "@/actions/purchasing/supplierActions";
+import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemTab } from "@/app/inventory/items/[name]/_components/shared/TabSelector";
 import { AliasType, InventoryType, ItemType, ProcurementType, Supplier } from "@prisma/client";
 import { create } from "zustand"
@@ -16,13 +20,16 @@ export type ItemOptions = {
   procurementTypes: ProcurementType[],
   aliasTypes: AliasType[],
   suppliers: Supplier[],
+  noteTypes: ItemNoteType[],
 }
 
 // the state
 type State = {
+  activity: ItemActivity[],
   aliases: ItemAlias[];
   currentTab: ItemTab;
   item: SingleItem | null;
+  notes: ItemNote[],
   options: ItemOptions;
   selectedAlias: ItemAlias | null;
 }
@@ -30,23 +37,28 @@ type State = {
 type Actions = {
   actions: {
     getOptions: () => void;
+    setActivity: (activity: ItemActivity[]) => void;
     setAliases: (aliases: ItemAlias[]) => void;
     setCurrentTab: (tab: ItemTab) => void;
     setItem: (item: SingleItem | null) => void;
+    setNotes: (notes: ItemNote[]) => void;
     setSelectedAlias: (alias: ItemAlias | null) => void;
   }
 }
 
 export const useItemSelection = create<State & Actions>((set) => ({
+  activity: [],
   aliases: [],
   currentTab: 'basics',
   item: null,
+  notes: [],
   options: {
     itemTypes: [],
     inventoryTypes: [],
     procurementTypes: [],
     aliasTypes: [],
     suppliers: [],
+    noteTypes: [],
   },
   selectedAlias: null,
 
@@ -54,12 +66,13 @@ export const useItemSelection = create<State & Actions>((set) => ({
   actions: {
     getOptions: async () => {
       //fetch the data
-      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers] = await Promise.all([
-        itemTypeActions.getAll(),
-        procurementTypeActions.getAll(),
-        inventoryTypeActions.getAll(),
-        aliasTypeActions.getAll(),
-        supplierActions.getAll(undefined, undefined, [{ name: 'asc' }]),
+      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes] = await Promise.all([
+        await itemTypeActions.getAll(),
+        await procurementTypeActions.getAll(),
+        await inventoryTypeActions.getAll(),
+        await aliasTypeActions.getAll(),
+        await supplierActions.getAll(undefined, undefined, [{ name: 'asc' }]),
+        await inventoryActions.items.notes.types.getAll(),
       ]);
 
       // set state
@@ -70,8 +83,13 @@ export const useItemSelection = create<State & Actions>((set) => ({
           procurementTypes,
           aliasTypes,
           suppliers,
+          noteTypes,
         }
       }));
+    },
+
+    setActivity: (activity) => {
+      set(() => ({ activity, }))
     },
 
     setAliases: (aliases) => {
@@ -84,6 +102,10 @@ export const useItemSelection = create<State & Actions>((set) => ({
 
     setItem: (item) => {
       set(() => ({ item }))
+    },
+
+    setNotes: (notes) => {
+      set(() => ({ notes, }))
     },
 
     setSelectedAlias: (alias) => {
