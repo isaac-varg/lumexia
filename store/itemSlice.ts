@@ -1,4 +1,5 @@
 import aliasTypeActions from "@/actions/inventory/aliasTypes";
+import { ItemAlias } from "@/actions/inventory/aliases/getByItem";
 import { SingleItem } from "@/actions/inventory/getOneItem"
 import inventoryTypeActions from "@/actions/inventory/inventoryTypeActions";
 import itemTypeActions from "@/actions/inventory/itemTypeActions";
@@ -19,21 +20,25 @@ export type ItemOptions = {
 
 // the state
 type State = {
+  aliases: ItemAlias[];
   currentTab: ItemTab;
   item: SingleItem | null;
-  options: ItemOptions
-
+  options: ItemOptions;
+  selectedAlias: ItemAlias | null;
 }
 
 type Actions = {
   actions: {
     getOptions: () => void;
+    setAliases: (aliases: ItemAlias[]) => void;
     setCurrentTab: (tab: ItemTab) => void;
     setItem: (item: SingleItem | null) => void;
+    setSelectedAlias: (alias: ItemAlias | null) => void;
   }
 }
 
 export const useItemSelection = create<State & Actions>((set) => ({
+  aliases: [],
   currentTab: 'basics',
   item: null,
   options: {
@@ -43,6 +48,7 @@ export const useItemSelection = create<State & Actions>((set) => ({
     aliasTypes: [],
     suppliers: [],
   },
+  selectedAlias: null,
 
 
   actions: {
@@ -53,7 +59,7 @@ export const useItemSelection = create<State & Actions>((set) => ({
         procurementTypeActions.getAll(),
         inventoryTypeActions.getAll(),
         aliasTypeActions.getAll(),
-        supplierActions.getAll(),
+        supplierActions.getAll(undefined, undefined, [{ name: 'asc' }]),
       ]);
 
       // set state
@@ -68,12 +74,20 @@ export const useItemSelection = create<State & Actions>((set) => ({
       }));
     },
 
+    setAliases: (aliases) => {
+      set(() => ({ aliases, }))
+    },
+
     setCurrentTab: (tab) => {
       set(() => ({ currentTab: tab }))
     },
 
     setItem: (item) => {
       set(() => ({ item }))
+    },
+
+    setSelectedAlias: (alias) => {
+      set(() => ({ selectedAlias: alias }))
     },
 
 

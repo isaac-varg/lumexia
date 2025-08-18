@@ -8,6 +8,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
+  const aliases = await inventoryActions.aliases.getByItem(item.id);
 
 
 
@@ -16,6 +17,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
 
       <StateSetter
         item={item}
+        aliases={aliases}
       />
 
       <TitleRow />

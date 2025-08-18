@@ -1,20 +1,25 @@
 'use client'
 
+import { ItemAlias } from "@/actions/inventory/aliases/getByItem";
 import { SingleItem } from "@/actions/inventory/getOneItem";
 import { useItemActions, useItemSelection } from "@/store/itemSlice";
 import { useEffect } from "react";
 
 type StateSetterProps = {
+  aliases: ItemAlias[]
   item: SingleItem | null
 }
 
 
 const StateSetter = ({
+  aliases,
   item,
+
 }: StateSetterProps) => {
 
   // state actions
   const {
+    setAliases,
     setItem,
     getOptions,
   } = useItemActions();
@@ -36,6 +41,9 @@ const StateSetter = ({
     if (isEmpty) {
       getOptions();
     }
+
+    // set states based off item 
+    setAliases(aliases);
 
   }, [item]);
 
