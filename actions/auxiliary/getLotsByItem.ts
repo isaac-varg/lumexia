@@ -3,33 +3,43 @@
 import prisma from "@/lib/prisma";
 
 export const getLotsByItem = async (itemId: string) => {
-    const results = await prisma.lot.findMany({
-        where: { itemId }, // Simplified where clause
+  const results = await prisma.lot.findMany({
+    where: { itemId }, // Simplified where clause
+    include: {
+      item: true,
+      containers: {
+        include: { containerType: true, lot: true, uom: true },
+      },
+      uom: true,
+      transactions: { include: { transactionType: true, unitOfMeasurement: true, user: true } },
+      lotOrigin: {
         include: {
-            item: true,
-            containers: {
-                include: { containerType: true, lot: true, uom: true },
-            },
-            uom: true,
-            transactions: { include: { transactionType: true, unitOfMeasurement: true, user: true } },
-        },
-    });
+          bpr: true,
+          purchaseOrder: true,
+        }
+      },
+    },
+  });
 
-    const lotsWithTotals = results.map((lot) => {
-        const totalTransactionAmount = lot.transactions.reduce(
-            (acc, transaction) =>
-                acc + (transaction.transactionType.deduction ? -transaction.amount : transaction.amount),
-            0
-        );
+  const lotsWithTotals = results.map((lot) => {
+    const totalTransactionAmount = lot.transactions.reduce(
+      (acc, transaction) =>
+        acc + (transaction.transactionType.deduction ? -transaction.amount : transaction.amount),
+      0
+    );
 
-        return {
-            ...lot,
-            totalQuantityOnHand: lot.initialQuantity + totalTransactionAmount,
-            totalTransactionAmount,
-        };
-    });
+    const totalQuantityOnHand = lot.initialQuantity + totalTransactionAmount;
+    const isDepleted = totalQuantityOnHand === 0;
 
-    return lotsWithTotals;
+    return {
+      ...lot,
+      isDepleted,
+      totalQuantityOnHand,
+      totalTransactionAmount,
+    };
+  });
+
+  return lotsWithTotals;
 };
 
 export type InventoryLot = Awaited<ReturnType<typeof getLotsByItem>>[number]

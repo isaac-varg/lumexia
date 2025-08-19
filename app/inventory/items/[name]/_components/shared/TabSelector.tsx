@@ -7,18 +7,18 @@ import { useItemSelection } from "@/store/itemSlice";
 const { produced } = staticRecords.inventory.procurementTypes;
 
 // define the tabs
-export type ItemTab = 'basics' | 'purchasing' | 'pricing' | 'production' | 'quality' | 'files';
+export type ItemTab = 'basics' | 'inventory' | 'purchasing' | 'pricing' | 'production' | 'quality' | 'files';
 
 const TabSelector = () => {
 
   const { item } = useItemSelection()
   const isProduced = item?.procurementTypeId === produced;
 
-  const tabs: ItemTab[] = ['basics', 'pricing', 'production', 'files', 'quality'];
+  const tabs: ItemTab[] = ['basics', 'inventory', 'pricing', 'production', 'files', 'quality'];
 
   // produced items do not need purchased tab
   if (!isProduced) {
-    tabs.splice(1, 0, 'purchasing')
+    tabs.splice(2, 0, 'purchasing')
   }
 
   if (!item) {

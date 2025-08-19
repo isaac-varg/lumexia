@@ -24,6 +24,7 @@ import { getAllItemNoteTypes } from "./items/notes/types/getAllItemNoteTypes";
 import { getAllLots } from "./lots/getAll";
 import { getSingleLot } from "./lots/getOne";
 import { getReceivables } from "./receiving/getReceivables";
+import { createInventoryTransaction } from "./transactions/create";
 
 export const inventoryActions = {
   getInventory: getInventory,
@@ -76,6 +77,9 @@ export const inventoryActions = {
   },
   aliases: {
     getByItem: getAliasByItem,
+  },
+  transactions: {
+    create: createInventoryTransaction,
   }
 }
 

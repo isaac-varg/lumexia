@@ -10,8 +10,6 @@ const Activity = () => {
 
   const { activity } = useItemSelection()
 
-  console.log(activity[0])
-
   const filters: Filter[] = [
     {
       columnName: "action",

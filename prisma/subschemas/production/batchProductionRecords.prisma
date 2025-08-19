@@ -16,7 +16,7 @@ model BatchProductionRecord {
     batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
     bprBatchSteps BprBatchStep[]
-    lotOrigin     LotOrigin[]
+    lotOrigin     LotOrigin?
     qcRecords     QcRecord[]
 
     @@map("batch_production_records")

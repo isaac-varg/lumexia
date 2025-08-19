@@ -3,6 +3,7 @@ import { useItemSelection } from "@/store/itemSlice"
 import Basics from "../basics/Basics"
 import Purchasing from "../purchasing/Purchasing";
 import { motion, AnimatePresence } from 'framer-motion';
+import Inventory from "../inventory/Inventory";
 
 
 const TabsContainer = () => {
@@ -19,6 +20,7 @@ const TabsContainer = () => {
         transition={{ duration: 0.2 }}
       >
         {currentTab === 'basics' && <Basics />}
+        {currentTab === 'inventory' && <Inventory />}
         {currentTab === 'purchasing' && <Purchasing />}
       </motion.div>
     </AnimatePresence>

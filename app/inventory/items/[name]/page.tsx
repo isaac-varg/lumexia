@@ -4,17 +4,18 @@ import TitleRow from "./_components/shared/TitleRow";
 import TabSelector from "./_components/shared/TabSelector";
 import TabsContainer from "./_components/shared/TabsContainer";
 import { getItemActivity } from "./_actions/basics/getActivity";
+import { getInventory } from "@/actions/inventory/getInventory";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const [aliases, notes, activity] = await Promise.all([
+  const [aliases, notes, activity, inventory] = await Promise.all([
     await inventoryActions.aliases.getByItem(item.id),
     await inventoryActions.items.notes.getAllByItem(item.id),
     await getItemActivity(item.id),
+    await getInventory(item.id),
   ])
-
 
 
   return (
@@ -25,6 +26,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
         aliases={aliases}
         notes={notes}
         activity={activity}
+        inventory={inventory}
       />
 
       <TitleRow />

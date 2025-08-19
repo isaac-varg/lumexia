@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Aug 18 2025 11:36:53 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Aug 19 2025 10:38:59 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -865,9 +865,9 @@ model InventoryAudit {
 
 model LotOrigin {
   id              String                 @id @default(uuid())
-  lotId           String                 @map("lot_id")
+  lotId           String                 @unique @map("lot_id")
   purchaseOrderId String?                @map("purchase_order_id")
-  bprId           String?                @map("bpr_id")
+  bprId           String?                @unique @map("bpr_id")
   originType      String                 @map("origin_type")
   createdAt       DateTime               @default(now()) @map("created_at")
   updatedAt       DateTime               @updatedAt @map("updated_at")
@@ -889,7 +889,7 @@ model Lot {
   updatedAt       DateTime          @updatedAt @map("updated_at")
   containers      Container[]
   transactions    Transaction[]
-  lotOrigin       LotOrigin[]
+  lotOrigin       LotOrigin?
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
   qcRecords       QcRecord[]
   BprStaging      BprStaging[]
@@ -1150,7 +1150,7 @@ model BatchProductionRecord {
   batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
   bprBatchSteps      BprBatchStep[]
-  lotOrigin          LotOrigin[]
+  lotOrigin          LotOrigin?
   qcRecords          QcRecord[]
   NotionBpr          NotionBpr[]
   BprBillOfMaterials BprBillOfMaterials[]

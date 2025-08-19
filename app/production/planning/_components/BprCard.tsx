@@ -34,7 +34,7 @@ const BprCard = ({ bpr, statuses }: { bpr: PlanningBpr, statuses: BprStatus[] })
       <div className='card-body flex flex-col gap-y-2'>
         <div className='card-title'>{`${bpr.mbpr.producesItem.name}`}</div>
 
-        <div className='font-poppins text-xl text-neutral-600 font-semibold'>{bpr.lotOrigin.length !== 0 ? `${bpr.lotOrigin[0].lot.lotNumber}` : ''}</div>
+        <div className='font-poppins text-xl text-neutral-600 font-semibold'>{`${bpr.lotOrigin && bpr.lotOrigin.lot.lotNumber}`}</div>
 
         <div className='flex flex-row flex-wrap gap-1 '>
           <div className='flex items-center justify-center px-2 py-2   bg-neutral-300 rounded-xl '>

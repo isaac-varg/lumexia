@@ -37,6 +37,7 @@ type DataTableDefaultProps = {
   disableFilters?: boolean
   disablePagination?: boolean
   searchBg?: SearchBg
+  initialColumnFilters?: ColumnFiltersState;
 };
 
 const globalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
@@ -75,6 +76,7 @@ const Default = ({
   disableFilters = false,
   disablePagination = false,
   searchBg,
+  initialColumnFilters,
 }: DataTableDefaultProps) => {
 
   const tableFilterState = useTableFilter();
@@ -83,9 +85,9 @@ const Default = ({
 
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>(initialSortBy || []);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(tableFacetsState[tableStateName]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(initialColumnFilters || tableFacetsState[tableStateName] || []);
   const [globalFilter, setGlobalFilter] = useState(tableFilterState[tableStateName] ?? "");
-  const [pagination, setPagination] = useState<PaginationState>(tablePaginationSlice[tableStateName]);
+  const [pagination, setPagination] = useState<PaginationState>(tablePaginationSlice[tableStateName] || { pageIndex: 0, pageSize: 10 });
 
   const handlePaginationChange = (updater: Updater<PaginationState>) => {
 

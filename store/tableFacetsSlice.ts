@@ -31,7 +31,7 @@ type State = {
   poAccounting: FilterArray
   discrepancyAudit: FilterArray
   itemActivity: FilterArray
-
+  inventoryLots: FilterArray
 };
 
 export type TableStateName = keyof State;
@@ -72,7 +72,7 @@ export const useTableFacets = create<State & Actions>((set) => ({
   poAccounting: [],
   discrepancyAudit: [],
   itemActivity: [],
-
+  inventoryLots: [],
 
   setFilter: (tableState, value) =>
     set((state) => ({
