@@ -30,6 +30,7 @@ type State = {
   discrepancyAudit: string
   itemActivity: string
   inventoryLots: string
+  lotTransactions: string
 }
 
 
@@ -68,6 +69,7 @@ export const useTableFilter = create<State & Actions>((set) => ({
   discrepancyAudit: '',
   itemActivity: '',
   inventoryLots: '',
+  lotTransactions: '',
 
   setFilter: (filterName, value) => set((state) => ({
     ...state,

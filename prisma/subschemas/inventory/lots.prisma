@@ -17,6 +17,7 @@ model Lot {
     lotOrigin       LotOrigin?
     uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
     qcRecords       QcRecord[]
+    notes LotNote[]
 
     @@map("lots")
 }

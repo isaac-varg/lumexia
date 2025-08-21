@@ -14,6 +14,7 @@ model BprStaging {
     pulledByUser User @relation(fields: [pulledByUserId], references: [id])
     uom UnitOfMeasurement @relation(fields: [uomId], references: [id])
     status BprStagingStatus @relation(fields: [bprStagingStatusId], references: [id])
+    consumption BprStagingConsumption?
 
     @@map("bpr_stagings")
 }

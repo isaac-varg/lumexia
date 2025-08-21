@@ -8,9 +8,13 @@ import inventoryTypeActions from "@/actions/inventory/inventoryTypeActions";
 import itemTypeActions from "@/actions/inventory/itemTypeActions";
 import { ItemNote } from "@/actions/inventory/items/notes/getAllByItem";
 import { ItemNoteType } from "@/actions/inventory/items/notes/types/getAllItemNoteTypes";
+import { LotNote, getAllLotNotesByLot } from "@/actions/inventory/lots/notes/getAllByLot";
+import { LotNoteType, getAllLotNoteTypes } from "@/actions/inventory/lots/notes/types/getAll";
 import procurementTypeActions from "@/actions/inventory/procurementTypeActions";
 import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
+import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
+import { LotTransaction, getTransactionsByLot } from "@/app/inventory/items/[name]/_actions/inventory/getTransactionsByLot";
 import { LotsViewMode } from "@/app/inventory/items/[name]/_components/inventory/Lots";
 import { ItemTab } from "@/app/inventory/items/[name]/_components/shared/TabSelector";
 import { AliasType, InventoryType, ItemType, ProcurementType, Supplier } from "@prisma/client";
@@ -24,6 +28,7 @@ export type ItemOptions = {
   aliasTypes: AliasType[],
   suppliers: Supplier[],
   noteTypes: ItemNoteType[],
+  lotNoteTypes: LotNoteType[],
 }
 
 
@@ -31,6 +36,7 @@ export type ItemOptions = {
 type State = {
   activity: ItemActivity[],
   aliases: ItemAlias[];
+  audits: ItemInventoryAudits | null;
   currentTab: ItemTab;
   item: SingleItem | null;
   inventory: Inventory | null;
@@ -39,13 +45,18 @@ type State = {
   options: ItemOptions;
   selectedAlias: ItemAlias | null;
   selectedLot: InventoryLot | null;
+  selectedLotNotes: LotNote[];
+  selectedLotTransactions: LotTransaction[];
 }
 
 type Actions = {
   actions: {
     getOptions: () => void;
+    getSelectedLotNotes: () => void;
+    getSelectedLotTransactions: () => void;
     setActivity: (activity: ItemActivity[]) => void;
     setAliases: (aliases: ItemAlias[]) => void;
+    setAudits: (audits: ItemInventoryAudits | null) => void;
     setCurrentTab: (tab: ItemTab) => void;
     setItem: (item: SingleItem | null) => void;
     setInventory: (inventory: Inventory | null) => void;
@@ -56,13 +67,14 @@ type Actions = {
   }
 }
 
-export const useItemSelection = create<State & Actions>((set) => ({
+export const useItemSelection = create<State & Actions>((set, get) => ({
   activity: [],
   aliases: [],
-  currentTab: 'basics',
+  audits: null,
+  currentTab: 'basics' as ItemTab,
   item: null,
   inventory: null,
-  lotsViewMode: 'table',
+  lotsViewMode: 'table' as LotsViewMode,
   notes: [],
   options: {
     itemTypes: [],
@@ -71,21 +83,25 @@ export const useItemSelection = create<State & Actions>((set) => ({
     aliasTypes: [],
     suppliers: [],
     noteTypes: [],
+    lotNoteTypes: [],
   },
   selectedAlias: null,
   selectedLot: null,
+  selectedLotNotes: [],
+  selectedLotTransactions: [],
 
 
   actions: {
     getOptions: async () => {
       //fetch the data
-      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes] = await Promise.all([
+      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes] = await Promise.all([
         await itemTypeActions.getAll(),
         await procurementTypeActions.getAll(),
         await inventoryTypeActions.getAll(),
         await aliasTypeActions.getAll(),
         await supplierActions.getAll(undefined, undefined, [{ name: 'asc' }]),
         await inventoryActions.items.notes.types.getAll(),
+        await getAllLotNoteTypes(),
       ]);
 
       // set state
@@ -97,8 +113,32 @@ export const useItemSelection = create<State & Actions>((set) => ({
           aliasTypes,
           suppliers,
           noteTypes,
+          lotNoteTypes,
         }
       }));
+    },
+
+    getSelectedLotNotes: async () => {
+      const { selectedLot } = get()
+      if (!selectedLot) return;
+
+      const lotNotes = await getAllLotNotesByLot(selectedLot.id);
+      set(() => ({
+        selectedLotNotes: lotNotes,
+      }))
+    },
+
+    getSelectedLotTransactions: async () => {
+      const { selectedLot } = get()
+
+      if (!selectedLot) return;
+
+      const data = await getTransactionsByLot(selectedLot.id);
+
+      set(() => ({
+        selectedLotTransactions: data.transactions,
+      }))
+
     },
 
     setActivity: (activity) => {
@@ -107,6 +147,10 @@ export const useItemSelection = create<State & Actions>((set) => ({
 
     setAliases: (aliases) => {
       set(() => ({ aliases, }))
+    },
+
+    setAudits: (audits) => {
+      set(() => ({ audits, }))
     },
 
     setCurrentTab: (tab) => {

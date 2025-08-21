@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Aug 19 2025 10:38:59 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Aug 21 2025 11:16:52 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -863,6 +863,34 @@ model InventoryAudit {
   @@map("inventory_audits")
 }
 
+model LotNoteType {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  bgColor     String    @map("bg_color")
+  textColor   String    @map("text_color")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  notes       LotNote[]
+
+  @@map("lot_note_types")
+}
+
+model LotNote {
+  id         String      @id @default(uuid())
+  lotId      String      @map("lot_id")
+  noteTypeId String      @map("note_type_id")
+  userId     String      @map("user_id")
+  content    String
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  lot        Lot         @relation(fields: [lotId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
+  noteType   LotNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("lot_notes")
+}
+
 model LotOrigin {
   id              String                 @id @default(uuid())
   lotId           String                 @unique @map("lot_id")
@@ -892,6 +920,7 @@ model Lot {
   lotOrigin       LotOrigin?
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
   qcRecords       QcRecord[]
+  notes           LotNote[]
   BprStaging      BprStaging[]
 
   @@map("lots")
@@ -923,6 +952,7 @@ model Transaction {
   lot                             Lot                              @relation(fields: [lotId], references: [id])
   audit                           InventoryAuditTransaction?
   discrepancyAuditItemTransaction DiscrepancyAuditItemTransaction?
+  bprStagingConsumption           BprStagingConsumption?
 
   @@map("transactions")
 }
@@ -1325,9 +1355,22 @@ model BprStaging {
   pulledByUser           User                     @relation(fields: [pulledByUserId], references: [id])
   uom                    UnitOfMeasurement        @relation(fields: [uomId], references: [id])
   status                 BprStagingStatus         @relation(fields: [bprStagingStatusId], references: [id])
+  consumption            BprStagingConsumption?
   BprStagingVerification BprStagingVerification[]
 
   @@map("bpr_stagings")
+}
+
+model BprStagingConsumption {
+  id            String      @id @default(uuid())
+  bprStagingId  String      @unique @map("bpr_staging_id")
+  transactionId String      @unique @map("transaction_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  bprStaging    BprStaging  @relation(fields: [bprStagingId], references: [id])
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  @@map("bpr_staging_consumptions")
 }
 
 model BprStagingStatus {
@@ -2266,6 +2309,7 @@ model User {
   PricingExaminationNote        PricingExaminationNote[]
   DiscrepancyAuditItemNote      DiscrepancyAuditItemNote[]
   InventoryAudit                InventoryAudit[]
+  LotNote                       LotNote[]
   ItemNote                      ItemNote[]
   BprNote                       BprNote[]
   BprStaging                    BprStaging[]

@@ -36,6 +36,7 @@ type State = {
   discrepancyAudit: StateData,
   itemActivity: StateData,
   inventoryLots: StateData,
+  lotTransactions: StateData,
 }
 
 
@@ -73,6 +74,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
   discrepancyAudit: { pageSize: 20, pageIndex: 0 },
   itemActivity: { pageSize: 20, pageIndex: 0 },
   inventoryLots: { pageSize: 20, pageIndex: 0 },
+  lotTransactions: { pageSize: 10, pageIndex: 0 },
 
 
   setPagination: (filterName, value) =>
