@@ -15,7 +15,7 @@ import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
 import { LotTransaction, getTransactionsByLot } from "@/app/inventory/items/[name]/_actions/inventory/getTransactionsByLot";
-import { PurchasingFilterMode } from "@/app/inventory/items/[name]/_actions/purchasing/getFilteredPurchases";
+import { FilteredPurchaseOrder, PurchasingFilterMode, getFilteredPurchases } from "@/app/inventory/items/[name]/_actions/purchasing/getFilteredPurchases";
 import { DashboardItemPurchaseOrder } from "@/app/inventory/items/[name]/_actions/purchasing/getItemPurchaseOrders";
 import { LotsViewMode } from "@/app/inventory/items/[name]/_components/inventory/Lots";
 import { ItemTab } from "@/app/inventory/items/[name]/_components/shared/TabSelector";
@@ -40,7 +40,8 @@ type State = {
   aliases: ItemAlias[];
   audits: ItemInventoryAudits | null;
   currentTab: ItemTab;
-  filteredPurchaseOrders: any[];
+  filterPurchaseOrdersYear: string | undefined;
+  filteredPurchaseOrders: FilteredPurchaseOrder[];
   item: SingleItem | null;
   inventory: Inventory | null;
   lotsViewMode: LotsViewMode;
@@ -70,7 +71,7 @@ type Actions = {
     setLotsViewMode: (mode: LotsViewMode) => void;
     setNotes: (notes: ItemNote[]) => void;
     setPurchaseOrders: (purchaseOrders: DashboardItemPurchaseOrder[]) => void;
-    setPurchasingFilterMode: (filter: PurchasingFilterMode) => void;
+    setPurchasingFilterMode: (filter: PurchasingFilterMode, year?: string) => void;
     setSelectedAlias: (alias: ItemAlias | null) => void;
     setSelectedLot: (lot: InventoryLot | null) => void;
   }
@@ -95,6 +96,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     noteTypes: [],
     lotNoteTypes: [],
   },
+  filterPurchaseOrdersYear: undefined,
   purchasingFilterMode: 'yearToDate' as PurchasingFilterMode,
   purchaseOrders: [],
   selectedAlias: null,
@@ -107,9 +109,11 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     getFilteredPurchaseOrders: () => {
 
-      const { purchaseOrders, purchasingFilterMode } = get();
+      const { purchaseOrders, purchasingFilterMode, filterPurchaseOrdersYear } = get();
 
+      const filtered = getFilteredPurchases(purchaseOrders, purchasingFilterMode, filterPurchaseOrdersYear);
 
+      set(() => ({ filteredPurchaseOrders: filtered }));
 
     },
 
@@ -192,8 +196,8 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
       set(() => ({ notes, }))
     },
 
-    setPurchasingFilterMode: (mode) => {
-      set(() => ({ purchasingFilterMode: mode }));
+    setPurchasingFilterMode: (mode, year) => {
+      set(() => ({ purchasingFilterMode: mode, filterPurchaseOrdersYear: year }));
     },
 
     setPurchaseOrders: (purchaseOrders) => {

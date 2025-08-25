@@ -41,11 +41,14 @@ const StateSetter = ({
     setNotes,
     setPurchaseOrders,
     getOptions,
+    getFilteredPurchaseOrders,
   } = useItemActions();
 
   // current state
   const {
     options,
+    purchasingFilterMode,
+    filterPurchaseOrdersYear,
   } = useItemSelection()
 
   useEffect(() => {
@@ -69,9 +72,11 @@ const StateSetter = ({
     setNotes(notes);
     setPurchaseOrders(purchaseOrders);
 
-
-
   }, [item]);
+
+  useEffect(() => {
+    getFilteredPurchaseOrders();
+  }, [purchasingFilterMode, filterPurchaseOrdersYear])
 
 
   return false;

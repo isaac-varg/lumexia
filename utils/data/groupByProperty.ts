@@ -1,23 +1,31 @@
-const getNestedValue = (obj: any, path: string) => {
-  return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+const getNestedValue = <T extends object>(obj: T, path: string): any => {
+  return path.split('.').reduce((acc, part) => acc && acc[part], obj as any);
 }
 
-export const groupByProperty = (array: any[], property: string) => {
-  const isPropertyNested = property.split(".").length > 1;
+export const groupByProperty = <T extends object>(
+  array: T[],
+  property: string
+): Record<string, T[]> => {
+  const isPropertyNested = property.includes(".");
 
   return array.reduce((groups, item) => {
-    const value = isPropertyNested ? getNestedValue(item, property) : item[property];
+    const value = isPropertyNested
+      ? getNestedValue(item, property)
+      : (item as any)[property];
 
-    if (!groups[value]) {
-      groups[value] = [];
+    if (value === null || value === undefined) {
+      return groups;
     }
 
-    groups[value].push(item);
+    const key = String(value);
+
+    if (!groups[key]) {
+      groups[key] = [];
+    }
+
+    groups[key].push(item);
 
     return groups;
-  }, {} as Record<string, any[]>);
+  }, {} as Record<string, T[]>);
 }
 
-
-
-export type GroupByProperty = ReturnType<typeof groupByProperty>[number]

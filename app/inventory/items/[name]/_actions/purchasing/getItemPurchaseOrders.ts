@@ -16,6 +16,7 @@ export const getItemPurchaseOrders = async (itemId: string) => {
           status: true,
         }
       },
+      purchaseOrderStatus: true,
       uom: true,
     },
     orderBy: {
@@ -23,8 +24,17 @@ export const getItemPurchaseOrders = async (itemId: string) => {
     }
   });
 
+  const transformed = poItems.map(item => {
+    return {
+      referenceCode: item.purchaseOrders.referenceCode,
+      supplierName: item.purchaseOrders.supplier.name,
+      statusName: item.purchaseOrderStatus.name,
+      ...item,
+    }
+  })
 
-  return poItems
+
+  return transformed;
 }
 
 export type DashboardItemPurchaseOrder = Awaited<ReturnType<typeof getItemPurchaseOrders>>[number];

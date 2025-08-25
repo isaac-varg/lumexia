@@ -47,31 +47,20 @@ export const getFilteredPurchases = (
     return isDateInInterval(start, end, createdAt);
   });
 
+
   const groupedBySupplier = groupByProperty(filteredPOs, 'purchaseOrders.supplier.name');
 
+  const suppliers = Object.values(groupedBySupplier).map(
+    (purchaseOrders) => {
+      const { supplier } = purchaseOrders[0].purchaseOrders;
+      return {
+        supplier,
+        purchaseOrders,
+      };
+    },
+  );
 
-
-
-  // const filtered = data.map((supplier) => {
-  //   const filteredPOs = supplier.purchaseOrders.filter((purchase) => {
-  //     const createdAt = DateTime.fromJSDate(purchase.createdAt);
-  //     return isDateInInterval(start, end, createdAt);
-  //   });
-
-  //   const quantityTotal = filteredPOs.reduce(
-  //     (acc, curr) => acc + curr.quantity,
-  //     0,
-  //   );
-
-  //   const countTotal = filteredPOs.length;
-
-  //   return {
-  //     ...supplier,
-  //     purchaseOrders: filteredPOs,
-  //     quantityTotal,
-  //     countTotal,
-  //   };
-  // });
-
-  // return filtered;
+  return suppliers;
 };
+
+export type FilteredPurchaseOrder = Awaited<ReturnType<typeof getFilteredPurchases>>[number]
