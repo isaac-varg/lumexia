@@ -6,17 +6,19 @@ import TabsContainer from "./_components/shared/TabsContainer";
 import { getItemActivity } from "./_actions/basics/getActivity";
 import { getInventory } from "@/actions/inventory/getInventory";
 import { getAudits } from "./_actions/inventory/getAudits";
+import { getItemPurchaseOrders } from "./_actions/purchasing/getItemPurchaseOrders";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const [aliases, notes, activity, inventory, audits] = await Promise.all([
+  const [aliases, notes, activity, inventory, audits, purchaseOrders] = await Promise.all([
     await inventoryActions.aliases.getByItem(item.id),
     await inventoryActions.items.notes.getAllByItem(item.id),
     await getItemActivity(item.id),
     await getInventory(item.id),
     await getAudits(item.id),
+    await getItemPurchaseOrders(item.id)
   ])
 
 
@@ -30,6 +32,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
         activity={activity}
         inventory={inventory}
         audits={audits}
+        purchaseOrders={purchaseOrders}
       />
 
       <TitleRow />

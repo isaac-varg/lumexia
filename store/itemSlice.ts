@@ -15,6 +15,8 @@ import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
 import { LotTransaction, getTransactionsByLot } from "@/app/inventory/items/[name]/_actions/inventory/getTransactionsByLot";
+import { PurchasingFilterMode } from "@/app/inventory/items/[name]/_actions/purchasing/getFilteredPurchases";
+import { DashboardItemPurchaseOrder } from "@/app/inventory/items/[name]/_actions/purchasing/getItemPurchaseOrders";
 import { LotsViewMode } from "@/app/inventory/items/[name]/_components/inventory/Lots";
 import { ItemTab } from "@/app/inventory/items/[name]/_components/shared/TabSelector";
 import { AliasType, InventoryType, ItemType, ProcurementType, Supplier } from "@prisma/client";
@@ -38,20 +40,25 @@ type State = {
   aliases: ItemAlias[];
   audits: ItemInventoryAudits | null;
   currentTab: ItemTab;
+  filteredPurchaseOrders: any[];
   item: SingleItem | null;
   inventory: Inventory | null;
   lotsViewMode: LotsViewMode;
   notes: ItemNote[],
   options: ItemOptions;
+  purchasingFilterMode: PurchasingFilterMode;
+  purchaseOrders: DashboardItemPurchaseOrder[];
   selectedAlias: ItemAlias | null;
   selectedLot: InventoryLot | null;
   selectedLotNotes: LotNote[];
   selectedLotTransactions: LotTransaction[];
+
 }
 
 type Actions = {
   actions: {
     getOptions: () => void;
+    getFilteredPurchaseOrders: () => void;
     getSelectedLotNotes: () => void;
     getSelectedLotTransactions: () => void;
     setActivity: (activity: ItemActivity[]) => void;
@@ -62,6 +69,8 @@ type Actions = {
     setInventory: (inventory: Inventory | null) => void;
     setLotsViewMode: (mode: LotsViewMode) => void;
     setNotes: (notes: ItemNote[]) => void;
+    setPurchaseOrders: (purchaseOrders: DashboardItemPurchaseOrder[]) => void;
+    setPurchasingFilterMode: (filter: PurchasingFilterMode) => void;
     setSelectedAlias: (alias: ItemAlias | null) => void;
     setSelectedLot: (lot: InventoryLot | null) => void;
   }
@@ -72,6 +81,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   aliases: [],
   audits: null,
   currentTab: 'basics' as ItemTab,
+  filteredPurchaseOrders: [],
   item: null,
   inventory: null,
   lotsViewMode: 'table' as LotsViewMode,
@@ -85,6 +95,8 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     noteTypes: [],
     lotNoteTypes: [],
   },
+  purchasingFilterMode: 'yearToDate' as PurchasingFilterMode,
+  purchaseOrders: [],
   selectedAlias: null,
   selectedLot: null,
   selectedLotNotes: [],
@@ -92,6 +104,15 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
 
   actions: {
+
+    getFilteredPurchaseOrders: () => {
+
+      const { purchaseOrders, purchasingFilterMode } = get();
+
+
+
+    },
+
     getOptions: async () => {
       //fetch the data
       const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes] = await Promise.all([
@@ -169,6 +190,14 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     setNotes: (notes) => {
       set(() => ({ notes, }))
+    },
+
+    setPurchasingFilterMode: (mode) => {
+      set(() => ({ purchasingFilterMode: mode }));
+    },
+
+    setPurchaseOrders: (purchaseOrders) => {
+      set(() => ({ purchaseOrders, }))
     },
 
     setSelectedAlias: (alias) => {

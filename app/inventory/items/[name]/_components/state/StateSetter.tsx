@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { ItemActivity } from "../../_actions/basics/getActivity";
 import { Inventory } from "@/actions/inventory/getInventory";
 import { ItemInventoryAudits } from "../../_actions/inventory/getAudits";
+import { DashboardItemPurchaseOrder } from "../../_actions/purchasing/getItemPurchaseOrders";
 
 type StateSetterProps = {
   activity: ItemActivity[],
@@ -16,6 +17,7 @@ type StateSetterProps = {
   inventory: Inventory | null,
   notes: ItemNote[],
   audits: ItemInventoryAudits,
+  purchaseOrders: DashboardItemPurchaseOrder[],
 }
 
 
@@ -26,6 +28,7 @@ const StateSetter = ({
   item,
   notes,
   audits,
+  purchaseOrders,
 }: StateSetterProps) => {
 
   // state actions
@@ -36,6 +39,7 @@ const StateSetter = ({
     setItem,
     setInventory,
     setNotes,
+    setPurchaseOrders,
     getOptions,
   } = useItemActions();
 
@@ -63,6 +67,7 @@ const StateSetter = ({
     setAudits(audits);
     setInventory(inventory);
     setNotes(notes);
+    setPurchaseOrders(purchaseOrders);
 
 
 
