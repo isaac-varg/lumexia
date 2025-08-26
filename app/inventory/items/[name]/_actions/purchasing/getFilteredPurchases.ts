@@ -53,7 +53,15 @@ export const getFilteredPurchases = (
   const suppliers = Object.values(groupedBySupplier).map(
     (purchaseOrders) => {
       const { supplier } = purchaseOrders[0].purchaseOrders;
+      const quantityTotal = purchaseOrders.reduce((acc, curr) => curr.quantity + acc, 0);
+      const purchasesTotal = purchaseOrders.reduce((acc, curr) => curr.lineTotal + acc, 0)
+
+
+
+
       return {
+        quantityTotal,
+        purchasesTotal,
         supplier,
         purchaseOrders,
       };

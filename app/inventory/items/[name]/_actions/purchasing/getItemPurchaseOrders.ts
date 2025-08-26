@@ -25,10 +25,14 @@ export const getItemPurchaseOrders = async (itemId: string) => {
   });
 
   const transformed = poItems.map(item => {
+
+    const lineTotal = item.pricePerUnit * item.quantity;
+
     return {
       referenceCode: item.purchaseOrders.referenceCode,
       supplierName: item.purchaseOrders.supplier.name,
       statusName: item.purchaseOrderStatus.name,
+      lineTotal,
       ...item,
     }
   })
