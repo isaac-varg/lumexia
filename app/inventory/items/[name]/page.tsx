@@ -9,12 +9,13 @@ import { getAudits } from "./_actions/inventory/getAudits";
 import { getItemPurchaseOrders } from "./_actions/purchasing/getItemPurchaseOrders";
 import { accountingActions } from "@/actions/accounting";
 import { getItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
+import { getBomUsage } from "./_actions/production/getUsage";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData] = await Promise.all([
+  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage] = await Promise.all([
     await inventoryActions.aliases.getByItem(item.id),
     await inventoryActions.items.notes.getAllByItem(item.id),
     await getItemActivity(item.id),
@@ -22,7 +23,8 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
     await getAudits(item.id),
     await getItemPurchaseOrders(item.id),
     await accountingActions.examinations.getAllByItem(item.id),
-    await getItemPricingData(item.id)
+    await getItemPricingData(item.id),
+    await getBomUsage(item.id),
   ])
 
 
@@ -37,6 +39,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
         inventory={inventory}
         audits={audits}
         purchaseOrders={purchaseOrders}
+        usage={usage}
         examinations={examinations}
         pricingData={pricingData}
       />

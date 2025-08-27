@@ -8,7 +8,12 @@ import { DateTime } from "luxon"
 const LastExamination = () => {
   const { examinations } = useItemSelection()
 
-  if (!examinations) return false
+  if (examinations.length === 0) {
+    return (
+      <p>No examinations</p>
+    )
+  }
+
 
   return (
     <Card.Root>

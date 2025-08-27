@@ -18,6 +18,7 @@ import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
 import { LotTransaction, getTransactionsByLot } from "@/app/inventory/items/[name]/_actions/inventory/getTransactionsByLot";
+import { ItemUsage } from "@/app/inventory/items/[name]/_actions/production/getUsage";
 import { FilteredPurchaseOrder, PurchasingFilterMode, getFilteredPurchases } from "@/app/inventory/items/[name]/_actions/purchasing/getFilteredPurchases";
 import { DashboardItemPurchaseOrder } from "@/app/inventory/items/[name]/_actions/purchasing/getItemPurchaseOrders";
 import { LotsViewMode } from "@/app/inventory/items/[name]/_components/inventory/Lots";
@@ -59,6 +60,7 @@ type State = {
   selectedLot: InventoryLot | null;
   selectedLotNotes: LotNote[];
   selectedLotTransactions: LotTransaction[];
+  usage: ItemUsage | null;
 
 }
 
@@ -82,6 +84,7 @@ type Actions = {
     setPurchasingFilterMode: (filter: PurchasingFilterMode, year?: string) => void;
     setSelectedAlias: (alias: ItemAlias | null) => void;
     setSelectedLot: (lot: InventoryLot | null) => void;
+    setUsage: (usage: ItemUsage | null) => void;
   }
 }
 
@@ -114,6 +117,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   selectedLot: null,
   selectedLotNotes: [],
   selectedLotTransactions: [],
+  usage: null,
 
 
   actions: {
@@ -231,7 +235,11 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     setSelectedLot: (lot) => {
       set(() => ({ selectedLot: lot }))
-    }
+    },
+
+    setUsage: (usage) => {
+      set(() => ({ usage, }))
+    },
 
   },
 
