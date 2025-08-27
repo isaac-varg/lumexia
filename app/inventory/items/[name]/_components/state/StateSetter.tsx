@@ -9,6 +9,8 @@ import { ItemActivity } from "../../_actions/basics/getActivity";
 import { Inventory } from "@/actions/inventory/getInventory";
 import { ItemInventoryAudits } from "../../_actions/inventory/getAudits";
 import { DashboardItemPurchaseOrder } from "../../_actions/purchasing/getItemPurchaseOrders";
+import { PricingExamination } from "@/actions/accounting/examinations/getAllByItem";
+import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
 
 type StateSetterProps = {
   activity: ItemActivity[],
@@ -18,6 +20,8 @@ type StateSetterProps = {
   notes: ItemNote[],
   audits: ItemInventoryAudits,
   purchaseOrders: DashboardItemPurchaseOrder[],
+  examinations: PricingExamination[],
+  pricingData: ItemPricingData,
 }
 
 
@@ -29,6 +33,8 @@ const StateSetter = ({
   notes,
   audits,
   purchaseOrders,
+  examinations,
+  pricingData,
 }: StateSetterProps) => {
 
   // state actions
@@ -36,12 +42,15 @@ const StateSetter = ({
     setActivity,
     setAliases,
     setAudits,
+    setExaminations,
     setItem,
     setInventory,
     setNotes,
+    setPricingData,
     setPurchaseOrders,
     getOptions,
     getFilteredPurchaseOrders,
+
   } = useItemActions();
 
   // current state
@@ -68,9 +77,12 @@ const StateSetter = ({
     setActivity(activity);
     setAliases(aliases);
     setAudits(audits);
+    setExaminations(examinations);
     setInventory(inventory);
     setNotes(notes);
+    setPricingData(pricingData);
     setPurchaseOrders(purchaseOrders);
+
 
   }, [item]);
 

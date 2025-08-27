@@ -1,5 +1,6 @@
 import Card from "@/components/Card";
 import { useItemSelection } from "@/store/itemSlice";
+import { toMathFractionalDigits } from "@/utils/data/toMathFractionalDigits";
 import { ApexOptions } from "apexcharts";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
@@ -28,14 +29,14 @@ const FrequencyChart = () => {
         yearlyData[year][month] += po.quantity;
       });
 
-      const allMonths = [...new Set(Object.values(yearlyData).flatMap(months => Object.keys(months)))].sort((a, b) => {
+      const allMonths = Array.from(new Set(Object.values(yearlyData).flatMap(months => Object.keys(months)))).sort((a, b) => {
         return new Date(`1 ${a} 2000`).getMonth() - new Date(`1 ${b} 2000`).getMonth();
       });
 
       const chartSeries = Object.keys(yearlyData).map(year => {
         return {
           name: year,
-          data: allMonths.map(month => yearlyData[year][month] || 0)
+          data: allMonths.map(month => toMathFractionalDigits(yearlyData[year][month] || 0, 3))
         };
       });
 
@@ -76,10 +77,6 @@ const FrequencyChart = () => {
               return val + " units"
             }
           }
-        },
-        title: {
-          text: 'Total Quantity Ordered Per Month',
-          align: 'left'
         },
       });
     }

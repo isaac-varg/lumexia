@@ -1,3 +1,5 @@
+import { PricingExamination } from "@/actions/accounting/examinations/getAllByItem";
+import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
 import { InventoryLot } from "@/actions/auxiliary/getLotsByItem";
 import { inventoryActions } from "@/actions/inventory";
 import aliasTypeActions from "@/actions/inventory/aliasTypes";
@@ -11,6 +13,7 @@ import { ItemNoteType } from "@/actions/inventory/items/notes/types/getAllItemNo
 import { LotNote, getAllLotNotesByLot } from "@/actions/inventory/lots/notes/getAllByLot";
 import { LotNoteType, getAllLotNoteTypes } from "@/actions/inventory/lots/notes/types/getAll";
 import procurementTypeActions from "@/actions/inventory/procurementTypeActions";
+import uomActions from "@/actions/inventory/uomActions";
 import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
@@ -19,7 +22,7 @@ import { FilteredPurchaseOrder, PurchasingFilterMode, getFilteredPurchases } fro
 import { DashboardItemPurchaseOrder } from "@/app/inventory/items/[name]/_actions/purchasing/getItemPurchaseOrders";
 import { LotsViewMode } from "@/app/inventory/items/[name]/_components/inventory/Lots";
 import { ItemTab } from "@/app/inventory/items/[name]/_components/shared/TabSelector";
-import { AliasType, InventoryType, ItemType, ProcurementType, Supplier } from "@prisma/client";
+import { AliasType, InventoryType, ItemType, ProcurementType, Supplier, UnitOfMeasurement } from "@prisma/client";
 import { create } from "zustand"
 
 
@@ -31,6 +34,7 @@ export type ItemOptions = {
   suppliers: Supplier[],
   noteTypes: ItemNoteType[],
   lotNoteTypes: LotNoteType[],
+  uom: UnitOfMeasurement[],
 }
 
 
@@ -40,6 +44,7 @@ type State = {
   aliases: ItemAlias[];
   audits: ItemInventoryAudits | null;
   currentTab: ItemTab;
+  examinations: PricingExamination[],
   filterPurchaseOrdersYear: string | undefined;
   filteredPurchaseOrders: FilteredPurchaseOrder[];
   item: SingleItem | null;
@@ -47,6 +52,7 @@ type State = {
   lotsViewMode: LotsViewMode;
   notes: ItemNote[],
   options: ItemOptions;
+  pricingData: ItemPricingData | null;
   purchasingFilterMode: PurchasingFilterMode;
   purchaseOrders: DashboardItemPurchaseOrder[];
   selectedAlias: ItemAlias | null;
@@ -66,10 +72,12 @@ type Actions = {
     setAliases: (aliases: ItemAlias[]) => void;
     setAudits: (audits: ItemInventoryAudits | null) => void;
     setCurrentTab: (tab: ItemTab) => void;
+    setExaminations: (examinations: PricingExamination[]) => void;
     setItem: (item: SingleItem | null) => void;
     setInventory: (inventory: Inventory | null) => void;
     setLotsViewMode: (mode: LotsViewMode) => void;
     setNotes: (notes: ItemNote[]) => void;
+    setPricingData: (pricingData: ItemPricingData) => void;
     setPurchaseOrders: (purchaseOrders: DashboardItemPurchaseOrder[]) => void;
     setPurchasingFilterMode: (filter: PurchasingFilterMode, year?: string) => void;
     setSelectedAlias: (alias: ItemAlias | null) => void;
@@ -82,6 +90,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   aliases: [],
   audits: null,
   currentTab: 'basics' as ItemTab,
+  examinations: [],
   filteredPurchaseOrders: [],
   item: null,
   inventory: null,
@@ -95,8 +104,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     suppliers: [],
     noteTypes: [],
     lotNoteTypes: [],
+    uom: [],
   },
   filterPurchaseOrdersYear: undefined,
+  pricingData: null,
   purchasingFilterMode: 'yearToDate' as PurchasingFilterMode,
   purchaseOrders: [],
   selectedAlias: null,
@@ -119,7 +130,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     getOptions: async () => {
       //fetch the data
-      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes] = await Promise.all([
+      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes, uom] = await Promise.all([
         await itemTypeActions.getAll(),
         await procurementTypeActions.getAll(),
         await inventoryTypeActions.getAll(),
@@ -127,6 +138,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
         await supplierActions.getAll(undefined, undefined, [{ name: 'asc' }]),
         await inventoryActions.items.notes.types.getAll(),
         await getAllLotNoteTypes(),
+        await uomActions.getAll(),
       ]);
 
       // set state
@@ -139,6 +151,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
           suppliers,
           noteTypes,
           lotNoteTypes,
+          uom,
         }
       }));
     },
@@ -182,6 +195,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
       set(() => ({ currentTab: tab }))
     },
 
+    setExaminations: (examinations) => {
+      set(() => ({ examinations, }))
+    },
+
     setItem: (item) => {
       set(() => ({ item }))
     },
@@ -194,6 +211,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     setNotes: (notes) => {
       set(() => ({ notes, }))
+    },
+
+    setPricingData: (pricingData) => {
+      set(() => ({ pricingData, }));
     },
 
     setPurchasingFilterMode: (mode, year) => {
