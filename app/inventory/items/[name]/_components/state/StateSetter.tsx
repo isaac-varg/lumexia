@@ -12,6 +12,8 @@ import { DashboardItemPurchaseOrder } from "../../_actions/purchasing/getItemPur
 import { PricingExamination } from "@/actions/accounting/examinations/getAllByItem";
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
 import { ItemUsage } from "../../_actions/production/getUsage";
+import { ItemActiveMbpr } from "../../_actions/production/getActiveMbpr";
+import { ItemBpr } from "../../_actions/production/getBprs";
 
 type StateSetterProps = {
   activity: ItemActivity[],
@@ -24,6 +26,8 @@ type StateSetterProps = {
   examinations: PricingExamination[],
   pricingData: ItemPricingData,
   usage: ItemUsage,
+  activeMbpr: ItemActiveMbpr | null,
+  bprs: ItemBpr[],
 }
 
 
@@ -38,13 +42,17 @@ const StateSetter = ({
   examinations,
   pricingData,
   usage,
+  activeMbpr,
+  bprs
 }: StateSetterProps) => {
 
   // state actions
   const {
     setActivity,
+    setActiveMbpr,
     setAliases,
     setAudits,
+    setBprs,
     setExaminations,
     setItem,
     setInventory,
@@ -87,6 +95,8 @@ const StateSetter = ({
     setPricingData(pricingData);
     setPurchaseOrders(purchaseOrders);
     setUsage(usage);
+    setBprs(bprs);
+    setActiveMbpr(activeMbpr)
 
 
   }, [item]);

@@ -18,6 +18,8 @@ import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
 import { LotTransaction, getTransactionsByLot } from "@/app/inventory/items/[name]/_actions/inventory/getTransactionsByLot";
+import { ItemActiveMbpr } from "@/app/inventory/items/[name]/_actions/production/getActiveMbpr";
+import { ItemBpr } from "@/app/inventory/items/[name]/_actions/production/getBprs";
 import { ItemUsage } from "@/app/inventory/items/[name]/_actions/production/getUsage";
 import { FilteredPurchaseOrder, PurchasingFilterMode, getFilteredPurchases } from "@/app/inventory/items/[name]/_actions/purchasing/getFilteredPurchases";
 import { DashboardItemPurchaseOrder } from "@/app/inventory/items/[name]/_actions/purchasing/getItemPurchaseOrders";
@@ -44,6 +46,7 @@ type State = {
   activity: ItemActivity[],
   aliases: ItemAlias[];
   audits: ItemInventoryAudits | null;
+  bprs: ItemBpr[];
   currentTab: ItemTab;
   examinations: PricingExamination[],
   filterPurchaseOrdersYear: string | undefined;
@@ -51,6 +54,7 @@ type State = {
   item: SingleItem | null;
   inventory: Inventory | null;
   lotsViewMode: LotsViewMode;
+  activeMbpr: ItemActiveMbpr | null;
   notes: ItemNote[],
   options: ItemOptions;
   pricingData: ItemPricingData | null;
@@ -70,9 +74,11 @@ type Actions = {
     getFilteredPurchaseOrders: () => void;
     getSelectedLotNotes: () => void;
     getSelectedLotTransactions: () => void;
+    setActiveMbpr: (mbpr: ItemActiveMbpr | null) => void;
     setActivity: (activity: ItemActivity[]) => void;
     setAliases: (aliases: ItemAlias[]) => void;
     setAudits: (audits: ItemInventoryAudits | null) => void;
+    setBprs: (bprs: ItemBpr[]) => void;
     setCurrentTab: (tab: ItemTab) => void;
     setExaminations: (examinations: PricingExamination[]) => void;
     setItem: (item: SingleItem | null) => void;
@@ -90,8 +96,10 @@ type Actions = {
 
 export const useItemSelection = create<State & Actions>((set, get) => ({
   activity: [],
+  activeMbpr: null,
   aliases: [],
   audits: null,
+  bprs: [],
   currentTab: 'basics' as ItemTab,
   examinations: [],
   filteredPurchaseOrders: [],
@@ -183,6 +191,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     },
 
+    setActiveMbpr: (mbpr) => {
+      set(() => ({ activeMbpr: mbpr }));
+    },
+
     setActivity: (activity) => {
       set(() => ({ activity, }))
     },
@@ -193,6 +205,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     setAudits: (audits) => {
       set(() => ({ audits, }))
+    },
+
+    setBprs: (bprs) => {
+      set(() => ({ bprs, }));
     },
 
     setCurrentTab: (tab) => {
