@@ -30,7 +30,6 @@ const ItemTable = () => {
   const [isLoading, setIsLoading] = useState(true)
   const isLocked = !user || user.UserRoleAssignment.length === 0 || user.UserRoleAssignment.every(r => r.userRoleId !== staticRecords.app.userRoles.purchasing)
 
-  //const isLocked = purchaseOrder.statusId === staticRecords.purchasing.poStatuses.received || purchaseOrder.statusId === staticRecords.purchasing.poStatuses.confirmedSlashAwaitingDelivery
 
   const router = useRouter();
 
@@ -147,7 +146,7 @@ const ItemTable = () => {
 
 
   if (isLoading) {
-    return <div><Skeleton count={5} /></div>;
+    return <Card.Root span={2}><Skeleton count={5} /></Card.Root>
   }
 
 

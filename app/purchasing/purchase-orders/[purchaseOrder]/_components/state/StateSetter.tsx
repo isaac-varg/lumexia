@@ -4,15 +4,21 @@ import { useEffect } from "react"
 import { PurchaseOrderDetails } from "../../_functions/getPurchaseOrder"
 import { usePurchasingActions, usePurchasingSelection } from "@/store/purchasingSlice"
 import { POItem } from "../../_functions/getPOItems"
+import { PoWithAccounting } from "@/app/accounting/pos/_actions/getPoWithAccountingDetails"
+import { AccountingFile } from "@/app/accounting/pos/_actions/getAccountingFilesByPo"
 
 type StateSetterProps = {
   purchaseOrder: PurchaseOrderDetails,
+  poWithAccounting: PoWithAccounting | null,
   orderItems: POItem[],
+  files: AccountingFile[],
 }
 
 const StateSetter = ({
   purchaseOrder: serverPurchaseOrder,
+  poWithAccounting,
   orderItems,
+  files,
 }: StateSetterProps) => {
 
   const {
@@ -23,7 +29,9 @@ const StateSetter = ({
     getPurchasableItems,
     getOptions,
     setOrderItems,
+    setPoWithAccounting,
     setPurchaseOrder,
+    setFiles,
   } = usePurchasingActions();
 
 
@@ -40,6 +48,8 @@ const StateSetter = ({
   useEffect(() => {
 
     setOrderItems(orderItems);
+    setPoWithAccounting(poWithAccounting);
+    setFiles(files);
   }, [purchaseOrder])
 
 

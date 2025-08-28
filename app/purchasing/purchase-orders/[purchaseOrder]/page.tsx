@@ -5,7 +5,6 @@ import { getPOItems } from "./_functions/getPOItems";
 import { getPurchaseOrder } from "./_functions/getPurchaseOrder";
 import Header from "./_components/header/Header";
 import NotesPanel from "./_components/notes/NotesPanel";
-import Totals from "./_components/Totals";
 import Correspondant from "./_components/correspondant/Correspondant";
 import ActivityPanelCard from "./_components/activity/ActivityPanel";
 import { getAllItems } from "./_functions/getAllItems";
@@ -36,21 +35,19 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
 
   const [
     orderItems,
+    poWithAccounting,
+    files,
+
   ] = await Promise.all([
-    await getPOItems(purchaseOrder.id)
+    await getPOItems(purchaseOrder.id),
+    await getPoWithAccountingDetails(purchaseOrder.id),
+    await getAccountingFilesByPo(searchParams.id),
   ])
 
 
   const notes = await getOrderNotes(purchaseOrder.id)
   const activity = await getActivity(purchaseOrder.id)
-  const user = await getUser();
   // for accounting
-  const poWithAccounting = await getPoWithAccountingDetails(searchParams.id)
-  const files = await getAccountingFilesByPo(searchParams.id)
-  const fileTypes = await getAccountingFileTags();
-  const allPaymentMethods = await accountingActions.paymentMethods.getAll();
-  const allAccountingStatuses = await getAllPoAccountingStatuses();
-  const allAccountingNoteTypes = await getAllAccountingNoteTypes();
 
 
   return (
@@ -59,6 +56,8 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
       <StateSetter
         purchaseOrder={purchaseOrder}
         orderItems={orderItems}
+        poWithAccounting={poWithAccounting}
+        files={files}
       />
 
       <Header />
@@ -69,13 +68,6 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
 
 
       {/*     
- <Header
-        purchaseOrder={purchaseOrder}
-        poStatuses={poStatuses}
-        orderItems={flattenedOrderItems}
-        company={company}
-      />
-
 
       <div className="grid grid-cols-2 gap-4">
         <NotesPanel

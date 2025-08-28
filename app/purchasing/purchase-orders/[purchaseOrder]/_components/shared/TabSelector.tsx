@@ -8,19 +8,20 @@ export type PurchasingTab = 'items' | 'accounting'
 
 const TabSelector = () => {
 
-  const { } = usePurchasingSelection()
+  const { purchaseOrder } = usePurchasingSelection()
 
 
   const tabs: PurchasingTab[] = ['items', 'accounting'];
 
-  // if (!item) {
-  //   return <Skeleton />
-  // }
+  if (!purchaseOrder) {
+    return <Skeleton />
+  }
 
   return (
     <div className="flex items-center justify-start gap-x-6">
 
       {tabs.map(tab => <TabButton key={tab} tab={tab} />)}
+
     </div>
   )
 }
