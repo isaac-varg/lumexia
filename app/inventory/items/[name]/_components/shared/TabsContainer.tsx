@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Inventory from "../inventory/Inventory";
 import Pricing from "../pricing/Pricing";
 import Production from "../production/Production";
+import Files from "../files/Files";
 
 
 const TabsContainer = () => {
@@ -26,6 +27,7 @@ const TabsContainer = () => {
         {currentTab === 'purchasing' && <Purchasing />}
         {currentTab === 'pricing' && <Pricing />}
         {currentTab === 'production' && <Production />}
+        {currentTab === 'files' && <Files />}
       </motion.div>
     </AnimatePresence>
   )

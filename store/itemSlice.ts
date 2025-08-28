@@ -16,6 +16,8 @@ import procurementTypeActions from "@/actions/inventory/procurementTypeActions";
 import uomActions from "@/actions/inventory/uomActions";
 import supplierActions from "@/actions/purchasing/supplierActions";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
+import { ItemFile } from "@/app/inventory/items/[name]/_actions/files/getAllItemFiles";
+import { ItemFileType, getItemFileTypes } from "@/app/inventory/items/[name]/_actions/files/getItemFilesTypes";
 import { ItemInventoryAudits } from "@/app/inventory/items/[name]/_actions/inventory/getAudits";
 import { LotTransaction, getTransactionsByLot } from "@/app/inventory/items/[name]/_actions/inventory/getTransactionsByLot";
 import { ItemActiveMbpr } from "@/app/inventory/items/[name]/_actions/production/getActiveMbpr";
@@ -38,6 +40,7 @@ export type ItemOptions = {
   noteTypes: ItemNoteType[],
   lotNoteTypes: LotNoteType[],
   uom: UnitOfMeasurement[],
+  itemFileTypes: ItemFileType[],
 }
 
 
@@ -49,6 +52,7 @@ type State = {
   bprs: ItemBpr[];
   currentTab: ItemTab;
   examinations: PricingExamination[],
+  files: ItemFile[],
   filterPurchaseOrdersYear: string | undefined;
   filteredPurchaseOrders: FilteredPurchaseOrder[];
   item: SingleItem | null;
@@ -81,6 +85,7 @@ type Actions = {
     setBprs: (bprs: ItemBpr[]) => void;
     setCurrentTab: (tab: ItemTab) => void;
     setExaminations: (examinations: PricingExamination[]) => void;
+    setFiles: (file: ItemFile[]) => void;
     setItem: (item: SingleItem | null) => void;
     setInventory: (inventory: Inventory | null) => void;
     setLotsViewMode: (mode: LotsViewMode) => void;
@@ -102,6 +107,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   bprs: [],
   currentTab: 'basics' as ItemTab,
   examinations: [],
+  files: [],
   filteredPurchaseOrders: [],
   item: null,
   inventory: null,
@@ -116,6 +122,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     noteTypes: [],
     lotNoteTypes: [],
     uom: [],
+    itemFileTypes: [],
   },
   filterPurchaseOrdersYear: undefined,
   pricingData: null,
@@ -142,7 +149,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     getOptions: async () => {
       //fetch the data
-      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes, uom] = await Promise.all([
+      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes, uom, itemFileTypes,] = await Promise.all([
         await itemTypeActions.getAll(),
         await procurementTypeActions.getAll(),
         await inventoryTypeActions.getAll(),
@@ -151,6 +158,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
         await inventoryActions.items.notes.types.getAll(),
         await getAllLotNoteTypes(),
         await uomActions.getAll(),
+        await getItemFileTypes(),
       ]);
 
       // set state
@@ -164,6 +172,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
           noteTypes,
           lotNoteTypes,
           uom,
+          itemFileTypes,
         }
       }));
     },
@@ -217,6 +226,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     setExaminations: (examinations) => {
       set(() => ({ examinations, }))
+    },
+
+    setFiles: (files) => {
+      set(() => ({ files, }))
     },
 
     setItem: (item) => {

@@ -14,6 +14,7 @@ import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData
 import { ItemUsage } from "../../_actions/production/getUsage";
 import { ItemActiveMbpr } from "../../_actions/production/getActiveMbpr";
 import { ItemBpr } from "../../_actions/production/getBprs";
+import { ItemFile } from "../../_actions/files/getAllItemFiles";
 
 type StateSetterProps = {
   activity: ItemActivity[],
@@ -28,6 +29,7 @@ type StateSetterProps = {
   usage: ItemUsage,
   activeMbpr: ItemActiveMbpr | null,
   bprs: ItemBpr[],
+  files: ItemFile[],
 }
 
 
@@ -43,7 +45,8 @@ const StateSetter = ({
   pricingData,
   usage,
   activeMbpr,
-  bprs
+  bprs,
+  files,
 }: StateSetterProps) => {
 
   // state actions
@@ -55,6 +58,7 @@ const StateSetter = ({
     setBprs,
     setExaminations,
     setItem,
+    setFiles,
     setInventory,
     setNotes,
     setPricingData,
@@ -96,8 +100,8 @@ const StateSetter = ({
     setPurchaseOrders(purchaseOrders);
     setUsage(usage);
     setBprs(bprs);
-    setActiveMbpr(activeMbpr)
-
+    setActiveMbpr(activeMbpr);
+    setFiles(files);
 
   }, [item]);
 

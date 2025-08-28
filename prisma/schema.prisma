@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Aug 21 2025 11:16:52 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Aug 28 2025 08:58:46 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -563,6 +563,7 @@ model File {
   uploadedBy          User                 @relation(fields: [uploadedById], references: [id])
   poAccountingFiles   PoAccountingFile[]
   generalRequestFiles GeneralRequestFile[]
+  itemFiles           ItemFile[]
 
   @@map("files")
 }
@@ -1035,6 +1036,34 @@ model InventoryType {
   @@map("inventory_types")
 }
 
+model ItemFileType {
+  id          String     @id @default(uuid())
+  name        String
+  abbreviaton String?
+  description String?
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  itemFiles   ItemFile[]
+
+  @@map("item_file_types")
+}
+
+model ItemFile {
+  id         String       @id @default(uuid())
+  fileTypeId String       @map("file_type_id")
+  fileId     String       @map("file_id")
+  itemId     String       @map("item_id")
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  fileType   ItemFileType @relation(fields: [fileTypeId], references: [id])
+  file       File         @relation(fields: [fileId], references: [id])
+  item       Item         @relation(fields: [itemId], references: [id])
+
+  @@map("item_files")
+}
+
 model ItemNoteType {
   id          String     @id @default(uuid())
   name        String
@@ -1109,6 +1138,7 @@ model Item {
   ItemConsumerContainer           ItemConsumerContainer[]
   PricingQueue                    PricingQueue[]
   PricingTemplateAuxiliary        PricingTemplateAuxiliary[]
+  ItemFile                        ItemFile[]
   ItemNote                        ItemNote[]
   BillOfMaterial                  BillOfMaterial[]
   MasterBatchProductionRecord     MasterBatchProductionRecord[]

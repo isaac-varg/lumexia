@@ -12,12 +12,13 @@ import { getItemPricingData } from "@/actions/accounting/pricing/getItemPricingD
 import { getBomUsage } from "./_actions/production/getUsage";
 import { getActiveMbpr } from "./_actions/production/getActiveMbpr";
 import { getBprs } from "./_actions/production/getBprs";
+import { getAllItemFiles } from "./_actions/files/getAllItemFiles";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage, activeMbpr, bprs] = await Promise.all([
+  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage, activeMbpr, bprs, files] = await Promise.all([
     await inventoryActions.aliases.getByItem(item.id),
     await inventoryActions.items.notes.getAllByItem(item.id),
     await getItemActivity(item.id),
@@ -28,7 +29,8 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
     await getItemPricingData(item.id),
     await getBomUsage(item.id),
     await getActiveMbpr(item.id),
-    await getBprs(item.id)
+    await getBprs(item.id),
+    await getAllItemFiles(item.id),
   ])
 
 
@@ -48,6 +50,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
         pricingData={pricingData}
         activeMbpr={activeMbpr}
         bprs={bprs}
+        files={files}
       />
 
       <TitleRow />
