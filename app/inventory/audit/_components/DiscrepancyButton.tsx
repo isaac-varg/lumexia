@@ -5,7 +5,7 @@ const DiscrepancyButton = () => {
 
   const router = useRouter()
   return (
-    <button className="btn btn-soft btn-secondary"
+    <button className="btn btn-secondary"
       onClick={() => router.push('/inventory/audit/discrepancy')}
     >Discrepancy Audit</button>
   )

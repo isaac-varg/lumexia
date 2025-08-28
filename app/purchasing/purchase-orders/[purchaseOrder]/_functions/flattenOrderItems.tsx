@@ -2,9 +2,9 @@ import { POItem } from "./getPOItems";
 
 export const flattenOrderItems = (
   items: POItem[]
-)  => {
+) => {
   return items.map((item) => {
-    
+
     const alias = item.alias ? item.alias.alias.name : null;
 
     return {
@@ -23,4 +23,4 @@ export const flattenOrderItems = (
 export type PoFlattenedOrderItems = ReturnType<typeof flattenOrderItems>
 
 
-export type FlattenedOrderItem =  PoFlattenedOrderItems[number]
+export type FlattenedOrderItem = PoFlattenedOrderItems[number]
