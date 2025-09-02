@@ -31,6 +31,7 @@ type State = {
   itemActivity: string
   inventoryLots: string
   lotTransactions: string
+  poActivity: string
 }
 
 
@@ -70,6 +71,7 @@ export const useTableFilter = create<State & Actions>((set) => ({
   itemActivity: '',
   inventoryLots: '',
   lotTransactions: '',
+  poActivity: '',
 
   setFilter: (filterName, value) => set((state) => ({
     ...state,

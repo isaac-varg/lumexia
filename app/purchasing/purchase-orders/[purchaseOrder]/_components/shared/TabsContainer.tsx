@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Items from "../items/Items";
 import AccountingPanel from "../accounting/AccountingPanel";
 import Notes from "../notes/Notes";
+import ActivityPanel from "../activity/ActivityPanel";
 
 
 const TabsContainer = () => {
@@ -23,6 +24,7 @@ const TabsContainer = () => {
         {currentTab === 'items' && <Items />}
         {currentTab === 'accounting' && <AccountingPanel />}
         {currentTab === 'notes' && <Notes />}
+        {currentTab === 'activity' && <ActivityPanel />}
       </motion.div>
     </AnimatePresence>
   )

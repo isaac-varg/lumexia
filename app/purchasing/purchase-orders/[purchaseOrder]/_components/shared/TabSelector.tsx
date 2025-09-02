@@ -4,14 +4,14 @@ import TabButton from "./TabButton";
 
 
 // define the tabs
-export type PurchasingTab = 'items' | 'accounting' | 'notes';
+export type PurchasingTab = 'items' | 'accounting' | 'notes' | 'activity';
 
 const TabSelector = () => {
 
   const { purchaseOrder } = usePurchasingSelection()
 
 
-  const tabs: PurchasingTab[] = ['items', 'accounting', 'notes'];
+  const tabs: PurchasingTab[] = ['items', 'accounting', 'notes', 'activity'];
 
   if (!purchaseOrder) {
     return <Skeleton />

@@ -9,6 +9,7 @@ import { AccountingFile } from "@/app/accounting/pos/_actions/getAccountingFiles
 import { PoInternalNote } from "@/actions/purchasing/purchaseOrders/notes/interal/getAll"
 import { PoPublicNote } from "@/actions/purchasing/purchaseOrders/notes/public/getAll"
 import { PoSupplierNote } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAll"
+import { PurchaseOrderActivity } from "@/actions/purchasing/purchaseOrders/getActivity"
 
 type StateSetterProps = {
   purchaseOrder: PurchaseOrderDetails,
@@ -18,6 +19,7 @@ type StateSetterProps = {
   internalNotes: PoInternalNote[],
   publicNotes: PoPublicNote[],
   poSupplierNotes: PoSupplierNote[],
+  activity: PurchaseOrderActivity,
 }
 
 const StateSetter = ({
@@ -28,6 +30,7 @@ const StateSetter = ({
   internalNotes,
   publicNotes,
   poSupplierNotes,
+  activity,
 }: StateSetterProps) => {
 
   const {
@@ -44,6 +47,7 @@ const StateSetter = ({
     setInternalNotes,
     setPublicNotes,
     setPoSupplierNotes,
+    setActivity,
   } = usePurchasingActions();
 
 
@@ -65,6 +69,7 @@ const StateSetter = ({
     setInternalNotes(internalNotes);
     setPublicNotes(publicNotes);
     setPoSupplierNotes(poSupplierNotes);
+    setActivity(activity);
   }, [purchaseOrder])
 
 

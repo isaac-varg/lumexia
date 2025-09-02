@@ -20,6 +20,7 @@ import { getAllPoSupplierNotes } from "./purchaseOrders/notes/supplier/getAll";
 import { createPoSupplierNote } from "./purchaseOrders/notes/supplier/create";
 import { createPoSupplierNoteType } from "./purchaseOrders/notes/supplier/createType";
 import { getAllPoSupplierNoteTypes } from "./purchaseOrders/notes/supplier/getAllTypes";
+import { getActivity } from "./purchaseOrders/getActivity";
 
 export const purchasingActions = {
   requests: {
@@ -36,6 +37,7 @@ export const purchasingActions = {
     getAll: getAllSuppliers,
   },
   purchaseOrders: {
+    getActivity: getActivity,
     notes: {
       internal: {
         getAll: getInternalNotes,

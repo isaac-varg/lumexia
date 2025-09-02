@@ -21,6 +21,7 @@ import { POItem } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functi
 import { PurchaseOrderDetails } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/getPurchaseOrder"
 import { Config, PoAccountingNoteType, PurchaseOrderStatus } from "@prisma/client"
 import { create } from "zustand"
+import { PurchaseOrderActivity } from "@/actions/purchasing/purchaseOrders/getActivity"
 
 type Options = {
   company: Config[]
@@ -46,6 +47,7 @@ type State = {
   internalNotes: PoInternalNote[]
   publicNotes: PoPublicNote[]
   poSupplierNotes: PoSupplierNote[]
+  activity: PurchaseOrderActivity
 }
 
 type Actions = {
@@ -60,6 +62,7 @@ type Actions = {
     setInternalNotes: (notes: PoInternalNote[]) => void;
     setPublicNotes: (notes: PoPublicNote[]) => void;
     setPoSupplierNotes: (notes: PoSupplierNote[]) => void;
+    setActivity: (activity: PurchaseOrderActivity) => void;
   }
 }
 
@@ -84,6 +87,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
   publicNotes: [],
   internalNotes: [],
   poSupplierNotes: [],
+  activity: [],
 
   actions: {
 
@@ -145,6 +149,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
     setInternalNotes: (notes) => set(() => ({ internalNotes: notes })),
     setPublicNotes: (notes) => set(() => ({ publicNotes: notes, })),
     setPoSupplierNotes: (notes) => set(() => ({ poSupplierNotes: notes })),
+    setActivity: (activity) => set(() => ({ activity })),
 
   },
 
