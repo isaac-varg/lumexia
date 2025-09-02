@@ -15,7 +15,7 @@ const PrintButton = ({ purchaseOrder, orderItems, company }: { purchaseOrder: Pu
 
   const handleClick = async () => {
 
-    await createPurchaseOrder(purchaseOrder.referenceCode, purchaseOrder.updatedAt, purchaseOrder.supplier, orderItems, company);
+    await createPurchaseOrder(purchaseOrder.referenceCode, purchaseOrder.updatedAt, purchaseOrder.supplier, orderItems, company, publicNotes, poSupplierNotes);
 
     await createActivityLog('downloadPurchaseOrderPDF', 'purchaseOrder', purchaseOrder.id, { context: 'po pdf downloaded' })
   };

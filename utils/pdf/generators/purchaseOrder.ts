@@ -13,6 +13,8 @@ import { DateTime } from "luxon";
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 import { FlattenedOrderItem } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_functions/flattenOrderItems";
 import logo from "@/utils/pdf/assets/images/logo";
+import { PoSupplierNote } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAll";
+import { PoPublicNote } from "@/actions/purchasing/purchaseOrders/notes/public/getAll";
 import { createConfigLookup } from "@/utils/data/createConfigLookup";
 import { Config, Supplier } from "@prisma/client";
 
@@ -30,7 +32,9 @@ export const createPurchaseOrder = async (
   timestamp: Date,
   supplier: Supplier,
   poItems: FlattenedOrderItem[],
-  companyData: Config[]
+  companyData: Config[],
+  publicNotes: PoPublicNote[],
+  poSupplierNotes: PoSupplierNote[]
 ) => {
   // data
   const logoDimensions = await getImageDimensions(logo);
@@ -149,7 +153,15 @@ export const createPurchaseOrder = async (
     .setTextColor("#434343");
   pdf.text("Notes", 30, autoTableEnd + 30);
   pdf.setFont("Lato-Regular", "normal", "normal").setFontSize(10);
-  pdf.text(pdf.splitTextToSize('Please note we are closed every Friday.', 200), 30, autoTableEnd + 42);
+
+  const notes = ['Please note we are closed every Friday.'];
+  if (publicNotes.length > 0) {
+    notes.push(...publicNotes.map(note => note.content));
+  }
+  if (poSupplierNotes.length > 0) {
+    notes.push(...poSupplierNotes.map(note => note.content));
+  }
+  pdf.text(pdf.splitTextToSize(notes.join('\n\n'), 200), 30, autoTableEnd + 42);
 
   // total area
   pdf

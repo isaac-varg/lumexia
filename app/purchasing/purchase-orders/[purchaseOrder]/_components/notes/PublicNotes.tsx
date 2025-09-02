@@ -6,10 +6,13 @@ import Card from "@/components/Card";
 import { NoteTypeInputs } from "@/components/Notes/CreateNoteTypeForm";
 import { NoteInputs } from "@/components/Notes/NotesAddMode";
 import NotesManager from "@/components/Notes/NotesManager";
-import { usePurchasingSelection } from "@/store/purchasingSlice";
+import { usePurchasingActions, usePurchasingSelection } from "@/store/purchasingSlice";
+import { useRouter } from "next/navigation";
 
 const PublicNotes = () => {
   const { publicNotes, options, purchaseOrder } = usePurchasingSelection()
+  const { getOptions } = usePurchasingActions()
+  const router = useRouter();
 
   const handleNoteAdd = async (data: NoteInputs) => {
     const userId = await getUserId()
@@ -20,10 +23,12 @@ const PublicNotes = () => {
       content: data.content,
       noteTypeId: data.noteTypeId,
     });
+    router.refresh()
   }
 
   const handleNoteTypeAdd = async (values: NoteTypeInputs) => {
     await purchasingActions.purchaseOrders.notes.public.types.create(values)
+    getOptions();
   }
 
 
