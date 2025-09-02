@@ -9,12 +9,12 @@ const CreateEditMBPR = () => {
 
   return (
     <button
-      className='btn flex gap-x-2 items-center text-base-content'
+      className='btn btn-secondary'
       onClick={() => router.push('/production/mbpr/wizard')}
     >
 
       <span className='text-2xl'><TbPlus /></span>
-      <p className='text-xl font-poppins font-semibold'>Create or Modify MBPR</p>
+      Create or Modify MBPR
     </button>
 
   )

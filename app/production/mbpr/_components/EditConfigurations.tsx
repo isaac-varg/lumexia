@@ -7,12 +7,11 @@ const EditConfigurations = () => {
   const router = useRouter()
   return (
     <button
-      className='btn flex gap-x-2 items-center text-base-content'
+      className='btn btn-secondary'
       onClick={() => router.push('/production/mbpr/configurations')}
     >
-
       <span className='text-2xl'><TbSettings /></span>
-      <p className='text-xl font-poppins font-semibold'>Configure</p>
+      Configure
     </button>
 
 

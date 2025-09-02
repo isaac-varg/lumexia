@@ -29,7 +29,7 @@ const VersionCard = ({ mbpr, }: { mbpr: MbprFromItem }) => {
   return (
     <div
       onClick={handleSelect}
-      className="grid grid-col gap-y-4 bg-lilac-100 rounded-xl p-4 hover:bg-lilac-200 hover:cursor-pointer">
+      className="grid grid-col gap-y-4 bg-base-200/50 rounded-xl p-4 hover:bg-secondary/50 hover:cursor-pointer">
       <div className="flex justify-between items-center">
         <h1 className="font-poppins text-xl text-base-content font-semibold">
           {mbpr.versionLabel}

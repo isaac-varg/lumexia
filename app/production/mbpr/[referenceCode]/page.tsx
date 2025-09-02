@@ -22,7 +22,6 @@ const MbprDetailsPage = async ({ searchParams }: MbprDetailsProps) => {
   return (
     <div>
       <PageTitle>{mbpr.producesItem.name} MBPR</PageTitle>
-      <PageBreadcrumbs />
 
 
       <div className='grid grid-cols-2 gap-6'>
