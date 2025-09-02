@@ -1,6 +1,4 @@
 import { purchasingActions } from "@/actions/purchasing";
-import { PoPublicNote } from "@/actions/purchasing/purchaseOrders/notes/public/getAll";
-import { PoPublicNoteType } from "@/actions/purchasing/purchaseOrders/notes/public/getAllTypes";
 import { PoSupplierNote } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAll";
 import { PoSupplierNoteType } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAllTypes";
 import { getUserId } from "@/actions/users/getUserId";
@@ -35,6 +33,11 @@ const PoSupplierNotes = () => {
     getOptions();
   }
 
+  const handleNoteDelete = async (note: PoSupplierNote) => {
+    await purchasingActions.purchaseOrders.notes.supplier.delete({ id: note.id });
+    router.refresh();
+  }
+
 
   return (
     <Card.Root>
@@ -47,6 +50,7 @@ const PoSupplierNotes = () => {
         noteTypes={options.poSupplierNoteTypes}
         onNoteAdd={handleNoteAdd}
         onNoteTypeAdd={handleNoteTypeAdd}
+        onDelete={handleNoteDelete}
         maxHeight="max"
 
       />

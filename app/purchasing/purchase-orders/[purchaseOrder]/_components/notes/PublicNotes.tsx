@@ -31,6 +31,11 @@ const PublicNotes = () => {
     getOptions();
   }
 
+  const handleNoteDelete = async (note: PoPublicNote) => {
+    await purchasingActions.purchaseOrders.notes.public.delete({ id: note.id });
+    router.refresh();
+  }
+
 
   return (
     <Card.Root >
@@ -43,6 +48,7 @@ const PublicNotes = () => {
         noteTypes={options.publicNoteTypes}
         onNoteAdd={handleNoteAdd}
         onNoteTypeAdd={handleNoteTypeAdd}
+        onDelete={handleNoteDelete}
         maxHeight="max"
 
       />

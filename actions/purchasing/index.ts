@@ -10,10 +10,12 @@ import { getInternalNotes } from "./purchaseOrders/notes/interal/getAll";
 import { createInternalNote } from "./purchaseOrders/notes/interal/create";
 import { getAllInternalNoteTypes } from "./purchaseOrders/notes/interal/getAllInternalNoteTypes";
 import { createPoInternalNoteType } from "./purchaseOrders/notes/interal/createInternalNoteType";
+import { deletePoPublicNote } from "./purchaseOrders/notes/public/delete";
 import { getPoPublicNotes } from "./purchaseOrders/notes/public/getAll";
 import { createPoPublicNote } from "./purchaseOrders/notes/public/create";
 import { getAllPoPublicNoteTypes } from "./purchaseOrders/notes/public/getAllTypes";
 import { createPoPublicNoteType } from "./purchaseOrders/notes/public/createType";
+import { deletePoSupplierNote } from "./purchaseOrders/notes/supplier/delete";
 import { getAllPoSupplierNotes } from "./purchaseOrders/notes/supplier/getAll";
 import { createPoSupplierNote } from "./purchaseOrders/notes/supplier/create";
 import { createPoSupplierNoteType } from "./purchaseOrders/notes/supplier/createType";
@@ -46,6 +48,7 @@ export const purchasingActions = {
       public: {
         getAll: getPoPublicNotes,
         create: createPoPublicNote,
+        delete: deletePoPublicNote,
         types: {
           getAll: getAllPoPublicNoteTypes,
           create: createPoPublicNoteType,
@@ -54,6 +57,7 @@ export const purchasingActions = {
       supplier: {
         getAll: getAllPoSupplierNotes,
         create: createPoSupplierNote,
+        delete: deletePoSupplierNote,
         types: {
           getAll: getAllPoSupplierNoteTypes,
           create: createPoSupplierNoteType,

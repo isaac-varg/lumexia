@@ -12,10 +12,11 @@ interface NotesManagerProps<TNote extends Note, TNoteType extends NoteType> {
   noteTypes: TNoteType[];
   onNoteAdd: (note: NoteInputs) => Promise<void>;
   onNoteTypeAdd: (noteType: NoteTypeInputs) => Promise<void>;
+  onDelete?: (note: TNote) => Promise<void>;
   maxHeight?: NotesManagerHeight
 }
 
-const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes, onNoteAdd, onNoteTypeAdd, maxHeight = 'small' }: NotesManagerProps<TNote, TNoteType>) => {
+const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes, onNoteAdd, onNoteTypeAdd, onDelete, maxHeight = 'small' }: NotesManagerProps<TNote, TNoteType>) => {
 
   const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
@@ -27,7 +28,7 @@ const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, n
         {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn btn-neutral btn-soft">Add Note</button>}
       </div>
 
-      {mode === 'view' && <NotesViewMode<TNote> notes={notes} maxHeight={maxHeight} />}
+      {mode === 'view' && <NotesViewMode<TNote> notes={notes} maxHeight={maxHeight} onDelete={onDelete} />}
 
       {mode === 'addNote' && onNoteAdd && <NotesAddMode<TNoteType> onNoteAdd={onNoteAdd} noteTypes={noteTypes} setMode={setMode} />}
       {mode === 'addType' && onNoteTypeAdd && <CreateNoteTypeForm onNoteTypeAdd={onNoteTypeAdd} setMode={setMode} />}
