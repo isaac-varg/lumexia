@@ -22,6 +22,7 @@ import { getAllAccountingNoteTypes } from "@/app/accounting/pos/_actions/getAllA
 import TabSelector from "./_components/shared/TabSelector";
 import TabsContainer from "./_components/shared/TabsContainer";
 import StateSetter from "./_components/state/StateSetter";
+import { purchasingActions } from "@/actions/purchasing";
 
 type PurchaseOrderDetailsProps = {
   searchParams: {
@@ -37,15 +38,19 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
     orderItems,
     poWithAccounting,
     files,
-
+    internalNotes,
+    publicNotes,
+    poSupplierNotes,
   ] = await Promise.all([
     await getPOItems(purchaseOrder.id),
     await getPoWithAccountingDetails(purchaseOrder.id),
-    await getAccountingFilesByPo(searchParams.id),
+    await getAccountingFilesByPo(purchaseOrder.id),
+    await purchasingActions.purchaseOrders.notes.internal.getAll(purchaseOrder.id),
+    await purchasingActions.purchaseOrders.notes.public.getAll(purchaseOrder.id),
+    await purchasingActions.purchaseOrders.notes.supplier.getAll(purchaseOrder.supplierId),
   ])
 
 
-  const notes = await getOrderNotes(purchaseOrder.id)
   const activity = await getActivity(purchaseOrder.id)
   // for accounting
 
@@ -58,6 +63,9 @@ const PurchaseOrderDetails = async ({ searchParams }: PurchaseOrderDetailsProps)
         orderItems={orderItems}
         poWithAccounting={poWithAccounting}
         files={files}
+        internalNotes={internalNotes}
+        publicNotes={publicNotes}
+        poSupplierNotes={poSupplierNotes}
       />
 
       <Header />

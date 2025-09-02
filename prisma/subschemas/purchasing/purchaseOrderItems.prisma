@@ -1,8 +1,3 @@
-import { PurchaseOrder } from "./purchaseOrders"
-import { Item }from "../items/items"
-import { UnitOfMeasurement} from "../inventory/unitsOfMeasurement"
-import { PurchaseOrderStatus }from "./purchaseOrderStatuses"
-
 model PurchaseOrderItem {
     id                    String                    @id @default(uuid())
     purchaseOrderId       String                    @map("purchase_order_id")

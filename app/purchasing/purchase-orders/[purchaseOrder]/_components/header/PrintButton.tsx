@@ -7,8 +7,11 @@ import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { FlattenedOrderItem } from "../../_functions/flattenOrderItems";
 import { Config } from "@prisma/client";
 import { PurchaseOrderDetails } from "../../_functions/getPurchaseOrder";
+import { usePurchasingSelection } from "@/store/purchasingSlice";
 
 const PrintButton = ({ purchaseOrder, orderItems, company }: { purchaseOrder: PurchaseOrderDetails, orderItems: FlattenedOrderItem[], company: Config[] }) => {
+
+  const { publicNotes, poSupplierNotes } = usePurchasingSelection()
 
   const handleClick = async () => {
 

@@ -1,14 +1,14 @@
-import { User } from "../users/users"
-import { PurchaseOrder } from "./purchaseOrders"
 model PurchaseOrderNote {
     id              String        @id @default(uuid())
-    purchaseOrderId String
+    purchaseOrderId String 
+    noteTypeId String            @map("note_type_id") @default("61dc5d6a-dbce-4372-95aa-17b463ec4d2b")
     userId          String
     content         String
     createdAt       DateTime      @default(now()) @map("created_at")
     updatedAt       DateTime      @updatedAt @map("updated_at")
     user            User          @relation(fields: [userId], references: [id])
     purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+    noteType   PurchaseOrderNoteType   @relation(fields: [noteTypeId], references: [id])
 
     @@map("purchase_order_notes")
 }

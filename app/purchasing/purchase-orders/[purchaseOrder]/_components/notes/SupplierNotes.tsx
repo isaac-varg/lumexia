@@ -1,0 +1,51 @@
+import { purchasingActions } from "@/actions/purchasing";
+import { PoPublicNote } from "@/actions/purchasing/purchaseOrders/notes/public/getAll";
+import { PoPublicNoteType } from "@/actions/purchasing/purchaseOrders/notes/public/getAllTypes";
+import { PoSupplierNote } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAll";
+import { PoSupplierNoteType } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAllTypes";
+import { getUserId } from "@/actions/users/getUserId";
+import Card from "@/components/Card";
+import { NoteTypeInputs } from "@/components/Notes/CreateNoteTypeForm";
+import { NoteInputs } from "@/components/Notes/NotesAddMode";
+import NotesManager from "@/components/Notes/NotesManager";
+import { usePurchasingSelection } from "@/store/purchasingSlice";
+
+const PoSupplierNotes = () => {
+  const { poSupplierNotes, options, purchaseOrder } = usePurchasingSelection()
+
+  const handleNoteAdd = async (data: NoteInputs) => {
+    const userId = await getUserId()
+    if (!purchaseOrder) return;
+    await purchasingActions.purchaseOrders.notes.supplier.create({
+      supplierId: purchaseOrder.supplierId,
+      userId,
+      content: data.content,
+      noteTypeId: data.noteTypeId,
+    });
+  }
+
+  const handleNoteTypeAdd = async (values: NoteTypeInputs) => {
+    await purchasingActions.purchaseOrders.notes.supplier.types.create(values)
+  }
+
+
+  return (
+    <Card.Root>
+
+      <Card.Title>Supplier Purchase Order Notes</Card.Title>
+      <p className="font-poppins text-lg text-base-content">These notes will appear on every purchase order associated with {purchaseOrder ? purchaseOrder.supplier.name : 'this supplier'} supplier.</p>
+
+      <NotesManager<PoSupplierNote, PoSupplierNoteType >
+        notes={poSupplierNotes}
+        noteTypes={options.poSupplierNoteTypes}
+        onNoteAdd={handleNoteAdd}
+        onNoteTypeAdd={handleNoteTypeAdd}
+        maxHeight="max"
+
+      />
+    </Card.Root>
+
+  )
+}
+
+export default PoSupplierNotes

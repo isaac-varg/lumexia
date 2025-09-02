@@ -18,6 +18,7 @@ model PurchaseOrder {
     poAccountingNotes     PoAccountingNote[]
     poAccountingFiles     PoAccountingFile[]
     poAccountingAuditLogs PoAccountingAuditLog[]
+    poPublicNotes PoPublicNote[]
 
     @@map("purchase_orders")
 }

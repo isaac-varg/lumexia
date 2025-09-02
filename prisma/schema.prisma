@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Aug 28 2025 08:58:46 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Sep 02 2025 10:33:35 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1707,6 +1707,62 @@ model GeneralRequest {
   @@map("general_requests")
 }
 
+model PoPublicNoteType {
+  id            String         @id @default(uuid())
+  name          String
+  description   String
+  bgColor       String         @map("bg_color")
+  textColor     String         @map("text_color")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  poPublicNotes PoPublicNote[]
+
+  @@map("po_public_note_types")
+}
+
+model PoPublicNote {
+  id              String           @id @default(uuid())
+  purchaseOrderId String           @map("purchase_order_id")
+  noteTypeId      String           @map("note_type_id")
+  userId          String           @map("user_id")
+  content         String
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  purchaseOrder   PurchaseOrder    @relation(fields: [purchaseOrderId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
+  noteType        PoPublicNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("po_public_notes")
+}
+
+model PoSupplierNoteType {
+  id              String           @id @default(uuid())
+  name            String
+  description     String
+  bgColor         String           @map("bg_color")
+  textColor       String           @map("text_color")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  poSupplierNotes PoSupplierNote[]
+
+  @@map("po_supplier_note_types")
+}
+
+model PoSupplierNote {
+  id         String             @id @default(uuid())
+  supplierId String             @map("supplier_id")
+  noteTypeId String             @map("note_type_id")
+  userId     String             @map("user_id")
+  content    String
+  createdAt  DateTime           @default(now()) @map("created_at")
+  updatedAt  DateTime           @updatedAt @map("updated_at")
+  supplier   Supplier           @relation(fields: [supplierId], references: [id])
+  user       User               @relation(fields: [userId], references: [id])
+  noteType   PoSupplierNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("po_supplier_notes")
+}
+
 model PurchaseOrderItemDetail {
   id                   String            @id @default(uuid())
   poItemId             String            @map("po_item_id")
@@ -1745,15 +1801,30 @@ model PurchaseOrderItem {
   @@map("purchase_order_items")
 }
 
+model PurchaseOrderNoteType {
+  id          String              @id @default(uuid())
+  name        String
+  description String
+  bgColor     String              @map("bg_color")
+  textColor   String              @map("text_color")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+  notes       PurchaseOrderNote[]
+
+  @@map("purchase_order_note_types")
+}
+
 model PurchaseOrderNote {
-  id              String        @id @default(uuid())
+  id              String                @id @default(uuid())
   purchaseOrderId String
+  noteTypeId      String                @default("61dc5d6a-dbce-4372-95aa-17b463ec4d2b") @map("note_type_id")
   userId          String
   content         String
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  user            User          @relation(fields: [userId], references: [id])
-  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+  user            User                  @relation(fields: [userId], references: [id])
+  purchaseOrder   PurchaseOrder         @relation(fields: [purchaseOrderId], references: [id])
+  noteType        PurchaseOrderNoteType @relation(fields: [noteTypeId], references: [id])
 
   @@map("purchase_order_notes")
 }
@@ -1790,6 +1861,7 @@ model PurchaseOrder {
   poAccountingNotes     PoAccountingNote[]
   poAccountingFiles     PoAccountingFile[]
   poAccountingAuditLogs PoAccountingAuditLog[]
+  poPublicNotes         PoPublicNote[]
   NotionPurchaseOrder   NotionPurchaseOrder[]
   RequestPurchaseOrder  RequestPurchaseOrder[]
 
@@ -1997,6 +2069,7 @@ model Supplier {
   supplierNotes                SupplierNote[]
   SupplierPaymentMethod        SupplierPaymentMethod[]
   genericUnitConversionFactors GenericUnitConversionFactor[]
+  poSupplierNotes              PoSupplierNote[]
   SupplierContact              SupplierContact[]
 
   @@map("suppliers")
@@ -2346,6 +2419,8 @@ model User {
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]
   BprStepActionableVerification BprStepActionableVerification[]
+  PoPublicNote                  PoPublicNote[]
+  PoSupplierNote                PoSupplierNote[]
   Authenticator                 Authenticator[]
   UserRoleAssignment            UserRoleAssignment[]
 

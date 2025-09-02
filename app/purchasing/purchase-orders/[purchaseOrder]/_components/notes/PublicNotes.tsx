@@ -1,0 +1,49 @@
+import { purchasingActions } from "@/actions/purchasing";
+import { PoPublicNote } from "@/actions/purchasing/purchaseOrders/notes/public/getAll";
+import { PoPublicNoteType } from "@/actions/purchasing/purchaseOrders/notes/public/getAllTypes";
+import { getUserId } from "@/actions/users/getUserId";
+import Card from "@/components/Card";
+import { NoteTypeInputs } from "@/components/Notes/CreateNoteTypeForm";
+import { NoteInputs } from "@/components/Notes/NotesAddMode";
+import NotesManager from "@/components/Notes/NotesManager";
+import { usePurchasingSelection } from "@/store/purchasingSlice";
+
+const PublicNotes = () => {
+  const { publicNotes, options, purchaseOrder } = usePurchasingSelection()
+
+  const handleNoteAdd = async (data: NoteInputs) => {
+    const userId = await getUserId()
+    if (!purchaseOrder) return;
+    await purchasingActions.purchaseOrders.notes.public.create({
+      purchaseOrderId: purchaseOrder.id,
+      userId,
+      content: data.content,
+      noteTypeId: data.noteTypeId,
+    });
+  }
+
+  const handleNoteTypeAdd = async (values: NoteTypeInputs) => {
+    await purchasingActions.purchaseOrders.notes.public.types.create(values)
+  }
+
+
+  return (
+    <Card.Root >
+      <Card.Title>Purchase Order Notes</Card.Title>
+
+      <p className="font-poppins text-lg text-base-content">These notes will appear on the PDF for this specific purchase order.</p>
+
+      <NotesManager<PoPublicNote, PoPublicNoteType >
+        notes={publicNotes}
+        noteTypes={options.publicNoteTypes}
+        onNoteAdd={handleNoteAdd}
+        onNoteTypeAdd={handleNoteTypeAdd}
+        maxHeight="max"
+
+      />
+    </Card.Root>
+
+  )
+}
+
+export default PublicNotes

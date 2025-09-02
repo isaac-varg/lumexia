@@ -17,6 +17,7 @@ model Supplier {
     supplierNotes                SupplierNote[]
     SupplierPaymentMethod        SupplierPaymentMethod[]
     genericUnitConversionFactors GenericUnitConversionFactor[]
+    poSupplierNotes PoSupplierNote[]
 
     @@map("suppliers")
 }

@@ -4,6 +4,7 @@ import { usePurchasingSelection } from "@/store/purchasingSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import Items from "../items/Items";
 import AccountingPanel from "../accounting/AccountingPanel";
+import Notes from "../notes/Notes";
 
 
 const TabsContainer = () => {
@@ -21,6 +22,7 @@ const TabsContainer = () => {
       >
         {currentTab === 'items' && <Items />}
         {currentTab === 'accounting' && <AccountingPanel />}
+        {currentTab === 'notes' && <Notes />}
       </motion.div>
     </AnimatePresence>
   )
