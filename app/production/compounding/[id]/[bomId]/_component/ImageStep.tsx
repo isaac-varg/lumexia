@@ -1,6 +1,7 @@
 "use client"
 import React, { useRef, useState } from 'react'
 import { Camera, CameraType } from "react-camera-pro";
+import Image from 'next/image';
 
 
 const ImageStep = () => {
@@ -31,7 +32,7 @@ const ImageStep = () => {
 
       <button onClick={() => handleCameraClick()}>Take photo</button>
       {image &&
-        <img src={image} alt='Taken photo' />
+        <Image src={image} alt='Taken photo' width={300} height={300} />
       }
 
     </div>

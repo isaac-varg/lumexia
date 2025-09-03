@@ -8,7 +8,7 @@ type ColumnProps<T> = {
     colIndex: number;
 };
 
-const Column = <T,>({
+const Column = <T extends object>({
     column,
     colIndex,
 }: ColumnProps<T>) => {

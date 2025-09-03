@@ -16,7 +16,7 @@ type ColumnNavigatorProps<T> = {
   columns: NavigatorColumn<T>[]; 
 };
 
-const Root = <T,>({ data, columns }: ColumnNavigatorProps<T>) => {
+const Root = <T extends object>({ data, columns }: ColumnNavigatorProps<T>) => {
   const columnData = columns.map((col) => {
     // Group data by the specified property
     const groupedData = groupByProperty(data, col.groupByProperty.toString());

@@ -15,7 +15,7 @@ const StateSetter = ({ isExisting, templateId }: { isExisting: boolean, template
         if (packagingItems.length === 0) {
             getPackagingItems();
         }
-    }, [])
+    }, [getItemTypes, getPackagingItems, itemTypes.length, packagingItems.length])
 
     useEffect(() => {
         if (isExisting) {
@@ -30,7 +30,7 @@ const StateSetter = ({ isExisting, templateId }: { isExisting: boolean, template
 
         resetSteps();
         setIsExistingTemplate(false)
-    }, [isExisting, templateId])
+    }, [isExisting, templateId, getExistingTemplate, resetSteps, setIsExistingTemplate])
 
     useEffect(() => {
 
@@ -38,11 +38,11 @@ const StateSetter = ({ isExisting, templateId }: { isExisting: boolean, template
         setAuxiliaries();
 
 
-    }, [isExistingTemplate, existingTemplate])
+    }, [isExistingTemplate, existingTemplate, setAuxiliaries, setFinishedProducts])
 
     useEffect(() => {
         getFinishedProductAuxiliaries()
-    }, [selectedFinishedProduct])
+    }, [selectedFinishedProduct, getFinishedProductAuxiliaries])
 
 
 

@@ -1,4 +1,5 @@
 import { auth, signIn, signOut } from "@/auth";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
 import { RiUserLine } from "react-icons/ri";
@@ -36,10 +37,12 @@ const UserIcon = async () => {
                     }}
                 >
                     <button type="submit">
-                        <img
+                        <Image
                             className="rounded-full"
                             src={session.user.image}
                             alt="User Avatar"
+                            width={32}
+                            height={32}
                         />
                     </button>
                 </form>

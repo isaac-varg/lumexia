@@ -135,7 +135,7 @@ const Default = ({
         linkPath={linkPath}
         onEnter={onEnter}
         tableStateName={tableStateName}
-        searchBg={searchBg}
+        searchBg={searchBg || 'elevated'}
       />}
       <div className="w-full">
         <table className="min-w-full text-left text-lg font-light">

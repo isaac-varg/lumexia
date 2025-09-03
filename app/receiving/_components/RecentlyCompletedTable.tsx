@@ -1,11 +1,10 @@
 "use client";
-import { flattenPurchaseOrders } from "@/app/purchasing/purchase-orders/_functions/flattenPurchaseOrders";
+import { FlattenedPurchaseOrder, flattenPurchaseOrders } from "@/app/purchasing/purchase-orders/_functions/flattenPurchaseOrders";
 import DataTable from "@/components/DataTable";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import React from "react";
 import { columns } from "../_configs/Columns";
 import { useRouter } from "next/navigation";
-import { FlattenedPurchaseOrder } from "@/app/inventory/items/[name]/_functions/flattenPurchaseOrder";
 
 type RecentlyCompletedTableProps = {
   purchaseOrders: PurchaseOrder[] | any;

@@ -9,7 +9,7 @@ const ViewModeStateSetter = () => {
     useEffect(() => {
 
         getAuditItems();
-    }, [mode, audit])
+    }, [mode, audit, getAuditItems])
     return false
 }
 

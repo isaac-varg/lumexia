@@ -72,7 +72,7 @@ const EditModeStepAuxiliaries = ({ currentStep, nextStep, onAuxiliariesStepCompl
             }))
             setAuxiliaries(auxes)
         }
-    }, [selectedFinishedProduct])
+    }, [selectedFinishedProduct, isProduced])
 
 
 

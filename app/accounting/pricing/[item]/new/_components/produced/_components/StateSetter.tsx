@@ -30,14 +30,14 @@ const StateSetter = ({
         setActiveMbpr(activeMbpr);
         setBatchSizes(batchSizes);
 
-    }, [activeMbpr, batchSizes])
+    }, [activeMbpr, batchSizes, setActiveMbpr, setBatchSizes])
 
 
     useEffect(() => {
         // recalcaulate bom when active batch sizes change;
         getProducedPricingSummations();
 
-    }, [activeBatchSize, activeMbpr])
+    }, [activeBatchSize, activeMbpr, getProducedPricingSummations])
 
 
 
@@ -52,7 +52,7 @@ const StateSetter = ({
         }
 
 
-    }, [producedPricingSummations])
+    }, [producedPricingSummations, getFinishedProducts, showDialog])
 
 
     return false

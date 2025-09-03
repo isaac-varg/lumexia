@@ -54,7 +54,7 @@ const StepAuxiliariesAdd = ({ setMode, onAuxiliaryAdd }: { setMode: Dispatch<Set
     if (packagingItems.length === 0) {
       getPackagingItems();
     }
-  }, [])
+  }, [getPackagingItems, packagingItems.length])
 
   return (
     <div className="flex flex-col gap-y-4">

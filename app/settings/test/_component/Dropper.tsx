@@ -49,7 +49,7 @@ const ImageUpload = ({ pathPrefix = 'general' }: UploadProps) => {
         } finally {
             setIsUploading(false);
         }
-    }, []);
+    }, [pathPrefix]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,

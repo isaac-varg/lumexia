@@ -3,7 +3,7 @@
 // this component differs from search in that the results are output to the component
 // rather than displayed
 
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from "react";
 import { TbSearch } from "react-icons/tb";
 import Fuse from 'fuse.js'
 import { useCommandPalletActions } from "@/store/commandPalletSlice";
@@ -22,12 +22,13 @@ const SearcherUnmanaged = <T,>({ data, keys, input, setInput, onQueryComplete, l
 
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-    const searchOptions = {
-        keys: [...keys],
-        threshold: 0.3,
-    }
-
-    const fuse = new Fuse(data, searchOptions)
+    const fuse = useMemo(() => {
+        const searchOptions = {
+            keys: [...keys],
+            threshold: 0.3,
+        }
+        return new Fuse(data, searchOptions)
+    }, [data, keys]);
 
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const SearcherUnmanaged = <T,>({ data, keys, input, setInput, onQueryComplete, l
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [input]);
+    }, [input, fuse, limit, onQueryComplete]);
 
 
     return (

@@ -22,7 +22,7 @@ const TemplateDialog = ({ itemTypeId, filledWithItemId }: { itemTypeId: string, 
 
     useEffect(() => {
         getTemplates(itemTypeId);
-    }, [])
+    }, [getTemplates, itemTypeId])
 
 
 

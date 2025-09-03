@@ -55,7 +55,7 @@ const EntryWizard = ({ bomItem, setIsViewMode }: { bomItem: any, setIsViewMode: 
             createEntry()
 
         }
-    })
+    }, [isQuantityValid, validity.lot, validity.quantity, bomItem.id, lot, quantity, setIsViewMode])
 
     useEffect(() => {
         const isQuantityValid = async () => {
@@ -73,7 +73,7 @@ const EntryWizard = ({ bomItem, setIsViewMode }: { bomItem: any, setIsViewMode: 
             setIsQuantityValid(true)
         }
         isQuantityValid();
-    }, [lot, quantity])
+    }, [lot, quantity, showDialog])
 
     useEffect(() => {
         const isLotValid = async () => {
@@ -88,7 +88,7 @@ const EntryWizard = ({ bomItem, setIsViewMode }: { bomItem: any, setIsViewMode: 
 
         }
         isLotValid()
-    }, [lot])
+    }, [lot, bomItem, showDialog])
 
     return (
         <div>

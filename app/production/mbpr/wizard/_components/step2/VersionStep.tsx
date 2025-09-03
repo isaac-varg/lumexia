@@ -19,7 +19,7 @@ const VersionStep = () => {
     if (producesItem) {
       getMbprs(producesItem.id)
     }
-  }, [producesItem, isRevalidating])
+  }, [producesItem, isRevalidating, getMbprs])
 
   if (!producesItem) return null
 

@@ -1,6 +1,7 @@
 import { TbFileTypePdf } from "react-icons/tb"
 import Tag from "../Text/Tag"
 import ContextMenu from "../ContextMenu"
+import Image from "next/image"
 
 type FileTag = {
     label: string
@@ -61,13 +62,13 @@ const FileButton = ({ label, url, mimeType, size = 'default', color = 'default',
                             {isPdf && (<div className="flex items-center justify-center rounded-full w-16 h-16 bg-neutral-400 p-6">
                                 <span className="text-5xl text-white"><TbFileTypePdf /></span>
                             </div>)}
-                            {!isPdf && <img className="w-16 h-16 rounded-full object-cover" src={url} />}
+                            {!isPdf && <Image className="w-16 h-16 rounded-full object-cover" src={url} alt={label} width={64} height={64} />}
                             <p className={`${classes.textBase}`}>{label}</p>
 
 
                             <div className="flex gap-x-2 items-center justify-center">
                                 {fileTag && <Tag tooltip={fileTag?.tooltip || fileTag.label} bgColor={fileTag.bgColor} textColor={fileTag.textColor} label={fileTag.label} />}
-                                {(uploadedByName && uploadedByImage) && <div className="tooltip" data-tip={uploadedByName} ><img src={uploadedByImage} className="rounded-full h-12 w-12 " alt={uploadedByName} /></div>}
+                                {(uploadedByName && uploadedByImage) && <div className="tooltip" data-tip={uploadedByName} ><Image src={uploadedByImage} className="rounded-full h-12 w-12 " alt={uploadedByName} width={48} height={48} /></div>}
                             </div>
                         </div>
 

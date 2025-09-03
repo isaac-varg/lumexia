@@ -68,8 +68,8 @@ const ActionablesPanel = () => {
       <div className='flex justify-between'>
         <Text.SectionTitle size='small'>actionables </Text.SectionTitle>
         <span className='flex gap-x-2'>
-          <ActionButton color='cararra' onClick={() => showDialog('createActionableForm')}><span className='flex flex-row gap-x-2 items-center text-md'><TbPlus /><p>Actionable</p></span></ActionButton>
-          <ActionButton color='cararra' onClick={() => showDialog('createNewActionableType')}><span className='flex flex-row gap-x-2 items-center text-md'><TbPlus /><p>Type</p></span></ActionButton>
+          <ActionButton color='neutral' onClick={() => showDialog('createActionableForm')}><span className='flex flex-row gap-x-2 items-center text-md'><TbPlus /><p>Actionable</p></span></ActionButton>
+          <ActionButton color='neutral' onClick={() => showDialog('createNewActionableType')}><span className='flex flex-row gap-x-2 items-center text-md'><TbPlus /><p>Type</p></span></ActionButton>
         </span>
       </div>
 

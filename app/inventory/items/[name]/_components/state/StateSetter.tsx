@@ -78,7 +78,7 @@ const StateSetter = ({
 
   useEffect(() => {
     setItem(item)
-  }, [item])
+  }, [item, setItem])
 
   // get options only if the state is empty 
   // saves server calls
@@ -103,11 +103,11 @@ const StateSetter = ({
     setActiveMbpr(activeMbpr);
     setFiles(files);
 
-  }, [item]);
+  }, [item, options, getOptions, setActivity, activity, setAliases, aliases, setAudits, audits, setExaminations, examinations, setInventory, inventory, setNotes, notes, setPricingData, pricingData, setPurchaseOrders, purchaseOrders, setUsage, usage, setBprs, bprs, setActiveMbpr, activeMbpr, setFiles, files]);
 
   useEffect(() => {
     getFilteredPurchaseOrders();
-  }, [purchasingFilterMode, filterPurchaseOrdersYear])
+  }, [purchasingFilterMode, filterPurchaseOrdersYear, getFilteredPurchaseOrders])
 
 
   return false;

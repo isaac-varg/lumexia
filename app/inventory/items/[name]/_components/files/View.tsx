@@ -57,6 +57,7 @@ const View = () => {
             const isSelected = selectedType.id === t.id;
             return (
               <button
+                key={t.id}
                 className={`${isSelected ? 'btn-accent' : 'btn-soft'} btn btn-xl min-h-32 capitalize`}
                 onClick={() => setSelectedType(t)}
               >
@@ -72,10 +73,10 @@ const View = () => {
         <div className="grid grid-cols-4 gap-4">
           {shownFiles.map(file => {
             return (
-              <ContextMenu.Root>
+              <ContextMenu.Root key={file.id}>
                 <ContextMenu.Trigger asChild>
 
-                  <a key={file.id} href={file.url} target="_blank" rel="noopener noreferrer">
+                  <a href={file.url} target="_blank" rel="noopener noreferrer">
                     <div className="flex flex-col gap-4 min-h-30  rounded-xl bg-base-300/30 p-8 hover:cursor-pointer hover:bg-accent/50">
                       <div className='flex justify-between items-center'>
                         <UserIcon image={file.file.uploadedBy.image || ''} name={file.file.uploadedBy.name || ''} />

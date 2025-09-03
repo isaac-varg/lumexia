@@ -1,7 +1,7 @@
 "use client"
 
 import { Item } from "@/types/item";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { IItemSearchData } from "../_functions/getItems";
 import { useRouter } from "next/navigation";
 import Fuse from 'fuse.js'
@@ -12,16 +12,15 @@ const ItemSearch = ({ items }: { items: IItemSearchData[] }) => {
 
     const router = useRouter()
 
-    const searchOptions = {
-        keys: ["referenceCode",
-            "name",
-            "mergedAliases"
-        ],
-    }
-
-
-
-    const searcher = new Fuse(items, searchOptions)
+    const searcher = useMemo(() => {
+        const searchOptions = {
+            keys: ["referenceCode",
+                "name",
+                "mergedAliases"
+            ],
+        }
+        return new Fuse(items, searchOptions)
+    }, [items])
 
     const handleItemClick = (item: Item) => {
         router.push(`/accounting/pricing/${item.referenceCode}?id=${item.id}`)
@@ -38,7 +37,7 @@ const ItemSearch = ({ items }: { items: IItemSearchData[] }) => {
         const searchResults = searcher.search(searchInput);
         const mappedResults = searchResults.map((s) => s.item);
         setResults(mappedResults);
-    }, [searchInput]);
+    }, [searchInput, searcher]);
 
 
     return (

@@ -3,6 +3,7 @@ import { ReviewablePricingExams } from "@/actions/accounting/pricing/getReviewab
 import { PurchasingRequest } from "@/actions/purchasing/requests/getByStatus"
 import { dateFormatString } from "@/configs/data/dateFormatString"
 import { DateTime } from "luxon"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 const PricingOption = ({ exam }: { exam: ReviewablePricingExams }) => {
@@ -23,7 +24,12 @@ const PricingOption = ({ exam }: { exam: ReviewablePricingExams }) => {
         </h2>
         <div className="avatar">
           <div className="w-8 rounded-full">
-            <img src={exam.user.image || ''} />
+            <Image
+              src={exam.user.image || ''}
+              alt={exam.user.name || 'user image'}
+              width={32}
+              height={32}
+            />
           </div>
         </div>
       </div>

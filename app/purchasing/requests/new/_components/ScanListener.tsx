@@ -1,5 +1,5 @@
 "use client";
-import {  useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BsQrCodeScan } from "react-icons/bs";
 import { getItemIdFromLot } from "../_functions/getItemIdFromLot";
 
@@ -8,7 +8,7 @@ const ScanListener = ({ handleItemSelection }: { handleItemSelection: (item: str
     const [isScanComplete, setIsScanComplete] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleScanEnd = async (lot: string) => {
+    const handleScanEnd = useCallback(async (lot: string) => {
         try {
             setIsLoading(true);
             const itemId = await getItemIdFromLot(lot);
@@ -18,7 +18,7 @@ const ScanListener = ({ handleItemSelection }: { handleItemSelection: (item: str
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [handleItemSelection]);
 
     useEffect(() => {
         const handleScanEntry = (event: any) => {

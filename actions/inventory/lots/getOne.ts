@@ -34,9 +34,9 @@ export const getSingleLot = async (id: string) => {
 
 
 
-  const hasOrigin = lot.lotOrigin.length !== 0;
-  const purchaseOrderNumber = hasOrigin ? lot.lotOrigin.purchaseOrder?.referenceCode || null : null
-  const batchNumber = hasOrigin ? lot.lotOrigin.bpr?.referenceCode || null : null
+  const hasOrigin = lot.lotOrigin;
+  const purchaseOrderNumber = hasOrigin ? lot.lotOrigin?.purchaseOrder?.referenceCode || null : null
+  const batchNumber = hasOrigin ? lot.lotOrigin?.bpr?.referenceCode || null : null
 
   return ({
     ...lot,

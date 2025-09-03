@@ -175,7 +175,7 @@ const AliasDialog = () => {
     )
 
     form.reset(defaults);
-  }, [selectedAlias, setSelectedAlias])
+  }, [selectedAlias, setSelectedAlias, form])
 
 
   return (

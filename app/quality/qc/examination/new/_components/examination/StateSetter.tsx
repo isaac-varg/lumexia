@@ -27,11 +27,11 @@ const StateSetter = () => {
 
         setExaminationRecordId()
 
-    }, [lot])
+    }, [lot, examinationStatuses.length, examinationTypes.length, getExaminationStatuses, getExaminationTypes, getRecordNoteTypes, recordNoteTypes.length, setExaminationRecordId])
 
     useEffect(() => {
         getItemParameters()
-    }, [lot, selectedExaminationType])
+    }, [lot, selectedExaminationType, getItemParameters])
 
     return false;
 

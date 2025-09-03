@@ -7,7 +7,7 @@ const FilterModeButtons = () => {
 
   const { setPurchasingFilterMode } = useItemActions()
   const { purchaseOrders, item, purchasingFilterMode, filterPurchaseOrdersYear } = useItemSelection()
-  const purchaseOrderYears = useMemo(() => getPurchaseOrdersYears(purchaseOrders), [purchaseOrders, item])
+  const purchaseOrderYears = useMemo(() => getPurchaseOrdersYears(purchaseOrders), [purchaseOrders])
 
   return (
     <div className="flex gap-4">

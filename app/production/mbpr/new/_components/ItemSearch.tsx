@@ -2,7 +2,7 @@
 
 import { Item } from "@/types/item";
 import Fuse from "fuse.js";
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 export interface ItemDataForSearch extends Item {
     mergedAliases: string
@@ -12,15 +12,15 @@ const ItemSearch = ({ items, onSelection }: { items: ItemDataForSearch[], onSele
     const [searchInput, setSearchInput] = useState('')
     const [results, setResults] = useState<ItemDataForSearch[]>([])
 
-    const searchOptions = {
-        keys: ["referenceCode",
-            "name",
-            "mergedAliases"
-        ],
-    }
-
-
-    const searcher = new Fuse(items, searchOptions)
+    const searcher = useMemo(() => {
+        const searchOptions = {
+            keys: ["referenceCode",
+                "name",
+                "mergedAliases"
+            ],
+        }
+        return new Fuse(items, searchOptions)
+    }, [items])
 
     
     const handleItemClick = (item: Item) => {
@@ -39,7 +39,7 @@ const ItemSearch = ({ items, onSelection }: { items: ItemDataForSearch[], onSele
         console.log(searchResults)
         const mappedResults = searchResults.map((s) => s.item);
         setResults(mappedResults);
-    }, [searchInput]);
+    }, [searchInput, searcher]);
 
 
     return (

@@ -1,6 +1,6 @@
 "use client";
 import DataTable from "@/components/DataTable";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions";
 import useDialog from "@/hooks/useDialog";
 import { Item } from "@/types/item";
@@ -107,9 +107,9 @@ const ItemTable = () => {
     location.reload();
   };
 
-  const handleRowAdd = () => {
+  const handleRowAdd = useCallback(() => {
     showDialog("addItemDialog");
-  };
+  }, [showDialog]);
 
   const handleRowClick = (row: any) => {
 
@@ -130,7 +130,7 @@ const ItemTable = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleRowAdd]);
 
 
   useEffect(() => {

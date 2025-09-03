@@ -2,7 +2,7 @@
 import Dialog from "@/components/Dialog"
 import { RequestSupplier } from "../_functions/getSuppliers"
 import { LinkablePo } from "../_functions/getLinkablePos"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { TbSearch } from "react-icons/tb"
 import { createNewPO } from "../_functions/createNewPO"
 import useDialog from "@/hooks/useDialog"
@@ -22,13 +22,14 @@ const NewPurchaseOrderDialog = ({ suppliers, requestId, itemId, linkablePOs }: N
     const [searchInput, setSearchInput] = useState("");
     const [queryResults, setQueryResults] = useState<RequestSupplier[]>([])
 
-    const searchOptions = {
-        keys: [
-            'name'
-        ]
-    }
-
-    const searcher = new Fuse(suppliers, searchOptions)
+    const searcher = useMemo(() => {
+        const searchOptions = {
+            keys: [
+                'name'
+            ]
+        }
+        return new Fuse(suppliers, searchOptions)
+    }, [suppliers])
 
     const uniqueSuggestedSuppliers = linkablePOs
         .map((po) => po.purchaseOrders.supplier) // Extract the supplier object
@@ -61,7 +62,7 @@ const NewPurchaseOrderDialog = ({ suppliers, requestId, itemId, linkablePOs }: N
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [searchInput]);
+    }, [searchInput, searcher]);
 
 
 

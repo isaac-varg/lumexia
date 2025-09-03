@@ -59,7 +59,7 @@ const StateSetter = ({
       getOptions();
     }
 
-  }, [serverPurchaseOrder])
+  }, [serverPurchaseOrder, getOptions, getPurchasableItems, purchasableItems.length, setPurchaseOrder])
 
   useEffect(() => {
 
@@ -70,7 +70,7 @@ const StateSetter = ({
     setPublicNotes(publicNotes);
     setPoSupplierNotes(poSupplierNotes);
     setActivity(activity);
-  }, [purchaseOrder])
+  }, [purchaseOrder, activity, files, internalNotes, orderItems, poSupplierNotes, poWithAccounting, publicNotes, setActivity, setFiles, setInternalNotes, setOrderItems, setPoSupplierNotes, setPoWithAccounting, setPublicNotes])
 
 
 

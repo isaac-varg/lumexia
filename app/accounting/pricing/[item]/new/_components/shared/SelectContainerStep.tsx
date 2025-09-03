@@ -29,7 +29,7 @@ const SelectContainerStep = ({ nextStep, currentStep, setConsumerContainer }: Se
         if (consumerContainers.length === 0) {
             getAllConsumerContainers();
         }
-    }, [mode])
+    }, [mode, consumerContainers.length, getAllConsumerContainers])
 
 
     if (currentStep !== 0) { return false }

@@ -82,7 +82,7 @@ const MaterialForm = () => {
       getMaterialItems();
     };
 
-  }, [selectedMaterial, isNewForFormPanel])
+  }, [selectedMaterial, isNewForFormPanel, getMaterialItems, materialItems.length])
 
   useEffect(() => {
 
@@ -94,7 +94,7 @@ const MaterialForm = () => {
 
     setIsSearch(false)
 
-  }, [isNewForFormPanel, selectedMaterial])
+  }, [isNewForFormPanel, selectedMaterial, materialFormSeletedBomItem])
 
   useEffect(() => {
     const value = selectedMaterial ? selectedMaterial.concentration : 0

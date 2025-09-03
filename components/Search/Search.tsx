@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import Fuse from 'fuse.js'
 
@@ -17,11 +17,12 @@ const Search = ({ data, keys, onClick, title = true }: SearchProps) => {
   const [queryResults, setQueryResults] = useState<any[]>([])
 
 
-  const searchOptions = {
-    keys: [...keys],
-  }
-
-  const fuse = new Fuse(data, searchOptions)
+  const fuse = useMemo(() => {
+    const searchOptions = {
+      keys: [...keys],
+    }
+    return new Fuse(data, searchOptions)
+  }, [data, keys])
 
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const Search = ({ data, keys, onClick, title = true }: SearchProps) => {
         clearTimeout(debounceTimeout.current);
       }
     };
-  }, [searchInput]);
+  }, [searchInput, fuse]);
 
 
 

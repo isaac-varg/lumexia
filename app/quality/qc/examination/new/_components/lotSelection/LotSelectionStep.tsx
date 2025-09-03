@@ -26,7 +26,7 @@ const LotSelectionStep = () => {
     if (allLots.length === 0) {
       getLots();
     }
-  }, [allLots]);
+  }, [allLots, getLots]);
 
   useEffect(() => {
 

@@ -1,4 +1,5 @@
 import { QcExamination } from "@/actions/quality/qc/records/getAll"
+import Image from "next/image";
 
 const ExaminationCard = ({ examination }: { examination: QcExamination }) => {
     return (
@@ -13,7 +14,12 @@ const ExaminationCard = ({ examination }: { examination: QcExamination }) => {
                 <div className="flex gap-x-4">
                     <div className="avatar">
                         <div className="w-8 rounded-full">
-                            <img src={examination.conductedBy.image || ''} />
+                            <Image
+                                src={examination.conductedBy.image || ''}
+                                alt={examination.conductedBy.name || 'user image'}
+                                width={32}
+                                height={32}
+                            />
                         </div>
                     </div>
 

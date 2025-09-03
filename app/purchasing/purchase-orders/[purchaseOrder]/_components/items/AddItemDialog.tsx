@@ -1,5 +1,5 @@
 import Dialog from "@/components/Dialog";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { PoFlatItems } from "../../_functions/flattenItems";
 import Fuse from "fuse.js";
 
@@ -7,14 +7,15 @@ const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSel
   const [results, setResults] = useState<any[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
-  const searchOptions = {
-    keys: ["referenceCode",
-      "name",
-      "aliasesAll"
-    ],
-  }
-
-  const searcher = new Fuse(data, searchOptions)
+  const searcher = useMemo(() => {
+    const searchOptions = {
+      keys: ["referenceCode",
+        "name",
+        "aliasesAll"
+      ],
+    }
+    return new Fuse(data, searchOptions)
+  }, [data]);
 
   const handleItemClick = (item: any) => {
     onItemSelection(item);
@@ -31,7 +32,7 @@ const AddItemDialog = ({ data, onItemSelection }: { data: PoFlatItems, onItemSel
     const searchResults = searcher.search(searchInput);
     const mappedResults = searchResults.map((s) => s.item);
     setResults(mappedResults);
-  }, [searchInput]);
+  }, [searchInput, searcher]);
 
   return (
     <>

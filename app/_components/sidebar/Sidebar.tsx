@@ -8,7 +8,6 @@ import SidebarButton from "./SidebarButton";
 import SidebarHeader from "./SidebarHeader";
 import { useAppSelection } from "@/store/appSlice";
 import { motion } from "framer-motion";
-import SearchBar from "../search/SearchBar";
 
 const Sidebar = () => {
 

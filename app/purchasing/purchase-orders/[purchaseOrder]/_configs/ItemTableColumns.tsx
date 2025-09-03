@@ -1,6 +1,6 @@
 import TableCell from "@/components/DataTable/TableCell";
 import { createColumnHelper } from "@tanstack/react-table";
-import { FlattenedOrderItem, PoFlattenedOrderItems } from "../_functions/flattenOrderItems";
+import { FlattenedOrderItem } from "../_functions/flattenOrderItems";
 import { EditCell } from "@/components/DataTable/EditCell";
 import EditableSelectCell from "@/components/DataTable/SelectCell";
 import { getUOMs } from "../_functions/getUOMs";

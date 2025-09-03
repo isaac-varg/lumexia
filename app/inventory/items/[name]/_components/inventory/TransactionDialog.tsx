@@ -92,7 +92,7 @@ const TransactionDialog = () => {
       default:
         break;
     }
-  }, [input, transactionMode])
+  }, [input, transactionMode, selectedLot])
 
   if (!selectedLot) return false;
 

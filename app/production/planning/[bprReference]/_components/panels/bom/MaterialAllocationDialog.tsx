@@ -19,7 +19,7 @@ const MaterialAllocationDialog = () => {
     useEffect(() => {
         getPurchasingRequestsForPlanning()
 
-    }, [material])
+    }, [material, getPurchasingRequestsForPlanning])
 
     if (!material) return;
     return (

@@ -85,7 +85,7 @@ const SelectedFinishedProductPanel = ({ selectedFinishedProduct }: { selectedFin
     setProfitPercentage(selectedFinishedProduct.profitPercentage)
     setProfit(selectedFinishedProduct.profit)
 
-  }, [selectedFinishedProduct])
+  }, [selectedFinishedProduct, getInterimFinishedProduct])
 
 
   const updatePricingCalculations = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

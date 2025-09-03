@@ -35,7 +35,7 @@ const AddendumsPanel = () => {
         throw new Error("Batch step not selected")
       }
 
-      const data = await stepAddendumActions.getAll({stepId: selectedBatchStep.id}, ["addendumType"])
+      const data = await stepAddendumActions.getAll({ stepId: selectedBatchStep.id }, ["addendumType"])
       setStepAddendums(data)
     }
 
@@ -52,7 +52,7 @@ const AddendumsPanel = () => {
 
       <div className='flex justify-between'>
         <Text.SectionTitle size='small'>Addendums</Text.SectionTitle>
-        <ActionButton color='cararra' onClick={() => showDialog('addNewAddendum')}><TbPlus /></ActionButton>
+        <ActionButton color='neutral' onClick={() => showDialog('addNewAddendum')}><TbPlus /></ActionButton>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

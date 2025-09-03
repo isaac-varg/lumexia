@@ -15,7 +15,7 @@ const ActiveMbpr = () => {
     const size = activeMbpr.BatchSize.filter(bz => bz.recordStatusId === staticRecords.app.recordStatuses.active)[0]
 
     setActiveSize(size)
-  })
+  }, [activeMbpr])
 
   if (!activeMbpr || !activeSize) return false;
 

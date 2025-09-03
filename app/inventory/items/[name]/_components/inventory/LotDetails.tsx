@@ -30,7 +30,7 @@ const LotDetails = () => {
   useEffect(() => {
     getSelectedLotTransactions();
     getSelectedLotNotes();
-  }, [selectedLot])
+  }, [selectedLot, getSelectedLotNotes, getSelectedLotTransactions])
 
 
   return (

@@ -10,23 +10,20 @@ const Submission = ({ data, type, colors, step, existingMethod }: { data: Paymen
 
     const router = useRouter();
 
-    const payload = {
-        identifier: data.identifier,
-        limit: data.limit,
-        expiry: data.expiry,
-        paymentType: type,
-        accountEndingIn: data.accountEndingIn,
-        associatedName: data.associatedName,
-        methodName: data.methodName,
-        bgColorA: colors.bgColorA,
-        bgColorB: colors.bgColorB,
-        circleColorA: colors.circleColorA,
-        circleColorB: colors.circleColorB,
-    }
-
-
     useEffect(() => {
-
+        const payload = {
+            identifier: data.identifier,
+            limit: data.limit,
+            expiry: data.expiry,
+            paymentType: type,
+            accountEndingIn: data.accountEndingIn,
+            associatedName: data.associatedName,
+            methodName: data.methodName,
+            bgColorA: colors.bgColorA,
+            bgColorB: colors.bgColorB,
+            circleColorA: colors.circleColorA,
+            circleColorB: colors.circleColorB,
+        }
 
         const handleSubmit = async () => {
             if (existingMethod) {
@@ -46,7 +43,7 @@ const Submission = ({ data, type, colors, step, existingMethod }: { data: Paymen
         if (step === 3) {
             handleSubmit();
         }
-    }, [step])
+    }, [step, existingMethod, router, colors, data, type])
 
     if (step !== 3) return false;
 

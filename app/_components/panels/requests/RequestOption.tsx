@@ -1,5 +1,6 @@
 'use client'
 import { PurchasingRequest } from "@/actions/purchasing/requests/getByStatus"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 const RequestOption = ({ req }: { req: PurchasingRequest }) => {
@@ -18,7 +19,12 @@ const RequestOption = ({ req }: { req: PurchasingRequest }) => {
         <h2 className="text-center items-center flex rounded-xl px-2 py-1 font-semibold text-sm font-poppins" style={{ backgroundColor: req.priority.bgColor, color: req.priority.textColor }}>{req.priority.name}</h2>
         <div className="avatar">
           <div className="w-8 rounded-full">
-            <img src={req.requestingUser.image || ''} />
+            <Image
+              src={req.requestingUser.image || ''}
+              alt={req.requestingUser.name || 'user image'}
+              width={32}
+              height={32}
+            />
           </div>
         </div>
       </div>

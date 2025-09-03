@@ -29,3 +29,4 @@ export const groupByProperty = <T extends object>(
   }, {} as Record<string, T[]>);
 }
 
+export type GroupByProperty = ReturnType<typeof groupByProperty>

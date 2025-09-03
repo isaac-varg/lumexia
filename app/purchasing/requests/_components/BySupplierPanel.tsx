@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { RequestForDashboard } from '../_functions/getRequests'
-import { GroupByProperty, groupByProperty } from '@/utils/data/groupByProperty'
+import { groupByProperty, GroupByProperty } from '@/utils/data/groupByProperty'
 import { RequestStatus } from '../[referenceCode]/_functions/getRequestStatuses';
 import RequestCard from './RequestCard';
 import { RequestPriority } from '../_functions/getPriorities';
@@ -8,7 +8,7 @@ import { Search } from '@/components/Search';
 
 const BySupplierPanel = ({ requests, statuses, priorities }: { requests: RequestForDashboard[], statuses: RequestStatus[], priorities: RequestPriority[] }) => {
 
-  const grouped: GroupByProperty[] = groupByProperty(requests, 'connectedPoSuppliers');
+  const grouped: GroupByProperty = groupByProperty(requests, 'connectedPoSuppliers');
   const supplierKeys = Object.keys(grouped).sort();
 
   const [searchResults, setSearchResults] = useState<RequestForDashboard[]>(requests)

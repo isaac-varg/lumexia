@@ -12,7 +12,7 @@ const AppStateSetter = () => {
         if (!user) {
             getUser();
         }
-    }, [])
+    }, [getUser, user])
 
     return false
 

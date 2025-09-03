@@ -12,13 +12,13 @@ import EquipmentCard from './EquipmentCard'
 
 const EquipmentPanel = () => {
   const { showDialog } = useDialog();
-  const { selectedBatchStep, revalidateTrigger} = useProductionWizard()
+  const { selectedBatchStep, revalidateTrigger } = useProductionWizard()
 
   const [equipment, setEquipment] = useState([])
-  const [stepEquipment, setStepEquipment] =useState<StepEquipment[]>([]) // difference between the two states is that this is equipment assigned to this step
+  const [stepEquipment, setStepEquipment] = useState<StepEquipment[]>([]) // difference between the two states is that this is equipment assigned to this step
 
 
-useEffect(() => {
+  useEffect(() => {
 
     const getData = async () => {
       const data = await getEquipment()
@@ -36,7 +36,7 @@ useEffect(() => {
       if (!selectedBatchStep) {
         throw new Error("Batch step not selected")
       }
- 
+
       const data = await getStepEquipment(selectedBatchStep.id)
       setStepEquipment(data)
     }
@@ -52,12 +52,12 @@ useEffect(() => {
 
       <div className='flex justify-between'>
         <Text.SectionTitle size='small'>Equipment</Text.SectionTitle>
-        <ActionButton color='cararra' onClick={() => showDialog('addStepEquipment')}><TbPlus /></ActionButton>
+        <ActionButton color='neutral' onClick={() => showDialog('addStepEquipment')}><TbPlus /></ActionButton>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
 
-        {stepEquipment.map((se: StepEquipment ) => <EquipmentCard key={se.id} equipment={se} />)}
+        {stepEquipment.map((se: StepEquipment) => <EquipmentCard key={se.id} equipment={se} />)}
       </div>
 
 

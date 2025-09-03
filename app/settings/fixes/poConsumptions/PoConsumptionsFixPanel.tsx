@@ -25,7 +25,7 @@ const PoConsumptionsFixPanel = () => {
   return (
     <Panels.Root>
       <Text.SectionTitle size="small">Create BPR Consumption Transaction Links</Text.SectionTitle>
-      <Text.Normal>This will create a link between each BPR Staging entry and it's corresponding transaction for BPRs that were produced before the link functionality.</Text.Normal>
+      <Text.Normal>This will create a link between each BPR Staging entry and it&apos;s corresponding transaction for BPRs that were produced before the link functionality.</Text.Normal>
 
 
 

@@ -26,7 +26,7 @@ const StateSetter = ({ lotId }: { lotId: string | null }) => {
 
         handleScan(lotId)
 
-    }, [lotId])
+    }, [lotId, setLot, setStep])
 
     return false
 }

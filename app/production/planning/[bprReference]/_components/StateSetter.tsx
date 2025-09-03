@@ -11,7 +11,7 @@ const StateSetter = ({ bprId }: { bprId: string }) => {
     useEffect(() => {
         getBpr(bprId)
 
-    }, [bprId])
+    }, [bprId, getBpr])
 
     useEffect(() => {
         if (bprStatuses.length === 0) {
@@ -27,14 +27,14 @@ const StateSetter = ({ bprId }: { bprId: string }) => {
             getBprNoteTypes();
         }
 
-    }, [bpr])
+    }, [bpr, bprStatuses.length, getBprStatuses, getBom, getQcExaminations, getQcGroups, getLastItemPrice, getBprNotes, getBprNoteTypes])
 
     useEffect(() => {
         if (bom.length !== 0) {
 
             getBomItemInventory()
         }
-    }, [bom])
+    }, [bom, getBomItemInventory])
 
     return false;
 

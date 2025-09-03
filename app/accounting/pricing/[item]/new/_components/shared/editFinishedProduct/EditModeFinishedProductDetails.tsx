@@ -45,7 +45,7 @@ const EditModeFinishedProductDetails = ({ currentStep, nextStep, setFinishedProd
       });
     }
 
-  }, [selectedFinishedProduct])
+  }, [selectedFinishedProduct, form])
 
   if (currentStep !== 0) { return false }
 

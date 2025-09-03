@@ -53,7 +53,7 @@ const ActiveRequestsStep = ({ nextStep, itemId, setSnapshotWarnings, currentStep
         if (isStepComplete) {
             nextStep();
         }
-    }, [isStepComplete])
+    }, [isStepComplete, nextStep])
 
     if (currentStep !== 1) {
         return null

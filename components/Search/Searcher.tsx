@@ -3,7 +3,7 @@
 // this component differs from search in that the results are output to the component
 // rather than displayed
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import Fuse from 'fuse.js'
 
@@ -18,11 +18,12 @@ const Searcher = <T,>({ data, keys, onQueryComplete }: SearchProps<T>) => {
     const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
     const [searchInput, setSearchInput] = useState("");
 
-    const searchOptions = {
-        keys: [...keys],
-    }
-
-    const fuse = new Fuse(data, searchOptions)
+    const fuse = useMemo(() => {
+        const searchOptions = {
+            keys: [...keys],
+        }
+        return new Fuse(data, searchOptions)
+    }, [data, keys])
 
 
     useEffect(() => {
@@ -48,7 +49,7 @@ const Searcher = <T,>({ data, keys, onQueryComplete }: SearchProps<T>) => {
                 clearTimeout(debounceTimeout.current);
             }
         };
-    }, [searchInput]);
+    }, [searchInput, data, fuse, onQueryComplete]);
 
 
 
