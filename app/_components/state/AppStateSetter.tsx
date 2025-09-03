@@ -5,16 +5,17 @@ import { useEffect } from "react"
 
 const AppStateSetter = () => {
 
-    const { getUser } = useAppActions()
-    const { user } = useAppSelection()
+  const { getUser, getLanguage } = useAppActions()
+  const { user } = useAppSelection()
 
-    useEffect(() => {
-        if (!user) {
-            getUser();
-        }
-    }, [getUser, user])
+  useEffect(() => {
+    if (!user) {
+      getUser();
+      getLanguage();
+    }
+  }, [getUser, user, getLanguage])
 
-    return false
+  return false
 
 }
 
