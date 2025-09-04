@@ -18,6 +18,7 @@ model BatchProductionRecord {
     bprBatchSteps BprBatchStep[]
     lotOrigin     LotOrigin?
     qcRecords     QcRecord[]
+    timerEntries BprTimerEntry[]
 
     @@map("batch_production_records")
 }

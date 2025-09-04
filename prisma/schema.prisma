@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Sep 02 2025 10:33:35 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Sep 04 2025 10:13:09 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1212,6 +1212,7 @@ model BatchProductionRecord {
   bprBatchSteps      BprBatchStep[]
   lotOrigin          LotOrigin?
   qcRecords          QcRecord[]
+  timerEntries       BprTimerEntry[]
   NotionBpr          NotionBpr[]
   BprBillOfMaterials BprBillOfMaterials[]
   BprNote            BprNote[]
@@ -1501,6 +1502,33 @@ model BprStepActionableVerification {
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
   @@map("bpr_step_actionable_verifications")
+}
+
+model BprTimerEntry {
+  id          String                @id @default(uuid())
+  bprId       String                @map("bpr_id")
+  timerTypeId String                @map("timer_type_id")
+  startTime   DateTime              @default(now()) @map("start_time")
+  endTime     DateTime?
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+  timerType   BprTimerType          @relation(fields: [timerTypeId], references: [id])
+  bpr         BatchProductionRecord @relation(fields: [bprId], references: [id])
+
+  @@map("bpr_timer_entries")
+}
+
+model BprTimerType {
+  id           String          @id @default(uuid())
+  name         String
+  description  String
+  bgColor      String          @map("bg_color")
+  textColor    String          @map("text_color")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  timerEntries BprTimerEntry[]
+
+  @@map("bpr_timer_types")
 }
 
 model CompoundingVessel {
