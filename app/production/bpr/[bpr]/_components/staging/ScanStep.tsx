@@ -5,7 +5,6 @@ const ScanStep = ({ currentStep, onLotScan }: { currentStep: number, onLotScan: 
 
   return (
     <div>
-
       <ScanListener
         onScanComplete={onLotScan}
       />

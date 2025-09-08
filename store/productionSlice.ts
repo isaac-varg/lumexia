@@ -12,6 +12,7 @@ type State = {
   stagings: BprStagingItem[],
   stagingsMode: 'view' | 'add'
   isStagingsLoading: boolean,
+  qualityDetailsViewMode: 'view' | 'note',
   viewStatuses: {
     isStaging: boolean,
     isPrimaryVerifcation: boolean,
@@ -28,6 +29,7 @@ type Actions = {
     setStagingsMode: (mode: 'view' | 'add') => void;
     fetchStagings: (bprBomId: string) => Promise<void>;
     setViewStatuses: () => void;
+    setQualityDetailsViewMode: (mode: 'note' | 'view') => void;
   }
 }
 
@@ -36,8 +38,9 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
   bom: [],
   selectedBomItem: null,
   stagings: [],
-  stagingsMode: 'view',
+  stagingsMode: 'view' as any,
   isStagingsLoading: false,
+  qualityDetailsViewMode: 'view' as any,
   viewStatuses: {
     isStaging: false,
     isPrimaryVerifcation: false,
@@ -46,6 +49,7 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
 
   actions: {
     setBpr: (bpr) => set(() => ({ bpr })),
+    setQualityDetailsViewMode: (mode) => set(() => ({ qualityDetailsViewMode: mode })),
     setBom: (bom) => set(() => ({ bom })),
     setSelectedBomItem: (item) => {
       set(() => ({ selectedBomItem: item, stagings: [], stagingsLoading: false, stagingsMode: 'view' }));
@@ -73,15 +77,16 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
       if (!bpr || bom.length === 0) return;
 
       const isUnstaged = bom.some(item => item.statusId === notStarted);
+      const isSomePrimaryVerification = bom.some(item => item.statusId === staged);
 
-      if (isUnstaged) {
-        set((state) => ({
-          viewStatuses: {
-            ...state.viewStatuses,
-            isStaging: true,
-          }
-        }))
-      }
+      set((state) => ({
+        viewStatuses: {
+          ...state.viewStatuses,
+          isPrimaryVerifcation: isSomePrimaryVerification,
+          isStaging: isUnstaged,
+
+        }
+      }))
 
 
     }

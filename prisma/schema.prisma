@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Sep 04 2025 10:13:09 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Sep 08 2025 09:49:33 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -564,6 +564,7 @@ model File {
   poAccountingFiles   PoAccountingFile[]
   generalRequestFiles GeneralRequestFile[]
   itemFiles           ItemFile[]
+  bprStagingFiles     BprStagingFile[]
 
   @@map("files")
 }
@@ -1387,6 +1388,7 @@ model BprStaging {
   uom                    UnitOfMeasurement        @relation(fields: [uomId], references: [id])
   status                 BprStagingStatus         @relation(fields: [bprStagingStatusId], references: [id])
   consumption            BprStagingConsumption?
+  files                  BprStagingFile[]
   BprStagingVerification BprStagingVerification[]
 
   @@map("bpr_stagings")
@@ -1402,6 +1404,18 @@ model BprStagingConsumption {
   transaction   Transaction @relation(fields: [transactionId], references: [id])
 
   @@map("bpr_staging_consumptions")
+}
+
+model BprStagingFile {
+  id           String     @id @default(uuid())
+  fileId       String     @map("file_id")
+  bprStagingId String     @map("bpr_staging_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  file         File       @relation(fields: [fileId], references: [id])
+  staging      BprStaging @relation(fields: [bprStagingId], references: [id])
+
+  @@map("bpr_staging_files")
 }
 
 model BprStagingStatus {

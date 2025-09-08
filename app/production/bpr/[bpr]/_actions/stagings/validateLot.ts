@@ -19,8 +19,6 @@ export const validateLot = async (scannedLotId: string, seletedBomItemId: string
 
   const isValid = scannedLot.itemId === seletedBomItemId;
 
-
-
   return isValid;
 
 }

@@ -15,6 +15,7 @@ model BprStaging {
     uom UnitOfMeasurement @relation(fields: [uomId], references: [id])
     status BprStagingStatus @relation(fields: [bprStagingStatusId], references: [id])
     consumption BprStagingConsumption?
+    files BprStagingFile[]
 
     @@map("bpr_stagings")
 }
