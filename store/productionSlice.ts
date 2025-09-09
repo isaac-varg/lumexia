@@ -13,6 +13,7 @@ type State = {
   stagingsMode: 'view' | 'add'
   isStagingsLoading: boolean,
   qualityDetailsViewMode: 'view' | 'note',
+  qualityMode: 'primary' | 'secondary'
   viewStatuses: {
     isStaging: boolean,
     isPrimaryVerifcation: boolean,
@@ -30,6 +31,7 @@ type Actions = {
     fetchStagings: (bprBomId: string) => Promise<void>;
     setViewStatuses: () => void;
     setQualityDetailsViewMode: (mode: 'note' | 'view') => void;
+    setQualityMode: (mode: 'primary' | 'secondary') => void;
   }
 }
 
@@ -40,6 +42,7 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
   stagings: [],
   stagingsMode: 'view' as any,
   isStagingsLoading: false,
+  qualityMode: 'primary' as any,
   qualityDetailsViewMode: 'view' as any,
   viewStatuses: {
     isStaging: false,
@@ -77,19 +80,22 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
       if (!bpr || bom.length === 0) return;
 
       const isUnstaged = bom.some(item => item.statusId === notStarted);
+
       const isSomePrimaryVerification = bom.some(item => item.statusId === staged);
+
+      const isSomeSecondaryVerification = bom.some(item => item.statusId === verified);
 
       set((state) => ({
         viewStatuses: {
           ...state.viewStatuses,
           isPrimaryVerifcation: isSomePrimaryVerification,
           isStaging: isUnstaged,
-
+          isSecondaryVerification: isSomeSecondaryVerification,
         }
       }))
+    },
 
-
-    }
+    setQualityMode: (mode) => set(() => ({ qualityMode: mode })),
   }
 }))
 

@@ -3,6 +3,7 @@ import { useProductionSelection } from "@/store/productionSlice"
 import Staging from "../staging/Staging"
 import { useAppSelection } from "@/store/appSlice"
 import Primary from "../quality/Primary"
+import Secondary from "../quality/Secondary"
 
 // currently there isn't a need for separate components for
 // primary and secondary verification, but they are being kept separate
@@ -16,12 +17,15 @@ const ViewManager = () => {
   const { user } = useAppSelection()
 
 
+
   return (
     <div>
 
       {(user?.roles.isProduction && viewStatuses.isStaging) && <Staging />}
 
       {(user?.roles.isProductionQuality && viewStatuses.isPrimaryVerifcation) && <Primary />}
+
+      {(user?.roles.isProductionQuality && viewStatuses.isSecondaryVerification) && <Secondary />}
     </div>
   )
 }

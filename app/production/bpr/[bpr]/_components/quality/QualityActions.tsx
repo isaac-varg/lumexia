@@ -1,7 +1,12 @@
 import Card from "@/components/Card"
-import { TbChecks } from "react-icons/tb"
+import ButtonApproveAll from "./ButtonApproveAll"
+import ButtonCompleteVerification from "./ButtonCompleteVerification"
 
 const QualityActions = () => {
+
+
+
+
   return (
     <Card.Root>
 
@@ -9,10 +14,8 @@ const QualityActions = () => {
 
       <div className="grid grid-cols-1 gap-2">
 
-        <button className="btn btn-success btn-soft">
-          <TbChecks className="size-6" />
-          Approve All
-        </button>
+        {/*<ButtonApproveAll />*/}
+        <ButtonCompleteVerification />
 
 
       </div>

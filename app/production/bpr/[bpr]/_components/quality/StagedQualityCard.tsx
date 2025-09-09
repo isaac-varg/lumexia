@@ -4,14 +4,26 @@ import { translations } from "../../_configs/translations"
 import { useTranslation } from "@/hooks/useTranslation"
 import { TbCheck, TbX } from "react-icons/tb"
 import { Fragment, useState } from "react"
+import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
+import { handleSingleStagingApproval } from "../../_actions/quality/handleSingleStagingApproval"
+import { staticRecords } from "@/configs/staticRecords"
+import { handleSingleStagingDeny } from "../../_actions/quality/handleSingleStagingDeny"
+
+
 
 const StagedQualityCard = ({ staged }: { staged: BprStagingItem }) => {
   const { t } = useTranslation()
   const [isDeny, setIsDeny] = useState<boolean>(false);
   const [denyNote, setDenyNote] = useState<string>('');
+  const { bpr, selectedBomItem, qualityMode } = useProductionSelection()
+  const { fetchStagings } = useProductionActions()
+  const isApproved = (qualityMode === 'primary' && staged.isPrimaryVerified) || (qualityMode === 'secondary' && staged.isSecondaryVerified)
 
   const handleApprove = async () => {
 
+    if (!bpr || !selectedBomItem || !qualityMode) return;
+    await handleSingleStagingApproval(qualityMode, staged, bpr.id, selectedBomItem.bom.item.name)
+    fetchStagings(selectedBomItem.id)
   }
 
   const handelDeny = () => {
@@ -19,18 +31,49 @@ const StagedQualityCard = ({ staged }: { staged: BprStagingItem }) => {
   }
 
   const handleDenySubmit = async () => {
-    console.log(denyNote)
+
+    if (!bpr || !selectedBomItem || !qualityMode) return;
+    handleSingleStagingDeny(qualityMode, denyNote, staged, bpr.id, selectedBomItem.bom.item.name)
+    fetchStagings(selectedBomItem.id)
     setIsDeny(false)
+  }
+
+  if (isApproved) {
+    return (
+      <div className="flex flex-col gap-2 p-8 rounded-xl bg-success/50 shadow-xl">
+
+        <div className="flex justify-center gap-4 items-center">
+          <TbCheck className="size-12" />
+          <h1 className="text-3xl text-success-content font-poppins font-semibold">Verified</h1>
+        </div>
+
+        <div className="flex flex-row justify-between items-center ">
+
+
+
+          <span className="text-base-content/50 font-semibold text-lg">{t(translations, 'stagedCardLot')}</span>
+          <span className="text-base-content font-semibold text-lg">{staged.lot.lotNumber}</span>
+        </div>
+
+        <div className="flex flex-row justify-between items-center ">
+          <span className="text-base-content/50 font-semibold text-lg">{t(translations, 'stagedCardQuantity')}</span>
+          <span className="text-base-content font-semibold text-lg">{staged.quantity} {staged.uom.abbreviation}</span>
+        </div>
+
+      </div >
+    )
   }
 
   return (
     <div className="flex flex-col gap-6 p-8 rounded-xl bg-base-100 shadow-xl">
 
       {!isDeny && (
-        <Fragment>      <div className="flex flex-row justify-between items-center ">
-          <span className="text-base-content/50 font-semibold text-lg">{t(translations, 'stagedCardLot')}</span>
-          <span className="text-base-content font-semibold text-lg">{staged.lot.lotNumber}</span>
-        </div>
+        <Fragment>
+          <div className="flex flex-row justify-between items-center ">
+
+            <span className="text-base-content/50 font-semibold text-lg">{t(translations, 'stagedCardLot')}</span>
+            <span className="text-base-content font-semibold text-lg">{staged.lot.lotNumber}</span>
+          </div>
 
           <div className="flex flex-row justify-between items-center ">
             <span className="text-base-content/50 font-semibold text-lg">{t(translations, 'stagedCardQuantity')}</span>

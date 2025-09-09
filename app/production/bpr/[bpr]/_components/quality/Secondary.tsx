@@ -4,16 +4,17 @@ import QualityActions from "./QualityActions"
 import QualityDetails from "./QualityDetails"
 import { useProductionActions } from "@/store/productionSlice"
 
-const Primary = () => {
+const Secondary = () => {
 
   const { setQualityMode } = useProductionActions()
   useEffect(() => {
-    setQualityMode('primary');
+    setQualityMode('secondary');
   }, [])
 
 
   return (
     <div className="grid grid-cols-5 gap-6">
+
 
       <MaterialList />
       <QualityDetails />
@@ -22,4 +23,4 @@ const Primary = () => {
   )
 }
 
-export default Primary
+export default Secondary 

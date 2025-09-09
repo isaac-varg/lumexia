@@ -6,10 +6,15 @@ import { staticRecords } from "@/configs/staticRecords"
 
 const MaterialList = () => {
 
-  const { bom } = useProductionSelection()
+  const { bom, qualityMode } = useProductionSelection()
   const sorted = bom.sort((a, b) => parseInt(a.bom.identifier) - parseInt(b.bom.identifier));
-  const staged = bom.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.staged)
-  const verified = sorted.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.verified);
+  const staged = qualityMode === 'primary' ?
+    bom.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.staged) :
+    bom.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.verified);
+
+  const verified = qualityMode === 'primary' ?
+    sorted.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.verified) :
+    sorted.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.secondaryVerification);
 
   return (
     <div className="flex flex-col gap-6 col-span-2">

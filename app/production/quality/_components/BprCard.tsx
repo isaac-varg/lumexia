@@ -1,5 +1,6 @@
 "use client"
 import useProduction from '@/hooks/useProduction'
+import { useProductionActions } from '@/store/productionSlice'
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -8,12 +9,14 @@ import { MdOilBarrel } from 'react-icons/md'
 const BprCard = ({ bpr, isSecondary = false }: { bpr: BatchProductionRecord, isSecondary: boolean }) => {
 
   const { setIsSecondaryVerificationMode } = useProduction()
+  const { setQualityMode } = useProductionActions()
 
   const router = useRouter()
 
   const handleClick = () => {
     setIsSecondaryVerificationMode(isSecondary);
-    router.push(`/production/quality/${bpr.referenceCode}?id=${bpr.id}`)
+    setQualityMode(isSecondary ? 'secondary' : 'primary');
+    router.push(`/production/bpr/${bpr.referenceCode}?id=${bpr.id}`)
   }
   return (
     <div className='flex flex-col bg-base-200 rounded-lg p-4 gap-y-4 hover:cursor-pointer hover:bg-base-200/50' onClick={() => handleClick()}>
