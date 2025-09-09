@@ -1,10 +1,11 @@
-import { useProductionSelection } from "@/store/productionSlice"
+import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
 import { LuBadgeCheck } from "react-icons/lu";
 import { handleCompleteVerification } from "../../_actions/quality/handleCompleteVerification";
 import { useRouter } from "next/navigation";
 
 const ButtonCompleteVerification = () => {
   const { selectedBomItem, stagings, qualityMode, bpr } = useProductionSelection()
+  const { setQualityMode } = useProductionActions();
   const router = useRouter();
   const isCompletable = (qualityMode === 'primary' && stagings.every(s => s.isPrimaryVerified)) ||
     (qualityMode === 'secondary' && stagings.every(s => s.isSecondaryVerified));
@@ -14,7 +15,7 @@ const ButtonCompleteVerification = () => {
 
     handleCompleteVerification(qualityMode, selectedBomItem.id, selectedBomItem.bom.item.name, bpr.id)
     router.refresh();
-
+    setQualityMode(qualityMode)
   }
 
 

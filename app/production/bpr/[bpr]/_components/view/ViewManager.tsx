@@ -4,12 +4,14 @@ import Staging from "../staging/Staging"
 import { useAppSelection } from "@/store/appSlice"
 import Primary from "../quality/Primary"
 import Secondary from "../quality/Secondary"
+import Compounding from "../compounding/Compounding"
+import AwaitingVerification from "../blocked/AwaitingVerification"
 
 // currently there isn't a need for separate components for
 // primary and secondary verification, but they are being kept separate
 // because it is likely quality control wants to change this in the future
 
-export type BprViewStatus = 'staging' | 'primaryVerification' | 'secondaryVerification'
+export type BprViewStatus = 'staging' | 'primaryVerification' | 'secondaryVerification' | 'isCompounding';
 
 const ViewManager = () => {
 
@@ -21,11 +23,15 @@ const ViewManager = () => {
   return (
     <div>
 
+      {(user?.roles.isProduction && !viewStatuses.isStaging && (viewStatuses.isPrimaryVerifcation || viewStatuses.isSecondaryVerification)) && <AwaitingVerification />}
+
       {(user?.roles.isProduction && viewStatuses.isStaging) && <Staging />}
 
       {(user?.roles.isProductionQuality && viewStatuses.isPrimaryVerifcation) && <Primary />}
 
-      {(user?.roles.isProductionQuality && viewStatuses.isSecondaryVerification) && <Secondary />}
+      {(user?.roles.isProductionQualitySecondary && viewStatuses.isSecondaryVerification) && <Secondary />}
+
+      {(user?.roles.isProduction && viewStatuses.isCompounding) && <Compounding />}
     </div>
   )
 }

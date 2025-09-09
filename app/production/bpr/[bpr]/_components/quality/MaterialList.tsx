@@ -25,7 +25,7 @@ const MaterialList = () => {
 
 
         <div className="flex flex-col gap-6">
-          <SectionTitle size="small">To Verify</SectionTitle>
+          <SectionTitle size="small">{qualityMode === 'primary' ? 'To Verify' : 'To Secondary Verify'}</SectionTitle>
 
           {staged.length === 0 && <p className={"text-base-content text-lg text-medium"}>None</p>}
 
@@ -34,7 +34,7 @@ const MaterialList = () => {
 
           </div>
 
-          <SectionTitle size="small">Verified</SectionTitle>
+          <SectionTitle size="small">{qualityMode === 'primary' ? 'Verified' : 'Twice Verified'}</SectionTitle>
           <div className="grid grid-cols-1 gap-4">
             {verified.map(item => <MaterialButton key={item.id} material={item} />)}
           </div>

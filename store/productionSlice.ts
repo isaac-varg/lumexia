@@ -18,6 +18,7 @@ type State = {
     isStaging: boolean,
     isPrimaryVerifcation: boolean,
     isSecondaryVerification: boolean
+    isCompounding: boolean
   }
 
 }
@@ -48,6 +49,7 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
     isStaging: false,
     isPrimaryVerifcation: false,
     isSecondaryVerification: false,
+    isCompounding: false
   },
 
   actions: {
@@ -80,10 +82,9 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
       if (!bpr || bom.length === 0) return;
 
       const isUnstaged = bom.some(item => item.statusId === notStarted);
-
       const isSomePrimaryVerification = bom.some(item => item.statusId === staged);
-
       const isSomeSecondaryVerification = bom.some(item => item.statusId === verified);
+      const isCompounding = !isUnstaged && !isSomePrimaryVerification && !isSomeSecondaryVerification
 
       set((state) => ({
         viewStatuses: {
@@ -91,6 +92,7 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
           isPrimaryVerifcation: isSomePrimaryVerification,
           isStaging: isUnstaged,
           isSecondaryVerification: isSomeSecondaryVerification,
+          isCompounding,
         }
       }))
     },
