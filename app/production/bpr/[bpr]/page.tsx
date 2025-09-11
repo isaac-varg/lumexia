@@ -1,3 +1,4 @@
+import { getSteps } from "./_actions/compounding/getSteps";
 import { getBprBom } from "./_actions/getBprBom";
 import { getProductionBpr } from "./_actions/getProductionBpr"
 import Header from "./_components/Header";
@@ -12,8 +13,10 @@ const ProductionBprPage = async ({ searchParams }: Props) => {
 
   const [
     bom,
+    steps,
   ] = await Promise.all([
     getBprBom(bpr.id),
+    getSteps(bpr.id),
   ])
 
 
@@ -22,6 +25,7 @@ const ProductionBprPage = async ({ searchParams }: Props) => {
       <StateSetter
         bpr={bpr}
         bom={bom}
+        steps={steps}
       />
 
       <Header />

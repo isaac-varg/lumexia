@@ -1,3 +1,4 @@
+import { ProductionStep } from "@/app/production/bpr/[bpr]/_actions/compounding/getSteps"
 import { BprBomItem } from "@/app/production/bpr/[bpr]/_actions/getBprBom"
 import { getBprStagings, BprStagingItem } from "@/app/production/bpr/[bpr]/_actions/getBprStagings"
 import { ProductionBpr } from "@/app/production/bpr/[bpr]/_actions/getProductionBpr"
@@ -11,8 +12,10 @@ type State = {
   selectedBomItem: BprBomItem | null,
   stagings: BprStagingItem[],
   stagingsMode: 'view' | 'add'
+  steps: ProductionStep[]
+  selectedStep: ProductionStep | null
   isStagingsLoading: boolean,
-  qualityDetailsViewMode: 'view' | 'note',
+  qualityDetailsViewMode: 'view' | 'note'
   qualityMode: 'primary' | 'secondary'
   viewStatuses: {
     isStaging: boolean,
@@ -33,6 +36,8 @@ type Actions = {
     setViewStatuses: () => void;
     setQualityDetailsViewMode: (mode: 'note' | 'view') => void;
     setQualityMode: (mode: 'primary' | 'secondary') => void;
+    setSteps: (steps: ProductionStep[]) => void;
+    setSelectedStep: (step: ProductionStep | null) => void;
   }
 }
 
@@ -42,6 +47,8 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
   selectedBomItem: null,
   stagings: [],
   stagingsMode: 'view' as any,
+  steps: [],
+  selectedStep: null,
   isStagingsLoading: false,
   qualityMode: 'primary' as any,
   qualityDetailsViewMode: 'view' as any,
@@ -98,6 +105,8 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
     },
 
     setQualityMode: (mode) => set(() => ({ qualityMode: mode })),
+    setSteps: (steps) => set(() => ({ steps })),
+    setSelectedStep: (step) => set(() => ({ selectedStep: step })),
   }
 }))
 

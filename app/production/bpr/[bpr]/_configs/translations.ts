@@ -110,5 +110,26 @@ export const translations = {
   noMaterialsToStage: {
     en: 'All materials have been staged.',
     es: 'Todos los materiales han sido preparados'
-  }
+  },
+  stepsTitle: {
+    en: 'Instruction Steps',
+    es: 'Pasos de Instrucción'
+  },
+  stepPhase: {
+    en: 'Phase',
+    es: 'Fase',
+  },
+  stepNotSelected: {
+    en: 'Select A Step',
+    es: 'Seleccione un Paso'
+  },
+  instructionsTitle: {
+    en: 'Instructions',
+    es: 'Instrucciónes',
+  },
+  addendaTitle: {
+    en: 'Addenda',
+    es: 'Adendas'
+  },
+
 }

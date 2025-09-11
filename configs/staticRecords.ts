@@ -155,8 +155,11 @@ export const staticRecords = {
       types: {
         default: '87b50042-fbc0-415c-8afc-a61b80b37859'
       }
+    },
+    stepAddendaTypes: {
+      warning: '05a7f359-cb54-446e-bcfd-af32d91088f9',
+      info: 'f03b6354-eb25-4742-990a-92feb8a3971c'
     }
-
   },
   purchasing: {
     poStatuses: {

@@ -6,6 +6,7 @@ import Primary from "../quality/Primary"
 import Secondary from "../quality/Secondary"
 import Compounding from "../compounding/Compounding"
 import AwaitingVerification from "../blocked/AwaitingVerification"
+import AwaitingProduction from "../blocked/AwaitingProduction"
 
 // currently there isn't a need for separate components for
 // primary and secondary verification, but they are being kept separate
@@ -30,6 +31,8 @@ const ViewManager = () => {
       {(user?.roles.isProductionQuality && viewStatuses.isPrimaryVerifcation) && <Primary />}
 
       {(user?.roles.isProductionQualitySecondary && viewStatuses.isSecondaryVerification) && <Secondary />}
+
+      {((user?.roles.isProductionQuality || user?.roles.isProductionQualitySecondary) && (!viewStatuses.isPrimaryVerifcation || !viewStatuses.isSecondaryVerification)) && <AwaitingProduction />}
 
       {(user?.roles.isProduction && viewStatuses.isCompounding) && <Compounding />}
     </div>
