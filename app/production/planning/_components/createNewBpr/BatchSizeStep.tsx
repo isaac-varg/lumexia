@@ -7,17 +7,17 @@ import { createBpr } from '../../_functions/createBpr'
 import useDialog from '@/hooks/useDialog'
 import { Item } from '@/types/item'
 
-const BatchSizeStep = ({ selectedMbprId, selectedItem}: { selectedMbprId: string | null,  selectedItem: Item | null }) => {
+const BatchSizeStep = ({ selectedMbprId, selectedItem }: { selectedMbprId: string | null, selectedItem: Item | null }) => {
 
   const [sizes, setSizes] = useState<BatchSize[]>([])
-  const { resetDialogContext} = useDialog()
+  const { resetDialogContext } = useDialog()
 
-  const handleSizeSelection =  async (size: BatchSize) => {
+  const handleSizeSelection = async (size: BatchSize) => {
 
-    if (!selectedMbprId) { throw new Error("No MBPR selected.")}
-    
-    if (!selectedItem) { throw new Error("No item selected.")}
-  
+    if (!selectedMbprId) { throw new Error("No MBPR selected.") }
+
+    if (!selectedItem) { throw new Error("No item selected.") }
+
     const data = {
       size,
       mbprId: selectedMbprId,
@@ -44,7 +44,7 @@ const BatchSizeStep = ({ selectedMbprId, selectedItem}: { selectedMbprId: string
 
     };
 
-    
+
 
     getSizes();
   }, [selectedMbprId])
@@ -54,7 +54,7 @@ const BatchSizeStep = ({ selectedMbprId, selectedItem}: { selectedMbprId: string
     <div>
       <Dialog.Title>Select Batch Size</Dialog.Title>
       <div className='grid grid-cols-2 gap-4'>
-        {sizes.map(s => <div key={s.id} className='flex flex-col bg-swirl-100 rounded-lg p-4 font-poppins font-semibold text-swirl-900' onClick={() => handleSizeSelection(s)}>
+        {sizes.map(s => <div key={s.id} className='flex flex-col bg-primary/45 rounded-lg p-4 font-poppins font-semibold text-primary-content' onClick={() => handleSizeSelection(s)}>
           <div className='flex  gap-y-2'><p>{s.quantity}</p><p>{s.uom.abbreviation}</p></div></div>)}
       </div>
 

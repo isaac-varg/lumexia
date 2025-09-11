@@ -1,35 +1,34 @@
 import React from 'react'
 import PageTitle from '@/components/Text/PageTitle';
 import AddBprButton from './_components/createNewBpr/AddBprButton';
-import PageBreadcrumbs from '@/components/App/PageBreadcrumbs';
-import PlanningTabs from './_components/PlanningTabs';
 import { productionActions } from '@/actions/production';
+import StateSetter from './_components/state/StateSetter';
+import TabSelector from './_components/shared/TabSelector';
+import TabsContainer from './_components/shared/TabsContainer';
 
 const PlanningPage = async () => {
-    const bprs = await productionActions.planning.getBprs()
-    const statuses = await productionActions.bprs.statuses.getAll()
+  const bprs = await productionActions.planning.getBprs()
+  const statuses = await productionActions.bprs.statuses.getAll()
 
-    return (
+  return (
+    <div className='flex flex-col gap-y-4'>
 
-        <div className='flex flex-col gap-y-4'>
-            <div className='flex justify-between items-center'>
+      <StateSetter bprs={bprs} statuses={statuses} />
 
-                <div className='flex flex-col gap-y-4'>
-                    <PageTitle>Planning</PageTitle>
-                    <PageBreadcrumbs />
-                </div>
-                <div className='flex gap-x-2'>
+      <div className='flex justify-between items-center'>
+        <PageTitle>Planning</PageTitle>
+        <AddBprButton />
+      </div>
 
-                <AddBprButton />
-                </div>
-            </div>
-            
-            <PlanningTabs bprs={bprs} statuses={statuses} />
+      <TabSelector />
+
+      <TabsContainer />
 
 
-        </div>
 
-    )
+    </div>
+
+  )
 }
 
 export default PlanningPage
