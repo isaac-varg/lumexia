@@ -4,14 +4,14 @@ import TabButton from "./TabButton";
 
 
 // define the tabs
-export type BprTab = 'bom' | 'notes' | 'activity' | 'basics'
+export type BprTab = 'basics' | 'notes' | 'activity'
 
 const TabSelector = () => {
 
   const { bpr } = useBprDetailsSelection()
 
 
-  const tabs: BprTab[] = ['basics', 'bom', 'notes', 'activity',];
+  const tabs: BprTab[] = ['basics', 'notes', 'activity',];
 
   if (!bpr) {
     return <Skeleton />

@@ -4,7 +4,7 @@ import Statuses from "./Status"
 
 const BasicsTab = () => {
   return (
-    <div className="grid grid-cols-2 gap-6">
+    <div className="grid grid-cols-3 gap-6">
       <BatchSize />
       <Statuses />
 

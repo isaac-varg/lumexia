@@ -49,7 +49,7 @@ export const useBprDetailsSelection = create<State & Actions>((set, get) => ({
   bpr: null,
   bom: [],
   bomInventory: [],
-  currentTab: 'bom' as BprTab,
+  currentTab: 'basics' as BprTab,
   isLoading: false,
   selectedBomItem: null,
   selectedBomItemPurchasingRequests: [],

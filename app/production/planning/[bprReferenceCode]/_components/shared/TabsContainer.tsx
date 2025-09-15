@@ -22,8 +22,7 @@ const TabsContainer = () => {
         transition={{ duration: 0.2 }}
       >
       </motion.div>
-      {currentTab === 'basics' && <BasicsTab />}
-      {currentTab === 'bom' && <BomTab />}
+      {currentTab === 'basics' && <BomTab />}
       {currentTab === 'notes' && <NotesTab />}
       {currentTab === 'activity' && <ActivityTab />}
     </AnimatePresence>

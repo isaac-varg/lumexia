@@ -1,15 +1,22 @@
 import Card from "@/components/Card"
 import MaterialSufficiencyTable from "./MaterialSufficiencyTable"
+import BasicsTab from "../basics/BasicsTab"
 
 const BomTab = () => {
   return (
-    <Card.Root>
+    <div className="flex flex-col gap-6">
 
-      <Card.Title>Bill of Materials</Card.Title>
+      <BasicsTab />
+
+      <Card.Root>
+
+        <Card.Title>Bill of Materials</Card.Title>
 
 
-      <MaterialSufficiencyTable />
-    </Card.Root>
+        <MaterialSufficiencyTable />
+      </Card.Root>
+
+    </div>
   )
 }
 
