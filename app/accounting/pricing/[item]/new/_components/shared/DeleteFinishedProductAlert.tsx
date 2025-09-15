@@ -29,7 +29,7 @@ const DeleteFinishedProductAlert = ({ selectedFinishedProductId, produced = fals
                 <Alert.Content
                     title='Confirm Deletion'
                     actionLabel='Confirm'
-                    actionColor='cararra'
+                    actionColor='error'
                     cancelAction={resetDialogContext}
                     action={handleDelete}
                 >

@@ -22,6 +22,10 @@ const ConfirmDepletion = ({ lot }: { lot: LotWithData }) => {
     await transactionActions.createNew(depletionData)
     await createActivityLog('inventoryAuditDepletion', 'lotId', lot.id, { context: `${lot.lotNumber} inventory was depleted`, item: lot.item.name, lotNumber: lot.lotNumber, depletionAmount: lot.totalQuantityOnHand })
     revalidatePage('/inventory/audit');
+
+
+
+
   };
 
   return (
@@ -30,7 +34,7 @@ const ConfirmDepletion = ({ lot }: { lot: LotWithData }) => {
         title="Are You Sure?"
         action={() => handleConfirmDepletion()}
         actionLabel="Confirm"
-        actionColor="alert"
+        actionColor="warning"
         cancelAction={() => console.log("clicked confirm")}
 
       >

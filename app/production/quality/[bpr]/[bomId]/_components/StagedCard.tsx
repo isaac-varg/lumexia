@@ -47,7 +47,7 @@ const StagedCard = ({ staging }: { staging: ExBprStaging }) => {
 
       <div className='flex gap-x-4'>
         {staging.bprStagingStatusId !== completedStatus && <ActionButton onClick={() => handleVerify()}>Verify</ActionButton>}
-        <ActionButton onClick={() => handleNote()} color='cararra'>Note</ActionButton>
+        <ActionButton onClick={() => handleNote()} color='neutral'>Note</ActionButton>
       </div>
     </div>
   );

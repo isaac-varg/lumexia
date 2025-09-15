@@ -12,68 +12,68 @@ import { createAccountingAuditLog } from "../../_actions/createAccountingAuditLo
 
 const AccountingStatus = ({ statuses, po }: { statuses: PoAccountingStatus[], po: PoWithAccounting }) => {
 
-    const { showDialog } = useDialog()
+  const { showDialog } = useDialog()
 
-    return (
-        <Panels.Root >
+  return (
+    <Panels.Root >
 
-            <ChooseStatusDialog statuses={statuses} poAccountingDetailsId={po.poAccountingDetail?.id} poId={po.id} />
+      <ChooseStatusDialog statuses={statuses} poAccountingDetailsId={po.poAccountingDetail?.id} poId={po.id} />
 
-            <SectionTitle size="small">Accounting Status</SectionTitle>
+      <SectionTitle size="small">Accounting Status</SectionTitle>
 
-            <div
-                onClick={() => showDialog('chooseAccountingStatus')}
-                className="w-full h-full p-6 flex items-center justify-center hover:cursor-pointer hover:bg-opacity-20 rounded-xl"
-                style={{ backgroundColor: po.poAccountingDetail?.status.bgColor, color: po.poAccountingDetail?.status.textColor }}
-            >
-                <p className="font-poppins text-2xl font-semibold text-center">
-                    {po.poAccountingDetail?.status.name || 'No Status'}
-                </p>
-            </div>
+      <div
+        onClick={() => showDialog('chooseAccountingStatus')}
+        className="w-full h-full p-6 flex items-center justify-center hover:cursor-pointer hover:bg-opacity-20 rounded-xl"
+        style={{ backgroundColor: po.poAccountingDetail?.status.bgColor, color: po.poAccountingDetail?.status.textColor }}
+      >
+        <p className="font-poppins text-2xl font-semibold text-center">
+          {po.poAccountingDetail?.status.name || 'No Status'}
+        </p>
+      </div>
 
-        </Panels.Root>
-    )
+    </Panels.Root>
+  )
 }
 
 const ChooseStatusDialog = ({ statuses, poAccountingDetailsId, poId }: { statuses: PoAccountingStatus[], poAccountingDetailsId: string | undefined, poId: string }) => {
 
 
-    const router = useRouter()
-    const { resetDialogContext } = useDialog()
+  const router = useRouter()
+  const { resetDialogContext } = useDialog()
 
-    const handleClick = async (statusId: string, statusName: string) => {
-        if (!poAccountingDetailsId) return;
-        const userId = await getUserId()
-        await accountingActions.pos.details.update(poAccountingDetailsId, {
-            statusId,
-        })
-        await createAccountingAuditLog({
-            poId,
-            userId,
-            action: 'Change Status',
-            context: `Status changed to ${statusName}`
-        })
+  const handleClick = async (statusId: string, statusName: string) => {
+    if (!poAccountingDetailsId) return;
+    const userId = await getUserId()
+    await accountingActions.pos.details.update(poAccountingDetailsId, {
+      statusId,
+    })
+    await createAccountingAuditLog({
+      poId,
+      userId,
+      action: 'Change Status',
+      context: `Status changed to ${statusName}`
+    })
 
-        router.refresh();
-        resetDialogContext()
+    router.refresh();
+    resetDialogContext()
 
-    }
+  }
 
-    return (
-        <Dialog.Root identifier="chooseAccountingStatus">
-            <Dialog.Title>Change Status To...</Dialog.Title>
+  return (
+    <Dialog.Root identifier="chooseAccountingStatus">
+      <Dialog.Title>Change Status To...</Dialog.Title>
 
-            <div className="grid grid-cols-4 gap-4">
-                {statuses.map((status) => {
-                    return (
-                        <button key={status.id} style={{ backgroundColor: status.bgColor, color: status.textColor }} className='btn' onClick={() => handleClick(status.id, status.name)}>{status.name}</button>
-                    )
-                })}
-            </div>
+      <div className="grid grid-cols-4 gap-4">
+        {statuses.map((status) => {
+          return (
+            <button key={status.id} style={{ backgroundColor: status.bgColor, color: status.textColor }} className='btn btn-neutral' onClick={() => handleClick(status.id, status.name)}>{status.name}</button>
+          )
+        })}
+      </div>
 
-        </Dialog.Root>
+    </Dialog.Root>
 
-    )
+  )
 
 }
 

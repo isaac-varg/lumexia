@@ -7,73 +7,73 @@ import { useForm } from "react-hook-form";
 
 
 export type FinishedProductDetails = {
-    name: string
-    fillQuantity: number
-    declaredQuantity: number
-    difficultyAdjustmentCost: number
-    freeShippingCost: number
+  name: string
+  fillQuantity: number
+  declaredQuantity: number
+  difficultyAdjustmentCost: number
+  freeShippingCost: number
 }
 
 type Props = {
-    currentStep: number
-    nextStep: () => void;
-    setFinishedProductDetails: Dispatch<SetStateAction<FinishedProductDetails | null>>
+  currentStep: number
+  nextStep: () => void;
+  setFinishedProductDetails: Dispatch<SetStateAction<FinishedProductDetails | null>>
 }
 
 const EditModeFinishedProductDetails = ({ currentStep, nextStep, setFinishedProductDetails }: Props) => {
 
-    const form = useForm<FinishedProductDetails>()
-    const { selectedFinishedProduct } = usePricingProducedSelection();
+  const form = useForm<FinishedProductDetails>()
+  const { selectedFinishedProduct } = usePricingProducedSelection();
 
 
-    const handleSubmit = (data: FinishedProductDetails) => {
-        setFinishedProductDetails(data);
-        nextStep()
+  const handleSubmit = (data: FinishedProductDetails) => {
+    setFinishedProductDetails(data);
+    nextStep()
+  }
+
+
+  useEffect(() => {
+
+    if (selectedFinishedProduct) {
+      const { name, fillQuantity, declaredQuantity, difficultyAdjustmentCost, freeShippingCost } = selectedFinishedProduct;
+      form.reset({
+        name,
+        fillQuantity,
+        declaredQuantity,
+        difficultyAdjustmentCost,
+        freeShippingCost
+      });
     }
 
+  }, [selectedFinishedProduct, form])
 
-    useEffect(() => {
+  if (currentStep !== 0) { return false }
 
-        if (selectedFinishedProduct) {
-            const { name, fillQuantity, declaredQuantity, difficultyAdjustmentCost, freeShippingCost } = selectedFinishedProduct;
-            form.reset({
-                name,
-                fillQuantity,
-                declaredQuantity,
-                difficultyAdjustmentCost,
-                freeShippingCost
-            });
-        }
+  return (
+    <div>
 
-    }, [selectedFinishedProduct])
+      <Form.Root form={form} onSubmit={handleSubmit} >
 
-    if (currentStep !== 0) { return false }
+        <Form.Text form={form} fieldName="name" label="Finished Product Name" required />
 
-    return (
-        <div>
+        <Form.Number form={form} fieldName="fillQuantity" label="Fill Quantity (lb)" required />
 
-            <Form.Root form={form} onSubmit={handleSubmit} >
+        <Form.Number form={form} fieldName="declaredQuantity" label="Declared Quantity (lb)" required />
 
-                <Form.Text form={form} fieldName="name" label="Finished Product Name" required />
+        <Form.Number form={form} fieldName="difficultyAdjustmentCost" label="Difficulty Adjustment Cost $" required />
 
-                <Form.Number form={form} fieldName="fillQuantity" label="Fill Quantity (lb)" required />
+        <Form.Number form={form} fieldName="freeShippingCost" label="Free Shipping Cost $" required />
 
-                <Form.Number form={form} fieldName="declaredQuantity" label="Declared Quantity (lb)" required />
+        <div className="flex justify-end">
 
-                <Form.Number form={form} fieldName="difficultyAdjustmentCost" label="Difficulty Adjustment Cost $" required />
-
-                <Form.Number form={form} fieldName="freeShippingCost" label="Free Shipping Cost $" required />
-
-                <div className="flex justify-end">
-
-                    <button className="btn" type="submit">Next Step</button>
-                </div>
-
-
-            </Form.Root>
-
+          <button className="btn btn-neutral btn-soft" type="submit">Next Step</button>
         </div>
-    )
+
+
+      </Form.Root>
+
+    </div>
+  )
 }
 
 export default EditModeFinishedProductDetails

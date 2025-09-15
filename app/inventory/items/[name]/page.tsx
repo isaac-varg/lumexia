@@ -1,74 +1,66 @@
-import itemActions from "@/actions/inventory/items";
-import Layout from "@/components/Layout";
-import PageTitle from "@/components/Text/PageTitle";
-import AliasesPanel from "./_components/alias/AliasesPanel";
-import BasicsPanel from "./_components/BasicsPanel";
-import TabsPanel from "./_components/TabsPanel";
-import itemTypeActions from "@/actions/inventory/itemTypeActions";
-import procurementTypeActions from "@/actions/inventory/procurementTypeActions";
-import inventoryTypeActions from "@/actions/inventory/inventoryTypeActions";
-import { ItemType } from "@/types/itemType";
-import { ProcurementType } from "@/types/procurementType";
-import { InventoryType } from "@/types/inventoryType";
-import { getAliases } from "./_functions/getAliases";
-import TopActions from "./_components/TopActions";
-import StateSetter from "./_components/StateSetter";
+import { inventoryActions } from "@/actions/inventory";
+import StateSetter from "./_components/state/StateSetter";
+import TitleRow from "./_components/shared/TitleRow";
+import TabSelector from "./_components/shared/TabSelector";
+import TabsContainer from "./_components/shared/TabsContainer";
+import { getItemActivity } from "./_actions/basics/getActivity";
+import { getInventory } from "@/actions/inventory/getInventory";
+import { getAudits } from "./_actions/inventory/getAudits";
+import { getItemPurchaseOrders } from "./_actions/purchasing/getItemPurchaseOrders";
+import { accountingActions } from "@/actions/accounting";
+import { getItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
+import { getBomUsage } from "./_actions/production/getUsage";
+import { getActiveMbpr } from "./_actions/production/getActiveMbpr";
+import { getBprs } from "./_actions/production/getBprs";
+import { getAllItemFiles } from "./_actions/files/getAllItemFiles";
 
-type ItemDashboardProps = {
-    params: {
-        name: string;
-    };
-    searchParams: {
-        id: string;
-    };
-};
+const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
-export type ItemEditSelectables = {
-    itemTypes: ItemType[]
-    procurementTypes: ProcurementType[]
-    inventoryTypes: InventoryType[]
+  // all the data fetching
+  const item = await inventoryActions.items.getOne(searchParams.id)
+  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage, activeMbpr, bprs, files] = await Promise.all([
+    await inventoryActions.aliases.getByItem(item.id),
+    await inventoryActions.items.notes.getAllByItem(item.id),
+    await getItemActivity(item.id),
+    await getInventory(item.id),
+    await getAudits(item.id),
+    await getItemPurchaseOrders(item.id),
+    await accountingActions.examinations.getAllByItem(item.id),
+    await getItemPricingData(item.id),
+    await getBomUsage(item.id),
+    await getActiveMbpr(item.id),
+    await getBprs(item.id),
+    await getAllItemFiles(item.id),
+  ])
+
+
+  return (
+    <div className="flex flex-col gap-y-6">
+
+      <StateSetter
+        item={item}
+        aliases={aliases}
+        notes={notes}
+        activity={activity}
+        inventory={inventory}
+        audits={audits}
+        purchaseOrders={purchaseOrders}
+        usage={usage}
+        examinations={examinations}
+        pricingData={pricingData}
+        activeMbpr={activeMbpr}
+        bprs={bprs}
+        files={files}
+      />
+
+      <TitleRow />
+
+      <TabSelector />
+
+      <TabsContainer />
+
+    </div>
+  )
 }
 
-const ItemDashboard = async ({ params, searchParams }: ItemDashboardProps) => {
-    const item = await itemActions.getOne(searchParams.id, undefined, [
-        "itemType",
-        "procurementType",
-        "inventoryType",
-    ]);
-
-    const itemTypes = await itemTypeActions.getAll()
-    const procurementTypes = await procurementTypeActions.getAll();
-    const inventoryTypes = await inventoryTypeActions.getAll();
-
-    const itemEditSelectables: ItemEditSelectables = {
-        itemTypes,
-        procurementTypes,
-        inventoryTypes,
-    }
-
-
-    const aliases = await getAliases(item.id)
-
-    return (
-        <div className="flex flex-col gap-y-6">
-            <StateSetter itemId={searchParams.id} />
-            <div className="flex justify-between items-center">
-                <PageTitle title={item.name} />
-
-                <TopActions itemId={item.id} />
-            </div>
-
-            <Layout.Grid>
-                <BasicsPanel item={item} itemEditSelectables={itemEditSelectables} />
-
-                <AliasesPanel aliases={aliases} item={item} />
-            </Layout.Grid>
-
-            <TabsPanel item={item} />
-
-
-        </div>
-    );
-};
-
-export default ItemDashboard;
+export default ItemDetails; 

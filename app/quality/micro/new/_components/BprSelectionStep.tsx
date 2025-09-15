@@ -1,6 +1,6 @@
 "use state"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { IBprForSSF } from '../_functions/getBprs'
 import Text from '@/components/Text'
 import { useWizard } from 'react-use-wizard'
@@ -12,16 +12,17 @@ const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelecti
     const [results, setResults] = useState<IBprForSSF[]>([])
     const { nextStep } = useWizard()
 
-    const searchOptions = {
-        keys: [
-            "referenceCode",
-            "producedItemIID",
-            "producedItemName"
+    const searcher = useMemo(() => {
+        const searchOptions = {
+            keys: [
+                "referenceCode",
+                "producedItemIID",
+                "producedItemName"
 
-        ]
-    }
-
-    const searcher = new Fuse(bprs, searchOptions)
+            ]
+        }
+        return new Fuse(bprs, searchOptions)
+    }, [bprs])
 
     const handleItemClick = (bpr: IBprForSSF) => {
         onSelection(bpr);
@@ -40,7 +41,7 @@ const BprSelectionStep = ({ bprs, onSelection }: { bprs: IBprForSSF[], onSelecti
         const searchResults = searcher.search(searchInput);
         const mappedResults = searchResults.map((s) => s.item);
         setResults(mappedResults);
-    }, [searchInput]);
+    }, [searchInput, searcher]);
 
 
     return (

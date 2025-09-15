@@ -26,13 +26,12 @@ const Root = ({ children, identifier }: DialogRootProps) => {
     }
 
 
-
     return (
 
         <Dialog.Root open={isDialogOpen} onOpenChange={handleDialogChange}>
             <Dialog.Portal>
-                <Dialog.Overlay className="bg-neutral-900/50 data-[state=open]:animate-overlayShow fixed inset-0">
-                    <Dialog.Content aria-describedby="Dialog content" className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-3/5 max-w-3/5 translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-8 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                <Dialog.Overlay className="bg-base-300/70 data-[state=open]:animate-overlayShow fixed inset-0 z-50">
+                    <Dialog.Content aria-describedby="Dialog content" className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-3/5 max-w-3/5 translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-base-100 p-8 shadow-md focus:outline-none">
                         <VisuallyHidden.Root> <Dialog.Title>Dialog</Dialog.Title></VisuallyHidden.Root>
                         {children}
                     </Dialog.Content>

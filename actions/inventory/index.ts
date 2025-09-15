@@ -17,54 +17,70 @@ import { getOneAuditRequest } from "./getOneAuditRequest";
 import { getOneItem } from "./getOneItem";
 import { getPurchasedItems } from "./getPurchasedItems";
 import { getAllInventoryByBom } from "./inventory/getAllByBom";
+import { createItemNote } from "./items/notes/createNote";
+import { getAllItemNotesByItem } from "./items/notes/getAllByItem";
+import { createItemNoteType } from "./items/notes/types/createItemNoteType";
+import { getAllItemNoteTypes } from "./items/notes/types/getAllItemNoteTypes";
 import { getAllLots } from "./lots/getAll";
 import { getSingleLot } from "./lots/getOne";
 import { getReceivables } from "./receiving/getReceivables";
+import { createInventoryTransaction } from "./transactions/create";
 
 export const inventoryActions = {
-    getInventory: getInventory,
-    getPurchasedItems: getPurchasedItems,
-    auditReqests: {
-        noteTypes: {
-            create: createAuditRequestNoteType,
-            getAll: getAuditRequestNoteTypes,
-        },
-        notes: {
-            create: createAuditRequestNote,
-        },
-        getAllCompleted: getAllCompletedAuditRequests,
-        create: createAuditRequest,
-        getAll: getAuditRequests,
-        getOne: getOneAuditRequest,
-        getCount: getAuditRequestCount,
+  getInventory: getInventory,
+  getPurchasedItems: getPurchasedItems,
+  auditReqests: {
+    noteTypes: {
+      create: createAuditRequestNoteType,
+      getAll: getAuditRequestNoteTypes,
     },
-    getItemLots: getItemLots,
-    items: {
-        getOne: getOneItem,
-        getAll: getAllItems,
+    notes: {
+      create: createAuditRequestNote,
     },
-    inventory: {
-        getByItem: getInventory,
-        getByLot: getInventoryOfLot,
-        getAllByBprBom: getAllInventoryByBom,
+    getAllCompleted: getAllCompletedAuditRequests,
+    create: createAuditRequest,
+    getAll: getAuditRequests,
+    getOne: getOneAuditRequest,
+    getCount: getAuditRequestCount,
+  },
+  getItemLots: getItemLots,
+  items: {
+    notes: {
+      getAllByItem: getAllItemNotesByItem,
+      create: createItemNote,
+      types: {
+        getAll: getAllItemNoteTypes,
+        create: createItemNoteType,
+      }
     },
-    uom: {
-        getAll: getAllUom,
-    },
-    receiving: {
-        getReceivables: getReceivables,
-    },
-    genericUnitsConversion: {
-        getBySupplierItemUnique: getConversionByItemSupplierUnique,
-        create: createGenericUnitConversionFactor,
-    },
-    lots: {
-        getOne: getSingleLot,
-        getAll: getAllLots,
-    },
-    aliases: {
-        getByItem: getAliasByItem,
-    }
+    getOne: getOneItem,
+    getAll: getAllItems,
+  },
+  inventory: {
+    getByItem: getInventory,
+    getByLot: getInventoryOfLot,
+    getAllByBprBom: getAllInventoryByBom,
+  },
+  uom: {
+    getAll: getAllUom,
+  },
+  receiving: {
+    getReceivables: getReceivables,
+  },
+  genericUnitsConversion: {
+    getBySupplierItemUnique: getConversionByItemSupplierUnique,
+    create: createGenericUnitConversionFactor,
+  },
+  lots: {
+    getOne: getSingleLot,
+    getAll: getAllLots,
+  },
+  aliases: {
+    getByItem: getAliasByItem,
+  },
+  transactions: {
+    create: createInventoryTransaction,
+  }
 }
 
 

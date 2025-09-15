@@ -2,6 +2,7 @@ import { DateTime } from "luxon"
 import amex from "./assets/amex.png"
 import mastercard from "./assets/mastercard.png"
 import visa from "./assets/visa.png"
+import Image from "next/image"
 
 export type CreditCardTypes = 'mastercard' | 'visa' | 'amex';
 
@@ -9,7 +10,7 @@ type CreditCardProps = {
     cardName: string // think Gold Card
     nameOnCard: string // think First Last Name
     endingIn: string
-    expiry: string 
+    expiry: string
     type: CreditCardTypes
     bgColorA: string
     bgColorB: string
@@ -59,7 +60,7 @@ const CreditCard = ({
         >
 
             <div className="absolute top-2 right-2 z-10">
-                <img className="w-14 h-14" src={cardTypeImage.src} alt="Card logo" />
+                <Image className="w-14 h-14" src={cardTypeImage.src} alt="Card logo" width={56} height={56} />
             </div>
 
 

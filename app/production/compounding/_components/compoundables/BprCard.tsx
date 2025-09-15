@@ -1,30 +1,45 @@
 "use client"
 
+import useDialog from '@/hooks/useDialog'
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-type BprCardProps = {
-    bpr: BatchProductionRecord
+const classes = {
+  bg: {
+    default: 'bg-base-100/30 hover:bg-base-100/50',
+    darker: 'bg-base-100/50 hover:bg-accent/30'
+  }
 }
 
-const BprCard = ({ bpr }: BprCardProps) => {
-    const router = useRouter()
+type BprCardProps = {
+  bpr: BatchProductionRecord
+  bg?: keyof typeof classes.bg
+  isInactive?: boolean
+}
 
-    const handleClick = () => {
-        router.push(`/production/compounding/${bpr.referenceCode}?id=${bpr.id}`)
+const BprCard = ({ bpr, bg = 'default', isInactive = false }: BprCardProps) => {
+  const router = useRouter()
+  const { showDialog } = useDialog()
+
+  const handleClick = () => {
+    if (isInactive) {
+      showDialog('noScheduleDate')
+      return;
     }
-    return (
-        <div onClick={() => handleClick()} className="border border-neutral-800 rounded-lg flex py-4 px-2 flex-col gap-y-4">
-            <h1 className="font-bold font-poppins text-xl"># {bpr.referenceCode} </h1>
+    router.push(`/production/compounding/${bpr.referenceCode}?id=${bpr.id}`)
+  }
+  return (
+    <div onClick={() => handleClick()} className={`hover:cursor-pointer  rounded-lg flex py-4 px-4 flex-col gap-y-4 ${classes.bg[bg]} `}>
+      <h1 className="font-bold text-base-content font-poppins text-xl"># {bpr.referenceCode} </h1>
 
 
-            {bpr.lotOrigin[0] && <h1 className="font-bold font-poppins text-xl">{bpr.lotOrigin[0].lot?.lotNumber} </h1> }
+      {bpr.lotOrigin && <h1 className="font-bold font-poppins text-xl">{bpr.lotOrigin.lot?.lotNumber} </h1>}
 
-            <h1 className="font-bold font-poppins text-xl">{bpr.mbpr.producesItem.name} </h1>
-        </div>
+      <h1 className="font-bold font-poppins text-xl">{bpr.mbpr.producesItem.name} </h1>
+    </div>
 
-    )
+  )
 }
 
 export default BprCard

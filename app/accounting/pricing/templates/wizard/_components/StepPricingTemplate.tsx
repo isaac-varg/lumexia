@@ -50,7 +50,7 @@ const StepPricingTemplate = () => {
         }
         form.reset({ name: '', description: '', forItemTypeId: 'f8054593-f918-4619-a0b3-aa61f1b59418' })
 
-    }, [isExistingTemplate, existingTemplate])
+    }, [isExistingTemplate, existingTemplate, form])
 
     if (step !== 0) return false
 

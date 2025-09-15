@@ -1,0 +1,11 @@
+model BprStagingFile {
+    id              String               @id @default(uuid())
+    fileId          String               @map("file_id")
+    bprStagingId String @map("bpr_staging_id")
+    createdAt       DateTime             @default(now()) @map("created_at")
+    updatedAt       DateTime             @updatedAt @map("updated_at")
+    file            File                 @relation(fields: [fileId], references: [id])
+    staging BprStaging @relation(fields: [bprStagingId] ,references: [id])
+
+    @@map("bpr_staging_files")
+}

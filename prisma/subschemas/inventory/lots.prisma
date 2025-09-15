@@ -14,9 +14,10 @@ model Lot {
     updatedAt       DateTime          @updatedAt @map("updated_at")
     containers      Container[]
     transactions    Transaction[]
-    lotOrigin       LotOrigin[]
+    lotOrigin       LotOrigin?
     uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
     qcRecords       QcRecord[]
+    notes LotNote[]
 
     @@map("lots")
 }

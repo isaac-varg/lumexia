@@ -27,7 +27,7 @@ const CompletePanel = () => {
 
     useEffect(() => {
         conductValidation();
-    }, [parameterResults, selectedExaminationType, selectedLotId, selectedExaminationStatusId])
+    }, [parameterResults, selectedExaminationType, selectedLotId, selectedExaminationStatusId, conductValidation])
 
     return (
         <Panels.Root span={1}>

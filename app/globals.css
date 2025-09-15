@@ -1,6 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "daisyui" {
+    themes: all;
+}
+
+@theme inline {
+  --font-poppins: var(--font-poppins);
+  --font-roboto: var(--font-roboto);
+}
 
 @layer utilities {
   .text-balance {

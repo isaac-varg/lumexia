@@ -40,7 +40,7 @@ const LinkedPosPanel = ({ pos, containerTypes, linkedPosAmounts }: LinkedPosPane
                         </button>
                     </div>
                 </div>
-                <div className="flex-grow grid grid-cols-2 gap-4">
+                <div className="grow grid grid-cols-2 gap-4">
                     {pos.map((po) => <LinkedPoCard key={po.id} po={po} containerTypes={containerTypes} />)}
                 </div>
 

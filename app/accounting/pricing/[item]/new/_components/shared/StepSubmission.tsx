@@ -41,7 +41,7 @@ const StepSubmission = ({ currentStep, fillItemId, finishedProductDetails, auxil
         }
 
         submit();
-    }, [finishedProductDetails, auxiliaries])
+    }, [finishedProductDetails, auxiliaries, currentStep, fillItemId, onReset, refreshFinishedProducts])
 
     if (currentStep !== 2) { return false }
 

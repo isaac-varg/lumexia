@@ -1,0 +1,14 @@
+model PoPublicNote {
+    id         String            @id @default(uuid())
+    purchaseOrderId  String            @map("purchase_order_id")
+    noteTypeId String            @map("note_type_id")
+    userId     String            @map("user_id")
+    content    String
+    createdAt  DateTime          @default(now()) @map("created_at")
+    updatedAt  DateTime          @updatedAt @map("updated_at")
+    purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+    user       User              @relation(fields: [userId], references: [id])
+    noteType   PoPublicNoteType   @relation(fields: [noteTypeId], references: [id])
+
+    @@map("po_public_notes")
+}

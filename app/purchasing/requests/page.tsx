@@ -11,31 +11,28 @@ import { getAllGeneralRequests } from './general/_actions/getAllGeneralRequests'
 
 const RequestsPage = async () => {
 
-    const requests = await getRequests()
-    const statuses = await getRequestStatuses();
-    const priorities = await getPriorities();
-    const generalRequests = await getAllGeneralRequests(false);
+  const requests = await getRequests()
+  const statuses = await getRequestStatuses();
+  const priorities = await getPriorities();
+  const generalRequests = await getAllGeneralRequests(false);
 
 
-    return (
-        <div className='flex flex-col gap-y-4'>
-            <div className='flex justify-between items-center'>
+  return (
+    <div className='flex flex-col gap-y-4'>
+      <div className='flex justify-between items-center'>
 
-                <div className='flex flex-col gap-y-4'>
-                    <PageTitle>Request Dashboard</PageTitle>
-                    <PageBreadcrumbs />
-                </div>
-                <div className='flex gap-x-2'>
-                    <CreateRequestButton />
-                    <ArchiveButton />
-                </div>
-            </div>
-
-            <RequestTabs requests={requests} statuses={statuses} generalRequests={generalRequests} priorities={priorities} />
-
-
+        <PageTitle>Requests</PageTitle>
+        <div className='flex gap-x-2'>
+          <CreateRequestButton />
+          <ArchiveButton />
         </div>
-    )
+      </div>
+
+      <RequestTabs requests={requests} statuses={statuses} generalRequests={generalRequests} priorities={priorities} />
+
+
+    </div>
+  )
 }
 
 export default RequestsPage

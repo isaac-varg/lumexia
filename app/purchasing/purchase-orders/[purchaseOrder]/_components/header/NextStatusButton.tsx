@@ -46,7 +46,7 @@ const NextStatusButton = ({
 
 	return (
 		<>
-			<ActionButton color="bayLeaf" onClick={() => handleClick()}>
+			<ActionButton color="success" onClick={() => handleClick()}>
 				Set to {nextStatus.name}
 			</ActionButton>
 		</>

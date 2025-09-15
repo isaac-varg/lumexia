@@ -6,8 +6,8 @@ import { useContext, useEffect } from "react";
 
 export const toastClasses = {
   shape:
-    "shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]",
-  base: "rounded-md  p-[15px]  items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut",
+    "shadow-[hsl(206_22%_7%/35%)_0px_10px_38px_-10px,hsl(206_22%_7%/20%)_0px_10px_20px_-15px]",
+  base: "rounded-md  p-[15px]  items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut",
   color: {
     default: "bg-white text-neutral-700",
     success: "bg-bay-leaf-100 text-bay-leaf-700 ",
@@ -42,7 +42,7 @@ const ToastRoot = () => {
         </Toast.Description>
       </Toast.Root>
 
-      <Toast.Viewport className="[--viewport-padding:_25px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647] outline-none" />
+      <Toast.Viewport className="[--viewport-padding:25px] fixed bottom-0 right-0 flex flex-col p-(--viewport-padding) gap-[10px] w-[390px] max-w-screen m-0 list-none z-2147483647 outline-none" />
     </Toast.Provider>
   );
 };

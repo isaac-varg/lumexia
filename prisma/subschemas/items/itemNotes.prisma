@@ -1,0 +1,14 @@
+model ItemNote {
+    id              String               @id @default(uuid())
+    itemId String               @map("item_id")
+    noteTypeId      String               @map("note_type_id")
+    userId          String               @map("user_id")
+    content         String
+    createdAt       DateTime             @default(now()) @map("created_at")
+    updatedAt       DateTime             @updatedAt @map("updated_at")
+    item   Item        @relation(fields: [itemId], references: [id])
+    user            User                 @relation(fields: [userId], references: [id])
+    noteType        ItemNoteType @relation(fields: [noteTypeId], references: [id])
+
+    @@map("item_notes")
+}

@@ -1,0 +1,13 @@
+model ItemFileType {
+    id                String             @id @default(uuid())
+    name              String
+    abbreviaton       String?
+    description       String?
+    bgColor           String             @map("bg_color")
+    textColor         String             @map("text_color")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    itemFiles ItemFile[]
+
+    @@map("item_file_types")
+}

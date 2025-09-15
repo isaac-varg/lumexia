@@ -8,11 +8,11 @@ const InvalidQuantityLotAlert = ({ lot, setIsViewMode }: { lot: string | null, s
       <Alert.Content
         title='Not Enough'
         actionLabel='Try Again'
-        actionColor='alert'
+        actionColor='warning'
         action={() => setIsViewMode(true)}
 
       >
-        The quantity scanned exceeds the On Hand inventory quantity for this lot. 
+        The quantity scanned exceeds the On Hand inventory quantity for this lot.
       </Alert.Content>
 
     </Alert.Root>

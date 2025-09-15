@@ -22,7 +22,7 @@ const InstructionsPanel = () => {
       if (!selectedBatchStep) {
         throw new Error("Batch step not selected")
       }
-      
+
       const response = await getStepInstructions(selectedBatchStep.id)
       setStepInstructions(response)
     }
@@ -38,7 +38,7 @@ const InstructionsPanel = () => {
       <InstructionsForm instruction={undefined} />
       <div className='flex justify-between'>
         <Text.SectionTitle size='small'>work instructions</Text.SectionTitle>
-        <ActionButton color='cararra' onClick={() => showDialog('createNewStepInstruction')}><TbPlus /></ActionButton>
+        <ActionButton color='neutral' onClick={() => showDialog('createNewStepInstruction')}><TbPlus /></ActionButton>
       </div>
 
 

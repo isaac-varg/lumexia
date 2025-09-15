@@ -42,7 +42,7 @@ const MbprCard = ({ mbpr }: { mbpr: MasterBatchProductionRecord }) => {
         <div className="flex flex-col justify-between p-4 leading-normal w-full">
           <div className='flex flex-row items-center justify-between'>
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{mbpr.versionLabel}</h5>
-            <div onClick={(e) => handleEdit(e)}><ActionButton size='default' color='cararra' ><span className=''><TbEdit /></span></ActionButton></div>
+            <div onClick={(e) => handleEdit(e)}><ActionButton size='default' color='neutral' ><span className=''><TbEdit /></span></ActionButton></div>
           </div>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{mbpr.recordStatus?.name}</p>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{DateTime.fromJSDate(mbpr.createdAt).toFormat("DD @t")}</p>

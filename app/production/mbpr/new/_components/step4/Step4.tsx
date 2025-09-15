@@ -28,7 +28,7 @@ const Step4 = () => {
         }
 
         getBatchSizes();
-    }, [revalidateTrigger])
+    }, [revalidateTrigger, selectedMbpr])
 
 
     return (

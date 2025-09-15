@@ -39,7 +39,7 @@ const EditModeStepSubmission = ({ currentStep, finishedProductId, finishedProduc
         }
 
         submit();
-    }, [finishedProductDetails, auxiliaries])
+    }, [finishedProductDetails, auxiliaries, currentStep, finishedProductId, onReset])
 
     if (currentStep !== 2) { return false }
 

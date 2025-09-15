@@ -2,40 +2,40 @@
 import prisma from "@/lib/prisma"
 
 export const getSingleBpr = async (id: string) => {
-    const bprs = await prisma.batchProductionRecord.findUnique({
-        where: {
-            id,
-        },
+  const bprs = await prisma.batchProductionRecord.findUniqueOrThrow({
+    where: {
+      id,
+    },
+    include: {
+      status: true,
+      batchSize: {
         include: {
-            status: true,
-            batchSize: {
+          batchSizeCompoundingVessels: {
+            include: {
+              compoundingVessel: {
                 include: {
-                    batchSizeCompoundingVessels: {
-                        include: {
-                            compoundingVessel: {
-                                include: {
-                                    equipment: true,
-                                }
-                            },
-                        }
-                    }
+                  equipment: true,
                 }
-            },
-            mbpr: {
-                include: {
-                    producesItem: true,
-                }
-            },
-            lotOrigin: {
-                include: {
-                    lot: true
-                }
+              },
             }
-
+          }
         }
-    })
+      },
+      mbpr: {
+        include: {
+          producesItem: true,
+        }
+      },
+      lotOrigin: {
+        include: {
+          lot: true
+        }
+      }
 
-    return bprs;
+    }
+  })
+
+  return bprs;
 }
 
 export type BatchProductionRecord = Awaited<ReturnType<typeof getSingleBpr>>

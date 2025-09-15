@@ -10,8 +10,8 @@ const CompoundingPage = async () => {
 
 
   return (
-    <div className='flex flex-col gap-y-4'>
-    <WeeklyPanel  bprs={thisWeeksMbprs as any}/>
+    <div className='flex flex-col gap-y-6'>
+      <WeeklyPanel bprs={thisWeeksMbprs as any} />
       <CompoundablesPanel compoundables={compoundableaBprs as any} />
     </div>
   )

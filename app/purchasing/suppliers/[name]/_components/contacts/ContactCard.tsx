@@ -31,7 +31,7 @@ const ContactCard = ({ contact, supplierId }: { contact: SupplierContact, suppli
             {contact.firstName} {contact.lastName}
           </h1>
 
-          <ActionButton color="cararra" onClick={() => handleContactEdit()}>
+          <ActionButton color="secondarySoft" onClick={() => handleContactEdit()}>
             <TbEdit />
           </ActionButton>
         </div>

@@ -30,11 +30,11 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
             productionUsageCost: pricingData?.productionUsageCost || 0,
 
         })
-    }, [pricingData, lastPrice])
+    }, [pricingData, lastPrice, setState])
 
     useEffect(() => {
         setFinishedProducts(finishedProducts);
-    }, [finishedProducts])
+    }, [finishedProducts, setFinishedProducts])
 
     useEffect(() => {
 
@@ -43,7 +43,7 @@ const InitialStateSetter = ({ lastPrice, pricingData, finishedProducts }: Initia
         const itemCost = getItemCost(pricingData, lastPrice)
 
         setItemCost(itemCost);
-    }, [pricingData, lastPrice])
+    }, [pricingData, lastPrice, setItemCost])
 
 
 

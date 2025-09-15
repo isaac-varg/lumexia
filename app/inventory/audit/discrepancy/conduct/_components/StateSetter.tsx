@@ -11,15 +11,15 @@ const StateSetter = ({ auditId }: { auditId: string }) => {
     useEffect(() => {
         getDiscrepancyAudit(auditId)
 
-    }, [auditId])
+    }, [auditId, getDiscrepancyAudit])
 
     useEffect(() => {
         getNotes()
-    }, [item])
+    }, [item, getNotes])
 
     useEffect(() => {
         getNoteTypes()
-    }, [])
+    }, [getNoteTypes])
 
     return false
 }

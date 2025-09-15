@@ -1,6 +1,6 @@
 import TableCell from "@/components/DataTable/TableCell";
 import { createColumnHelper } from "@tanstack/react-table";
-import {  PoFlattenedOrderItems } from "../_functions/flattenOrderItems";
+import { FlattenedOrderItem } from "../_functions/flattenOrderItems";
 import { EditCell } from "@/components/DataTable/EditCell";
 import EditableSelectCell from "@/components/DataTable/SelectCell";
 import { getUOMs } from "../_functions/getUOMs";
@@ -14,7 +14,7 @@ export interface PurchaseOrderItemTData {
   uomAbbreviation: string;
 }
 
-const columnHelper = createColumnHelper<PoFlattenedOrderItems[number]>();
+const columnHelper = createColumnHelper<FlattenedOrderItem>();
 
 const getSelectOptions = async () => {
   const result = await getUOMs();
@@ -35,11 +35,11 @@ const createColumns = async () => {
       header: "Item",
       cell: (props) => {
 
-          if (props.row.original.alias) {
-              return props.row.original.alias;
-          }
+        if (props.row.original.alias) {
+          return props.row.original.alias;
+        }
 
-          return props.row.original.item.name;
+        return props.row.original.item.name;
       }
     }),
     columnHelper.accessor("pricePerUnit", {

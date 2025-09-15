@@ -1,3 +1,4 @@
+import { getActivity } from "./bprs/activity/getActivity";
 import { getBprBom } from "./bprs/boms/getByBpr";
 import { getSingleBpr } from "./bprs/getOne";
 import { createBprNote } from "./bprs/notes/create";
@@ -40,75 +41,78 @@ import { handleNewScent } from "./templates/scents/handleNewScent";
 import { updateBpr } from "./updateBpr";
 
 export const productionActions = {
-    planning: {
-        getBprs: getPlanningBprs,
+  planning: {
+    getBprs: getPlanningBprs,
+  },
+  bprs: {
+    notes: {
+      getAllByBpr: getAllBprNotes,
+      create: createBprNote,
+      types: {
+        getAll: getAllBprNoteTypes,
+        create: createBprNoteType,
+      }
     },
-    bprs: {
-        notes: {
-            getAllByBpr: getAllBprNotes,
-            create: createBprNote,
-            types: {
-                getAll: getAllBprNoteTypes,
-                create: createBprNoteType,
-            }
-        },
-        statuses: {
-            getAll: getBprStatuses,
-        },
-        boms: {
-            getByBpr: getBprBom,
-        },
-        getOne: getSingleBpr,
-        update: updateBpr,
-        // bad naming
-        update2: updateBpr2,
+    statuses: {
+      getAll: getBprStatuses,
     },
-    mbprs: {
-        getActive: getActiveMbpr,
-        getAllByProducedItem: getAllByProducedItem, //same as below really, not sure why these are separate
-        getByItem: getMbprsByItem,
-        getAll: getAllMbprs,
-        getOne: getOneMbpr,
-        update: updateMbpr,
-        batchSizes: {
-            update: updateBatchSize,
-            create: createBatchSize,
-            getAllByMbpr: getAllBatchSizesByMbpr,
-            getOne: getOneBatchSize,
-        },
-        steps: {
-            getAllByMbpr: getAllByMbpr,
-            create: addBatchStep,
-        },
-        bom: {
-            update: updateMbprBOM,
-            create: createMbprBOM,
-            getAllByMbpr: getAllBomMaterialsByMbpr,
-        },
-        instructions: {
-            getAllByMbpr: getAllInstructionsByMbpr,
-            create: createInstruction,
-            update: updateInstruction,
-            delete: deleteInstruction,
-        },
-        addendums: {
-            getAllByMbpr: getAllAddendumsByMbpr,
-            create: createAddedum,
-            update: updateAddendum,
-            delete: deleteAddendum,
-        },
-        actionables: {
-            getAllByMbpr: getAllActionablesByMbpr,
-            create: createActionable,
-            update: updateActionable,
-        }
+    boms: {
+      getByBpr: getBprBom,
     },
-    compoundingVessels: {
-        getAll: getAllCompoundingVessels,
-        create: createCompoundingVessel,
-        update: updateCompoundingVessel,
-    },
-    templates: {
-        scent: handleNewScent,
+    getOne: getSingleBpr,
+    update: updateBpr,
+    // bad naming
+    update2: updateBpr2,
+    activity: {
+      getAll: getActivity,
     }
+  },
+  mbprs: {
+    getActive: getActiveMbpr,
+    getAllByProducedItem: getAllByProducedItem, //same as below really, not sure why these are separate
+    getByItem: getMbprsByItem,
+    getAll: getAllMbprs,
+    getOne: getOneMbpr,
+    update: updateMbpr,
+    batchSizes: {
+      update: updateBatchSize,
+      create: createBatchSize,
+      getAllByMbpr: getAllBatchSizesByMbpr,
+      getOne: getOneBatchSize,
+    },
+    steps: {
+      getAllByMbpr: getAllByMbpr,
+      create: addBatchStep,
+    },
+    bom: {
+      update: updateMbprBOM,
+      create: createMbprBOM,
+      getAllByMbpr: getAllBomMaterialsByMbpr,
+    },
+    instructions: {
+      getAllByMbpr: getAllInstructionsByMbpr,
+      create: createInstruction,
+      update: updateInstruction,
+      delete: deleteInstruction,
+    },
+    addendums: {
+      getAllByMbpr: getAllAddendumsByMbpr,
+      create: createAddedum,
+      update: updateAddendum,
+      delete: deleteAddendum,
+    },
+    actionables: {
+      getAllByMbpr: getAllActionablesByMbpr,
+      create: createActionable,
+      update: updateActionable,
+    }
+  },
+  compoundingVessels: {
+    getAll: getAllCompoundingVessels,
+    create: createCompoundingVessel,
+    update: updateCompoundingVessel,
+  },
+  templates: {
+    scent: handleNewScent,
+  }
 };

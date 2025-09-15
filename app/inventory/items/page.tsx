@@ -9,14 +9,16 @@ const ItemsPage = async () => {
 
     const items = await itemActions.getAllWithIncludes(['itemType', 'procurementType', 'inventoryType', 'aliases']);
 
-    if (!items) {return (
-        <div className='skeleton w-20 h-20' />
-    )}
+    if (!items) {
+        return (
+            <div className='skeleton w-20 h-20' />
+        )
+    }
 
 
     return (
-        <div>
-        <Table items={items} />
+        <div className='bg-base-200 rounded-xl px-6'>
+            <Table items={items} />
 
             <CreateItem />
         </div>

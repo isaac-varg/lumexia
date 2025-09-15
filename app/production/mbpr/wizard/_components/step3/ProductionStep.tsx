@@ -16,7 +16,7 @@ const ProductionStep = () => {
         if (steps.length === 0 && !isNewlyCreated && selectedMbpr) {
             getSteps(selectedMbpr.id)
         }
-    }, [steps, isNewlyCreated, selectedMbpr, isRevalidating])
+    }, [steps, isNewlyCreated, selectedMbpr, isRevalidating, getSteps])
 
     if (step !== 2 || !selectedMbpr || !steps) return null
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import BatchStepForm from './batchStepManagement/BatchStepForm'
 import ActionButton from '@/components/ActionButton'
 import useDialog from '@/hooks/useDialog'
-import {  TbPlus } from 'react-icons/tb'
+import { TbPlus } from 'react-icons/tb'
 import useProductionWizard from '@/hooks/useProductionWizard'
 import { getBatchSteps } from '../../_functions/getBatchSteps'
 import BatchStepList from './batchStepManagement/BatchStepList'
@@ -13,8 +13,8 @@ import StepDetails from './stepDetails/StepDetails'
 
 const Step3 = () => {
   const { showDialog } = useDialog()
-  const { selectedMbpr, revalidateTrigger  } = useProductionWizard()
-  const [batchSteps, setBatchSteps] = useState()
+  const { selectedMbpr, revalidateTrigger } = useProductionWizard()
+  const [batchSteps, setBatchSteps] = useState<any>()
 
   useEffect(() => {
     const getData = async () => {

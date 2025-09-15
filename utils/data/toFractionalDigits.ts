@@ -5,13 +5,25 @@
 import { fractionalDigits } from "@/configs/data/fractionalDigits"
 
 export const toFracitonalDigits = {
-  curreny: (value: number) => {
-    return value.toFixed(fractionalDigits.currency);
+  curreny: (value: number, useThousandSeparator = true) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: fractionalDigits.currency,
+      maximumFractionDigits: fractionalDigits.currency,
+      useGrouping: useThousandSeparator,
+    });
   },
-  weight: (value: number) => {
-    return value.toFixed(fractionalDigits.weight);
+  weight: (value: number, useThousandSeparator = true) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: fractionalDigits.weight,
+      maximumFractionDigits: fractionalDigits.weight,
+      useGrouping: useThousandSeparator,
+    });
   },
-  digits: (value: number, digits: number) => {
-    return value.toFixed(digits)
+  digits: (value: number, digits: number, useThousandSeparator = true) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+      useGrouping: useThousandSeparator,
+    });
   }
 }

@@ -49,7 +49,7 @@ const ImageUpload = ({ pathPrefix = 'general' }: UploadProps) => {
         } finally {
             setIsUploading(false);
         }
-    }, []);
+    }, [pathPrefix]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -87,14 +87,14 @@ const ImageUpload = ({ pathPrefix = 'general' }: UploadProps) => {
             )}
             {error && (
                 <div className="mt-4 flex items-center text-red-600 bg-red-50 p-3 rounded-lg">
-                    <TbX className="w-5 h-5 mr-2 flex-shrink-0" />
+                    <TbX className="w-5 h-5 mr-2 shrink-0" />
                     <p>{error}</p>
                 </div>
             )}
             {uploadedFile && (
                 <div className="mt-4 p-4 border rounded-lg bg-green-50 border-green-200">
                     <div className="flex items-center text-green-800">
-                        <TbCheck className="w-5 h-5 mr-2 flex-shrink-0" />
+                        <TbCheck className="w-5 h-5 mr-2 shrink-0" />
                         <p className="font-semibold">Upload successful!</p>
                     </div>
                     <div className="mt-2 pl-7 text-sm text-gray-700">

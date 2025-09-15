@@ -59,7 +59,7 @@ const ActionsPanel = () => {
                     title="Not All Items Audited"
                     action={() => completeDiscrepancyAuditConfirmation()}
                     actionLabel="Close Anyway"
-                    actionColor="alert"
+                    actionColor="warning"
                     cancelAction={() => resetDialogContext()}
                 >
                     It looks like there is still {missingAuditsCount} items that have yet to be audited.

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Jul 28 2025 14:09:18 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Sep 09 2025 08:53:21 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -563,6 +563,8 @@ model File {
   uploadedBy          User                 @relation(fields: [uploadedById], references: [id])
   poAccountingFiles   PoAccountingFile[]
   generalRequestFiles GeneralRequestFile[]
+  itemFiles           ItemFile[]
+  bprStagingFiles     BprStagingFile[]
 
   @@map("files")
 }
@@ -863,11 +865,39 @@ model InventoryAudit {
   @@map("inventory_audits")
 }
 
+model LotNoteType {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  bgColor     String    @map("bg_color")
+  textColor   String    @map("text_color")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  notes       LotNote[]
+
+  @@map("lot_note_types")
+}
+
+model LotNote {
+  id         String      @id @default(uuid())
+  lotId      String      @map("lot_id")
+  noteTypeId String      @map("note_type_id")
+  userId     String      @map("user_id")
+  content    String
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  lot        Lot         @relation(fields: [lotId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
+  noteType   LotNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("lot_notes")
+}
+
 model LotOrigin {
   id              String                 @id @default(uuid())
-  lotId           String                 @map("lot_id")
+  lotId           String                 @unique @map("lot_id")
   purchaseOrderId String?                @map("purchase_order_id")
-  bprId           String?                @map("bpr_id")
+  bprId           String?                @unique @map("bpr_id")
   originType      String                 @map("origin_type")
   createdAt       DateTime               @default(now()) @map("created_at")
   updatedAt       DateTime               @updatedAt @map("updated_at")
@@ -889,9 +919,10 @@ model Lot {
   updatedAt       DateTime          @updatedAt @map("updated_at")
   containers      Container[]
   transactions    Transaction[]
-  lotOrigin       LotOrigin[]
+  lotOrigin       LotOrigin?
   uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
   qcRecords       QcRecord[]
+  notes           LotNote[]
   BprStaging      BprStaging[]
 
   @@map("lots")
@@ -923,6 +954,7 @@ model Transaction {
   lot                             Lot                              @relation(fields: [lotId], references: [id])
   audit                           InventoryAuditTransaction?
   discrepancyAuditItemTransaction DiscrepancyAuditItemTransaction?
+  bprStagingConsumption           BprStagingConsumption?
 
   @@map("transactions")
 }
@@ -1005,6 +1037,62 @@ model InventoryType {
   @@map("inventory_types")
 }
 
+model ItemFileType {
+  id          String     @id @default(uuid())
+  name        String
+  abbreviaton String?
+  description String?
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  itemFiles   ItemFile[]
+
+  @@map("item_file_types")
+}
+
+model ItemFile {
+  id         String       @id @default(uuid())
+  fileTypeId String       @map("file_type_id")
+  fileId     String       @map("file_id")
+  itemId     String       @map("item_id")
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  fileType   ItemFileType @relation(fields: [fileTypeId], references: [id])
+  file       File         @relation(fields: [fileId], references: [id])
+  item       Item         @relation(fields: [itemId], references: [id])
+
+  @@map("item_files")
+}
+
+model ItemNoteType {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  itemNotes   ItemNote[]
+
+  @@map("item_note_types")
+}
+
+model ItemNote {
+  id         String       @id @default(uuid())
+  itemId     String       @map("item_id")
+  noteTypeId String       @map("note_type_id")
+  userId     String       @map("user_id")
+  content    String
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  item       Item         @relation(fields: [itemId], references: [id])
+  user       User         @relation(fields: [userId], references: [id])
+  noteType   ItemNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("item_notes")
+}
+
 model ItemType {
   id                String             @id @default(uuid())
   name              String
@@ -1051,6 +1139,8 @@ model Item {
   ItemConsumerContainer           ItemConsumerContainer[]
   PricingQueue                    PricingQueue[]
   PricingTemplateAuxiliary        PricingTemplateAuxiliary[]
+  ItemFile                        ItemFile[]
+  ItemNote                        ItemNote[]
   BillOfMaterial                  BillOfMaterial[]
   MasterBatchProductionRecord     MasterBatchProductionRecord[]
 
@@ -1121,8 +1211,9 @@ model BatchProductionRecord {
   batchSize BatchSize                   @relation(fields: [batchSizeId], references: [id])
 
   bprBatchSteps      BprBatchStep[]
-  lotOrigin          LotOrigin[]
+  lotOrigin          LotOrigin?
   qcRecords          QcRecord[]
+  timerEntries       BprTimerEntry[]
   NotionBpr          NotionBpr[]
   BprBillOfMaterials BprBillOfMaterials[]
   BprNote            BprNote[]
@@ -1281,24 +1372,52 @@ model BprNote {
 }
 
 model BprStaging {
-  id                 String   @id @default(uuid())
-  bprBomId           String   @map("bpr_bom_id")
-  lotId              String   @map("lot_id")
-  pulledByUserId     String   @map("pulled_by_user_id")
-  quantity           Float
-  uomId              String   @map("uom_id")
-  bprStagingStatusId String   @map("bpr_staging_status_id")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+  id                  String   @id @default(uuid())
+  bprBomId            String   @map("bpr_bom_id")
+  lotId               String   @map("lot_id")
+  pulledByUserId      String   @map("pulled_by_user_id")
+  quantity            Float
+  uomId               String   @map("uom_id")
+  bprStagingStatusId  String   @map("bpr_staging_status_id")
+  isPrimaryVerified   Boolean  @default(false) @map("is_primary_verified")
+  isSecondaryVerified Boolean  @default(false) @map("is_secondary_verified")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
 
   bprBom                 BprBillOfMaterials       @relation(fields: [bprBomId], references: [id])
   lot                    Lot                      @relation(fields: [lotId], references: [id])
   pulledByUser           User                     @relation(fields: [pulledByUserId], references: [id])
   uom                    UnitOfMeasurement        @relation(fields: [uomId], references: [id])
   status                 BprStagingStatus         @relation(fields: [bprStagingStatusId], references: [id])
+  consumption            BprStagingConsumption?
+  files                  BprStagingFile[]
   BprStagingVerification BprStagingVerification[]
 
   @@map("bpr_stagings")
+}
+
+model BprStagingConsumption {
+  id            String      @id @default(uuid())
+  bprStagingId  String      @unique @map("bpr_staging_id")
+  transactionId String      @unique @map("transaction_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  bprStaging    BprStaging  @relation(fields: [bprStagingId], references: [id])
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  @@map("bpr_staging_consumptions")
+}
+
+model BprStagingFile {
+  id           String     @id @default(uuid())
+  fileId       String     @map("file_id")
+  bprStagingId String     @map("bpr_staging_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  file         File       @relation(fields: [fileId], references: [id])
+  staging      BprStaging @relation(fields: [bprStagingId], references: [id])
+
+  @@map("bpr_staging_files")
 }
 
 model BprStagingStatus {
@@ -1318,6 +1437,7 @@ model BprStagingVerification {
   id           String   @id @default(uuid())
   userId       String   @map("user_id")
   bprStagingId String   @map("bpr_staging_id")
+  type         String   @default("primary")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -1399,6 +1519,33 @@ model BprStepActionableVerification {
   bprStepActionable BprStepActionable @relation(fields: [bprStepActionableId], references: [id])
 
   @@map("bpr_step_actionable_verifications")
+}
+
+model BprTimerEntry {
+  id          String                @id @default(uuid())
+  bprId       String                @map("bpr_id")
+  timerTypeId String                @map("timer_type_id")
+  startTime   DateTime              @default(now()) @map("start_time")
+  endTime     DateTime?
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+  timerType   BprTimerType          @relation(fields: [timerTypeId], references: [id])
+  bpr         BatchProductionRecord @relation(fields: [bprId], references: [id])
+
+  @@map("bpr_timer_entries")
+}
+
+model BprTimerType {
+  id           String          @id @default(uuid())
+  name         String
+  description  String
+  bgColor      String          @map("bg_color")
+  textColor    String          @map("text_color")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  timerEntries BprTimerEntry[]
+
+  @@map("bpr_timer_types")
 }
 
 model CompoundingVessel {
@@ -1605,6 +1752,62 @@ model GeneralRequest {
   @@map("general_requests")
 }
 
+model PoPublicNoteType {
+  id            String         @id @default(uuid())
+  name          String
+  description   String
+  bgColor       String         @map("bg_color")
+  textColor     String         @map("text_color")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  poPublicNotes PoPublicNote[]
+
+  @@map("po_public_note_types")
+}
+
+model PoPublicNote {
+  id              String           @id @default(uuid())
+  purchaseOrderId String           @map("purchase_order_id")
+  noteTypeId      String           @map("note_type_id")
+  userId          String           @map("user_id")
+  content         String
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  purchaseOrder   PurchaseOrder    @relation(fields: [purchaseOrderId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
+  noteType        PoPublicNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("po_public_notes")
+}
+
+model PoSupplierNoteType {
+  id              String           @id @default(uuid())
+  name            String
+  description     String
+  bgColor         String           @map("bg_color")
+  textColor       String           @map("text_color")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  poSupplierNotes PoSupplierNote[]
+
+  @@map("po_supplier_note_types")
+}
+
+model PoSupplierNote {
+  id         String             @id @default(uuid())
+  supplierId String             @map("supplier_id")
+  noteTypeId String             @map("note_type_id")
+  userId     String             @map("user_id")
+  content    String
+  createdAt  DateTime           @default(now()) @map("created_at")
+  updatedAt  DateTime           @updatedAt @map("updated_at")
+  supplier   Supplier           @relation(fields: [supplierId], references: [id])
+  user       User               @relation(fields: [userId], references: [id])
+  noteType   PoSupplierNoteType @relation(fields: [noteTypeId], references: [id])
+
+  @@map("po_supplier_notes")
+}
+
 model PurchaseOrderItemDetail {
   id                   String            @id @default(uuid())
   poItemId             String            @map("po_item_id")
@@ -1643,15 +1846,30 @@ model PurchaseOrderItem {
   @@map("purchase_order_items")
 }
 
+model PurchaseOrderNoteType {
+  id          String              @id @default(uuid())
+  name        String
+  description String
+  bgColor     String              @map("bg_color")
+  textColor   String              @map("text_color")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+  notes       PurchaseOrderNote[]
+
+  @@map("purchase_order_note_types")
+}
+
 model PurchaseOrderNote {
-  id              String        @id @default(uuid())
+  id              String                @id @default(uuid())
   purchaseOrderId String
+  noteTypeId      String                @default("61dc5d6a-dbce-4372-95aa-17b463ec4d2b") @map("note_type_id")
   userId          String
   content         String
-  createdAt       DateTime      @default(now()) @map("created_at")
-  updatedAt       DateTime      @updatedAt @map("updated_at")
-  user            User          @relation(fields: [userId], references: [id])
-  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+  user            User                  @relation(fields: [userId], references: [id])
+  purchaseOrder   PurchaseOrder         @relation(fields: [purchaseOrderId], references: [id])
+  noteType        PurchaseOrderNoteType @relation(fields: [noteTypeId], references: [id])
 
   @@map("purchase_order_notes")
 }
@@ -1688,6 +1906,7 @@ model PurchaseOrder {
   poAccountingNotes     PoAccountingNote[]
   poAccountingFiles     PoAccountingFile[]
   poAccountingAuditLogs PoAccountingAuditLog[]
+  poPublicNotes         PoPublicNote[]
   NotionPurchaseOrder   NotionPurchaseOrder[]
   RequestPurchaseOrder  RequestPurchaseOrder[]
 
@@ -1895,6 +2114,7 @@ model Supplier {
   supplierNotes                SupplierNote[]
   SupplierPaymentMethod        SupplierPaymentMethod[]
   genericUnitConversionFactors GenericUnitConversionFactor[]
+  poSupplierNotes              PoSupplierNote[]
   SupplierContact              SupplierContact[]
 
   @@map("suppliers")
@@ -2237,11 +2457,15 @@ model User {
   PricingExaminationNote        PricingExaminationNote[]
   DiscrepancyAuditItemNote      DiscrepancyAuditItemNote[]
   InventoryAudit                InventoryAudit[]
+  LotNote                       LotNote[]
+  ItemNote                      ItemNote[]
   BprNote                       BprNote[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]
   BprStepActionableVerification BprStepActionableVerification[]
+  PoPublicNote                  PoPublicNote[]
+  PoSupplierNote                PoSupplierNote[]
   Authenticator                 Authenticator[]
   UserRoleAssignment            UserRoleAssignment[]
 

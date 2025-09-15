@@ -1,0 +1,14 @@
+model PoSupplierNote {
+    id         String            @id @default(uuid())
+    supplierId String @map("supplier_id")
+    noteTypeId String            @map("note_type_id")
+    userId     String            @map("user_id")
+    content    String
+    createdAt  DateTime          @default(now()) @map("created_at")
+    updatedAt  DateTime          @updatedAt @map("updated_at")
+    supplier Supplier @relation(fields: [supplierId], references: [id])
+    user       User              @relation(fields: [userId], references: [id])
+    noteType   PoSupplierNoteType   @relation(fields: [noteTypeId], references: [id])
+
+    @@map("po_supplier_notes")
+}

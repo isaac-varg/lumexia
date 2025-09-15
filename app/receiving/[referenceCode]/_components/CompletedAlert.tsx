@@ -9,7 +9,7 @@ import { PurchaseOrder } from "@/types/purchaseOrder";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { Jockey_One } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const CompletedAlert = ({
     isAwaitingItems,
@@ -24,7 +24,7 @@ const CompletedAlert = ({
     const router = useRouter()
     const { toast } = useToast()
 
-    const handleCompletion = async () => {
+    const handleCompletion = useCallback(async () => {
 
         await purchaseOrderActions.update(
             { id: purchaseOrder.id },
@@ -36,7 +36,7 @@ const CompletedAlert = ({
         router.push('/receiving/');
         toast('Received!', `Successfully finished receiving PO# ${purchaseOrder.referenceCode}`, 'success');
 
-    }
+    }, [purchaseOrder, router, toast])
 
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const CompletedAlert = ({
         handleCompletion()
 
 
-    }, [showAlert])
+    }, [showAlert, handleCompletion])
 
 
 
@@ -66,7 +66,7 @@ const CompletedAlert = ({
                 title="Receiving Completed"
                 actionLabel="Complete"
                 action={() => handleCompletion()}
-                actionColor="bayLeaf"
+                actionColor="success"
                 cancelAction={() => console.log('Cancelled')}
 
             >

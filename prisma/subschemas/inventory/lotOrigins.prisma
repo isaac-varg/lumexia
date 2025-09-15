@@ -1,8 +1,8 @@
 model LotOrigin {
     id              String                 @id @default(uuid())
-    lotId           String                 @map("lot_id")
+    lotId           String                 @unique @map("lot_id")
     purchaseOrderId String?                @map("purchase_order_id")
-    bprId           String?                @map("bpr_id")
+    bprId           String?                @unique @map("bpr_id")
     originType      String                 @map("origin_type")
     createdAt       DateTime               @default(now()) @map("created_at")
     updatedAt       DateTime               @updatedAt @map("updated_at")

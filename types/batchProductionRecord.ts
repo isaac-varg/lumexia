@@ -4,20 +4,20 @@ import { LotOrigin } from "./lotOrigin"
 import { ExMbpr, MasterBatchProductionRecord } from "./masterBatchProductionRecord"
 
 export interface BatchProductionRecord {
-    id: string
-    mbprId: string
-    bprStatusId: string
-    batchSizeId: string
-    scheduledForStart?: Date | null
-    scheduledForEnd?: Date | null
-    completedAt?: Date | null
-    releasedAt?: Date | null
-    referenceCode: number
+  id: string
+  mbprId: string
+  bprStatusId: string
+  batchSizeId: string
+  scheduledForStart?: Date | null
+  scheduledForEnd?: Date | null
+  completedAt?: Date | null
+  releasedAt?: Date | null
+  referenceCode: number
 
-    mbpr: ExMbpr
-    status: BprStatus
-    batchSize: BatchSize
-    lotOrigin: LotOrigin[]
+  mbpr: ExMbpr
+  status: BprStatus
+  batchSize: BatchSize
+  lotOrigin: LotOrigin
 }
 
 
@@ -25,15 +25,15 @@ export interface BatchProductionRecord {
 // TODO go through and fix references to old interface above
 
 export interface IBpr {
-    id: string
-    mbprId: string
-    bprStatusId: string
-    batchSizeId: string
-    scheduledForStart?: Date | null
-    scheduledForEnd?: Date | null
-    completedAt?: Date | null
-    releasedAt?: Date | null
-    referenceCode: number
+  id: string
+  mbprId: string
+  bprStatusId: string
+  batchSizeId: string
+  scheduledForStart?: Date | null
+  scheduledForEnd?: Date | null
+  completedAt?: Date | null
+  releasedAt?: Date | null
+  referenceCode: number
 }
 
 

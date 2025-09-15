@@ -26,7 +26,7 @@ const NewConsumerContainer = ({ setMode }: { setMode: Dispatch<SetStateAction<'d
             getPackagingItems()
 
         }
-    }, []);
+    }, [getPackagingItems, packagingItems.length]);
 
 
     const handleSubmit = async (data: Inputs) => {

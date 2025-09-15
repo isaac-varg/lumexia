@@ -29,7 +29,7 @@ const EquipmentCard = ({ equipment }: { equipment: StepEquipment }) => {
       <span className='flex justify-between'>
         <span className='font-poppins font-semibold text-lg'>{equipment.equipment.name}</span>
 
-        <span><ActionButton color="alert" onClick={() => handleDelete()} ><TbX /></ActionButton></span>
+        <span><ActionButton color="warning" onClick={() => handleDelete()} ><TbX /></ActionButton></span>
       </span>
 
     </div>

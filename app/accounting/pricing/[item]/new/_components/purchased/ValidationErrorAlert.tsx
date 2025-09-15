@@ -22,7 +22,7 @@ const ValidationErrorAlert = ({ validation, onProceed }: { validation: Purchased
                 <Alert.Content
                     title='Proceed with Validation Failures '
                     actionLabel='Proceed'
-                    actionColor='cararra'
+                    actionColor='warning'
                     cancelAction={resetDialogContext}
                     action={handleContinue}
                 >

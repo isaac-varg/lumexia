@@ -13,6 +13,8 @@ model File {
     uploadedBy          User                 @relation(fields: [uploadedById], references: [id])
     poAccountingFiles   PoAccountingFile[]
     generalRequestFiles GeneralRequestFile[]
+    itemFiles ItemFile[]
+    bprStagingFiles BprStagingFile[]
 
     @@map("files")
 }

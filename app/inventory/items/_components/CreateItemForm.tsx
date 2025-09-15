@@ -54,6 +54,7 @@ const CreateItemForm = ({
 
   return (
     <Dialog.Root identifier="createItem">
+      <Dialog.Title>Create Item</Dialog.Title>
       <Form.Root form={form} onSubmit={handleSubmit}>
         <Form.Text form={form} label="Name" fieldName="name" required />
         <Form.Text

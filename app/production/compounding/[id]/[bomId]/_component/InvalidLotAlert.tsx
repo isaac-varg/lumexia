@@ -8,7 +8,7 @@ const InvalidLotAlert = ({ lot, setIsViewMode }: { lot: string | null, setIsView
       <Alert.Content
         title='Invalid Item'
         actionLabel='Try Again'
-        actionColor='alert'
+        actionColor='error'
         action={() => setIsViewMode(true)}
 
       >

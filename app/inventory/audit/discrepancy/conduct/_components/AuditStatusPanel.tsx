@@ -20,7 +20,7 @@ const AuditStatusPanel = () => {
         setNotAudited(incomplete)
         setAudited(completed.length)
 
-    })
+    }, [auditItems])
 
 
     return (

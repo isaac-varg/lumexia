@@ -1,19 +1,19 @@
-import React, { Dispatch, useEffect, useState } from 'react'
+import React, { Dispatch, useCallback, useEffect, useState } from 'react'
 import { BsQrCodeScan } from 'react-icons/bs'
 import { useWizard } from 'react-use-wizard'
 
-const ScanStep = ({handleScan} : { handleScan: Dispatch<React.SetStateAction<string | null>>}) => {
+const ScanStep = ({ handleScan }: { handleScan: Dispatch<React.SetStateAction<string | null>> }) => {
   const [isScanComplete, setIsScanComplete] = useState(false)
   const [scannedLot, setScannedLot] = useState('')
   const { nextStep } = useWizard()
 
 
-  const handleScanEnd = async (scannedLot: string) => {
+  const handleScanEnd = useCallback(async (scannedLot: string) => {
     handleScan(scannedLot)
     nextStep()
 
-  }
-  
+  }, [handleScan, nextStep])
+
   useEffect(() => {
     const handleScanEntry = (event: any) => {
       if (event.key === "Enter") {
@@ -34,7 +34,7 @@ const ScanStep = ({handleScan} : { handleScan: Dispatch<React.SetStateAction<str
     return () => {
       window.removeEventListener("keypress", handleScanEntry);
     };
-  }, [scannedLot, isScanComplete]);
+  }, [scannedLot, isScanComplete, handleScanEnd]);
 
   useEffect(() => {
     if (isScanComplete) {

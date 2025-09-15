@@ -6,58 +6,58 @@ import { useForm } from "react-hook-form";
 
 
 export type FinishedProductDetails = {
-    name: string
-    fillQuantity: number
-    declaredQuantity: number
-    difficultyAdjustmentCost: number
-    freeShippingCost: number
+  name: string
+  fillQuantity: number
+  declaredQuantity: number
+  difficultyAdjustmentCost: number
+  freeShippingCost: number
 }
 
 type Props = {
-    currentStep: number
-    nextStep: () => void;
-    setFinishedProductDetails: Dispatch<SetStateAction<FinishedProductDetails | null>>
+  currentStep: number
+  nextStep: () => void;
+  setFinishedProductDetails: Dispatch<SetStateAction<FinishedProductDetails | null>>
 }
 
 const StepFinishedProductDetails = ({ currentStep, nextStep, setFinishedProductDetails }: Props) => {
 
-    const form = useForm<FinishedProductDetails>()
+  const form = useForm<FinishedProductDetails>()
 
 
-    const handleSubmit = (data: FinishedProductDetails) => {
-        setFinishedProductDetails(data);
-        nextStep()
-    }
+  const handleSubmit = (data: FinishedProductDetails) => {
+    setFinishedProductDetails(data);
+    nextStep()
+  }
 
 
-    if (currentStep !== 0) { return false }
+  if (currentStep !== 0) { return false }
 
 
-    return (
-        <div>
+  return (
+    <div>
 
-            <Form.Root form={form} onSubmit={handleSubmit} >
+      <Form.Root form={form} onSubmit={handleSubmit} >
 
-                <Form.Text form={form} fieldName="name" label="Finished Product Name" required />
+        <Form.Text form={form} fieldName="name" label="Finished Product Name" required />
 
-                <Form.Number form={form} fieldName="fillQuantity" label="Fill Quantity (lb)" required />
+        <Form.Number form={form} fieldName="fillQuantity" label="Fill Quantity (lb)" required />
 
-                <Form.Number form={form} fieldName="declaredQuantity" label="Declared Quantity (lb)" required />
+        <Form.Number form={form} fieldName="declaredQuantity" label="Declared Quantity (lb)" required />
 
-                <Form.Number form={form} fieldName="difficultyAdjustmentCost" label="Difficulty Adjustment Cost $" required />
+        <Form.Number form={form} fieldName="difficultyAdjustmentCost" label="Difficulty Adjustment Cost $" required />
 
-                <Form.Number form={form} fieldName="freeShippingCost" label="Free Shipping Cost $" required />
+        <Form.Number form={form} fieldName="freeShippingCost" label="Free Shipping Cost $" required />
 
-                <div className="flex justify-end">
+        <div className="flex justify-end">
 
-                    <button className="btn" type="submit">Next Step</button>
-                </div>
-
-
-            </Form.Root>
-
+          <button className="btn btn-neutral btn-soft" type="submit">Next Step</button>
         </div>
-    )
+
+
+      </Form.Root>
+
+    </div>
+  )
 }
 
 export default StepFinishedProductDetails

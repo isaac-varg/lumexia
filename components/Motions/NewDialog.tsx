@@ -23,7 +23,7 @@ const NewDialog = ({ dialogIdentifier, ctrlPlusKey = "c"}: NewDialogProps) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [ctrlPlusKey, dialogIdentifier, showDialog]);
   return false;
 };
 

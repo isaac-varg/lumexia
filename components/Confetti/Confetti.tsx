@@ -28,7 +28,7 @@ const Confetti = ({ remarksCount = 4 }: ConfettiProps) => {
   useEffect(() => {
     setIsClient(true) // Set to true when the component is mounted
     setRandomNumber(getRandomIntBetween(0, remarks.length - 1)) // Generate random number on mount
-  }, [])
+  }, [remarks.length])
 
   const { width, height } = useWindowSize()
 

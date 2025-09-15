@@ -15,6 +15,7 @@ model Transaction {
     lot                             Lot                              @relation(fields: [lotId], references: [id])
     audit                           InventoryAuditTransaction?
     discrepancyAuditItemTransaction DiscrepancyAuditItemTransaction?
+    bprStagingConsumption BprStagingConsumption?
 
     @@map("transactions")
 }

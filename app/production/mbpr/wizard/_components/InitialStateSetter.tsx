@@ -13,7 +13,7 @@ const InitialStateSetter = ({ compoundingVessels, providedItemId, addendumTypes,
         setActionableTypes(actionableTypes);
         setCompoundingVessels(compoundingVessels)
 
-    }, [])
+    }, [actionableTypes, addendumTypes, compoundingVessels, providedItemId, setActionableTypes, setAddendumTypes, setCompoundingVessels, setProducesItem])
 
     return false
 

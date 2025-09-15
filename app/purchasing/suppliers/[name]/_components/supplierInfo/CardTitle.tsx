@@ -21,7 +21,7 @@ const CardTitle = ({ supplier }: { supplier: Supplier }) => {
 			<Layout.Row>
 				<Card.Title size="small">Supplier Info</Card.Title>
 
-				<ActionButton color="cararra" onClick={() => handleEdit()}>
+				<ActionButton color="secondarySoft" onClick={() => handleEdit()}>
 					<TbEdit />
 				</ActionButton>
 			</Layout.Row>

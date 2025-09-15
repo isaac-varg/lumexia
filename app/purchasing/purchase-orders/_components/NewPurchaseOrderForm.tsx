@@ -2,7 +2,7 @@
 
 import Dialog from "@/components/Dialog";
 import { Supplier } from "@/types/supplier";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPurchaseOrder } from "../_functions/createPurchaseOrder";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -19,11 +19,12 @@ const NewPurchaseOrderForm = ({ suppliers }: NewPurchaseOrderFormProps) => {
     const session = useSession();
     const router = useRouter();
 
-    const searchOptions = {
-        keys: ['name']
-    }
-
-    const searcher = new Fuse(suppliers, searchOptions);
+    const searcher = useMemo(() => {
+        const searchOptions = {
+            keys: ['name']
+        }
+        return new Fuse(suppliers, searchOptions)
+    }, [suppliers]);
 
     const handleSubmit = async (supplier: Supplier) => {
         const po = await createPurchaseOrder(supplier, session);
@@ -44,7 +45,7 @@ const NewPurchaseOrderForm = ({ suppliers }: NewPurchaseOrderFormProps) => {
 
         const mappedResults = searchResults.map((s) => s.item);
         setResults(mappedResults);
-    }, [searchInput]);
+    }, [searchInput, searcher]);
 
     return (
         <div>

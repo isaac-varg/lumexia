@@ -1,11 +1,10 @@
 "use client";
-import { flattenPurchaseOrders } from "@/app/purchasing/purchase-orders/_functions/flattenPurchaseOrders";
+import { FlattenedPurchaseOrder, flattenPurchaseOrders } from "@/app/purchasing/purchase-orders/_functions/flattenPurchaseOrders";
 import DataTable from "@/components/DataTable";
 import { PurchaseOrder } from "@/types/purchaseOrder";
 import React from "react";
 import { columns } from "../_configs/Columns";
 import { useRouter } from "next/navigation";
-import { FlattenedPurchaseOrder } from "@/app/inventory/items/[name]/_functions/flattenPurchaseOrder";
 
 type RecentlyCompletedTableProps = {
   purchaseOrders: PurchaseOrder[] | any;
@@ -25,8 +24,8 @@ const RecentlyCompletedTable = ({
     return (
       <div className="flex flex-col h-full items-center justify-center">
         <div className="flex flex-col items-center justify-center h-80 w-1/2 p-8 bg-neutral-100 rounded-lg">
-          <h1 className="font-poppins text-5xl font-semibold text-neutral-800">
-            Nothing to see here. . . 
+          <h1 className="font-poppins text-5xl font-semibold text-base-content">
+            Nothing to see here. . .
           </h1>
         </div>
       </div>

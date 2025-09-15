@@ -4,6 +4,7 @@ import { AccountingLog } from "../../_actions/getAccountingAuditLogsByPo"
 import { MdClass } from "react-icons/md"
 import { DateTime } from "luxon"
 import { dateFormatString } from "@/configs/data/dateFormatString"
+import Image from "next/image"
 
 
 
@@ -31,7 +32,13 @@ const AuditLog = ({ log, index }: { log: AccountingLog, index: number }) => {
 
             <div className="flex justify-between">
                 <div className="flex items-center gap-x-4">
-                    <img className="w-12 h-12 rounded-full" src={log.user.image || ''} />
+                    <Image
+                        className="w-12 h-12 rounded-full"
+                        src={log.user.image || ''}
+                        alt={log.user.name || 'user image'}
+                        width={48}
+                        height={48}
+                    />
                     <h3 className='font-poppins font-medium text-sm'>{log.user.name}</h3>
                 </div>
 

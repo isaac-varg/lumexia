@@ -26,7 +26,7 @@ const BatchSizeStep = () => {
         if (batchSizes.length === 0) {
             getBatchSizes(selectedMbpr.id)
         }
-    }, [selectedMbpr, batchSizes])
+    }, [selectedMbpr, batchSizes, getBatchSizes])
 
 
     if (step !== 3 || !selectedMbpr) return false
