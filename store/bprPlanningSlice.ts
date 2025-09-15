@@ -1,10 +1,8 @@
 import { BprStatus } from "@/actions/production/bprs/statuses/getAll"
 import { PlanningBpr } from "@/actions/production/getPlanningBprs"
-import { ProductionBpr } from "@/app/production/bpr/[bpr]/_actions/getProductionBpr"
 import { PlanningTab } from "@/app/production/planning/_components/shared/TabSelector"
 import { staticRecords } from "@/configs/staticRecords"
 import { groupByProperty } from "@/utils/data/groupByProperty"
-import { sortByProperty } from "@/utils/data/sortByProperty"
 import { create } from "zustand"
 
 const { draft } = staticRecords.production.bprStatuses;
