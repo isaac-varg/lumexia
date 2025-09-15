@@ -2,38 +2,32 @@
 
 import React, { useEffect, useState } from 'react'
 import { IoCalendarOutline } from "react-icons/io5";
-import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { productionActions } from '@/actions/production';
 import { DateTime } from 'luxon';
 import { dateFormatString } from '@/configs/data/dateFormatString';
 import { TbX } from 'react-icons/tb';
 import { useBprDetailsSelection } from '@/store/bprDetailsSlice';
 import Card from '@/components/Card';
+import { DayPicker, DateRange } from "react-day-picker";
+import "react-day-picker/style.css";
 
 
 const Scheduling = () => {
 
   const { bpr } = useBprDetailsSelection()
-  const [value, setValue] = useState<DateValueType | null>(null)
+  const [selectedRange, setSelectedRange] = useState<DateRange>()
   const [isSameDay, setIsSameDay] = useState<boolean>()
   const [isEdit, setIsEdit] = useState<boolean>(false)
 
-  const handleDateSelection = async (value: DateValueType | null) => {
-
-    if (!value || !bpr) {
-      setValue(null)
+  const handleDateSelection = async (range: DateRange | undefined) => {
+    if (!bpr) {
       return
     }
-
-    setValue(value)
-
-    const { startDate, endDate } = value
-
-    await productionActions.bprs.update2(bpr.id, {
-      scheduledForStart: startDate,
-      scheduledForEnd: endDate,
-    });
-
+    setSelectedRange(range)
+    // await productionActions.bprs.update2(bpr.id, {
+    //   scheduledForStart: range?.from ?? null,
+    //   scheduledForEnd: range?.to ?? range?.from ?? null,
+    // });
   }
 
 
@@ -51,14 +45,14 @@ const Scheduling = () => {
 
 
   const displayDate = () => {
-    if (!value || (!value.startDate && !value.endDate)) {
+    if (!selectedRange?.from) {
       return (
         <span className="text-gray-500 italic">No dates selected</span>
       );
     }
 
-    const luxonStartDate = toLuxonDateTime(value.startDate);
-    const luxonEndDate = toLuxonDateTime(value.endDate);
+    const luxonStartDate = toLuxonDateTime(selectedRange.from);
+    const luxonEndDate = toLuxonDateTime(selectedRange.to || selectedRange.from);
 
     const formattedStartDate = luxonStartDate.toFormat(dateFormatString);
     const formattedEndDate = luxonEndDate.toFormat(dateFormatString);
@@ -82,36 +76,37 @@ const Scheduling = () => {
   useEffect(() => {
     if (!bpr) return;
 
-    setValue({
-      startDate: bpr.scheduledForStart || null,
-      endDate: bpr.scheduledForEnd || null
-
+    setSelectedRange({
+      from: bpr.scheduledForStart ? new Date(bpr.scheduledForStart) : undefined,
+      to: bpr.scheduledForEnd ? new Date(bpr.scheduledForEnd) : undefined
     })
   }, [bpr])
 
   useEffect(() => {
-    if (!value) {
+    if (!selectedRange?.from) {
       setIsEdit(true);
       return;
     }
-    const { startDate, endDate } = value;
+    const { from, to } = selectedRange;
 
     let isSameDate = false;
-    if (startDate && endDate) {
-      const startDateTime = toLuxonDateTime(startDate);
-      const endDateTime = toLuxonDateTime(endDate);
+    if (from && to) {
+      const startDateTime = toLuxonDateTime(from);
+      const endDateTime = toLuxonDateTime(to);
 
       if (startDateTime.isValid && endDateTime.isValid) {
         isSameDate = startDateTime.hasSame(endDateTime, 'day');
       } else {
-        console.warn("Invalid date(s) received from datepicker for comparison in useEffect.");
+        console.warn("Invalid date(s) received for comparison in useEffect.");
       }
+    } else if (from) {
+      isSameDate = true
     }
 
     setIsSameDay(isSameDate)
     setIsEdit(false)
 
-  }, [value])
+  }, [selectedRange])
 
 
   return (
@@ -127,19 +122,16 @@ const Scheduling = () => {
         )}
       </div>
 
-      <div className='flex flex-col w-full justify-center items-center h-full hover:cursor-pointer '>
 
-        {!isEdit && displayDate()}
+      {!isEdit && displayDate()}
 
-        {isEdit &&
-          <Datepicker
-            containerClassName={"bg-red-300"}
-            separator='to'
-            value={value}
-            onChange={newValue => handleDateSelection(newValue)}
-          />
-        }
-      </div>
+      {isEdit &&
+        <DayPicker
+          mode="range"
+          selected={selectedRange}
+          onSelect={handleDateSelection}
+        />
+      }
 
 
 
