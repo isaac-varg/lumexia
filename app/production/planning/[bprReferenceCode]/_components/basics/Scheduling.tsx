@@ -5,31 +5,51 @@ import { IoCalendarOutline } from "react-icons/io5";
 import { productionActions } from '@/actions/production';
 import { DateTime } from 'luxon';
 import { dateFormatString } from '@/configs/data/dateFormatString';
-import { TbX } from 'react-icons/tb';
+import { TbDeviceFloppy, TbX } from 'react-icons/tb';
 import { useBprDetailsSelection } from '@/store/bprDetailsSlice';
 import Card from '@/components/Card';
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
+import { useRouter } from 'next/navigation';
 
 
 const Scheduling = () => {
 
   const { bpr } = useBprDetailsSelection()
+  const router = useRouter()
   const [selectedRange, setSelectedRange] = useState<DateRange>()
   const [isSameDay, setIsSameDay] = useState<boolean>()
   const [isEdit, setIsEdit] = useState<boolean>(false)
 
   const handleDateSelection = async (range: DateRange | undefined) => {
-    if (!bpr) {
-      return
-    }
+
     setSelectedRange(range)
-    // await productionActions.bprs.update2(bpr.id, {
-    //   scheduledForStart: range?.from ?? null,
-    //   scheduledForEnd: range?.to ?? range?.from ?? null,
-    // });
   }
 
+  const handleDateSave = async () => {
+    if (!bpr || !selectedRange) {
+      return
+    }
+    await productionActions.bprs.update2(bpr.id, {
+      scheduledForStart: selectedRange?.from ?? null,
+      scheduledForEnd: selectedRange?.to ?? selectedRange?.from ?? null,
+    });
+
+    setIsEdit(false);
+    router.refresh()
+  }
+
+  const handleClear = async () => {
+    if (!bpr) return;
+
+    await productionActions.bprs.update2(bpr.id, {
+      scheduledForStart: null,
+      scheduledForEnd: null,
+    })
+
+    setIsEdit(false);
+    router.refresh()
+  }
 
   // helper to deal with datepicker date to luxon
   const toLuxonDateTime = (dateInput: string | Date | null | undefined): DateTime => {
@@ -50,7 +70,6 @@ const Scheduling = () => {
         <span className="text-gray-500 italic">No dates selected</span>
       );
     }
-
     const luxonStartDate = toLuxonDateTime(selectedRange.from);
     const luxonEndDate = toLuxonDateTime(selectedRange.to || selectedRange.from);
 
@@ -83,13 +102,12 @@ const Scheduling = () => {
   }, [bpr])
 
   useEffect(() => {
-    if (!selectedRange?.from) {
-      setIsEdit(true);
-      return;
-    }
+    if (!selectedRange) return;
+
     const { from, to } = selectedRange;
 
     let isSameDate = false;
+
     if (from && to) {
       const startDateTime = toLuxonDateTime(from);
       const endDateTime = toLuxonDateTime(to);
@@ -102,10 +120,7 @@ const Scheduling = () => {
     } else if (from) {
       isSameDate = true
     }
-
     setIsSameDay(isSameDate)
-    setIsEdit(false)
-
   }, [selectedRange])
 
 
@@ -115,7 +130,10 @@ const Scheduling = () => {
         <Card.Title size='small' >Scheduling</Card.Title>
 
         {isEdit && (
-          <button onClick={() => setIsEdit(false)} className='btn btn-sm'><span className='text-xl'><TbX /></span></button>
+          <div className='flex gap-2'>
+            <button onClick={handleDateSave} className='btn btn-md flex items-center justify-center btn-circle'><TbDeviceFloppy className='size-5' /> </button>
+            <button onClick={handleClear} className='btn btn-md flex items-center justify-center btn-circle'> <TbX className='size-5' /></button>
+          </div>
         )}
         {!isEdit && (
           <button onClick={() => setIsEdit(true)} className='btn btn-sm'><span className='text-xl'>< IoCalendarOutline /></span></button>
@@ -125,12 +143,23 @@ const Scheduling = () => {
 
       {!isEdit && displayDate()}
 
+
       {isEdit &&
-        <DayPicker
-          mode="range"
-          selected={selectedRange}
-          onSelect={handleDateSelection}
-        />
+        <div className='flex justify-center'>
+          <DayPicker
+            mode="range"
+            selected={selectedRange}
+            onSelect={handleDateSelection}
+            classNames={{
+              chevron: `fill-base-content`, // Change the color of the chevron
+              today: `border-1 border-dashed border-base-content`, // Add a border to today's date
+              range_end: 'bg-secondar/50 rounded-full text-secondary-content',
+              range_middle: 'bg-secondary/40 text-secondary-content rounded-xl',
+              range_start: 'bg-secondar/50 rounded-full text-secondary-content',
+              selected: `bg-secondary text-secondary-content`, // Highlight the selected day
+            }}
+          />
+        </div>
       }
 
 
