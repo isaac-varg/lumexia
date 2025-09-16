@@ -1,3 +1,4 @@
+import { getAllBprNotes } from "@/actions/production/bprs/notes/getAllByBpr";
 import { getSteps } from "./_actions/compounding/getSteps";
 import { getBprBom } from "./_actions/getBprBom";
 import { getProductionBpr } from "./_actions/getProductionBpr"
@@ -14,9 +15,11 @@ const ProductionBprPage = async ({ searchParams }: Props) => {
   const [
     bom,
     steps,
+    notes,
   ] = await Promise.all([
     getBprBom(bpr.id),
     getSteps(bpr.id),
+    getAllBprNotes(bpr.id),
   ])
 
 
@@ -26,6 +29,7 @@ const ProductionBprPage = async ({ searchParams }: Props) => {
         bpr={bpr}
         bom={bom}
         steps={steps}
+        notes={notes}
       />
 
       <Header />

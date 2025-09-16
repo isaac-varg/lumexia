@@ -131,5 +131,13 @@ export const translations = {
     en: 'Addenda',
     es: 'Adendas'
   },
+  notesTitle: {
+    en: 'Notes',
+    es: 'Notas',
+  },
+  notesButton: {
+    en: 'Add Note',
+    es: 'Añadir Nota'
+  }
 
 }

@@ -1,3 +1,6 @@
+import { productionActions } from "@/actions/production"
+import { BprNote } from "@/actions/production/bprs/notes/getAllByBpr"
+import { BprNoteType } from "@/actions/production/bprs/notes/notesTypes/getAll"
 import { ProductionStep } from "@/app/production/bpr/[bpr]/_actions/compounding/getSteps"
 import { BprBomItem } from "@/app/production/bpr/[bpr]/_actions/getBprBom"
 import { getBprStagings, BprStagingItem } from "@/app/production/bpr/[bpr]/_actions/getBprStagings"
@@ -6,16 +9,21 @@ import { staticRecords } from "@/configs/staticRecords"
 import { create } from "zustand"
 
 
+
 type State = {
   bpr: ProductionBpr | null,
   bom: BprBomItem[],
   selectedBomItem: BprBomItem | null,
   stagings: BprStagingItem[],
   stagingsMode: 'view' | 'add'
+  stagingDetailsMode: 'main' | 'note'
+  compoundingDetailsMode: 'main' | 'note'
   steps: ProductionStep[]
   selectedStep: ProductionStep | null
   isStagingsLoading: boolean,
   qualityDetailsViewMode: 'view' | 'note'
+  bprNoteTypes: BprNoteType[]
+  bprNotes: BprNote[]
   qualityMode: 'primary' | 'secondary'
   viewStatuses: {
     isStaging: boolean,
@@ -38,20 +46,28 @@ type Actions = {
     setQualityMode: (mode: 'primary' | 'secondary') => void;
     setSteps: (steps: ProductionStep[]) => void;
     setSelectedStep: (step: ProductionStep | null) => void;
+    setStagingDetailsMode: (mode: 'main' | 'note') => void;
+    getBprNoteType: () => void;
+    setBprNotes: (notes: BprNote[]) => void;
+    setCompoundingDetailsMode: (mode: 'main' | 'note') => void;
   }
 }
 
 export const useProductionSelection = create<State & Actions>((set, get) => ({
   bpr: null,
   bom: [],
+  bprNoteTypes: [],
+  bprNotes: [],
   selectedBomItem: null,
   stagings: [],
   stagingsMode: 'view' as any,
+  stagingDetailsMode: 'main' as any,
   steps: [],
   selectedStep: null,
   isStagingsLoading: false,
   qualityMode: 'primary' as any,
   qualityDetailsViewMode: 'view' as any,
+  compoundingDetailsMode: 'main' as any,
   viewStatuses: {
     isStaging: false,
     isPrimaryVerifcation: false,
@@ -78,6 +94,11 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
         console.error("Failed to fetch stagings:", error);
         set(() => ({ isStagingsLoading: false }));
       }
+    },
+
+    getBprNoteType: async () => {
+      const types = await productionActions.bprs.notes.types.getAll();
+      set(() => ({ bprNoteTypes: types }));
     },
 
     setStagingsMode: (mode) => set(() => ({ stagingsMode: mode })),
@@ -107,6 +128,9 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
     setQualityMode: (mode) => set(() => ({ qualityMode: mode })),
     setSteps: (steps) => set(() => ({ steps })),
     setSelectedStep: (step) => set(() => ({ selectedStep: step })),
+    setStagingDetailsMode: (mode) => set(() => ({ stagingDetailsMode: mode })),
+    setBprNotes: (notes) => set(() => ({ bprNotes: notes })),
+    setCompoundingDetailsMode: (mode) => set(() => ({ compoundingDetailsMode: mode })),
   }
 }))
 

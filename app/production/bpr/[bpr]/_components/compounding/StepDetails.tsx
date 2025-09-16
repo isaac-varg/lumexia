@@ -5,10 +5,12 @@ import { translations } from "../../_configs/translations"
 import StepActions from "./StepActions"
 import Instructions from "./Instructions"
 import Addendums from "./Addendums"
+import { Fragment } from "react"
+import Notes from "../shared/Notes"
 
 const StepDetails = () => {
 
-  const { selectedStep } = useProductionSelection()
+  const { selectedStep, compoundingDetailsMode } = useProductionSelection()
   const { t } = useTranslation()
 
   if (!selectedStep) {
@@ -22,9 +24,16 @@ const StepDetails = () => {
 
         <StepActions />
 
-        <Instructions />
+        {compoundingDetailsMode === 'main' && (
+          <Fragment>
+            <Instructions />
+            {selectedStep.batchStep.StepAddendum.length !== 0 && <Addendums />}
+          </Fragment>
+        )}
 
-        {selectedStep.batchStep.StepAddendum.length !== 0 && <Addendums />}
+        {compoundingDetailsMode === 'note' && (
+          <Notes />
+        )}
 
 
 

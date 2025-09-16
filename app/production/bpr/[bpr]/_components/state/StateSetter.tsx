@@ -4,22 +4,24 @@ import { ProductionBpr } from "../../_actions/getProductionBpr";
 import { useProductionActions, useProductionSelection } from "@/store/productionSlice";
 import { BprBomItem } from "../../_actions/getBprBom";
 import { ProductionStep } from "../../_actions/compounding/getSteps";
+import { BprNote } from "@/actions/production/bprs/notes/getAllByBpr";
 
 type Props = {
   bpr: ProductionBpr,
   bom: BprBomItem[],
   steps: ProductionStep[]
+  notes: BprNote[],
 }
 
 const StateSetter = ({
   bpr: serverBpr,
   bom: serverBom,
   steps,
-
+  notes,
 }: Props) => {
 
-  const { setBpr, setBom, setViewStatuses, setSteps } = useProductionActions()
-  const { bpr, bom } = useProductionSelection()
+  const { setBpr, setBom, setBprNotes, setViewStatuses, setSteps, getBprNoteType } = useProductionActions()
+  const { bpr, bom, bprNoteTypes, } = useProductionSelection()
 
   useEffect(() => {
     setBpr(serverBpr);
@@ -28,8 +30,13 @@ const StateSetter = ({
 
   useEffect(() => {
     setBom(serverBom);
-    setSteps(steps)
-  }, [bpr, setBom,])
+    setSteps(steps);
+    setBprNotes(notes);
+
+    if (bprNoteTypes.length === 0) {
+      getBprNoteType();
+    }
+  }, [bpr, steps, serverBom, notes, setBprNotes, setBom, getBprNoteType, setSteps,])
 
   useEffect(() => {
     setViewStatuses()

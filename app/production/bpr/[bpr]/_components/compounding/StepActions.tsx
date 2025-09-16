@@ -1,19 +1,21 @@
 import Card from "@/components/Card"
 import { translations } from "../../_configs/translations"
 import { useTranslation } from "@/hooks/useTranslation"
-import { useProductionSelection } from "@/store/productionSlice"
+import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
 import { staticRecords } from "@/configs/staticRecords"
 import { useEffect, useState } from "react"
 import { ProductionStep } from "../../_actions/compounding/getSteps"
 import { handleCompleteActionable } from "../../_actions/compounding/handleCompleteActionable"
 import { useRouter } from "next/navigation"
+import { TbPlus } from "react-icons/tb"
 
 const { completeStep } = staticRecords.production.bprStepActionableTypes
 
 const StepActions = () => {
   const { t } = useTranslation()
-  const { selectedStep } = useProductionSelection()
-  const [completeActionable, setCompleteActionable] = useState<ProductionStep['bprStepActionables'][number] | null>(null);
+  const { selectedStep, bprNotes } = useProductionSelection()
+  const { setCompoundingDetailsMode } = useProductionActions()
+  const [completeActionable, setCompleteActionable,] = useState<ProductionStep['bprStepActionables'][number] | null>(null);
   const router = useRouter()
 
   useEffect(() => {
@@ -39,8 +41,20 @@ const StepActions = () => {
     <Card.Root>
       <Card.Title>{t(translations, 'stagingActionsTitle')}</Card.Title>
 
+      <button className="btn btn-lg btn-accent min-h-20" onClick={() => setCompoundingDetailsMode('note')}>
+        <div className="flex gap-2 items-center">
+          <TbPlus className="text-base-content text-3xl" />
+          {t(translations, 'notesButton')}
+
+        </div>
+        <div className="bg-primary/50 rounded-full h-8 w-8 p-1 flex items-center justify-center">
+          {bprNotes.length}
+        </div>
+      </button>
+
+
       {(completeActionable && !selectedStep?.isComplete) && (
-        <button onClick={handleCompleteStep} className="btn btn-success">
+        <button onClick={handleCompleteStep} className="btn btn-success btn-lg min-h-20">
           Complete
         </button>
       )}

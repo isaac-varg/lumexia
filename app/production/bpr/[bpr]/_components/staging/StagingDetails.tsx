@@ -6,9 +6,11 @@ import Aliases from "./Aliases";
 import Amounts from "../shared/Amounts";
 import StagedEntries from "./StagedEntries";
 import DetailActions from "./DetailActions";
+import { Fragment } from "react";
+import Notes from "../shared/Notes";
 
 const StagingDetails = () => {
-  const { selectedBomItem, stagings, isStagingsLoading } = useProductionSelection()
+  const { selectedBomItem, stagingDetailsMode } = useProductionSelection()
   const { t } = useTranslation()
 
   if (!selectedBomItem) return null;
@@ -24,8 +26,16 @@ const StagingDetails = () => {
           <Aliases />
         </div>
 
-        <Amounts />
-        <StagedEntries />
+        {stagingDetailsMode === 'main' && (
+          <Fragment>
+            <Amounts />
+            <StagedEntries />
+          </Fragment>
+        )}
+
+        {stagingDetailsMode === 'note' && (
+          <Notes />
+        )}
       </div>
     </div>
   )
