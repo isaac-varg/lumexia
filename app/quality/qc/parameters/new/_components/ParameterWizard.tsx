@@ -10,18 +10,12 @@ import AiEntry from "./AiEntry"
 const ParameterWizard = () => {
 
 
-    return (
-        <div>
+  return (
+    <div>
 
 
-
-            <ManualEntry />
-
-
-
-
-        </div>
-    )
+    </div>
+  )
 }
 
 export default ParameterWizard

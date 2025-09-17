@@ -221,6 +221,10 @@ export const staticRecords = {
     }
   },
   quality: {
+    dataTypes: {
+      text: '0862072f-1e53-4272-a16b-9a2d861d61b4',
+      boolean: '9ef83856-80d9-473d-8cd4-4cbe83e4d7c6',
+    },
     examinations: {
       types: {
         inProcess: 'a158361e-ccc2-4ad7-ac46-b1d854a86bac'

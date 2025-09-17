@@ -2,17 +2,18 @@ model QcParameter {
     id              String   @id @default(uuid())
     name            String
     uom             String
-    dataType        String   @map("data_type")
+    dataTypeId      String   @map("data_type_id")
     description     String?
-    inputDefinition Json?
     isWetParameter  Boolean  @map("is_wet_parameter")
     createdAt       DateTime @default(now()) @map("created_at")
     updatedAt       DateTime @updatedAt @map("updated_at")
+    dataType QcDataType @relation(fields: [dataTypeId], references: [id])
 
     qcItemParameters     QcItemParameter[]
     qcParameterResults   QcParameterResult[]
     qcTemplateParameters QcTemplateParameter[]
     qcGroupParameters    QcGroupParameter[]
+    inputDefinitions QcParameterInputDefinition[]
 
     @@map("qc_parameters")
 }

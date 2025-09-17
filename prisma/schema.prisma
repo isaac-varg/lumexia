@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Sep 09 2025 08:53:21 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Sep 16 2025 16:19:01 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -2147,6 +2147,17 @@ model QcAuditLog {
   @@map("qc_audit_logs")
 }
 
+model QcDataType {
+  id                        String                       @id @default(uuid())
+  name                      String
+  createdAt                 DateTime                     @default(now()) @map("created_at")
+  updatedAt                 DateTime                     @updatedAt @map("updated_at")
+  parameterInputDefinitions QcParameterInputDefinition[]
+  parameters                QcParameter[]
+
+  @@map("qc_data_types")
+}
+
 model QcExaminationType {
   id           String   @id @default(uuid())
   name         String   @map("name")
@@ -2176,18 +2187,46 @@ model QcGroupParameter {
 }
 
 model QcItemParameter {
-  id                      String      @id @default(uuid())
-  itemId                  String      @map("item_id")
-  parameterId             String      @map("parameter_id")
+  id                      String                @id @default(uuid())
+  itemId                  String                @map("item_id")
+  parameterId             String                @map("parameter_id")
   specification           Json?
-  calculatedSpecification Json?       @map("calculated_specification")
-  createdAt               DateTime    @default(now()) @map("created_at")
-  updatedAt               DateTime    @updatedAt @map("updated_at")
-  item                    Item        @relation(fields: [itemId], references: [id])
-  parameter               QcParameter @relation(fields: [parameterId], references: [id])
+  calculatedSpecification Json?                 @map("calculated_specification")
+  createdAt               DateTime              @default(now()) @map("created_at")
+  updatedAt               DateTime              @updatedAt @map("updated_at")
+  item                    Item                  @relation(fields: [itemId], references: [id])
+  parameter               QcParameter           @relation(fields: [parameterId], references: [id])
+  QcItemSpecification     QcItemSpecification[]
 
   @@unique([itemId, parameterId])
   @@map("qc_item_parameters")
+}
+
+model QcItemSpecificationInput {
+  id                         String                     @id @default(uuid())
+  parameterInputDefinitionId String                     @map("parameter_input_definition_id")
+  itemSpecificationId        String                     @map("item_specification_id")
+  value                      String
+  createdAt                  DateTime                   @default(now()) @map("created_at")
+  updatedAt                  DateTime                   @updatedAt @map("updated_at")
+  parameterInputDefinition   QcParameterInputDefinition @relation(fields: [parameterInputDefinitionId], references: [id])
+  itemSpecification          QcItemSpecification        @relation(fields: [itemSpecificationId], references: [id])
+
+  @@map("qc_item_specification_inputs")
+}
+
+model QcItemSpecification {
+  id                      String                     @id @default(uuid())
+  itemParameterId         String                     @map("item_parameter_id")
+  valueA                  String                     @map("value_a")
+  valueB                  String?                    @map("value_b")
+  specificationType       String                     @map("specification_type")
+  createdAt               DateTime                   @default(now()) @map("created_at")
+  updatedAt               DateTime                   @updatedAt @map("updated_at")
+  itemParameter           QcItemParameter            @relation(fields: [itemParameterId], references: [id])
+  itemSpecificationInputs QcItemSpecificationInput[]
+
+  @@map("qc_item_specifications")
 }
 
 model QcParameterGroup {
@@ -2202,6 +2241,23 @@ model QcParameterGroup {
   parameters QcGroupParameter[]
 
   @@map("qc_parameter_groups")
+}
+
+model QcParameterInputDefinition {
+  id                      String                     @id @default(uuid())
+  parameterId             String                     @map("parameter_id")
+  name                    String
+  label                   String
+  dataTypeId              String                     @map("data_type_id")
+  required                Boolean
+  unit                    String
+  createdAt               DateTime                   @default(now()) @map("created_at")
+  updatedAt               DateTime                   @updatedAt @map("updated_at")
+  parameter               QcParameter                @relation(fields: [parameterId], references: [id])
+  dataType                QcDataType                 @relation(fields: [dataTypeId], references: [id])
+  itemSpecificationInputs QcItemSpecificationInput[]
+
+  @@map("qc_parameter_input_definitions")
 }
 
 model QcParameterResult {
@@ -2219,20 +2275,21 @@ model QcParameterResult {
 }
 
 model QcParameter {
-  id              String   @id @default(uuid())
-  name            String
-  uom             String
-  dataType        String   @map("data_type")
-  description     String?
-  inputDefinition Json?
-  isWetParameter  Boolean  @map("is_wet_parameter")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id             String     @id @default(uuid())
+  name           String
+  uom            String
+  dataTypeId     String     @map("data_type_id")
+  description    String?
+  isWetParameter Boolean    @map("is_wet_parameter")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  dataType       QcDataType @relation(fields: [dataTypeId], references: [id])
 
   qcItemParameters     QcItemParameter[]
   qcParameterResults   QcParameterResult[]
   qcTemplateParameters QcTemplateParameter[]
   qcGroupParameters    QcGroupParameter[]
+  inputDefinitions     QcParameterInputDefinition[]
 
   @@map("qc_parameters")
 }

@@ -7,6 +7,7 @@ import Inventory from "../inventory/Inventory";
 import Pricing from "../pricing/Pricing";
 import Production from "../production/Production";
 import Files from "../files/Files";
+import Quality from "../quality/Quality";
 
 
 const TabsContainer = () => {
@@ -27,6 +28,7 @@ const TabsContainer = () => {
         {currentTab === 'purchasing' && <Purchasing />}
         {currentTab === 'pricing' && <Pricing />}
         {currentTab === 'production' && <Production />}
+        {currentTab === 'quality' && <Quality />}
         {currentTab === 'files' && <Files />}
       </motion.div>
     </AnimatePresence>

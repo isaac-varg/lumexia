@@ -1,0 +1,17 @@
+model QcParameterInputDefinition {
+    id              String   @id @default(uuid())
+    parameterId String @map("parameter_id")
+    name String
+    label String
+    dataTypeId String @map("data_type_id")
+    required Boolean
+    unit String
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
+    parameter QcParameter @relation(fields: [parameterId], references: [id])
+    dataType QcDataType @relation(fields: [dataTypeId], references: [id])
+    itemSpecificationInputs QcItemSpecificationInput[]
+
+
+    @@map("qc_parameter_input_definitions")
+}

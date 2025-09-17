@@ -15,7 +15,7 @@ const TabSelector = () => {
   const isProduced = item?.procurementTypeId === produced;
 
 
-  const tabs: ItemTab[] = ['basics', 'inventory', 'pricing', 'production', 'files',];
+  const tabs: ItemTab[] = ['basics', 'inventory', 'pricing', 'production', 'quality', 'files',];
 
   // produced items do not need purchased tab
   if (!isProduced) {
