@@ -5,12 +5,17 @@ import { getAllQcParameterGroups } from "./qc/groups/getAll";
 import { createQcGroupParameter } from "./qc/groups/groupParameters/create";
 import { getAllQcGroupsByItem } from "./qc/groups/groupParameters/getAllByItem";
 import { getGroupParametersByExamination } from "./qc/groups/groupParameters/getByExamination";
+import { createInputDefinitions } from "./qc/inputDefinitions/create";
+import { deleteInputDefinition } from "./qc/inputDefinitions/delete";
+import { getAllInputDefinitions } from "./qc/inputDefinitions/getAll";
+import { updateInputDefinition } from "./qc/inputDefinitions/update";
 import { deleteQcItemParameter } from "./qc/itemParameters/delete";
 import { updateQcItemParameter } from "./qc/itemParameters/update";
 import { createQcParameter } from "./qc/parameters/create";
 import { getAllQcParameters } from "./qc/parameters/getAll";
 import { getAllQcParametersByItem } from "./qc/parameters/getAllByItem";
 import { getOneQcParameter } from "./qc/parameters/getOne";
+import { updateQcParameter } from "./qc/parameters/update";
 import { createRecordNote } from "./qc/recordNotes/create";
 import { getAllRecordNotesByRecord } from "./qc/recordNotes/getAllByRecord";
 import { createQcRecordNoteType } from "./qc/recordNotes/types/create";
@@ -30,10 +35,17 @@ export const qualityActions = {
     dataTypes: {
       getAll: getAllDataTypes,
     },
+    inputDefinitions: {
+      getAll: getAllInputDefinitions,
+      create: createInputDefinitions,
+      update: updateInputDefinition,
+      delete: deleteInputDefinition,
+    },
     parameters: {
       getOne: getOneQcParameter,
       getAll: getAllQcParameters,
       create: createQcParameter,
+      update: updateQcParameter,
     },
     itemParameters: {
       getByItem: getAllQcParametersByItem,

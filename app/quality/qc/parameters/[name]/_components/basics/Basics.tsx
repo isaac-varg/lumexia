@@ -1,29 +1,33 @@
 'use client'
 
+import { qualityActions } from "@/actions/quality"
 import Card from "@/components/Card"
 import { useAppForm } from "@/components/Form2"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { useQcParameterSelection } from "@/store/qcParametersSlice"
-
-type ParameterFormInputs = {
-  name: string
-  description: string
-  isWetParameter: boolean
-}
+import { useRouter } from "next/navigation"
 
 const Basics = () => {
-  const { selectedParameter } = useQcParameterSelection()
+  const { selectedParameter, dataTypes } = useQcParameterSelection()
+  const router = useRouter()
 
   const defaultParameter = {
     name: selectedParameter?.name || '',
     description: selectedParameter?.description || '',
     isWetParameter: selectedParameter?.isWetParameter || false,
+    dataTypeId: selectedParameter?.dataTypeId || '',
+    uom: selectedParameter?.uom || ''
   }
 
   const form = useAppForm({
     defaultValues: defaultParameter,
-    onSubmit: ({ value }) => {
-      console.log(value);
+    onSubmit: async ({ value }) => {
+      if (!selectedParameter) {
+        throw new Error("Cannot update without selected parameter");
+      };
+      await qualityActions.qc.parameters.update(selectedParameter.id, value);
+      form.reset()
+      router.refresh()
     }
   })
 
@@ -56,6 +60,18 @@ const Basics = () => {
             name="isWetParameter"
             children={(field) => <field.ToggleField label="Is Wet Parameter" />}
           />
+
+          <form.AppField
+            name='dataTypeId'
+            children={(field) => <field.SelectField label="Data Type" options={dataTypes.map(dt => ({ value: dt.id, label: dt.name }))} />}
+          />
+
+          <form.AppField
+            name="uom"
+            children={(field) => <field.TextField label="Unit of Measurement" />}
+          />
+
+
 
           <div>
             <form.AppForm>
