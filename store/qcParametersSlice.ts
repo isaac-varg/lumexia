@@ -1,8 +1,11 @@
 import { qualityActions } from "@/actions/quality"
 import { QcDataType } from "@/actions/quality/qc/dataTypes/getAll"
+import { QcParameterGroup } from "@/actions/quality/qc/groups/getAll"
 import { ParameterInputDefinition } from "@/actions/quality/qc/inputDefinitions/getAll"
 import { QcParameter } from "@/actions/quality/qc/parameters/getAll"
-import InputDefinitions from "@/app/quality/qc/parameters/[name]/_components/inputDefinitions/InputDefinitions"
+import { QcTemplate } from "@/actions/quality/qc/templates/getAll"
+import { ParameterGroup } from "@/app/quality/qc/parameters/[name]/_actions/getParameterGroups"
+import { ParameterTemplate } from "@/app/quality/qc/parameters/[name]/_actions/getParameterTemplates"
 import { QcParameterTab } from "@/app/quality/qc/parameters/_components/shared/TabSelector"
 import { create } from "zustand"
 
@@ -10,38 +13,62 @@ import { create } from "zustand"
 type State = {
   currentTab: QcParameterTab
   dataTypes: QcDataType[]
+  groups: QcParameterGroup[]
   parameterInputDefinitions: ParameterInputDefinition[]
+  parameterGroups: ParameterGroup[]
+  parameterTemplates: ParameterTemplate[]
   parameters: QcParameter[]
-  selectedParameter: QcParameter | null,
-
+  selectedParameter: QcParameter | null
+  templates: QcTemplate[]
+  isLoading: boolean
 }
 
 type Actions = {
   actions: {
     getDataTypes: () => void;
     setCurrentTab: (currentTab: QcParameterTab) => void;
+    setGroups: (groups: QcParameterGroup[]) => void;
     setParameterInputDefinitions: (inputDefinitions: ParameterInputDefinition[]) => void;
+    setParameterGroups: (groups: ParameterGroup[]) => void;
+    setParameterTemplates: (templates: ParameterTemplate[]) => void;
     setParameters: (parameters: QcParameter[]) => void;
     setSelectedParameter: (parameter: QcParameter | null) => void;
+    setTemplates: (templates: QcTemplate[]) => void;
   }
 }
 
 export const useQcParameterSelection = create<State & Actions>((set, get) => ({
-  currentTab: 'paramters' as QcParameterTab,
+  currentTab: 'parameters' as QcParameterTab,
   dataTypes: [],
+  groups: [],
+  isLoading: false,
   parameterInputDefinitions: [],
+  parameterGroups: [],
+  parameterTemplates: [],
   parameters: [],
   selectedParameter: null,
+  templates: [],
 
   actions: {
     getDataTypes: async () => {
-      const dataTypes = await qualityActions.qc.dataTypes.getAll();
-      set(() => ({ dataTypes }));
+      try {
+        set(() => ({ isLoading: true }))
+        const dataTypes = await qualityActions.qc.dataTypes.getAll();
+        set(() => ({ dataTypes }));
+      } catch (error) {
+        throw new Error('Error fetching data types')
+      } finally {
+        set(() => ({ isLoading: false }));
+      }
     },
     setCurrentTab: (currentTab) => set(() => ({ currentTab })),
+    setGroups: (groups) => set(() => ({ groups })),
     setParameters: (parameters) => set(() => ({ parameters, })),
     setParameterInputDefinitions: (inputDefinitions) => set(() => ({ parameterInputDefinitions: inputDefinitions })),
+    setParameterGroups: (groups) => set(() => ({ parameterGroups: groups })),
+    setParameterTemplates: (templates) => set(() => ({ parameterTemplates: templates })),
     setSelectedParameter: (parameter) => set(() => ({ selectedParameter: parameter })),
+    setTemplates: (templates) => set(() => ({ templates })),
   },
 
 

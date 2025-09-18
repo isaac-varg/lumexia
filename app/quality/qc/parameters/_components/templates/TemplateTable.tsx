@@ -1,30 +1,24 @@
 'use client'
-import { QcTemplate } from "@/actions/quality/qc/templates/getAll"
 import Card from "@/components/Card";
 import DataTable from "@/components/DataTable";
-import { Filter } from "@/types/filter";
 import { templateColumns } from "./TemplateColumns";
 import TemplateFormDialog from "./TemplateFormDialog";
 import useDialog from "@/hooks/useDialog";
-import ModifyTemplateDialog from "./ModifyTemplateDialog";
-import { useState } from "react";
+import { useQcParameterSelection } from "@/store/qcParametersSlice";
+import { useRouter } from "next/navigation";
 
-const TemplateTable = ({ templates }: { templates: QcTemplate[] }) => {
-
-
+const TemplateTable = () => {
   const dialog = useDialog()
-  const [selectedTemplate, setSelectedTemplate] = useState<QcTemplate | null>(null)
-
+  const router = useRouter()
+  const { templates } = useQcParameterSelection()
 
   const handleRowClick = (row: any) => {
-    setSelectedTemplate(row.original);
-    dialog.showDialog('modifyTemplateDialog');
+    router.push(`/quality/qc/parameters/template/${row.original.name}?id=${row.original.id}`)
   }
 
 
   return (
     <Card.Root>
-      <ModifyTemplateDialog template={selectedTemplate} />
 
       <TemplateFormDialog />
       <div className="flex justify-between items-center">

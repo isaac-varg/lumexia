@@ -16,6 +16,8 @@ const ParametersPage = async () => {
 
       <StateSetter
         parameters={parameters}
+        templates={templates}
+        groups={groups}
       />
 
 

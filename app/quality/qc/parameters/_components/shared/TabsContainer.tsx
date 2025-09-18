@@ -2,6 +2,7 @@
 import { useQcParameterSelection } from '@/store/qcParametersSlice';
 import { motion, AnimatePresence } from 'framer-motion';
 import Parameters from '../parameters/Parameters';
+import Templates from '../templates/Templates';
 
 const TabsContainer = () => {
 
@@ -17,6 +18,7 @@ const TabsContainer = () => {
         transition={{ duration: 0.2 }}
       >
         {currentTab === 'parameters' && <Parameters />}
+        {currentTab === 'templates' && <Templates />}
 
       </motion.div>
     </AnimatePresence>

@@ -6,7 +6,7 @@ export const getOneQcParameter = async (id: string) => {
   const parameter = await prisma.qcParameter.findUniqueOrThrow({
     where: {
       id,
-    }
+    },
   });
 
   return parameter

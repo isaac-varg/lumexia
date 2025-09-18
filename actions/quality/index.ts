@@ -2,6 +2,7 @@ import { getAllDataTypes } from "./qc/dataTypes/getAll";
 import { getAllExaminationTypes } from "./qc/examinationTypes/getAll";
 import { createQcParameterGroup } from "./qc/groups/create";
 import { getAllQcParameterGroups } from "./qc/groups/getAll";
+import { getOneQcGroup } from "./qc/groups/getOne";
 import { createQcGroupParameter } from "./qc/groups/groupParameters/create";
 import { getAllQcGroupsByItem } from "./qc/groups/groupParameters/getAllByItem";
 import { getGroupParametersByExamination } from "./qc/groups/groupParameters/getByExamination";
@@ -29,6 +30,7 @@ import { createTemplateParameter } from "./qc/templateParameters/create";
 import { deleteTemplateParameter } from "./qc/templateParameters/delete";
 import { createQcTemplate } from "./qc/templates/create";
 import { getAllQcTemplates } from "./qc/templates/getAll";
+import { getOneQcTemplate } from "./qc/templates/getOne";
 
 export const qualityActions = {
   qc: {
@@ -55,6 +57,7 @@ export const qualityActions = {
     templates: {
       getAll: getAllQcTemplates,
       create: createQcTemplate,
+      getOne: getOneQcTemplate,
     },
     templateParameters: {
       create: createTemplateParameter,
@@ -83,6 +86,7 @@ export const qualityActions = {
     groups: {
       create: createQcParameterGroup,
       getAll: getAllQcParameterGroups,
+      getOne: getOneQcGroup,
       groupParameters: {
         getAllByItem: getAllQcGroupsByItem,
         getAllByExamination: getGroupParametersByExamination,

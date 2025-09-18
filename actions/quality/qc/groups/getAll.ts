@@ -3,13 +3,17 @@
 import prisma from "@/lib/prisma"
 
 export const getAllQcParameterGroups = async () => {
-    const groups = await prisma.qcParameterGroup.findMany({
+  const groups = await prisma.qcParameterGroup.findMany({
+    include: {
+      parameters: {
         include: {
-            parameters: true
+          parameter: true
         }
-    });
+      }
+    }
+  });
 
-    return groups
+  return groups
 }
 
 export type QcParameterGroup = Awaited<ReturnType<typeof getAllQcParameterGroups>>[number];

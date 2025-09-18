@@ -30,7 +30,7 @@ const InputDefinitions = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 col-span-2">
+    <div className="flex flex-col gap-4 col-span-3">
       <div className="flex items-center justify-between">
         <SectionTitle>Input Definitions</SectionTitle>
 
