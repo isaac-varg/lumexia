@@ -1,29 +1,29 @@
 'use client'
+
 import Card from "@/components/Card";
 import DataTable from "@/components/DataTable";
 import useDialog from "@/hooks/useDialog";
-import { useState } from "react";
-import { QcParameterGroup } from "@prisma/client";
 import { groupColumns } from "./GroupColumns";
 import GroupFormDialog from "./GroupFormDialog";
-import { ExaminationType } from "@/actions/quality/qc/examinationTypes/getAll";
+import { useQcParameterSelection } from "@/store/qcParametersSlice";
+import { useRouter } from "next/navigation";
 
-const GroupsTable = ({ groups, examinationTypes }: { groups: QcParameterGroup[], examinationTypes: ExaminationType[] }) => {
-
+const GroupsTable = () => {
 
   const dialog = useDialog()
-  const [selectedGroup, setSelectedGroup] = useState<QcParameterGroup | null>(null)
+  const router = useRouter()
+  const { groups, examinationTypes } = useQcParameterSelection()
 
 
   const handleRowClick = (row: any) => {
-    setSelectedGroup(row.original);
-    dialog.showDialog('modifyGroupDialog');
+
+    const path = `/quality/qc/parameters/groups/${row.original.name}?id=${row.original.id}`
+    router.push(path)
   }
 
 
   return (
     <Card.Root>
-      {/*<ModifyTemplateDialog template={selectedTemplate} /> */}
 
       <GroupFormDialog examinationTypes={examinationTypes} />
       <div className="flex justify-between items-center">

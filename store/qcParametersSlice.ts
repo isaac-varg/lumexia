@@ -1,5 +1,6 @@
 import { qualityActions } from "@/actions/quality"
 import { QcDataType } from "@/actions/quality/qc/dataTypes/getAll"
+import { ExaminationType } from "@/actions/quality/qc/examinationTypes/getAll"
 import { QcParameterGroup } from "@/actions/quality/qc/groups/getAll"
 import { ParameterInputDefinition } from "@/actions/quality/qc/inputDefinitions/getAll"
 import { QcParameter } from "@/actions/quality/qc/parameters/getAll"
@@ -13,6 +14,7 @@ import { create } from "zustand"
 type State = {
   currentTab: QcParameterTab
   dataTypes: QcDataType[]
+  examinationTypes: ExaminationType[]
   groups: QcParameterGroup[]
   parameterInputDefinitions: ParameterInputDefinition[]
   parameterGroups: ParameterGroup[]
@@ -27,6 +29,7 @@ type Actions = {
   actions: {
     getDataTypes: () => void;
     setCurrentTab: (currentTab: QcParameterTab) => void;
+    setExaminationTypes: (examinationTypes: ExaminationType[]) => void;
     setGroups: (groups: QcParameterGroup[]) => void;
     setParameterInputDefinitions: (inputDefinitions: ParameterInputDefinition[]) => void;
     setParameterGroups: (groups: ParameterGroup[]) => void;
@@ -40,6 +43,7 @@ type Actions = {
 export const useQcParameterSelection = create<State & Actions>((set, get) => ({
   currentTab: 'parameters' as QcParameterTab,
   dataTypes: [],
+  examinationTypes: [],
   groups: [],
   isLoading: false,
   parameterInputDefinitions: [],
@@ -62,6 +66,7 @@ export const useQcParameterSelection = create<State & Actions>((set, get) => ({
       }
     },
     setCurrentTab: (currentTab) => set(() => ({ currentTab })),
+    setExaminationTypes: (examinationTypes) => set(() => ({ examinationTypes })),
     setGroups: (groups) => set(() => ({ groups })),
     setParameters: (parameters) => set(() => ({ parameters, })),
     setParameterInputDefinitions: (inputDefinitions) => set(() => ({ parameterInputDefinitions: inputDefinitions })),

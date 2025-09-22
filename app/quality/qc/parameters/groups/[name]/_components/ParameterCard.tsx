@@ -1,15 +1,18 @@
 'use client'
-import { qualityActions } from "@/actions/quality";
+import { qualityActions } from "@/actions/quality"
+import { QcParameterGroup } from "@/actions/quality/qc/groups/getAll"
 import { QcTemplateParameter } from "@/actions/quality/qc/templates/getAll"
 import { useRouter } from "next/navigation"
 import { TbTrash } from "react-icons/tb"
 
-const ParameterCard = ({ parameter }: { parameter: QcTemplateParameter }) => {
-  const router = useRouter();
+const ParameterCard = ({ parameter }: { parameter: QcParameterGroup['parameters'][number] }) => {
+
+  const router = useRouter()
   const handleDelete = async () => {
-    await qualityActions.qc.templateParameters.delete(parameter.id);
+    await qualityActions.qc.groups.groupParameters.delete(parameter.id);
     router.refresh()
   }
+
   return (
     <div className="bg-base-300/80 rounded-xl p-6 flex flex-col gap-4">
       <div className="flex items-center justify-between">

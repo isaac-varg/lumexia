@@ -18,24 +18,12 @@ const ParametersPage = async () => {
         parameters={parameters}
         templates={templates}
         groups={groups}
+        examinationTypes={examinationTypes}
       />
 
 
       <TabSelector />
       <TabsContainer />
-
-
-
-
-      {/*
-      <ParameterTable parameters={parameters} templates={templates} groups={groups} />
-
-      <GroupsTable groups={groups} examinationTypes={examinationTypes} />
-
-      <TemplateTable templates={templates} />
-*/}
-
-
 
     </div>
 

@@ -5,12 +5,16 @@ import { useQcParameterActions, useQcParameterSelection } from "@/store/qcParame
 import { useEffect } from "react";
 import { ParameterGroup } from "../../_actions/getParameterGroups";
 import { ParameterTemplate } from "../../_actions/getParameterTemplates";
+import { QcParameterGroup } from "@/actions/quality/qc/groups/getAll";
+import { QcTemplate } from "@/actions/quality/qc/templates/getAll";
 
 type Props = {
   inputDefinitions: ParameterInputDefinition[],
   parameter: QcParameter,
   parameterGroups: ParameterGroup[],
   parameterTemplates: ParameterTemplate[],
+  groups: QcParameterGroup[],
+  templates: QcTemplate[],
 }
 
 const StateSetter = ({
@@ -18,9 +22,11 @@ const StateSetter = ({
   parameter,
   parameterGroups,
   parameterTemplates,
+  groups,
+  templates,
 }: Props) => {
 
-  const { getDataTypes, setSelectedParameter, setParameterInputDefinitions, setParameterTemplates, setParameterGroups } = useQcParameterActions()
+  const { getDataTypes, setSelectedParameter, setParameterInputDefinitions, setParameterTemplates, setParameterGroups, setGroups, setTemplates, } = useQcParameterActions()
   const { dataTypes } = useQcParameterSelection()
 
   useEffect(() => {
@@ -33,7 +39,9 @@ const StateSetter = ({
     setParameterInputDefinitions(inputDefinitions);
     setParameterGroups(parameterGroups);
     setParameterTemplates(parameterTemplates);
-  }, [parameter, parameterGroups, parameterTemplates, setSelectedParameter, getDataTypes, setParameterInputDefinitions, setParameterGroups, setParameterTemplates])
+    setGroups(groups);
+    setTemplates(templates);
+  }, [parameter, parameterGroups, parameterTemplates, groups, templates, setSelectedParameter, getDataTypes, setParameterInputDefinitions, setParameterGroups, setParameterTemplates, setGroups, setTemplates])
 
   return false;
 

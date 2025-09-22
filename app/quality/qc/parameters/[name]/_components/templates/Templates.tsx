@@ -5,6 +5,7 @@ import { TbPlus } from "react-icons/tb"
 import TemplateItem from "./TemplateItem"
 import Card from "@/components/Card"
 import { useState } from "react"
+import AddTemplate from "./AddTemplate"
 
 const Templates = () => {
 
@@ -27,6 +28,8 @@ const Templates = () => {
             {parameterTemplates.length === 0 && <span className="text-lg text-base-content/70">This parameter does not belong to a template</span>}
           </div>
         )}
+
+        {viewMode === 'add' && <AddTemplate setViewMode={setViewMode} />}
       </Card.Root>
 
 

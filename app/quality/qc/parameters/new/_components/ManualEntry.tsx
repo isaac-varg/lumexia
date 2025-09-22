@@ -28,8 +28,9 @@ const ManualEntry = ({ dataTypes }: { dataTypes: QcDataType[] }) => {
     const payload: Prisma.QcParameterUncheckedCreateInput = {
       ...data,
     }
-    await qualityActions.qc.parameters.create(payload)
-    router.back()
+    const res = await qualityActions.qc.parameters.create(payload)
+    const path = `/quality/qc/parameters/${res.name}?id=${res.id}`
+    router.push(path)
   }
 
   return (

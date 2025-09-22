@@ -4,8 +4,10 @@ import { createQcParameterGroup } from "./qc/groups/create";
 import { getAllQcParameterGroups } from "./qc/groups/getAll";
 import { getOneQcGroup } from "./qc/groups/getOne";
 import { createQcGroupParameter } from "./qc/groups/groupParameters/create";
+import { deleteGroupParameter } from "./qc/groups/groupParameters/delete";
 import { getAllQcGroupsByItem } from "./qc/groups/groupParameters/getAllByItem";
 import { getGroupParametersByExamination } from "./qc/groups/groupParameters/getByExamination";
+import { updateQcGroup } from "./qc/groups/update";
 import { createInputDefinitions } from "./qc/inputDefinitions/create";
 import { deleteInputDefinition } from "./qc/inputDefinitions/delete";
 import { getAllInputDefinitions } from "./qc/inputDefinitions/getAll";
@@ -87,10 +89,12 @@ export const qualityActions = {
       create: createQcParameterGroup,
       getAll: getAllQcParameterGroups,
       getOne: getOneQcGroup,
+      update: updateQcGroup,
       groupParameters: {
         getAllByItem: getAllQcGroupsByItem,
         getAllByExamination: getGroupParametersByExamination,
         create: createQcGroupParameter,
+        delete: deleteGroupParameter,
       }
     }
   }
