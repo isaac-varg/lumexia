@@ -2,8 +2,6 @@ model QcItemParameter {
     id                      String      @id @default(uuid())
     itemId                  String      @map("item_id")
     parameterId             String      @map("parameter_id")
-    specification           Json?
-    calculatedSpecification Json?       @map("calculated_specification")
     createdAt               DateTime    @default(now()) @map("created_at")
     updatedAt               DateTime    @updatedAt @map("updated_at")
     item                    Item        @relation(fields: [itemId], references: [id])
