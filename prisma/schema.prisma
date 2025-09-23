@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Sep 23 2025 11:14:29 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Sep 23 2025 14:22:15 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -2195,6 +2195,7 @@ model QcItemParameter {
   item           Item                  @relation(fields: [itemId], references: [id])
   parameter      QcParameter           @relation(fields: [parameterId], references: [id])
   specifications QcItemSpecification[]
+  results        QcParameterResult[]
 
   @@unique([itemId, parameterId])
   @@map("qc_item_parameters")
@@ -2275,14 +2276,17 @@ model QcParameterInputResult {
 model QcParameterResult {
   id                    String                   @id @default(uuid())
   qcRecordId            String                   @map("qc_record_id")
-  qcParameterId         String                   @map("qc_parameter_id")
+  qcItemParameterId     String                   @map("qc_item_parameter_id")
   value                 String
   createdAt             DateTime                 @default(now()) @map("created_at")
   updatedAt             DateTime                 @updatedAt @map("updated_at")
   qcRecord              QcRecord                 @relation(fields: [qcRecordId], references: [id])
-  qcParameter           QcParameter              @relation(fields: [qcParameterId], references: [id])
+  qcItemParameter       QcItemParameter          @relation(fields: [qcItemParameterId], references: [id])
   parameterInputResults QcParameterInputResult[]
+  QcParameter           QcParameter?             @relation(fields: [qcParameterId], references: [id])
+  qcParameterId         String?
 
+  @@unique([qcRecordId, qcItemParameterId])
   @@map("qc_parameter_results")
 }
 

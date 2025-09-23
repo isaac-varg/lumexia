@@ -6,6 +6,9 @@ import { useState } from "react"
 import { getLot } from "@/app/production/compounding/[id]/_functions/getLot"
 import { inventoryActions } from "@/actions/inventory"
 import { useQcExaminationActions } from "@/store/qcExaminationSlice"
+import { qualityActions } from "@/actions/quality"
+import { getUserId } from "@/actions/users/getUserId"
+import { staticRecords } from "@/configs/staticRecords"
 
 const ScanPanel = () => {
 
@@ -21,7 +24,15 @@ const ScanPanel = () => {
       if (!lot) {
         return;
       }
-      const path = `/quality/qc/examination/new/${lot.lotNumber}?lotId=${lot.id}`
+      const userId = await getUserId()
+      const record = await qualityActions.qc.records.create({
+        conductedById: userId,
+        examinedLotId: lot.id,
+        examinationTypeId: staticRecords.quality.examinations.types.inProcess,
+        statusId: staticRecords.quality.records.statuses.open,
+      })
+
+      const path = `/quality/qc/examination/new/${lot.lotNumber}?lotId=${lot.id}&examinationId=${record.id}`
       nextStep()
       router.push(path)
     } catch (error) {

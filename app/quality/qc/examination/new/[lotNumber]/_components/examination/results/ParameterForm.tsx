@@ -1,14 +1,16 @@
 import { useAppForm } from "@/components/Form2";
 import { useQcExaminationSelection } from "@/store/qcExaminationSlice";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { handleResultSubmission } from "../../../_actions/handleResultSubmission";
+import { ExaminationResults } from "../../../_actions/getResults";
 
 const ParameterForm = () => {
 
 
   const router = useRouter()
-  const { selectedItemParameter, qcRecord } = useQcExaminationSelection()
+  const { selectedItemParameter, qcRecord, results } = useQcExaminationSelection()
+  const [result, setResult] = useState<ExaminationResults | null>(null)
 
   const dynamicDefaultValues = useMemo(() => {
     const definitions = selectedItemParameter?.parameter.inputDefinitions;
@@ -16,23 +18,41 @@ const ParameterForm = () => {
       return {};
     }
     return definitions.reduce((acc, definition) => {
-      // Use a unique property from your definition object as the key
-      acc[definition.id] = definition.
+      const inputResult = result?.parameterInputResults.filter(res => res.parameterInputDefinitionId === definition.id)[0]
+
+      acc[definition.id] = result ? inputResult?.value : ''
       return acc;
     }, {} as Record<string, any>);
   }, [selectedItemParameter]);
 
   const form = useAppForm({
     defaultValues: {
-      value: '',
+      value: result ? result.value : '',
       ...dynamicDefaultValues,
     },
     onSubmit: async ({ value }) => {
-      if (!qcRecord) return;
-      handleResultSubmission(qcRecord.id, value)
+      if (!qcRecord || !selectedItemParameter) return;
+
+      if (result) {
+        console.log('Has Result skipping');
+        return;
+      }
+      handleResultSubmission(qcRecord.id, selectedItemParameter.parameterId, selectedItemParameter.id, value)
       router.refresh()
     }
   })
+
+  useEffect(() => {
+    if (!selectedItemParameter) return;
+
+    const data = results.get(selectedItemParameter.id);
+    if (!data) {
+      setResult(null)
+      return;
+    }
+    setResult(data);
+
+  }, [selectedItemParameter, results, setResult])
 
   return (
     <div>

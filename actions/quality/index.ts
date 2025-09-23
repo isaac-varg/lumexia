@@ -17,6 +17,7 @@ import { updateQcItemParameter } from "./qc/itemParameters/update";
 import { createQcParameter } from "./qc/parameters/create";
 import { getAllQcParameters } from "./qc/parameters/getAll";
 import { getAllQcParametersByItem } from "./qc/parameters/getAllByItem";
+import { getAllQcParametersByItemAndQcRecord } from "./qc/parameters/getAllByItemAndQcRecord";
 import { getOneQcParameter } from "./qc/parameters/getOne";
 import { updateQcParameter } from "./qc/parameters/update";
 import { createRecordNote } from "./qc/recordNotes/create";
@@ -53,6 +54,7 @@ export const qualityActions = {
     },
     itemParameters: {
       getByItem: getAllQcParametersByItem,
+      getAllByItemAndRecord: getAllQcParametersByItemAndQcRecord,
       delete: deleteQcItemParameter,
       update: updateQcItemParameter,
     },

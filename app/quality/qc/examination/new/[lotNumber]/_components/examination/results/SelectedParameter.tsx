@@ -15,7 +15,6 @@ const SelectedParameter = () => {
     }
   }, [selectedItemParameter, setSelectedItemParameter])
 
-  console.log(selectedItemParameter?.specifications);
   console.log(selectedItemParameter)
 
   return (

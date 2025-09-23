@@ -5,6 +5,7 @@ import { ExaminationType } from "@/actions/quality/qc/examinationTypes/getAll";
 import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem";
 import { QcExamination } from "@/actions/quality/qc/records/getAll";
 import { getUserId } from "@/actions/users/getUserId";
+import { ExaminationResults } from "@/app/quality/qc/examination/new/[lotNumber]/_actions/getResults";
 import { staticRecords } from "@/configs/staticRecords";
 import { create } from "zustand"
 
@@ -14,6 +15,7 @@ type State = {
   itemParameters: QcItemParameter[]
   lots: Lot[];
   selectedExaminationType: ExaminationType | null
+  results: Map<string, ExaminationResults>
   selectedItemParameter: QcItemParameter | null
   specimentLot: SingleLot | null;
   step: number;
@@ -22,7 +24,6 @@ type State = {
 
 type Actions = {
   actions: {
-    createQcRecord: () => void;
     nextStep: () => void;
     setExaminationTypes: (types: ExaminationType[]) => void;
     setItemParameters: (itemParameters: QcItemParameter[]) => void;
@@ -31,7 +32,8 @@ type Actions = {
     setStep: (step: number) => void;
     setLots: (lots: Lot[]) => void;
     setSpecimentLot: (lot: SingleLot) => void;
-
+    setRecord: (record: QcExamination) => void;
+    setResults: (results: ExaminationResults[]) => void;
   }
 }
 
@@ -44,6 +46,7 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
   selectedItemParameter: null,
   specimentLot: null,
   step: 0,
+  results: new Map,
 
 
   actions: {
@@ -55,20 +58,10 @@ export const useQcExaminationSelection = create<State & Actions>((set, get) => (
     setStep: (step) => set(() => ({ step })),
     setSpecimentLot: (lot) => set(() => ({ specimentLot: lot })),
     setLots: (lots) => set(() => ({ lots })),
-
-    createQcRecord: async () => {
-      const { selectedExaminationType, specimentLot } = get()
-      const userId = await getUserId()
-      if (!selectedExaminationType || !specimentLot) return;
-
-      const exam = await qualityActions.qc.records.create({
-        conductedById: userId,
-        statusId: staticRecords.quality.records.statuses.open,
-        examinationTypeId: selectedExaminationType.id,
-        examinedLotId: specimentLot.id,
-      })
-
-      set(() => ({ qcRecord: exam }));
+    setRecord: (record) => set(() => ({ qcRecord: record })),
+    setResults: (results) => {
+      const mapping = new Map(results.map(result => [result.qcItemParameterId, result]))
+      set(() => ({ results: mapping }))
     }
   },
 
