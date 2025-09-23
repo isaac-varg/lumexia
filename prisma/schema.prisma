@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Sep 22 2025 11:08:07 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Sep 23 2025 11:14:29 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -2187,14 +2187,14 @@ model QcGroupParameter {
 }
 
 model QcItemParameter {
-  id                  String                @id @default(uuid())
-  itemId              String                @map("item_id")
-  parameterId         String                @map("parameter_id")
-  createdAt           DateTime              @default(now()) @map("created_at")
-  updatedAt           DateTime              @updatedAt @map("updated_at")
-  item                Item                  @relation(fields: [itemId], references: [id])
-  parameter           QcParameter           @relation(fields: [parameterId], references: [id])
-  QcItemSpecification QcItemSpecification[]
+  id             String                @id @default(uuid())
+  itemId         String                @map("item_id")
+  parameterId    String                @map("parameter_id")
+  createdAt      DateTime              @default(now()) @map("created_at")
+  updatedAt      DateTime              @updatedAt @map("updated_at")
+  item           Item                  @relation(fields: [itemId], references: [id])
+  parameter      QcParameter           @relation(fields: [parameterId], references: [id])
+  specifications QcItemSpecification[]
 
   @@unique([itemId, parameterId])
   @@map("qc_item_parameters")

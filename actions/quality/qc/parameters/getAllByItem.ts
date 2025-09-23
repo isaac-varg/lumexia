@@ -4,16 +4,25 @@ import prisma from "@/lib/prisma"
 
 export const getAllQcParametersByItem = async (itemId: string) => {
 
-    const parameters = await prisma.qcItemParameter.findMany({
-        where: {
-            itemId,
-        },
+  const parameters = await prisma.qcItemParameter.findMany({
+    where: {
+      itemId,
+    },
+    include: {
+      parameter: {
         include: {
-            parameter: true
+          inputDefinitions: true,
         }
-    });
+      },
+      specifications: {
+        include: {
+          itemSpecificationInputs: true,
+        }
+      },
+    }
+  });
 
-    return parameters;
+  return parameters;
 }
 
 export type QcItemParameter = Awaited<ReturnType<typeof getAllQcParametersByItem>>[number]

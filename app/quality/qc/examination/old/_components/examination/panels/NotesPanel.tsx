@@ -4,6 +4,7 @@ import { useState } from "react";
 import NotesViewMode from "./NotesViewMode";
 import NotesAddMode from "./NotesAddMode";
 import CreateNoteTypeForm from "./NotesAddNoteTypeMode";
+import NotesManager from "@/components/Notes/NotesManager";
 
 const NotesPanel = () => {
 

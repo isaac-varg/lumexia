@@ -6,6 +6,8 @@ model QcItemParameter {
     updatedAt               DateTime    @updatedAt @map("updated_at")
     item                    Item        @relation(fields: [itemId], references: [id])
     parameter               QcParameter @relation(fields: [parameterId], references: [id])
+    specifications QcItemSpecification[]
+    
 
     @@unique([itemId, parameterId])
     @@map("qc_item_parameters")

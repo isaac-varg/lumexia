@@ -1,28 +1,25 @@
-import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
-import ExaminationWizard from "./_components/ExaminationWizard";
-import StateSetter from "./_components/StateSetter";
+import StepContainer from "./_components/shared/StepContainer"
+import StepTrack from "./_components/shared/StepTrack"
+import { inventoryActions } from "@/actions/inventory"
+import StateSetter from "./_components/state/StateSetter"
 
-type Props = {
-    searchParams: {
-        id: string;
-    };
-};
 
-const NewExaminationPage = ({ searchParams }: Props) => {
 
-    const { id } = searchParams;
+const ConductExaminationPage = async () => {
 
-    return (
-        <div>
-        
-            <StateSetter lotId={id} />
+  const [lots] = await Promise.all([
+    await inventoryActions.lots.getAll(),
+  ])
 
-            <PageBreadcrumbs />
-
-            <ExaminationWizard />
-
-        </div>
-    )
+  return (
+    <div className="flex flex-col gap-y-6">
+      <StateSetter
+        lots={lots}
+      />
+      <StepTrack />
+      <StepContainer />
+    </div>
+  )
 }
 
-export default NewExaminationPage 
+export default ConductExaminationPage
