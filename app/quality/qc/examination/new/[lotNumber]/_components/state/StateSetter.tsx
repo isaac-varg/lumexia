@@ -23,7 +23,10 @@ const StateSetter = ({
     setStep,
     setExaminationTypes,
     setItemParameters,
+    createQcRecord,
   } = useQcExaminationActions()
+
+  const { step } = useQcExaminationSelection()
 
   useEffect(() => {
     setSpecimentLot(specimenLot)
@@ -40,7 +43,16 @@ const StateSetter = ({
 
   useEffect(() => {
     setStep(1)
+
   }, []);
+
+  useEffect(() => {
+
+    if (step === 2) {
+      createQcRecord();
+    }
+
+  }, [step, createQcRecord])
 
   return false
 }

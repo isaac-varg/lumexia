@@ -12,7 +12,9 @@ export const Root = <T extends string>({ defaultValue, children }: RootProps<T>)
 
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
-      {children}
+      <div className='flex flex-col gap-6'>
+        {children}
+      </div>
     </TabsContext.Provider>
   );
 };

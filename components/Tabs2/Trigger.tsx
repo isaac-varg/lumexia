@@ -13,7 +13,7 @@ export const Trigger = <T extends string>({ value, children }: TriggerProps<T>) 
 
   return (
     <button
-      className={`capitalize min-w-40 btn btn-secondary ${isSelected ? '' : 'btn-dash'}`}
+      className={`capitalize min-w-40 btn-xl btn btn-secondary ${isSelected ? '' : 'btn-dash'}`}
       onClick={() => setActiveTab(value)}
       role="tab"
       aria-selected={isSelected}
