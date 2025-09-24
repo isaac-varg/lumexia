@@ -1,11 +1,12 @@
 "use server"
 
 import prisma from "@/lib/prisma";
+import { ParameterInput } from "../_components/examination/results/ParameterInput";
 
-export const handleResultUpdate = async (parameterResultId: string, data: Record<string, any>) => {
+export const handleResultUpdate = async (parameterResultId: string, data: ParameterInput) => {
 
 
-  const { value, ...inputDefinitions } = data;
+  const { value } = data;
 
   const result = await prisma.qcParameterResult.update({
     where: {
@@ -16,21 +17,17 @@ export const handleResultUpdate = async (parameterResultId: string, data: Record
     }
   })
 
-  await Promise.all(Object.keys(inputDefinitions).map(async (definitionKey) => {
-    const value = inputDefinitions[definitionKey];
-    const inputResultId = definitionKey.split('_')[1];
 
-    console.log('resid', inputResultId)
-
+  await Promise.all(data.inputDefinitions.map(async (def) => {
     return await prisma.qcParameterInputResult.update({
       where: {
-        id: inputResultId,
+        id: def.resultId
       },
       data: {
-        value,
+        value: def.value,
       }
-    });
-  }));
+    })
+  }))
 
   return result;
 

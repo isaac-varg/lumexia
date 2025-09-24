@@ -2,7 +2,7 @@ import Card from "@/components/Card"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { useQcExaminationActions, useQcExaminationSelection } from "@/store/qcExaminationSlice"
 import { useEffect } from "react"
-import ParameterForm from "./ParameterForm"
+import ParameterInput from "./ParameterInput"
 
 const SelectedParameter = () => {
 
@@ -32,8 +32,8 @@ const SelectedParameter = () => {
 
           <SectionTitle size="small">Values</SectionTitle>
 
-          <ParameterForm />
 
+          <ParameterInput />
 
 
         </Card.Root>
