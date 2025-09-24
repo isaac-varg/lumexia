@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Sep 23 2025 14:22:15 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Sep 24 2025 15:50:01 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -565,6 +565,7 @@ model File {
   generalRequestFiles GeneralRequestFile[]
   itemFiles           ItemFile[]
   bprStagingFiles     BprStagingFile[]
+  QcRecordFile        QcRecordFile[]
 
   @@map("files")
 }
@@ -2310,6 +2311,34 @@ model QcParameter {
   @@map("qc_parameters")
 }
 
+model QcRecordFileType {
+  id            String         @id @default(uuid())
+  name          String
+  abbreviaton   String?
+  description   String?
+  bgColor       String         @map("bg_color")
+  textColor     String         @map("text_color")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  qcRecordFiles QcRecordFile[]
+
+  @@map("qc_record_file_types")
+}
+
+model QcRecordFile {
+  id         String           @id @default(uuid())
+  fileTypeId String           @map("file_type_id")
+  fileId     String           @map("file_id")
+  qcRecordId String           @map("qc_record_id")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  fileType   QcRecordFileType @relation(fields: [fileTypeId], references: [id])
+  file       File             @relation(fields: [fileId], references: [id])
+  qcRecord   QcRecord         @relation(fields: [qcRecordId], references: [id])
+
+  @@map("qc_record_files")
+}
+
 model QcRecordNoteType {
   id            String         @id @default(uuid())
   name          String
@@ -2324,16 +2353,16 @@ model QcRecordNoteType {
 }
 
 model QcRecordNote {
-  id          String           @id @default(uuid())
-  qcRecordId  String           @map("qc_record_id")
-  createdById String           @map("created_by_id")
-  content     String           @map("content")
-  noteTypeId  String           @map("note_type_id")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  qcRecord    QcRecord         @relation(fields: [qcRecordId], references: [id])
-  createdBy   User             @relation(fields: [createdById], references: [id])
-  noteType    QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
+  id         String           @id @default(uuid())
+  recordId   String           @map("record_id")
+  noteTypeId String           @map("note_type_id")
+  userId     String           @map("user_id")
+  content    String
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  record     QcRecord         @relation(fields: [recordId], references: [id])
+  user       User             @relation(fields: [userId], references: [id])
+  noteType   QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
 
   @@map("qc_record_notes")
 }
@@ -2372,6 +2401,7 @@ model QcRecord {
   qcParameterResults        QcParameterResult[]
   qcRecordNotes             QcRecordNote[]
   qcAuditLogs               QcAuditLog[]
+  QcRecordFile              QcRecordFile[]
 
   @@map("qc_records")
 }

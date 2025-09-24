@@ -24,10 +24,18 @@ const ExaminationConductPage = async ({ searchParams }: Props) => {
     examinationTypes,
     itemParameters,
     results,
+    notes,
+    noteTypes,
+    files,
+    fileTypes,
   ] = await Promise.all([
     await qualityActions.qc.examinationTypes.getAll(),
     await qualityActions.qc.itemParameters.getByItem(specimenLot.item.id),
     await getResults(record.id),
+    await qualityActions.qc.recordNotes.getAllByRecord(record.id),
+    await qualityActions.qc.recordNotes.types.getAll(),
+    await qualityActions.qc.recordFiles.getAll(record.id),
+    await qualityActions.qc.recordFiles.types.getAll(),
   ])
 
   return (
@@ -38,6 +46,10 @@ const ExaminationConductPage = async ({ searchParams }: Props) => {
         itemParameters={itemParameters}
         specimenLot={specimenLot}
         results={results}
+        notes={notes}
+        noteTypes={noteTypes}
+        files={files}
+        fileTypes={fileTypes}
       />
       <StepTrack />
       <StepContainer />

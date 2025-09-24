@@ -20,6 +20,9 @@ import { getAllQcParametersByItem } from "./qc/parameters/getAllByItem";
 import { getAllQcParametersByItemAndQcRecord } from "./qc/parameters/getAllByItemAndQcRecord";
 import { getOneQcParameter } from "./qc/parameters/getOne";
 import { updateQcParameter } from "./qc/parameters/update";
+import { createQcRecordFile } from "./qc/recordFiles/create";
+import { getAllQcRecordFilesByRecord } from "./qc/recordFiles/getAllByRecord";
+import { getAllQcRecordFileTypes } from "./qc/recordFiles/types/getAll";
 import { createRecordNote } from "./qc/recordNotes/create";
 import { getAllRecordNotesByRecord } from "./qc/recordNotes/getAllByRecord";
 import { createQcRecordNoteType } from "./qc/recordNotes/types/create";
@@ -76,6 +79,13 @@ export const qualityActions = {
       types: {
         getAll: getAllQcRecordNoteTypes,
         create: createQcRecordNoteType,
+      }
+    },
+    recordFiles: {
+      create: createQcRecordFile,
+      getAll: getAllQcRecordFilesByRecord,
+      types: {
+        getAll: getAllQcRecordFileTypes,
       }
     },
     records: {

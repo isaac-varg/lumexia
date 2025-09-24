@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-images: {
+  images: {
     remotePatterns: [
       {
         protocol: 'https',
@@ -12,6 +12,11 @@ images: {
         hostname: 'cdn.discordapp.com',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: '192.168.12.227',
+        pathname: '/**'
+      }
     ],
   },
 };

@@ -235,6 +235,11 @@ export const staticRecords = {
         default: 'e2ca11e7-1d89-4773-a0e5-71c895760925'
       }
     },
+    recordFiles: {
+      types: {
+        default: 'dd781a7a-e8c5-4808-a316-e94f881b31d9'
+      },
+    },
     records: {
       statuses: {
         open: 'bfe0a4fb-80b5-4eb4-9c73-5ddfd730af80',

@@ -1,0 +1,13 @@
+model QcRecordFileType {
+    id                String             @id @default(uuid())
+    name              String
+    abbreviaton       String?
+    description       String?
+    bgColor           String             @map("bg_color")
+    textColor         String             @map("text_color")
+    createdAt         DateTime           @default(now()) @map("created_at")
+    updatedAt         DateTime           @updatedAt @map("updated_at")
+    qcRecordFiles QcRecordFile[]
+
+    @@map("qc_record_file_types")
+}
