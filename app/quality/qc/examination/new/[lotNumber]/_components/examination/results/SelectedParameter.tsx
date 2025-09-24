@@ -15,8 +15,6 @@ const SelectedParameter = () => {
     }
   }, [selectedItemParameter, setSelectedItemParameter])
 
-  console.log(selectedItemParameter)
-
   return (
     <div className="flex flex-col gap-6 col-span-2">
       <SectionTitle>{selectedItemParameter?.parameter.name || 'Please select a parameter'}</SectionTitle>
