@@ -32,6 +32,7 @@ import { getAllQcExaminations } from "./qc/records/getAll";
 import { getAllQcRecordsByBpr } from "./qc/records/getAllByBpr";
 import { getSingleQcExamination } from "./qc/records/getOne";
 import { getAllQcRecordStatuses } from "./qc/records/statuses/getAll";
+import { updateQcRecord } from "./qc/records/update";
 import { createTemplateParameter } from "./qc/templateParameters/create";
 import { deleteTemplateParameter } from "./qc/templateParameters/delete";
 import { createQcTemplate } from "./qc/templates/create";
@@ -92,6 +93,7 @@ export const qualityActions = {
       create: createQcRecord,
       getAll: getAllQcExaminations,
       getAllByBpr: getAllQcRecordsByBpr,
+      update: updateQcRecord,
       getOne: getSingleQcExamination,
       statsues: {
         getAll: getAllQcRecordStatuses,

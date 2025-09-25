@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Sep 24 2025 15:50:01 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Sep 25 2025 09:02:16 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -565,7 +565,7 @@ model File {
   generalRequestFiles GeneralRequestFile[]
   itemFiles           ItemFile[]
   bprStagingFiles     BprStagingFile[]
-  QcRecordFile        QcRecordFile[]
+  qcRecordFiles       QcRecordFile[]
 
   @@map("files")
 }

@@ -6,7 +6,8 @@ const StepTrack = () => {
   const steps = [
     { label: "Lot" },
     { label: "Type" },
-    { label: "Examination" }
+    { label: "Examination" },
+    { label: "Verdict" }
   ]
 
   return (

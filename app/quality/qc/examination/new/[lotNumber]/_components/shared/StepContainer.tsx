@@ -3,6 +3,7 @@ import { useQcExaminationSelection } from "@/store/qcExaminationSlice"
 import { AnimatePresence, motion } from "framer-motion"
 import Type from "../type/Type"
 import Examination from "../examination/Examination"
+import Verdict from "../verdict/Verdict"
 
 
 const StepContainer = () => {
@@ -18,6 +19,7 @@ const StepContainer = () => {
       >
         {step === 1 && <Type />}
         {step === 2 && <Examination />}
+        {step === 3 && <Verdict />}
 
       </motion.div>
     </AnimatePresence>
