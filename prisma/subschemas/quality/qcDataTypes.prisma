@@ -1,0 +1,11 @@
+model QcDataType {
+    id            String   @id @default(uuid())
+    name String
+    createdAt     DateTime @default(now()) @map("created_at")
+    updatedAt     DateTime @updatedAt @map("updated_at")
+    parameterInputDefinitions QcParameterInputDefinition[]
+    parameters QcParameter[]
+    
+
+    @@map("qc_data_types")
+}

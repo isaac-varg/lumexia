@@ -13,12 +13,13 @@ import { getBomUsage } from "./_actions/production/getUsage";
 import { getActiveMbpr } from "./_actions/production/getActiveMbpr";
 import { getBprs } from "./_actions/production/getBprs";
 import { getAllItemFiles } from "./_actions/files/getAllItemFiles";
+import { qualityActions } from "@/actions/quality";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage, activeMbpr, bprs, files] = await Promise.all([
+  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage, activeMbpr, bprs, files, qcItemParameters, qcRecords,] = await Promise.all([
     await inventoryActions.aliases.getByItem(item.id),
     await inventoryActions.items.notes.getAllByItem(item.id),
     await getItemActivity(item.id),
@@ -31,6 +32,8 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
     await getActiveMbpr(item.id),
     await getBprs(item.id),
     await getAllItemFiles(item.id),
+    await qualityActions.qc.itemParameters.getByItem(item.id),
+    await qualityActions.qc.records.getAllByItem(item.id),
   ])
 
 
@@ -51,6 +54,8 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
         activeMbpr={activeMbpr}
         bprs={bprs}
         files={files}
+        qcItemParameters={qcItemParameters}
+        qcRecords={qcRecords}
       />
 
       <TitleRow />

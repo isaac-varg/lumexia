@@ -15,6 +15,11 @@ import { LotNoteType, getAllLotNoteTypes } from "@/actions/inventory/lots/notes/
 import procurementTypeActions from "@/actions/inventory/procurementTypeActions";
 import uomActions from "@/actions/inventory/uomActions";
 import supplierActions from "@/actions/purchasing/supplierActions";
+import { qualityActions } from "@/actions/quality";
+import { QcParameter } from "@/actions/quality/qc/parameters/getAll";
+import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem";
+import { QcRecordExpanded } from "@/actions/quality/qc/records/getAllByItem";
+import { QcTemplate } from "@/actions/quality/qc/templates/getAll";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemFile } from "@/app/inventory/items/[name]/_actions/files/getAllItemFiles";
 import { ItemFileType, getItemFileTypes } from "@/app/inventory/items/[name]/_actions/files/getItemFilesTypes";
@@ -41,6 +46,8 @@ export type ItemOptions = {
   lotNoteTypes: LotNoteType[],
   uom: UnitOfMeasurement[],
   itemFileTypes: ItemFileType[],
+  qcTemplates: QcTemplate[],
+  qcParameters: QcParameter[],
 }
 
 
@@ -69,7 +76,9 @@ type State = {
   selectedLotNotes: LotNote[];
   selectedLotTransactions: LotTransaction[];
   usage: ItemUsage | null;
-
+  qualityTemplateViewMode: 'view' | 'add';
+  qcItemParameters: QcItemParameter[];
+  qcRecords: QcRecordExpanded[];
 }
 
 type Actions = {
@@ -96,6 +105,9 @@ type Actions = {
     setSelectedAlias: (alias: ItemAlias | null) => void;
     setSelectedLot: (lot: InventoryLot | null) => void;
     setUsage: (usage: ItemUsage | null) => void;
+    setQualityTemplateViewMode: (mode: 'view' | 'add') => void;
+    setQcItemParameters: (qcItemParameters: QcItemParameter[]) => void;
+    setQcRecords: (qcRecords: QcRecordExpanded[]) => void;
   }
 }
 
@@ -123,6 +135,8 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     lotNoteTypes: [],
     uom: [],
     itemFileTypes: [],
+    qcTemplates: [],
+    qcParameters: [],
   },
   filterPurchaseOrdersYear: undefined,
   pricingData: null,
@@ -133,7 +147,9 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   selectedLotNotes: [],
   selectedLotTransactions: [],
   usage: null,
-
+  qualityTemplateViewMode: "view" as 'view', //lol,
+  qcItemParameters: [],
+  qcRecords: [],
 
   actions: {
 
@@ -149,7 +165,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     getOptions: async () => {
       //fetch the data
-      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes, uom, itemFileTypes,] = await Promise.all([
+      const [itemTypes, procurementTypes, inventoryTypes, aliasTypes, suppliers, noteTypes, lotNoteTypes, uom, itemFileTypes, qcTemplates, qcParameters] = await Promise.all([
         await itemTypeActions.getAll(),
         await procurementTypeActions.getAll(),
         await inventoryTypeActions.getAll(),
@@ -159,6 +175,8 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
         await getAllLotNoteTypes(),
         await uomActions.getAll(),
         await getItemFileTypes(),
+        await qualityActions.qc.templates.getAll(),
+        await qualityActions.qc.parameters.getAll('wet'),
       ]);
 
       // set state
@@ -173,6 +191,8 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
           lotNoteTypes,
           uom,
           itemFileTypes,
+          qcTemplates,
+          qcParameters,
         }
       }));
     },
@@ -269,6 +289,10 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     setUsage: (usage) => {
       set(() => ({ usage, }))
     },
+
+    setQualityTemplateViewMode: (mode) => set(() => ({ qualityTemplateViewMode: mode })),
+    setQcItemParameters: (qcItemParameters) => set(() => ({ qcItemParameters, })),
+    setQcRecords: (qcRecords) => set(() => ({ qcRecords, })),
 
   },
 

@@ -4,13 +4,13 @@ import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 
 export const createRecordNote = async (data: Prisma.QcRecordNoteUncheckedCreateInput) => {
-    const response = await prisma.qcRecordNote.create({
-        data,
-        include: {
-            createdBy: true,
-            noteType: true
-        }
-    });
+  const response = await prisma.qcRecordNote.create({
+    data,
+    include: {
+      user: true,
+      noteType: true
+    }
+  });
 
-    return response
+  return response
 }

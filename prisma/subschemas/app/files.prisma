@@ -15,6 +15,7 @@ model File {
     generalRequestFiles GeneralRequestFile[]
     itemFiles ItemFile[]
     bprStagingFiles BprStagingFile[]
+    qcRecordFiles QcRecordFile[]
 
     @@map("files")
 }

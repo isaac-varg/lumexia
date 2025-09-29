@@ -1,0 +1,12 @@
+model QcParameterInputResult {
+    id            String   @id @default(uuid())
+    qcResultId    String   @map("qc_result_id")
+    parameterInputDefinitionId String @map("parameter_input_definition_id")
+    value         String 
+    createdAt     DateTime @default(now()) @map("created_at")
+    updatedAt     DateTime @updatedAt @map("updated_at")
+    result QcParameterResult @relation(fields: [qcResultId], references: [id])
+    parameterInputDefinition QcParameterInputDefinition @relation(fields: [parameterInputDefinitionId], references: [id])
+
+    @@map("qc_parameter_input_results")
+}

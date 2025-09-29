@@ -1,0 +1,15 @@
+model QcItemSpecification {
+    id                      String      @id @default(uuid())
+    itemParameterId String @map("item_parameter_id")
+    valueA String @map("value_a")
+    valueB String? @map("value_b")
+    specificationType String @map("specification_type")
+    createdAt               DateTime    @default(now()) @map("created_at")
+    updatedAt               DateTime    @updatedAt @map("updated_at")
+    itemParameter QcItemParameter @relation(fields: [itemParameterId], references: [id])
+    itemSpecificationInputs QcItemSpecificationInput[]
+    
+
+
+    @@map("qc_item_specifications")
+}

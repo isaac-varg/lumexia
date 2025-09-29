@@ -2,23 +2,54 @@
 
 import { useRouter } from "next/navigation"
 import ScanListener from "./ScanListener"
+import { useState } from "react"
+import { getLot } from "@/app/production/compounding/[id]/_functions/getLot"
+import { inventoryActions } from "@/actions/inventory"
+import { useQcExaminationActions } from "@/store/qcExaminationSlice"
+import { qualityActions } from "@/actions/quality"
+import { getUserId } from "@/actions/users/getUserId"
+import { staticRecords } from "@/configs/staticRecords"
 
 const ScanPanel = () => {
 
-    const router = useRouter()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+  const { nextStep } = useQcExaminationActions()
 
-    const handleItemSelection = (lot: string) => {
-        router.push(`/quality/qc/examination/new?id=${lot}`)
-    }
+  const handleItemSelection = async (lotId: string) => {
+
+    try {
+      setIsLoading(true);
+      const lot = await inventoryActions.lots.getOne(lotId);
+      if (!lot) {
+        return;
+      }
+      const userId = await getUserId()
+      const record = await qualityActions.qc.records.create({
+        conductedById: userId,
+        examinedLotId: lot.id,
+        examinationTypeId: staticRecords.quality.examinations.types.inProcess,
+        statusId: staticRecords.quality.records.statuses.open,
+      })
+
+      const path = `/quality/qc/examination/new/${lot.lotNumber}?lotId=${lot.id}&examinationId=${record.id}`
+      nextStep()
+      router.push(path)
+    } catch (error) {
+      console.error(error);
+    } finally { setIsLoading(false) }
+  }
 
 
-    return (
-        <div className="flex items-center justify-center">
-            <ScanListener handleItemSelection={(lot) => handleItemSelection(lot)} />
+  return (
+    <div className="flex items-center justify-center">
+      {isLoading && <div className="min-h-60 skeleton w-40" />}
+      {!isLoading && <ScanListener handleItemSelection={(lot) => handleItemSelection(lot)} />}
 
-        </div>
 
-    )
+    </div>
+
+  )
 }
 
 export default ScanPanel

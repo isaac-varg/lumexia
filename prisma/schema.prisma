@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Sep 09 2025 08:53:21 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Sep 25 2025 09:02:16 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -565,6 +565,7 @@ model File {
   generalRequestFiles GeneralRequestFile[]
   itemFiles           ItemFile[]
   bprStagingFiles     BprStagingFile[]
+  qcRecordFiles       QcRecordFile[]
 
   @@map("files")
 }
@@ -2147,6 +2148,17 @@ model QcAuditLog {
   @@map("qc_audit_logs")
 }
 
+model QcDataType {
+  id                        String                       @id @default(uuid())
+  name                      String
+  createdAt                 DateTime                     @default(now()) @map("created_at")
+  updatedAt                 DateTime                     @updatedAt @map("updated_at")
+  parameterInputDefinitions QcParameterInputDefinition[]
+  parameters                QcParameter[]
+
+  @@map("qc_data_types")
+}
+
 model QcExaminationType {
   id           String   @id @default(uuid())
   name         String   @map("name")
@@ -2176,18 +2188,45 @@ model QcGroupParameter {
 }
 
 model QcItemParameter {
-  id                      String      @id @default(uuid())
-  itemId                  String      @map("item_id")
-  parameterId             String      @map("parameter_id")
-  specification           Json?
-  calculatedSpecification Json?       @map("calculated_specification")
-  createdAt               DateTime    @default(now()) @map("created_at")
-  updatedAt               DateTime    @updatedAt @map("updated_at")
-  item                    Item        @relation(fields: [itemId], references: [id])
-  parameter               QcParameter @relation(fields: [parameterId], references: [id])
+  id             String                @id @default(uuid())
+  itemId         String                @map("item_id")
+  parameterId    String                @map("parameter_id")
+  createdAt      DateTime              @default(now()) @map("created_at")
+  updatedAt      DateTime              @updatedAt @map("updated_at")
+  item           Item                  @relation(fields: [itemId], references: [id])
+  parameter      QcParameter           @relation(fields: [parameterId], references: [id])
+  specifications QcItemSpecification[]
+  results        QcParameterResult[]
 
   @@unique([itemId, parameterId])
   @@map("qc_item_parameters")
+}
+
+model QcItemSpecificationInput {
+  id                         String                     @id @default(uuid())
+  parameterInputDefinitionId String                     @map("parameter_input_definition_id")
+  itemSpecificationId        String                     @map("item_specification_id")
+  value                      String
+  createdAt                  DateTime                   @default(now()) @map("created_at")
+  updatedAt                  DateTime                   @updatedAt @map("updated_at")
+  parameterInputDefinition   QcParameterInputDefinition @relation(fields: [parameterInputDefinitionId], references: [id])
+  itemSpecification          QcItemSpecification        @relation(fields: [itemSpecificationId], references: [id])
+
+  @@map("qc_item_specification_inputs")
+}
+
+model QcItemSpecification {
+  id                      String                     @id @default(uuid())
+  itemParameterId         String                     @map("item_parameter_id")
+  valueA                  String                     @map("value_a")
+  valueB                  String?                    @map("value_b")
+  specificationType       String                     @map("specification_type")
+  createdAt               DateTime                   @default(now()) @map("created_at")
+  updatedAt               DateTime                   @updatedAt @map("updated_at")
+  itemParameter           QcItemParameter            @relation(fields: [itemParameterId], references: [id])
+  itemSpecificationInputs QcItemSpecificationInput[]
+
+  @@map("qc_item_specifications")
 }
 
 model QcParameterGroup {
@@ -2204,37 +2243,100 @@ model QcParameterGroup {
   @@map("qc_parameter_groups")
 }
 
-model QcParameterResult {
-  id            String      @id @default(uuid())
-  qcRecordId    String      @map("qc_record_id")
-  qcParameterId String      @map("qc_parameter_id")
-  resultsData   Json        @map("results_data")
-  note          String?
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
-  qcRecord      QcRecord    @relation(fields: [qcRecordId], references: [id])
-  qcParameter   QcParameter @relation(fields: [qcParameterId], references: [id])
+model QcParameterInputDefinition {
+  id                             String                     @id @default(uuid())
+  parameterId                    String                     @map("parameter_id")
+  name                           String
+  label                          String
+  dataTypeId                     String                     @map("data_type_id")
+  required                       Boolean
+  unit                           String
+  createdAt                      DateTime                   @default(now()) @map("created_at")
+  updatedAt                      DateTime                   @updatedAt @map("updated_at")
+  parameter                      QcParameter                @relation(fields: [parameterId], references: [id])
+  dataType                       QcDataType                 @relation(fields: [dataTypeId], references: [id])
+  itemSpecificationInputs        QcItemSpecificationInput[]
+  parameterInputDefinitonResults QcParameterInputResult[]
 
+  @@map("qc_parameter_input_definitions")
+}
+
+model QcParameterInputResult {
+  id                         String                     @id @default(uuid())
+  qcResultId                 String                     @map("qc_result_id")
+  parameterInputDefinitionId String                     @map("parameter_input_definition_id")
+  value                      String
+  createdAt                  DateTime                   @default(now()) @map("created_at")
+  updatedAt                  DateTime                   @updatedAt @map("updated_at")
+  result                     QcParameterResult          @relation(fields: [qcResultId], references: [id])
+  parameterInputDefinition   QcParameterInputDefinition @relation(fields: [parameterInputDefinitionId], references: [id])
+
+  @@map("qc_parameter_input_results")
+}
+
+model QcParameterResult {
+  id                    String                   @id @default(uuid())
+  qcRecordId            String                   @map("qc_record_id")
+  qcItemParameterId     String                   @map("qc_item_parameter_id")
+  value                 String
+  createdAt             DateTime                 @default(now()) @map("created_at")
+  updatedAt             DateTime                 @updatedAt @map("updated_at")
+  qcRecord              QcRecord                 @relation(fields: [qcRecordId], references: [id])
+  qcItemParameter       QcItemParameter          @relation(fields: [qcItemParameterId], references: [id])
+  parameterInputResults QcParameterInputResult[]
+  QcParameter           QcParameter?             @relation(fields: [qcParameterId], references: [id])
+  qcParameterId         String?
+
+  @@unique([qcRecordId, qcItemParameterId])
   @@map("qc_parameter_results")
 }
 
 model QcParameter {
-  id              String   @id @default(uuid())
-  name            String
-  uom             String
-  dataType        String   @map("data_type")
-  description     String?
-  inputDefinition Json?
-  isWetParameter  Boolean  @map("is_wet_parameter")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id             String     @id @default(uuid())
+  name           String
+  uom            String
+  dataTypeId     String     @map("data_type_id")
+  description    String?
+  isWetParameter Boolean    @map("is_wet_parameter")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  dataType       QcDataType @relation(fields: [dataTypeId], references: [id])
 
   qcItemParameters     QcItemParameter[]
   qcParameterResults   QcParameterResult[]
   qcTemplateParameters QcTemplateParameter[]
   qcGroupParameters    QcGroupParameter[]
+  inputDefinitions     QcParameterInputDefinition[]
 
   @@map("qc_parameters")
+}
+
+model QcRecordFileType {
+  id            String         @id @default(uuid())
+  name          String
+  abbreviaton   String?
+  description   String?
+  bgColor       String         @map("bg_color")
+  textColor     String         @map("text_color")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+  qcRecordFiles QcRecordFile[]
+
+  @@map("qc_record_file_types")
+}
+
+model QcRecordFile {
+  id         String           @id @default(uuid())
+  fileTypeId String           @map("file_type_id")
+  fileId     String           @map("file_id")
+  qcRecordId String           @map("qc_record_id")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  fileType   QcRecordFileType @relation(fields: [fileTypeId], references: [id])
+  file       File             @relation(fields: [fileId], references: [id])
+  qcRecord   QcRecord         @relation(fields: [qcRecordId], references: [id])
+
+  @@map("qc_record_files")
 }
 
 model QcRecordNoteType {
@@ -2251,16 +2353,16 @@ model QcRecordNoteType {
 }
 
 model QcRecordNote {
-  id          String           @id @default(uuid())
-  qcRecordId  String           @map("qc_record_id")
-  createdById String           @map("created_by_id")
-  content     String           @map("content")
-  noteTypeId  String           @map("note_type_id")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  updatedAt   DateTime         @updatedAt @map("updated_at")
-  qcRecord    QcRecord         @relation(fields: [qcRecordId], references: [id])
-  createdBy   User             @relation(fields: [createdById], references: [id])
-  noteType    QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
+  id         String           @id @default(uuid())
+  recordId   String           @map("record_id")
+  noteTypeId String           @map("note_type_id")
+  userId     String           @map("user_id")
+  content    String
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  record     QcRecord         @relation(fields: [recordId], references: [id])
+  user       User             @relation(fields: [userId], references: [id])
+  noteType   QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
 
   @@map("qc_record_notes")
 }
@@ -2288,9 +2390,6 @@ model QcRecord {
   examinedLotId             String                 @map("examined_lot_id")
   linkedBprId               String?                @map("linked_bpr_id")
   linkedPurchaseOrderItemId String?                @map("linked_purchase_order_item_id")
-  coaSupplierDocumentUrl    String?                @map("coa_supplier_document_url")
-  coaPublicDocumentUrl      String?                @map("coa_public_document_url")
-  coaParsedData             String?                @map("coa_parsed_data")
   createdAt                 DateTime               @default(now()) @map("created_at")
   updatedAt                 DateTime               @updatedAt @map("updated_at")
   status                    QcRecordStatus         @relation(fields: [statusId], references: [id])
@@ -2302,6 +2401,7 @@ model QcRecord {
   qcParameterResults        QcParameterResult[]
   qcRecordNotes             QcRecordNote[]
   qcAuditLogs               QcAuditLog[]
+  QcRecordFile              QcRecordFile[]
 
   @@map("qc_records")
 }

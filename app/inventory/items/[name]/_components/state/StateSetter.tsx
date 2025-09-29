@@ -15,6 +15,8 @@ import { ItemUsage } from "../../_actions/production/getUsage";
 import { ItemActiveMbpr } from "../../_actions/production/getActiveMbpr";
 import { ItemBpr } from "../../_actions/production/getBprs";
 import { ItemFile } from "../../_actions/files/getAllItemFiles";
+import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem";
+import { QcRecordExpanded } from "@/actions/quality/qc/records/getAllByItem";
 
 type StateSetterProps = {
   activity: ItemActivity[],
@@ -30,6 +32,8 @@ type StateSetterProps = {
   activeMbpr: ItemActiveMbpr | null,
   bprs: ItemBpr[],
   files: ItemFile[],
+  qcItemParameters: QcItemParameter[]
+  qcRecords: QcRecordExpanded[]
 }
 
 
@@ -47,6 +51,8 @@ const StateSetter = ({
   activeMbpr,
   bprs,
   files,
+  qcItemParameters,
+  qcRecords,
 }: StateSetterProps) => {
 
   // state actions
@@ -65,7 +71,9 @@ const StateSetter = ({
     setPurchaseOrders,
     setUsage,
     getOptions,
+    setQcItemParameters,
     getFilteredPurchaseOrders,
+    setQcRecords,
 
   } = useItemActions();
 
@@ -102,8 +110,10 @@ const StateSetter = ({
     setBprs(bprs);
     setActiveMbpr(activeMbpr);
     setFiles(files);
+    setQcItemParameters(qcItemParameters)
+    setQcRecords(qcRecords)
 
-  }, [item, options, getOptions, setActivity, activity, setAliases, aliases, setAudits, audits, setExaminations, examinations, setInventory, inventory, setNotes, notes, setPricingData, pricingData, setPurchaseOrders, purchaseOrders, setUsage, usage, setBprs, bprs, setActiveMbpr, activeMbpr, setFiles, files]);
+  }, [item, options, getOptions, setActivity, activity, setAliases, aliases, setAudits, audits, setExaminations, examinations, setInventory, inventory, setNotes, notes, setPricingData, pricingData, setPurchaseOrders, purchaseOrders, setUsage, usage, setBprs, bprs, setActiveMbpr, activeMbpr, setFiles, files, qcItemParameters, setQcItemParameters, qcRecords, setQcRecords]);
 
   useEffect(() => {
     getFilteredPurchaseOrders();

@@ -1,13 +1,14 @@
 model QcParameterResult {
-    id            String   @id @default(uuid())
-    qcRecordId    String   @map("qc_record_id")
-    qcParameterId String   @map("qc_parameter_id")
-    resultsData   Json     @map("results_data")
-    note          String?
-    createdAt     DateTime @default(now()) @map("created_at")
-    updatedAt     DateTime @updatedAt @map("updated_at")
-    qcRecord QcRecord @relation(fields: [qcRecordId], references: [id])
-    qcParameter QcParameter @relation(fields: [qcParameterId], references: [id])
+    id                    String                     @id @default(uuid())
+    qcRecordId            String                     @map("qc_record_id")
+    qcItemParameterId     String                     @map("qc_item_parameter_id")
+    value                 String
+    createdAt             DateTime                   @default(now()) @map("created_at")
+    updatedAt             DateTime                   @updatedAt @map("updated_at")
+    qcRecord              QcRecord                   @relation(fields: [qcRecordId], references: [id])
+    qcItemParameter       QcItemParameter            @relation(fields: [qcItemParameterId], references: [id])
+    parameterInputResults QcParameterInputResult[]
 
+    @@unique([qcRecordId, qcItemParameterId])
     @@map("qc_parameter_results")
 }

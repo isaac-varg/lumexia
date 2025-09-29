@@ -7,25 +7,24 @@ import ExamsTable from "./_components/ExamsTable";
 
 const ExaminationPage = async () => {
 
-    const exams = await qualityActions.qc.records.getAll();
+  const exams = await qualityActions.qc.records.getAll();
 
-    return (
-        <div className='flex flex-col gap-y-6'>
-            <div>
-                <PageBreadcrumbs />
-                <PageTitle>Examinations</PageTitle>
-            </div>
+  return (
+    <div className='flex flex-col gap-y-6'>
+      <div>
+        <PageTitle>Examinations</PageTitle>
+      </div>
 
-            <Card.Root>
-
-
-                <ExamsTable exams={exams} />
-            </Card.Root>
+      <Card.Root>
 
 
+        <ExamsTable exams={exams} />
+      </Card.Root>
 
-        </div>
-    )
+
+
+    </div>
+  )
 }
 
 export default ExaminationPage; 

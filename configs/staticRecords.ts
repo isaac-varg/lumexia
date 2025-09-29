@@ -221,6 +221,10 @@ export const staticRecords = {
     }
   },
   quality: {
+    dataTypes: {
+      text: '0862072f-1e53-4272-a16b-9a2d861d61b4',
+      boolean: '9ef83856-80d9-473d-8cd4-4cbe83e4d7c6',
+    },
     examinations: {
       types: {
         inProcess: 'a158361e-ccc2-4ad7-ac46-b1d854a86bac'
@@ -230,6 +234,11 @@ export const staticRecords = {
       types: {
         default: 'e2ca11e7-1d89-4773-a0e5-71c895760925'
       }
+    },
+    recordFiles: {
+      types: {
+        default: 'dd781a7a-e8c5-4808-a316-e94f881b31d9'
+      },
     },
     records: {
       statuses: {
