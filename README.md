@@ -20,7 +20,7 @@ Made with:
 
 The following are features that are currently implemented:
 - inventory
-  - qc code labels
+  - QR code labels
   - audits and label scanning
   - trends
   - on hand, allocated, available quantities
@@ -41,7 +41,7 @@ The following are features that are currently implemented:
   - primary and secondary quality checks for compounding and staging 
   - step-wise instructions and quality alerts
   - planning and schedule visibility
-- quality ----------
+- quality
   - parameters with custom input definitions
   - parameter template and groups
   - item specifications and test parameters
@@ -58,6 +58,7 @@ The following are implemented but very specific and not yet generalized:
 - accounting-purchase order matching
 
 Things you can expect from future development:
+- demo
 - overhaul of receiving
 - overhaul and generalization of accounting
 - overhaul of supplier dashboard
