@@ -12,7 +12,6 @@ const Examinations = () => {
   const router = useRouter()
   const { item, examinations } = useItemSelection()
 
-  console.log(examinations)
 
   const filters: Filter[] = [
     {

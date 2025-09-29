@@ -12,7 +12,6 @@ const ExaminationPage = async () => {
   return (
     <div className='flex flex-col gap-y-6'>
       <div>
-        <PageBreadcrumbs />
         <PageTitle>Examinations</PageTitle>
       </div>
 
