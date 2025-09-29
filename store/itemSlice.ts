@@ -18,6 +18,7 @@ import supplierActions from "@/actions/purchasing/supplierActions";
 import { qualityActions } from "@/actions/quality";
 import { QcParameter } from "@/actions/quality/qc/parameters/getAll";
 import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem";
+import { QcRecordExpanded } from "@/actions/quality/qc/records/getAllByItem";
 import { QcTemplate } from "@/actions/quality/qc/templates/getAll";
 import { ItemActivity } from "@/app/inventory/items/[name]/_actions/basics/getActivity";
 import { ItemFile } from "@/app/inventory/items/[name]/_actions/files/getAllItemFiles";
@@ -77,6 +78,7 @@ type State = {
   usage: ItemUsage | null;
   qualityTemplateViewMode: 'view' | 'add';
   qcItemParameters: QcItemParameter[];
+  qcRecords: QcRecordExpanded[];
 }
 
 type Actions = {
@@ -105,6 +107,7 @@ type Actions = {
     setUsage: (usage: ItemUsage | null) => void;
     setQualityTemplateViewMode: (mode: 'view' | 'add') => void;
     setQcItemParameters: (qcItemParameters: QcItemParameter[]) => void;
+    setQcRecords: (qcRecords: QcRecordExpanded[]) => void;
   }
 }
 
@@ -146,6 +149,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   usage: null,
   qualityTemplateViewMode: "view" as 'view', //lol,
   qcItemParameters: [],
+  qcRecords: [],
 
   actions: {
 
@@ -288,6 +292,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
 
     setQualityTemplateViewMode: (mode) => set(() => ({ qualityTemplateViewMode: mode })),
     setQcItemParameters: (qcItemParameters) => set(() => ({ qcItemParameters, })),
+    setQcRecords: (qcRecords) => set(() => ({ qcRecords, })),
 
   },
 
