@@ -4,15 +4,6 @@
 
 export const staticRecords = {
   inventory: {
-    transactionTypes: {
-      adjustmentRemove: '601b5e2c-3fd2-4310-9a79-5a41244cdfd8',
-      adjustmentAddition: '87c594f9-b49f-4889-9bc7-b840364a3698',
-      bprConsumption: '098a21b2-3101-46a3-b3fe-ca81bb109a4a',
-    },
-    procurementTypes: {
-      purchased: 'a3580517-22ca-419c-89d1-f30cbd4c1b4e',
-      produced: '82aca833-c8e4-42c8-8488-a2bb15088f8e'
-    },
     itemTypes: {
       labSupplies: 'e8ddb5af-5cb3-4de1-81c7-7d6328e0f1f5',
       productionBase: '5cf17e61-ed2a-47e5-ac4b-cb41c4b847d2',

@@ -6,11 +6,11 @@ import { accountingActions } from "@/actions/accounting";
 import LastExaminedPanel from "./_components/LastExaminedPanel";
 import ExaminationsTable from "./_components/ExaminationsTable";
 import OverallItemPriceChart from "./_components/OverallItemPriceChart";
-import { staticRecords } from "@/configs/staticRecords";
 import OverallMbprPricingChart from "./_components/OverallMbprPricingChart";
 import BomPricingChart from "./_components/BomPricingChart";
 import { getProducedPricingByItem } from "./_functions/getProducedPricingExamination";
 import FinishedProductsChart from "./_components/FinishedProductChart";
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
 
 interface ItemPricingDashboardProps {
   searchParams: {
@@ -23,7 +23,7 @@ const ItemPricingDashboard = async ({ searchParams }: ItemPricingDashboardProps)
   const item = await getItem(searchParams.id);
 
   const examinations = await accountingActions.examinations.getAllByItem(searchParams.id);
-  const isProduced = item.procurementTypeId === staticRecords.inventory.procurementTypes.produced;
+  const isProduced = item.procurementTypeId === procurementTypes.produced;
   const producedExaminations = await getProducedPricingByItem(item.id)
 
 

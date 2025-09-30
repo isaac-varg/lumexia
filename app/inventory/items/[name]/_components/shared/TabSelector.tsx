@@ -1,10 +1,10 @@
 'use client'
-import { staticRecords } from "@/configs/staticRecords"
 import TabButton from "./TabButton";
 import { useItemSelection } from "@/store/itemSlice";
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
 
 // get static
-const { produced } = staticRecords.inventory.procurementTypes;
+const { produced } = procurementTypes;
 
 // define the tabs
 export type ItemTab = 'basics' | 'inventory' | 'purchasing' | 'pricing' | 'production' | 'quality' | 'files';

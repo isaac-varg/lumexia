@@ -1,9 +1,10 @@
 "use server"
 
 import { staticRecords } from "@/configs/staticRecords";
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
 import prisma from "@/lib/prisma"
 
-const produced = staticRecords.inventory.procurementTypes.produced;
+const produced = procurementTypes.produced;
 const active = staticRecords.app.recordStatuses.active
 
 export const getActiveMbpr = async (itemId: string) => {
