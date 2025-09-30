@@ -2,44 +2,45 @@
 
 import { getUserId } from "@/actions/users/getUserId"
 import { staticRecords } from "@/configs/staticRecords";
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma";
 
 
-const { adjustmentRemove, adjustmentAddition } = staticRecords.inventory.transactionTypes;
+const { adjustmentRemoval, adjustmentAddition } = transactionTypes;
 
 export const handleDiscrepancyAuditAdjustment = async (itemId: string, newQuantity: number, currentQuantity: number, lotId: string) => {
 
 
-    const userId = await getUserId()
+  const userId = await getUserId()
 
-    const transactionTypeId =
-        newQuantity - currentQuantity < 0
-            ? adjustmentRemove
-            : adjustmentAddition
-    const adjustmentQuantity = Math.abs(newQuantity - currentQuantity)
-
-
-
-    const transaction = await prisma.transaction.create({
-        data: {
-            transactionTypeId,
-            amount: adjustmentQuantity,
-            userId,
-            systemNote: `Discrepancy Audit Item Adjustment`,
-            userNote: '',
-            uomId: staticRecords.inventory.uom.lb,
-            lotId,
-        }
-    });
+  const transactionTypeId =
+    newQuantity - currentQuantity < 0
+      ? adjustmentRemoval
+      : adjustmentAddition
+  const adjustmentQuantity = Math.abs(newQuantity - currentQuantity)
 
 
-    const auditItemTransaction = await prisma.discrepancyAuditItemTransaction.create({
-        data: {
-            auditItemId: itemId,
-            transactionId: transaction.id
-        }
-    });
 
-    return auditItemTransaction;
+  const transaction = await prisma.transaction.create({
+    data: {
+      transactionTypeId,
+      amount: adjustmentQuantity,
+      userId,
+      systemNote: `Discrepancy Audit Item Adjustment`,
+      userNote: '',
+      uomId: staticRecords.inventory.uom.lb,
+      lotId,
+    }
+  });
+
+
+  const auditItemTransaction = await prisma.discrepancyAuditItemTransaction.create({
+    data: {
+      auditItemId: itemId,
+      transactionId: transaction.id
+    }
+  });
+
+  return auditItemTransaction;
 
 } 

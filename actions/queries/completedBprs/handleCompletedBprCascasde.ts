@@ -6,6 +6,7 @@ import bprBomActions from "@/actions/production/bprBom";
 import bprStagingActions from "@/actions/production/bprStagings";
 import { getUserId } from "@/actions/users/getUserId";
 import { staticRecords } from "@/configs/staticRecords";
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma"
 import { ExBprStaging } from "@/types/bprStaging";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
@@ -60,7 +61,7 @@ const createTransaction = async (lotId: string, amount: number, bprReferenceCode
 
   const transactionPayload = {
     lotId: lotId,
-    transactionTypeId: staticRecords.inventory.transactionTypes.bprConsumption,
+    transactionTypeId: transactionTypes.bprConsumption,
     userId,
     uomId: staticRecords.inventory.uom.lb,
     amount,

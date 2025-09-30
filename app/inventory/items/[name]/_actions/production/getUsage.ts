@@ -1,6 +1,7 @@
 "use server"
 
 import { staticRecords } from "@/configs/staticRecords";
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma"
 
 
@@ -62,7 +63,7 @@ export const getBomUsage = async (itemId: string) => {
 
   const consumption = await prisma.transaction.findMany({
     where: {
-      transactionTypeId: staticRecords.inventory.transactionTypes.bprConsumption,
+      transactionTypeId: transactionTypes.bprConsumption,
       lot: {
         itemId: itemId
       }

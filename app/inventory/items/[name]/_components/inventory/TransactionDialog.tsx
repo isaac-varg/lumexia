@@ -6,6 +6,7 @@ import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { UnmanagedForm } from "@/components/UnmanagedForm"
 import { staticRecords } from "@/configs/staticRecords"
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes"
 import useDialog from "@/hooks/useDialog"
 import { useItemSelection } from "@/store/itemSlice"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
@@ -15,7 +16,7 @@ import { useEffect, useState } from "react"
 
 type TransactionMode = 'set' | 'add' | 'remove' | 'zero'
 
-const { adjustmentRemove, adjustmentAddition } = staticRecords.inventory.transactionTypes;
+const { adjustmentRemoval, adjustmentAddition } = transactionTypes;
 
 const TransactionDialog = () => {
 
@@ -41,7 +42,7 @@ const TransactionDialog = () => {
 
     const transactionTypeId =
       newAmount - currentAmount < 0
-        ? adjustmentRemove
+        ? adjustmentRemoval
         : adjustmentAddition
     const adjustmentQuantity = Math.abs(newAmount - currentAmount)
 
