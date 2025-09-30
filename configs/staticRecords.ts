@@ -4,15 +4,6 @@
 
 export const staticRecords = {
   inventory: {
-    itemTypes: {
-      labSupplies: 'e8ddb5af-5cb3-4de1-81c7-7d6328e0f1f5',
-      productionBase: '5cf17e61-ed2a-47e5-ac4b-cb41c4b847d2',
-      packaging: '4dae8a77-150b-4ea3-9c60-237adb843179',
-      officeSupplies: 'd1bc1ea3-133c-4075-8a0e-aaefc6831468',
-      warehouseSupplies: 'a00c8cb3-8c0f-4951-9bcf-e18bca7910f4',
-      essentialOil: '2bc7af2f-741a-4f2d-93ed-73216400e214',
-      fragranceOil: '7c0cdc6b-a0c7-4c80-978d-19f89916d9ec',
-    },
     producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
     uom: {
       lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b',
