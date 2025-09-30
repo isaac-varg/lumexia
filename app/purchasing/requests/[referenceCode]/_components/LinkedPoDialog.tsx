@@ -17,6 +17,7 @@ import { updatePoItemDetails } from "../_functions/updatePoItemDetails"
 import useDialog from "@/hooks/useDialog"
 import { useRouter } from "next/navigation"
 import DateSelector, { DatepickerRange } from "@/components/Dropdown/DateSelector"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 type LinkedPoDialogProps = {
   containerTypes: Containers[]
@@ -60,7 +61,7 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
 
     if (isNewDetailsEntry) {
       const payload: Prisma.PurchaseOrderItemDetailUncheckedCreateInput = {
-        weightUomId: staticRecords.inventory.uom.lb,
+        weightUomId: uom.pounds,
         poItemId: purchaseOrder.po.purchaseOrderItems[0].id,
         containerTypeId: data.containerTypeId,
         weightPerContainer: data.weightPerContainer,

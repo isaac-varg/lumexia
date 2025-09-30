@@ -5,6 +5,7 @@ import { DiscrepancyItem } from "./getDiscrepancyItem"
 import { getUserId } from "@/actions/users/getUserId"
 import { staticRecords } from "@/configs/staticRecords"
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 export const handleZeroDepletions = async (lots: DiscrepancyItem['lots'], itemId: string) => {
 
@@ -21,7 +22,7 @@ export const handleZeroDepletions = async (lots: DiscrepancyItem['lots'], itemId
         userId,
         systemNote: `Discrepancy Audit Item Adjustment via Zero Depletion Bulk Action`,
         userNote: '',
-        uomId: staticRecords.inventory.uom.lb,
+        uomId: uom.pounds,
         lotId: lot.id,
       }
     });

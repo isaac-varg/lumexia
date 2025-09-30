@@ -2,10 +2,12 @@
 
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem"
 import { staticRecords } from "@/configs/staticRecords"
+import { itemTypes } from "@/configs/staticRecords/itemTypes"
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import prisma from "@/lib/prisma"
 
-const { warehouseSupplies, productionBase, officeSupplies, labSupplies, packaging } = staticRecords.inventory.itemTypes
+const { warehouseSupplies, productionBase, officeSupplies, labSupplies, packaging } = itemTypes
 const { purchased } = procurementTypes;
 
 
@@ -57,7 +59,7 @@ export const beginDiscrepancyAuditCascade = async (itemTypeId: string | null) =>
 
   //create the audit items
   const defaultItemStatus = staticRecords.inventory.discrepancyAudits.items.statuses.notChecked;
-  const lb = staticRecords.inventory.uom.lb;
+  const lb = uom.pounds;
   const auditItems = await Promise.all(withInventory.map(async (item) => {
     const itemResponse = await prisma.discrepancyAuditItem.create({
       data: {

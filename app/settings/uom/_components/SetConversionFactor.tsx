@@ -10,79 +10,77 @@ import useDialog from "@/hooks/useDialog"
 import { ItemWithGenericUnits } from "../_functions/getItemsWithUnits"
 
 type Inputs = {
-    convertToUomId: string
-    conversionFactor: number
+  convertToUomId: string
+  conversionFactor: number
 }
 
 const SetConversionFactor = ({ uoms, selectedItem }: { uoms: Uom[], selectedItem: ItemWithGenericUnits | null }) => {
 
-    console.log(selectedItem)
 
-    const form = useForm()
-    const dialog = useDialog()
+  const form = useForm()
+  const dialog = useDialog()
 
-    // lol
-    const uomWithoutUnits = uoms;
-    //const uomWithoutUnits = uoms.filter(u => u.id !== staticRecords.inventory.uom.units)
+  // lol
+  const uomWithoutUnits = uoms;
 
-    const selectOptions = uomWithoutUnits.map((u) => ({
-        label: u.name,
-        value: u.id,
-    }))
+  const selectOptions = uomWithoutUnits.map((u) => ({
+    label: u.name,
+    value: u.id,
+  }))
 
-    const handleSubmit = async (data: Inputs) => {
+  const handleSubmit = async (data: Inputs) => {
 
-        if (!selectedItem) return
+    if (!selectedItem) return
 
-        const payload = {
-            itemId: selectedItem.id,
-            supplierId: selectedItem.supplierId,
-            convertToUomId: data.convertToUomId,
-            conversionFactor: data.conversionFactor,
-        };
+    const payload = {
+      itemId: selectedItem.id,
+      supplierId: selectedItem.supplierId,
+      convertToUomId: data.convertToUomId,
+      conversionFactor: data.conversionFactor,
+    };
 
-        await inventoryActions.genericUnitsConversion.create(payload)
-        dialog.resetDialogContext()
-        location.reload()
+    await inventoryActions.genericUnitsConversion.create(payload)
+    dialog.resetDialogContext()
+    location.reload()
 
-    }
+  }
 
-    if (!selectedItem) return false
-    return (
-        <Dialog.Root identifier="setUnitConversionFactor">
+  if (!selectedItem) return false
+  return (
+    <Dialog.Root identifier="setUnitConversionFactor">
 
-            <Dialog.Title>Set Unit Conversion Factor</Dialog.Title>
+      <Dialog.Title>Set Unit Conversion Factor</Dialog.Title>
 
-            <p className="font-poppins text-xl mb-8">
+      <p className="font-poppins text-xl mb-8">
 
-                This form is to set the conversion factor when purchasing the <span className="font-semibold text-emerald-700">{selectedItem.name}</span> item in <span className="italic text-lilac-600">generic units</span> from specifically <span className="font-semibold text-rose-400">{selectedItem.associatedSupplier}</span>
-            </p>
+        This form is to set the conversion factor when purchasing the <span className="font-semibold text-emerald-700">{selectedItem.name}</span> item in <span className="italic text-lilac-600">generic units</span> from specifically <span className="font-semibold text-rose-400">{selectedItem.associatedSupplier}</span>
+      </p>
 
 
-            <Form.Root form={form} onSubmit={handleSubmit}>
+      <Form.Root form={form} onSubmit={handleSubmit}>
 
 
-                <Form.Select
-                    form={form}
-                    fieldName="convertToUomId"
-                    label="Convert to UOM"
-                    options={selectOptions}
-                />
+        <Form.Select
+          form={form}
+          fieldName="convertToUomId"
+          label="Convert to UOM"
+          options={selectOptions}
+        />
 
-                <Form.Number
-                    form={form}
-                    fieldName="conversionFactor"
-                    label="Conversion Factor"
-                    required
-                />
+        <Form.Number
+          form={form}
+          fieldName="conversionFactor"
+          label="Conversion Factor"
+          required
+        />
 
-                <Form.ActionRow form={form} />
-            </Form.Root>
+        <Form.ActionRow form={form} />
+      </Form.Root>
 
 
 
-        </Dialog.Root>
-    )
+    </Dialog.Root>
+  )
 }
 
 export default SetConversionFactor

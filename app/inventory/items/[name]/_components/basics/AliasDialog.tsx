@@ -1,11 +1,11 @@
 import { revalidatePage } from "@/actions/app/revalidatePage"
-import aliasTypes from "@/actions/inventory/aliasTypes"
 import aliasActions from "@/actions/inventory/aliases"
 import supplierAliasActions from "@/actions/purchasing/supplierAliasActions"
 import Dialog from "@/components/Dialog"
 import Form from "@/components/Form"
 import Layout from "@/components/Layout"
 import { staticRecords } from "@/configs/staticRecords"
+import { aliasTypes } from "@/configs/staticRecords/aliasTypes"
 import useDialog from "@/hooks/useDialog"
 import { useItemActions, useItemSelection } from "@/store/itemSlice"
 import { SelectOption } from "@/types/selectOption"
@@ -16,7 +16,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { TbTrash } from "react-icons/tb"
 
-const SupplierAliasType = staticRecords.inventory.aliases.types.supplier;
+const SupplierAliasType = aliasTypes.supplier;
 
 type Inputs = {
   name: string;

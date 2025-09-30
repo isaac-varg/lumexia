@@ -2,6 +2,7 @@
 
 import { getUserId } from "@/actions/users/getUserId";
 import { staticRecords } from "@/configs/staticRecords"
+import { inventoryTypes } from "@/configs/staticRecords/inventoryTypes";
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
 import prisma from "@/lib/prisma"
 import { DateTime } from "luxon";
@@ -15,7 +16,7 @@ export const createNewItemAndRequest = async (generalRequestId: string, itemType
       name,
       referenceCode,
       itemTypeId,
-      inventoryTypeId: staticRecords.inventory.inventoryTypes.tracked,
+      inventoryTypeId: inventoryTypes.tracked,
       procurementTypeId: procurementTypes.purchased,
     }
   });

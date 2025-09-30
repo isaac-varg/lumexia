@@ -3,6 +3,7 @@
 import { getUserId } from "@/actions/users/getUserId"
 import { staticRecords } from "@/configs/staticRecords";
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma";
 
 
@@ -28,7 +29,7 @@ export const handleDiscrepancyAuditAdjustment = async (itemId: string, newQuanti
       userId,
       systemNote: `Discrepancy Audit Item Adjustment`,
       userNote: '',
-      uomId: staticRecords.inventory.uom.lb,
+      uomId: uom.pounds,
       lotId,
     }
   });

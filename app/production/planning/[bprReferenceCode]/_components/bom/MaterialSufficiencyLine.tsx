@@ -1,14 +1,13 @@
 "use client"
 import React from 'react'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
-import { staticRecords } from '@/configs/staticRecords'
 import useDialog from '@/hooks/useDialog'
 import { BprBomItemInventory } from '@/actions/inventory/inventory/getAllByBom'
-import { usePlanningDashboardActions } from '@/store/planningDashboardSlice'
 import { TbX } from 'react-icons/tb'
 import { useAppSelection } from '@/store/appSlice'
 import Image from 'next/image'
 import { useBprDetailsActions } from '@/store/bprDetailsSlice'
+import { inventoryTypes } from '@/configs/staticRecords/inventoryTypes'
 
 const classes = {
   bg: {
@@ -47,7 +46,7 @@ const MaterialSufficiencyLine = ({ material, isDraft }: { material: BprBomItemIn
   const { setSelectedBomItem } = useBprDetailsActions()
   const { user } = useAppSelection()
 
-  const isConsumable = material.bom.item.inventoryTypeId === staticRecords.inventory.inventoryTypes.consumable;
+  const isConsumable = material.bom.item.inventoryTypeId === inventoryTypes.consumable;
   const available = isConsumable ? 'Consumable' : toFracitonalDigits.weight(material.totalQuantityAvailable);
 
   const isAvailableSufficient = material.totalQuantityAvailable >= material.quantity;

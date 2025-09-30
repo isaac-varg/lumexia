@@ -10,153 +10,154 @@ import { InterimFinishedProduct } from "@/store/pricingProducedSlice"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
 import { staticRecords } from "@/configs/staticRecords"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 export const commitProducedPricingExamination = async (
-    examinationId: string,
-    stateData: { interimFinishedProducts: InterimFinishedProduct[], finishedProducts: FinishedProductFromPurchased[], activeMbpr: MbprByItem, batchSize: BatchSize, batchSummations: BatchSummations },
-    validation: ProducedValidation,
+  examinationId: string,
+  stateData: { interimFinishedProducts: InterimFinishedProduct[], finishedProducts: FinishedProductFromPurchased[], activeMbpr: MbprByItem, batchSize: BatchSize, batchSummations: BatchSummations },
+  validation: ProducedValidation,
 ) => {
 
-    const { interimFinishedProducts, finishedProducts, batchSummations, activeMbpr, batchSize } = stateData;
+  const { interimFinishedProducts, finishedProducts, batchSummations, activeMbpr, batchSize } = stateData;
 
-    if (
-        !batchSummations || !activeMbpr || !batchSize || batchSize.batchSizeCompoundingVessels.length === 0
-    ) {
-        throw new Error("There was not enough data to submit.")
+  if (
+    !batchSummations || !activeMbpr || !batchSize || batchSize.batchSizeCompoundingVessels.length === 0
+  ) {
+    throw new Error("There was not enough data to submit.")
+  }
+
+
+  // ensure pricing examination id exists and create if not
+  const pricingExamination = await accountingActions.examinations.upsert(examinationId, activeMbpr.producesItemId)
+
+
+  // producedpricingdataarchive 
+  const producedExaminationDataArchive = await prisma.producedPricingDataArchive.create({
+    data: {
+      mbprId: activeMbpr.id,
+      examinationId,
+      mbprVersionLabel: activeMbpr.versionLabel || '',
+      batchSizeId: batchSize.id,
+      batchSizeQuantity: batchSize.quantity,
+      compoundingVesselId: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
+      compoundingVesselEquipmentName: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
+      compoundingTankTime: batchSize.batchSizeCompoundingVessels[0].tankTime,
+      bomCount: batchSummations.bomWithCost.length,
+      totalBomCostPerBatch: batchSummations.totalBomCostPerBatch,
+      totalBomCostPerLb: batchSummations.totalBomCostPerLb,
+      totalCostPerBatch: batchSummations.totalCostPerBatch,
+      totalCostPerLb: batchSummations.totalCostPerLb
     }
-
-
-    // ensure pricing examination id exists and create if not
-    const pricingExamination = await accountingActions.examinations.upsert(examinationId, activeMbpr.producesItemId)
-
-
-    // producedpricingdataarchive 
-    const producedExaminationDataArchive = await prisma.producedPricingDataArchive.create({
-        data: {
-            mbprId: activeMbpr.id,
-            examinationId,
-            mbprVersionLabel: activeMbpr.versionLabel || '',
-            batchSizeId: batchSize.id,
-            batchSizeQuantity: batchSize.quantity,
-            compoundingVesselId: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
-            compoundingVesselEquipmentName: batchSize.batchSizeCompoundingVessels[0].compoundingVesselId,
-            compoundingTankTime: batchSize.batchSizeCompoundingVessels[0].tankTime,
-            bomCount: batchSummations.bomWithCost.length,
-            totalBomCostPerBatch: batchSummations.totalBomCostPerBatch,
-            totalBomCostPerLb: batchSummations.totalBomCostPerLb,
-            totalCostPerBatch: batchSummations.totalCostPerBatch,
-            totalCostPerLb: batchSummations.totalCostPerLb
-        }
-    });
+  });
 
 
 
 
-    // bom pricing data archive
-    await Promise.all(batchSummations.bomWithCost.map(async (bom) => {
+  // bom pricing data archive
+  await Promise.all(batchSummations.bomWithCost.map(async (bom) => {
 
-        const pricingDataExists = bom.item.itemPricingData.length !== 0;
-
-
-        const response = await prisma.bomPricingDataArchive.create({
-            data: {
-                producedPricingDataArchiveId: producedExaminationDataArchive.id,
-                bomId: bom.id,
-                itemId: bom.itemId,
-                upcomingPriceUsed: bom.isUpcomingPriceActive,
-                arrivalCost: pricingDataExists ? bom.item.itemPricingData[0].arrivalCost : 0,
-                unforeseenDifficultiesCost: pricingDataExists ? bom.item.itemPricingData[0].unforeseenDifficultiesCost : 0,
-                productionUsageCost: pricingDataExists ? bom.item.itemPricingData[0].productionUsageCost : 0,
-                overallItemCostPerLb: bom.itemCostPerLb,
-                overallItemCostPerBatch: bom.itemCostInBatch,
-                examinationId: pricingExamination.id,
-                materialPrice: bom.itemCost,
-                materialPriceOrigin: bom.priceUsed,
-                totalMaterialCost: bom.totalItemCost,
-                upcomingPriceUomId: pricingDataExists ? bom.item.itemPricingData[0].upcomingPriceUomId : staticRecords.inventory.uom.lb,
-            }
-        })
-
-        return response
-    }))
+    const pricingDataExists = bom.item.itemPricingData.length !== 0;
 
 
-
-    // finished product archives
-
-    const finishedProductsMap = new Map(finishedProducts.map(fp => [fp.id, fp]))
-
-    const finishedProductPayload = interimFinishedProducts.map((i) => {
-
-        const matchingFinishedProduct = finishedProductsMap.get(i.finishedProductId);
-
-        return ({
-            pricingExaminationId: pricingExamination.id,
-            currentFinishedProductId: matchingFinishedProduct?.id || '',
-            name: matchingFinishedProduct?.name || '',
-            filledWithItemId: matchingFinishedProduct?.filledWithItemId || '',
-            fillQuantity: matchingFinishedProduct?.fillQuantity || 0,
-            declaredQuantity: matchingFinishedProduct?.declaredQuantity || 0,
-            freeShippingCost: matchingFinishedProduct?.freeShippingCost || 0,
-            fillUomId: matchingFinishedProduct?.fillUomId || '',
-            difficultyAdjustmentCost: matchingFinishedProduct?.difficultyAdjustmentCost || 0,
-            finishedProductTotalCost: matchingFinishedProduct?.calculatedTotals.finishedProductTotalCost || 0,
-            auxiliariesTotalCost: matchingFinishedProduct?.auxiliaries.total || 0,
-            productFillCost: matchingFinishedProduct?.calculatedTotals?.productFillCost || 0,
-            consumerPrice: i.consumerPrice,
-            markup: i.markup,
-            profit: i.profit,
-            profitPercentage: i.profitPercentage,
-        })
-    });
-
-    await prisma.finishedProductArchive.createMany({
-        data: finishedProductPayload,
-    });
-
-    // auxiliaries archive
-
-    const auxuiliariesArchivePayload: any[] = [];
-
-
-    finishedProducts.forEach(fp => {
-        fp.auxiliaries.breakdown.forEach(aux => {
-            auxuiliariesArchivePayload.push({
-                apartOfFinishedProductId: fp.id,
-                auxiliaryItemId: aux.auxiliaryItemId,
-                quantity: aux.quantity,
-                difficultyAdjustmentCost: aux.difficultyAdjustmentCost,
-                ipdArrivalCost: aux.auxiliaryItemPricingData[0].arrivalCost,
-                ipdProductionUsageCost: aux.auxiliaryItemPricingData[0].productionUsageCost,
-                ipdAuxiliaryUsageCost: aux.auxiliaryItemPricingData[0].auxiliaryUsageCost,
-                ipdUnforeseenDifficultiesCost: aux.auxiliaryItemPricingData[0].unforeseenDifficultiesCost,
-                ipdUpcomingPrice: aux.auxiliaryItemPricingData[0].upcomingPrice,
-                ipdIsUpcomingPriceActive: aux.auxiliaryItemPricingData[0].isUpcomingPriceActive,
-                ipdUpcomingPriceUomId: aux.auxiliaryItemPricingData[0].upcomingPriceUomId
-            })
-        })
-    })
-
-
-    await prisma.finishedProductAuxiliaryArchive.createMany({
-        data: auxuiliariesArchivePayload,
-
-    })
-
-
-    // pricing examination validation archives
-    const pevaPayload: ExaminationValidationPayload = {
-
+    const response = await prisma.bomPricingDataArchive.create({
+      data: {
+        producedPricingDataArchiveId: producedExaminationDataArchive.id,
+        bomId: bom.id,
+        itemId: bom.itemId,
+        upcomingPriceUsed: bom.isUpcomingPriceActive,
+        arrivalCost: pricingDataExists ? bom.item.itemPricingData[0].arrivalCost : 0,
+        unforeseenDifficultiesCost: pricingDataExists ? bom.item.itemPricingData[0].unforeseenDifficultiesCost : 0,
+        productionUsageCost: pricingDataExists ? bom.item.itemPricingData[0].productionUsageCost : 0,
+        overallItemCostPerLb: bom.itemCostPerLb,
+        overallItemCostPerBatch: bom.itemCostInBatch,
         examinationId: pricingExamination.id,
-        allContainersReviewed: validation.checks.allInterimViewed,
-        allContainersExceedProfitThreshold: validation.checks.allProfitPercentagesExceedThreshold,
-    }
+        materialPrice: bom.itemCost,
+        materialPriceOrigin: bom.priceUsed,
+        totalMaterialCost: bom.totalItemCost,
+        upcomingPriceUomId: pricingDataExists ? bom.item.itemPricingData[0].upcomingPriceUomId : uom.pounds,
+      }
+    })
 
-    await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
+    return response
+  }))
 
-    await completePricingQueues(activeMbpr.producesItemId)
 
 
-    return pricingExamination
+  // finished product archives
+
+  const finishedProductsMap = new Map(finishedProducts.map(fp => [fp.id, fp]))
+
+  const finishedProductPayload = interimFinishedProducts.map((i) => {
+
+    const matchingFinishedProduct = finishedProductsMap.get(i.finishedProductId);
+
+    return ({
+      pricingExaminationId: pricingExamination.id,
+      currentFinishedProductId: matchingFinishedProduct?.id || '',
+      name: matchingFinishedProduct?.name || '',
+      filledWithItemId: matchingFinishedProduct?.filledWithItemId || '',
+      fillQuantity: matchingFinishedProduct?.fillQuantity || 0,
+      declaredQuantity: matchingFinishedProduct?.declaredQuantity || 0,
+      freeShippingCost: matchingFinishedProduct?.freeShippingCost || 0,
+      fillUomId: matchingFinishedProduct?.fillUomId || '',
+      difficultyAdjustmentCost: matchingFinishedProduct?.difficultyAdjustmentCost || 0,
+      finishedProductTotalCost: matchingFinishedProduct?.calculatedTotals.finishedProductTotalCost || 0,
+      auxiliariesTotalCost: matchingFinishedProduct?.auxiliaries.total || 0,
+      productFillCost: matchingFinishedProduct?.calculatedTotals?.productFillCost || 0,
+      consumerPrice: i.consumerPrice,
+      markup: i.markup,
+      profit: i.profit,
+      profitPercentage: i.profitPercentage,
+    })
+  });
+
+  await prisma.finishedProductArchive.createMany({
+    data: finishedProductPayload,
+  });
+
+  // auxiliaries archive
+
+  const auxuiliariesArchivePayload: any[] = [];
+
+
+  finishedProducts.forEach(fp => {
+    fp.auxiliaries.breakdown.forEach(aux => {
+      auxuiliariesArchivePayload.push({
+        apartOfFinishedProductId: fp.id,
+        auxiliaryItemId: aux.auxiliaryItemId,
+        quantity: aux.quantity,
+        difficultyAdjustmentCost: aux.difficultyAdjustmentCost,
+        ipdArrivalCost: aux.auxiliaryItemPricingData[0].arrivalCost,
+        ipdProductionUsageCost: aux.auxiliaryItemPricingData[0].productionUsageCost,
+        ipdAuxiliaryUsageCost: aux.auxiliaryItemPricingData[0].auxiliaryUsageCost,
+        ipdUnforeseenDifficultiesCost: aux.auxiliaryItemPricingData[0].unforeseenDifficultiesCost,
+        ipdUpcomingPrice: aux.auxiliaryItemPricingData[0].upcomingPrice,
+        ipdIsUpcomingPriceActive: aux.auxiliaryItemPricingData[0].isUpcomingPriceActive,
+        ipdUpcomingPriceUomId: aux.auxiliaryItemPricingData[0].upcomingPriceUomId
+      })
+    })
+  })
+
+
+  await prisma.finishedProductAuxiliaryArchive.createMany({
+    data: auxuiliariesArchivePayload,
+
+  })
+
+
+  // pricing examination validation archives
+  const pevaPayload: ExaminationValidationPayload = {
+
+    examinationId: pricingExamination.id,
+    allContainersReviewed: validation.checks.allInterimViewed,
+    allContainersExceedProfitThreshold: validation.checks.allProfitPercentagesExceedThreshold,
+  }
+
+  await accountingActions.examinations.archives.examinationValidation.create(pevaPayload);
+
+  await completePricingQueues(activeMbpr.producesItemId)
+
+
+  return pricingExamination
 
 }

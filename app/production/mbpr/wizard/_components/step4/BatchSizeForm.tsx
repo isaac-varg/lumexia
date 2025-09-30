@@ -11,6 +11,7 @@ import { toFloat } from 'validator';
 import { updateBatchSizeVessel } from '../../_functions/updateBatchSizeVessel';
 import { setActiveBatchSize } from '../../_functions/setActiveBatchSize';
 import SelectItemStep from '@/app/production/planning/_components/createNewBpr/SelectItemStep';
+import { uom } from '@/configs/staticRecords/unitsOfMeasurement';
 
 const BatchSizeForm = () => {
 
@@ -41,7 +42,7 @@ const BatchSizeForm = () => {
     const bzPayload: Prisma.BatchSizeUncheckedCreateInput = {
       mbprId: selectedMbpr?.id,
       quantity: parseFloat(sizeInput),
-      uomId: staticRecords.inventory.uom.lb,
+      uomId: uom.pounds,
       recordStatusId: staticRecords.app.recordStatuses.inactive,
     }
 

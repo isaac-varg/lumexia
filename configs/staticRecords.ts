@@ -4,27 +4,6 @@
 
 export const staticRecords = {
   inventory: {
-    producedProcurementId: '82aca833-c8e4-42c8-8488-a2bb15088f8e',
-    uom: {
-      lb: '68171f7f-3ac0-4a3a-b197-18742ebf6b5b',
-      case: '160f22b6-b3cf-419c-a607-d7216da598c3',
-      units: '4a243326-5d46-4ac0-89fd-d60b8b11f64a'
-    },
-    containerTypes: {
-      drum: '8dfd5db7-06c9-4246-817e-8332f87df56f',
-      tote: 'a8aa60c5-54ee-43f6-856f-625af5735391',
-      container: 'c16c1cec-f71d-4b76-9075-40062ec5b740',
-    },
-    inventoryTypes: {
-      consumable: '2bbed7c5-5ce1-4624-b1a2-8b9b50c903b5',
-      tracked: '9eddbeb5-e748-4580-8e29-a7a64f8f9a84'
-    },
-
-    aliases: {
-      types: {
-        supplier: '7173f88e-057a-43a7-aa37-6b9b97707b08'
-      }
-    },
     discrepancyAudits: {
       statuses: {
         open: '85c7ee3f-8b73-4d31-b7d0-7f0c487312f4',

@@ -1,18 +1,18 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords"
+import { itemTypes } from "@/configs/staticRecords/itemTypes";
 import prisma from "@/lib/prisma"
 
 
 export const getPackagingItems = async () => {
 
-    const items = await prisma.item.findMany({
-        where: {
-            itemTypeId: staticRecords.inventory.itemTypes.packaging,
-        }
-    });
+  const items = await prisma.item.findMany({
+    where: {
+      itemTypeId: itemTypes.packaging,
+    }
+  });
 
-    return items;
+  return items;
 }
 
 export type PackagingItem = Awaited<ReturnType<typeof getPackagingItems>>[number]

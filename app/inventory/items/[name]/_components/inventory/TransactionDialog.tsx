@@ -7,6 +7,7 @@ import SectionTitle from "@/components/Text/SectionTitle"
 import { UnmanagedForm } from "@/components/UnmanagedForm"
 import { staticRecords } from "@/configs/staticRecords"
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import useDialog from "@/hooks/useDialog"
 import { useItemSelection } from "@/store/itemSlice"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
@@ -51,7 +52,7 @@ const TransactionDialog = () => {
       lotId: selectedLot.id,
       transactionTypeId,
       userId,
-      uomId: staticRecords.inventory.uom.lb,
+      uomId: uom.pounds,
       amount: adjustmentQuantity,
       systemNote: 'Adjusted via Inventory Lot Details Transaction Tool',
       userNote: ""

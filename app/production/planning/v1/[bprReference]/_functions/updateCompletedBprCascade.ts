@@ -7,6 +7,7 @@ import bprStagingActions from "@/actions/production/bprStagings";
 import { getUserId } from "@/actions/users/getUserId";
 import { staticRecords } from "@/configs/staticRecords";
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma"
 import { ExBprStaging } from "@/types/bprStaging";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
@@ -63,7 +64,7 @@ const createTransaction = async (lotId: string, amount: number, bprReferenceCode
     lotId: lotId,
     transactionTypeId: transactionTypes.bprConsumption,
     userId,
-    uomId: staticRecords.inventory.uom.lb,
+    uomId: uom.pounds,
     amount,
     systemNote: `Consumed by BPR# ${bprReferenceCode}`,
     userNote: "",

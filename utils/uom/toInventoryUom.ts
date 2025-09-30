@@ -1,12 +1,12 @@
 // this implies pounds as the default inventory uom.
 // TODO make this configurable
 
-import { staticRecords } from "@/configs/staticRecords"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import { convertUom } from "./convertUom"
 
 export const toInventoryUom = async (currentUomId: string, quantity: number) => {
 
-    const convertedQuantity = await convertUom(currentUomId, staticRecords.inventory.uom.lb, quantity);
+    const convertedQuantity = await convertUom(currentUomId, uom.pounds, quantity);
 
     return convertedQuantity; 
 }
