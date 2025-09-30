@@ -13,6 +13,14 @@ This script is required to seed required records into the database and create st
 
 ## Adding Data
 
+*use*
+
+```bash
+npm run init-data <fileName>
+```
+```
+```
+
 Initialization for a new prisma model can be added by creating a file in the `/scrips/initialization/data/` directory. 
 
 ```javascript
