@@ -5,7 +5,6 @@ import bprActions from "@/actions/production/bprActions";
 import bprBomActions from "@/actions/production/bprBom";
 import bprStagingActions from "@/actions/production/bprStagings";
 import { getUserId } from "@/actions/users/getUserId";
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes";

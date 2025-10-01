@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { BprStagingItem } from "../getBprStagings"
-import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 

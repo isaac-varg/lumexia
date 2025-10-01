@@ -6,7 +6,6 @@ import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
 import { BatchSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
 import { ProducedPricingSummations, getBomWithPricing } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
-import { staticRecords } from '@/configs/staticRecords';
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 import { create } from 'zustand';
 

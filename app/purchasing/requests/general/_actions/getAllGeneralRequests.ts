@@ -1,30 +1,30 @@
 'use server'
 
-import { staticRecords } from "@/configs/staticRecords"
+import { generalRequestStatuses } from "@/configs/staticRecords/generalRequestStatuses"
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 
-const { requested } = staticRecords.purchasing.generalRequests.statuses
+const { requested } = generalRequestStatuses;
 
 
 
 export const getAllGeneralRequests = async (isAll: boolean) => {
 
-    const where: Prisma.GeneralRequestWhereInput = {}
+  const where: Prisma.GeneralRequestWhereInput = {}
 
-    if (!isAll) {
-        where.statusId = requested
+  if (!isAll) {
+    where.statusId = requested
+  }
+
+  const requests = await prisma.generalRequest.findMany({
+    where,
+    include: {
+      user: true,
+      status: true
     }
+  });
 
-    const requests = await prisma.generalRequest.findMany({
-        where,
-        include: {
-            user: true,
-            status: true
-        }
-    });
-
-    return requests
+  return requests
 
 }
 

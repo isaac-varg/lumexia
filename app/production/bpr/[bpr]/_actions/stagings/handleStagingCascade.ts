@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { StagingImage } from "../../_components/staging/PhotoStep"
-import { staticRecords } from "@/configs/staticRecords"
 import { getUserId } from "@/actions/users/getUserId"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"

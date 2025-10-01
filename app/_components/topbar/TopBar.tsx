@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { getUserId } from "@/actions/users/getUserId";
-import { staticRecords } from "@/configs/staticRecords";
 import UserIcon from './UserIcon'
 import ConfigurationStateSetter from "../state/ConfigurationStateSetter";
 import AppQuery from "../state/AppQuery";

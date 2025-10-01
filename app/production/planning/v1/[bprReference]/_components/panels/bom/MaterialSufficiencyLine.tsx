@@ -1,7 +1,6 @@
 "use client"
 import React from 'react'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
-import { staticRecords } from '@/configs/staticRecords'
 import useDialog from '@/hooks/useDialog'
 import { BprBomItemInventory } from '@/actions/inventory/inventory/getAllByBom'
 import MaterialAllocationDialog from './MaterialAllocationDialog'

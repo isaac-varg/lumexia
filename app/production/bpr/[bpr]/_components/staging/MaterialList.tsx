@@ -4,7 +4,6 @@ import { useProductionSelection } from "@/store/productionSlice"
 import { translations } from "../../_configs/translations"
 import MaterialButton from "../shared/MaterialButton"
 import Card from "@/components/Card"
-import { staticRecords } from "@/configs/staticRecords"
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
 
 const MaterialList = () => {

@@ -7,16 +7,11 @@ import { useForm } from "react-hook-form"
 import { Containers } from "../_functions/getContainerTypes"
 import { restructureData } from "@/utils/data/restructureData"
 import { SelectOption } from "@/types/selectOption"
-import { useState } from "react"
-import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { Prisma } from "@prisma/client"
 import { createPoItemDetails } from "../_functions/createPoItemDetail"
-import { staticRecords } from "@/configs/staticRecords"
-import { DateTime } from "luxon"
 import { updatePoItemDetails } from "../_functions/updatePoItemDetails"
 import useDialog from "@/hooks/useDialog"
 import { useRouter } from "next/navigation"
-import DateSelector, { DatepickerRange } from "@/components/Dropdown/DateSelector"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 type LinkedPoDialogProps = {

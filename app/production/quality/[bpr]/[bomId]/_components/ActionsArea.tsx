@@ -1,6 +1,5 @@
 "use client"
 import ActionPanel from '@/components/ActionPanel'
-import { staticRecords } from '@/configs/staticRecords'
 import { ExBprStaging } from '@/types/bprStaging'
 import React from 'react'
 import { verifyBomItem } from '../_functions/verifyBomItem'

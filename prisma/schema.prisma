@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Sep 25 2025 09:02:16 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Oct 01 2025 14:46:58 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -312,7 +312,7 @@ model PoAccountingDetail {
 model PoAccountingFileType {
   id                String             @id @default(uuid())
   name              String
-  abbreviaton       String?
+  abbreviation      String?
   description       String?
   bgColor           String             @map("bg_color")
   textColor         String             @map("text_color")
@@ -2314,7 +2314,7 @@ model QcParameter {
 model QcRecordFileType {
   id            String         @id @default(uuid())
   name          String
-  abbreviaton   String?
+  abbreviation  String?
   description   String?
   bgColor       String         @map("bg_color")
   textColor     String         @map("text_color")

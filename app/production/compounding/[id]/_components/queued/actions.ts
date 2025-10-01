@@ -2,7 +2,6 @@
 
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import bprActions from "@/actions/production/bprActions";
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import { BatchProductionRecord } from "@/types/batchProductionRecord";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";

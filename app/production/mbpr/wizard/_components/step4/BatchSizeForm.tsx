@@ -5,7 +5,6 @@ import { UnmanagedForm } from '@/components/UnmanagedForm';
 import { CompoundingVessel } from '@/actions/production/compoundingVessels/getAllCompoundinVessels';
 import { productionActions } from '@/actions/production';
 import { Prisma } from '@prisma/client';
-import { staticRecords } from '@/configs/staticRecords';
 import { createBatchSizeCompoundingVessel } from '../../_functions/createBatchSizeVessel';
 import { toFloat } from 'validator';
 import { updateBatchSizeVessel } from '../../_functions/updateBatchSizeVessel';

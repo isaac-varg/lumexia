@@ -2,7 +2,6 @@
 import batchSizeActions from '@/actions/production/batchSizes'
 import Dialog from '@/components/Dialog'
 import Form from '@/components/Form'
-import { staticRecords } from '@/configs/staticRecords'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import { uom } from '@/configs/staticRecords/unitsOfMeasurement'
 import useDialog from '@/hooks/useDialog'

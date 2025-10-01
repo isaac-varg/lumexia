@@ -1,9 +1,7 @@
 "use server"
 
 import { getLotsByItem } from "@/actions/auxiliary/getLotsByItem"
-import { ExBprBom } from "@/types/bprBom"
 import prisma from "@/lib/prisma"
-import { staticRecords } from "@/configs/staticRecords"
 import { BprBomItem } from "@/actions/production/bprs/boms/getByBpr"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 

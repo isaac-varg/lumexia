@@ -6,7 +6,6 @@ import prisma from "@/lib/prisma"
 import { ItemPricingData } from "../pricing/getItemPricingData";
 import { LastItemPrice } from "../pricing/getLastItemPrice";
 import { getProductFillCost } from "@/app/accounting/pricing/_calculations/getProductFillCost";
-import { staticRecords } from "@/configs/staticRecords";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 export const getFinishedProductsByPurchasedItem = async (itemId: string, itemPricingData: ItemPricingData, lastPrice: LastItemPrice) => {

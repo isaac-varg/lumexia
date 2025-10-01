@@ -1,9 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { InterimAuxiliaryItem } from "../_components/shared/StepAuxiliaries"
 import { FinishedProductDetails } from "../_components/shared/StepFinishedProductDetails"
-import { staticRecords } from "@/configs/staticRecords"
 import { InterimAuxiliaryItemEditMode } from "../_components/shared/editFinishedProduct/EditModeStepAuxiliaries"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses"

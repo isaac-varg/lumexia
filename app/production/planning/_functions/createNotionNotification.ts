@@ -1,6 +1,5 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords"
 import { userRoles } from "@/configs/staticRecords/userRoles";
 import notion from "@/lib/notion";
 import prisma from "@/lib/prisma"

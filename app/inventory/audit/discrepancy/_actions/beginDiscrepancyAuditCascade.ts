@@ -1,7 +1,6 @@
 'use server'
 
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem"
-import { staticRecords } from "@/configs/staticRecords"
 import { discrepancyAuditItemStatuses } from "@/configs/staticRecords/discrepancyAuditItemStatuses"
 import { discrepancyAuditStatuses } from "@/configs/staticRecords/discrepancyAuditStatuses"
 import { itemTypes } from "@/configs/staticRecords/itemTypes"

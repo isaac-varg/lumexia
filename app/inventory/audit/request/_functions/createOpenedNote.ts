@@ -1,7 +1,6 @@
 "use server"
 
 import { getUserId } from "@/actions/users/getUserId"
-import { staticRecords } from "@/configs/staticRecords";
 import { auditRequestNoteTypes } from "@/configs/staticRecords/auditRequestNoteTypes";
 import prisma from "@/lib/prisma"
 

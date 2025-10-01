@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { accountingActions } from "..";
-import { staticRecords } from "@/configs/staticRecords";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 export const deletedFilledConsumerContainer = async (id: string) => {

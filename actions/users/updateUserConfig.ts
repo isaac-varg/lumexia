@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { getUserId } from "./getUserId"
-import { staticRecords } from "@/configs/staticRecords"
 import { userConfigGroups } from "@/configs/staticRecords/userConfigGroups"
 
 // cant use upsert because it is non-unique..

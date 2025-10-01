@@ -1,6 +1,5 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma"
@@ -136,7 +135,7 @@ export const handleNewScent = async (itemId: string) => {
   await prisma.batchSizeCompoundingVessel.create({
     data: {
       tankTime: 0.25,
-      compoundingVesselId: staticRecords.production.templates.essentialFragranceOil.compoundingVessel,
+      compoundingVesselId: 'staticRecords.production.templates.essentialFragranceOil.compoundingVessel',
       batchSizeId: batchSize.id,
     }
   })

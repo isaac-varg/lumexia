@@ -8,7 +8,8 @@ import { inventoryActions } from "@/actions/inventory"
 import { useQcExaminationActions } from "@/store/qcExaminationSlice"
 import { qualityActions } from "@/actions/quality"
 import { getUserId } from "@/actions/users/getUserId"
-import { staticRecords } from "@/configs/staticRecords"
+import { qcExaminationTypes } from "@/configs/staticRecords/qcExaminationTypes"
+import { qcRecordStatuses } from "@/configs/staticRecords/qcRecordStatuses"
 
 const ScanPanel = () => {
 
@@ -28,8 +29,8 @@ const ScanPanel = () => {
       const record = await qualityActions.qc.records.create({
         conductedById: userId,
         examinedLotId: lot.id,
-        examinationTypeId: staticRecords.quality.examinations.types.inProcess,
-        statusId: staticRecords.quality.records.statuses.open,
+        examinationTypeId: qcExaminationTypes.inProcess,
+        statusId: qcRecordStatuses.open,
       })
 
       const path = `/quality/qc/examination/new/${lot.lotNumber}?lotId=${lot.id}&examinationId=${record.id}`

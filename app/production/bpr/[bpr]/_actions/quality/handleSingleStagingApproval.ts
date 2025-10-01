@@ -1,7 +1,6 @@
 'use server'
 import prisma from "@/lib/prisma";
 import { BprStagingItem } from "../getBprStagings";
-import { staticRecords } from "@/configs/staticRecords";
 import { getUserId } from "@/actions/users/getUserId";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";

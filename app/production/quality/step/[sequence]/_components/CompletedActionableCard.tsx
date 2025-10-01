@@ -4,7 +4,6 @@ import bprStepActionableVerificationActions from "@/actions/production/bprStepAc
 import bprStepActionableActions from "@/actions/production/bprStepActionables"
 import { getUserId } from "@/actions/users/getUserId"
 import ActionButton from "@/components/ActionButton"
-import { staticRecords } from "@/configs/staticRecords"
 import { bprStepActionableStatuses } from "@/configs/staticRecords/bprStepActionableStatuses"
 import useProduction from "@/hooks/useProduction"
 import { ExBprStepActionable } from "@/types/bprStepActionable"
@@ -35,7 +34,7 @@ const CompletedActionableCard = ({ actionable }: { actionable: QualityExBprStepA
     }
 
     const verificationUpdate = isSecondaryVerificationMode ? { isSecondarilyVerified: true } : { isVerified: true }
-    const bprActionableStatusId = requiresSecondary ? bprStepActionableStatuses.secondaryVerification : staticRecords.production.bprStepActionableStatuses.completed;
+    const bprActionableStatusId = requiresSecondary ? bprStepActionableStatuses.secondaryVerification : bprStepActionableStatuses.completed;
     const actionablePayload = {
       ...verificationUpdate,
       statusId: bprActionableStatusId,
@@ -74,7 +73,7 @@ const CompletedActionableCard = ({ actionable }: { actionable: QualityExBprStepA
 
       <div className="flex justify-between">
         <p className='font-inter text-lg uppercase text-neutral-900 font-semibold'>{actionable.stepActionable.actionableType.name}</p>
-        <div className="outline outline-2 outline-rose-400 px-4 rounded-lg"><p className='font-inter text-lg text-rose-400 font-semibold '>{actionable.stepActionable.required ? "Required" : ""}</p></div>
+        <div className="outline  outline-rose-400 px-4 rounded-lg"><p className='font-inter text-lg text-rose-400 font-semibold '>{actionable.stepActionable.required ? "Required" : ""}</p></div>
 
       </div>
       <p className='font-inter text-lg  text-neutral-900 font-medium'>{actionable.stepActionable.actionableType.description}</p>

@@ -5,7 +5,6 @@ import bprActions from "@/actions/production/bprActions";
 import bprBatchStepActions from "@/actions/production/bprBatchSteps";
 import bprStepActionableActions from "@/actions/production/bprStepActionables";
 import stepActionableActions from "@/actions/production/stepActionables";
-import { staticRecords } from "@/configs/staticRecords";
 import { bprBatchStepStatuses } from "@/configs/staticRecords/bprBatchStepStatuses";
 import { bprStepActionableStatuses } from "@/configs/staticRecords/bprStepActionableStatuses";
 import { BatchProductionRecord } from "@/types/batchProductionRecord";

@@ -1,6 +1,7 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
+import { requestNoteTypes } from "@/configs/staticRecords/requestNoteTypes";
+import { requestStatuses } from "@/configs/staticRecords/requestStatuses";
 import { users } from "@/configs/staticRecords/users";
 import prisma from "@/lib/prisma"
 
@@ -24,7 +25,7 @@ export const updateConnectedRequests = async (poId: string, itemId: string, part
   await Promise.all(requests.map(async (request) => {
 
     const id = request.request.id;
-    const statusId = partial ? staticRecords.purchasing.requestStatuses.partialDelivery : staticRecords.purchasing.requestStatuses.delivered
+    const statusId = partial ? requestStatuses.partialDelivery : requestStatuses.delivered
 
     const update = await prisma.purchasingRequest.update({
       where: {
@@ -50,7 +51,7 @@ export const updateConnectedRequests = async (poId: string, itemId: string, part
         requestId: id,
         userId: users.lumexia,
         content,
-        noteTypeId: staticRecords.purchasing.requestTypes.automated,
+        noteTypeId: requestNoteTypes.automated,
       }
     })
 

@@ -1,11 +1,11 @@
 import { qualityActions } from "@/actions/quality"
 import Card from "@/components/Card"
 import SectionTitle from "@/components/Text/SectionTitle"
-import { staticRecords } from "@/configs/staticRecords"
+import { qcRecordStatuses } from "@/configs/staticRecords/qcRecordStatuses"
 import { useQcExaminationSelection } from "@/store/qcExaminationSlice"
 import { useRouter } from "next/navigation"
 
-const { pass, oos } = staticRecords.quality.records.statuses;
+const { pass, outOfSpecification } = qcRecordStatuses
 
 const RecordVerdict = () => {
 
@@ -16,7 +16,7 @@ const RecordVerdict = () => {
     if (!qcRecord) return;
 
     await qualityActions.qc.records.update(qcRecord.id, {
-      statusId: isInSpec ? pass : oos,
+      statusId: isInSpec ? pass : outOfSpecification,
     });
 
     router.push('/quality/qc')

@@ -1,6 +1,5 @@
 'use server'
 
-import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { BprBomItem } from "../getBprBom";

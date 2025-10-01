@@ -4,7 +4,6 @@ import ActionButton from '@/components/ActionButton';
 import { ExBprStaging } from '@/types/bprStaging';
 import React, { useState } from 'react';
 import { verifyBomItemStaging } from '../_functions/verifyBomItemStaging';
-import { staticRecords } from '@/configs/staticRecords';
 import useProduction from '@/hooks/useProduction';
 import { bprStagingStatuses } from '@/configs/staticRecords/bprStagingStatuses';
 

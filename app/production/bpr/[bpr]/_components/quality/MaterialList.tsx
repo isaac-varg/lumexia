@@ -2,7 +2,6 @@ import SectionTitle from "@/components/Text/SectionTitle"
 import { useProductionSelection } from "@/store/productionSlice"
 import MaterialButton from "../shared/MaterialButton"
 import Card from "@/components/Card"
-import { staticRecords } from "@/configs/staticRecords"
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
 
 const MaterialList = () => {

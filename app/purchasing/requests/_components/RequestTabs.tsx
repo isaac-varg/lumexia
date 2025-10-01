@@ -2,7 +2,6 @@
 
 import TabsPanel from "@/components/Tabs"
 import { RequestForDashboard } from "../_functions/getRequests"
-import { staticRecords } from "@/configs/staticRecords"
 import NewRequestsPanel from "./NewRequestsPanel"
 import InfographicPanel from "./InfographicPanel"
 import ByStatusPanel from "./ByStatusPanel"
@@ -11,6 +10,7 @@ import { RequestPriority } from "../_functions/getPriorities"
 import BySupplierPanel from "./BySupplierPanel"
 import RequestsCalendar from "./RequestsCalendar"
 import { GeneralRequestMinimal } from "../general/_actions/getAllGeneralRequests"
+import { requestStatuses } from "@/configs/staticRecords/requestStatuses"
 
 type RequestTabsProps = {
   requests: RequestForDashboard[]
@@ -22,7 +22,7 @@ type RequestTabsProps = {
 
 const RequestTabs = ({ requests, statuses, priorities, generalRequests }: RequestTabsProps) => {
 
-  const newRequests = requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)
+  const newRequests = requests.filter((request) => request.statusId === requestStatuses.requested)
   const allNewRequestsLength = newRequests.length + generalRequests.length;
 
 
@@ -54,7 +54,7 @@ const RequestTabs = ({ requests, statuses, priorities, generalRequests }: Reques
 
       <TabsPanel.Content identifier="new">
         <div className='grid grid-cols-2 gap-x-4'>
-          <NewRequestsPanel statuses={statuses} priorities={priorities} generalRequests={generalRequests} requests={requests.filter((request) => request.statusId === staticRecords.purchasing.requestStatuses.requested)} />
+          <NewRequestsPanel statuses={statuses} priorities={priorities} generalRequests={generalRequests} requests={requests.filter((request) => request.statusId === requestStatuses.requested)} />
 
           <InfographicPanel requests={requests} />
         </div>

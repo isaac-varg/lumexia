@@ -1,4 +1,3 @@
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStepActionableStatuses } from "@/configs/staticRecords/bprStepActionableStatuses";
 import prisma from "@/lib/prisma"
 
@@ -18,7 +17,7 @@ const getIncompleteBprs = async (isSecondary: boolean) => {
 
   const isVerified = isSecondary ? true : false
   const secondarySpread = isSecondary ? { verificationRequired: true } : { secondaryVerificationRequired: true };
-  const statusId = isSecondary ? bprStepActionableStatuses.secondaryVerification : staticRecords.production.bprStepActionableStatuses.verify;
+  const statusId = isSecondary ? bprStepActionableStatuses.secondaryVerification : bprStepActionableStatuses.primaryVerification;
 
   // lol maybe do a sql query instead
   const bprs = await prisma.bprStepActionable.findMany({

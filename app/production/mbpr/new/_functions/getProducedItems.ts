@@ -1,7 +1,6 @@
 'use server'
 
 import itemActions from "@/actions/inventory/items"
-import { staticRecords } from "@/configs/staticRecords"
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
 import { Alias } from "@/types/alias"
 import { Item } from "@/types/item"

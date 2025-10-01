@@ -1,6 +1,5 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 import prisma from "@/lib/prisma";
 

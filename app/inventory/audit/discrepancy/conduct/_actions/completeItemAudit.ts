@@ -1,6 +1,5 @@
 'use server'
 
-import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
 import { DiscrepancyItem } from "./getDiscrepancyItem"
 import { createNote } from "./createNote"

@@ -3,7 +3,6 @@ import bprStepActionableCompletionActions from '@/actions/production/bprStepActi
 import bprStepActionableActions from '@/actions/production/bprStepActionables'
 import { getUserId } from '@/actions/users/getUserId'
 import ActionButton from '@/components/ActionButton'
-import { staticRecords } from '@/configs/staticRecords'
 import { bprStepActionableStatuses } from '@/configs/staticRecords/bprStepActionableStatuses'
 import { ExBprStepActionable } from '@/types/bprStepActionable'
 import { createActivityLog } from '@/utils/auxiliary/createActivityLog'

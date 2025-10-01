@@ -3,7 +3,6 @@
 import { accountingActions } from "@/actions/accounting"
 import { FinishedProductFromProduced } from "@/actions/accounting/finishedProducts/getByProducedItem"
 import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem"
-import { staticRecords } from "@/configs/staticRecords"
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 
 export const duplicateFinishedProduct = async (finishedProductToDuplicate: FinishedProductFromPurchased | FinishedProductFromProduced, isPurchased: boolean) => {

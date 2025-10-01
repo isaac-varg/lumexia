@@ -1,6 +1,5 @@
 import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
-import { staticRecords } from "@/configs/staticRecords";
 import { discrepancyAuditItemStatuses } from "@/configs/staticRecords/discrepancyAuditItemStatuses";
 import { useDiscrepancySelection } from "@/store/discrepancySlice";
 import { ApexOptions } from "apexcharts";

@@ -3,7 +3,6 @@ import { PlanningBpr } from '@/actions/production/getPlanningBprs';
 import { Search } from '@/components/Search';
 import React, { useState } from 'react'
 import BprCard from './BprCard';
-import { staticRecords } from '@/configs/staticRecords';
 import { bprStatuses } from '@/configs/staticRecords/bprStatuses';
 
 type Props = {
@@ -42,7 +41,7 @@ const ByStatusPanel = ({ statuses, bprs }: Props) => {
             <div
               key={status.id}
               style={{ backgroundColor: status.bgColor }}
-              className={`p-6 rounded-lg shadow-xl ${status.id === staticRecords.production.bprStatuses.released ? 'col-span-2' : ''}`}
+              className={`p-6 rounded-lg shadow-xl ${status.id === bprStatuses.released ? 'col-span-2' : ''}`}
             >
               <div className='flex flex-col gap-y-6'>
                 <div

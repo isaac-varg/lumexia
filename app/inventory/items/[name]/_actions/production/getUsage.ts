@@ -1,6 +1,5 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma"

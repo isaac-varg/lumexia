@@ -16,7 +16,6 @@ import stepAddendumActions from '@/actions/production/stepAddendums';
 import { StepInstruction } from '@/types/stepInstruction';
 import { StepAddendum } from '@/types/stepAddendum';
 import AddendumCard from '@/app/production/compounding/[id]/step/[sequence]/_components/AddendumCard';
-import { staticRecords } from '@/configs/staticRecords';
 import userRoleAssignmentActions from '@/actions/users/userRoleAssignments';
 import { getUserId } from '@/actions/users/getUserId';
 import ActionableCard from './_components/ActionableCard';

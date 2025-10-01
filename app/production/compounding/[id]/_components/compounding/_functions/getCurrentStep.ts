@@ -1,6 +1,5 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
 import { bprBatchStepStatuses } from "@/configs/staticRecords/bprBatchStepStatuses";
 import { ExBprBatchStep } from "@/types/bprBatchStep"
 

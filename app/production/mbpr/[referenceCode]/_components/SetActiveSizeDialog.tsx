@@ -2,7 +2,6 @@
 import { productionActions } from '@/actions/production'
 import { Mbpr } from '@/actions/production/mbpr/getOneMbpr'
 import Dialog from '@/components/Dialog'
-import { staticRecords } from '@/configs/staticRecords'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import React from 'react'
 

@@ -3,7 +3,6 @@ import * as Tabs from "@radix-ui/react-tabs";
 import ContextMenu from "../ContextMenu";
 import { PanelStates, usePanelActions } from "@/store/panelSelectionSlice";
 import { updateUserConfig } from "@/actions/users/updateUserConfig";
-import { staticRecords } from "@/configs/staticRecords";
 import { userConfigGroups } from "@/configs/staticRecords/userConfigGroups";
 
 export type Tab = {

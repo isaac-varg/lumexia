@@ -1,7 +1,6 @@
 'use server'
 import { getUserId } from "@/actions/users/getUserId"
 import prisma from "@/lib/prisma"
-import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 import { revalidatePath } from "next/cache"
 import { auditRequestStatuses } from "@/configs/staticRecords/auditRequestStatuses"

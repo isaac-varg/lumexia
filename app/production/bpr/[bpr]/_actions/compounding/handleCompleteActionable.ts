@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma"
 import { ProductionStep } from "./getSteps"
 import { DateTime } from "luxon"
-import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 import { bprStepActionableStatuses } from "@/configs/staticRecords/bprStepActionableStatuses"
 import { bprBatchStepStatuses } from "@/configs/staticRecords/bprBatchStepStatuses"

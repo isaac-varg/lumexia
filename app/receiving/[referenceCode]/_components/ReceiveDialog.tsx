@@ -12,7 +12,6 @@ import { updatePOItem } from "../_functions/updatePOItem";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import lotOriginActions from "@/actions/inventory/lotOriginActions";
 import { Lot } from "@/types/lot";
-import { staticRecords } from "@/configs/staticRecords";
 import { toInventoryUom } from "@/utils/uom/toInventoryUom";
 import { updateConnectedRequests } from "../_functions/updateConnectedRequests";
 import { accountingActions } from "@/actions/accounting";

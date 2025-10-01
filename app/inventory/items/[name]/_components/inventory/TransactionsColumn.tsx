@@ -5,8 +5,6 @@ import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 import { createColumnHelper } from "@tanstack/react-table";
 import { LotTransaction } from "../../_actions/inventory/getTransactionsByLot";
 import { DateTime } from "luxon";
-import { dateFormatString } from "@/configs/data/dateFormatString";
-import { staticRecords } from "@/configs/staticRecords";
 import UserIcon from "@/components/UI/UserIcon";
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 

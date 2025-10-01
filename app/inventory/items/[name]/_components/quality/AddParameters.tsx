@@ -1,6 +1,5 @@
 import { QcTemplate } from "@/actions/quality/qc/templates/getAll"
 import SearcherUnmanaged from "@/components/Search/SearcherUnmanaged"
-import { staticRecords } from "@/configs/staticRecords"
 import { useItemActions, useItemSelection } from "@/store/itemSlice"
 import { useRouter } from "next/navigation"
 import { useState } from "react"

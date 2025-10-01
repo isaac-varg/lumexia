@@ -1,6 +1,5 @@
 import batchSizeActions from '@/actions/production/batchSizes'
 import Dialog from '@/components/Dialog'
-import { staticRecords } from '@/configs/staticRecords'
 import { BatchSize } from '@/types/batchSize'
 import React, { useEffect, useState } from 'react'
 import { createBpr } from '../../_functions/createBpr'

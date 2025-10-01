@@ -1,7 +1,6 @@
 "use server"
 
 import { revalidatePage } from "@/actions/app/revalidatePage"
-import { staticRecords } from "@/configs/staticRecords"
 import { containerTypes } from "@/configs/staticRecords/containerTypes"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import prisma from "@/lib/prisma"

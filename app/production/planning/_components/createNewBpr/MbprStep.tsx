@@ -1,5 +1,4 @@
 import mbprActions from '@/actions/production/mbprActions'
-import { staticRecords } from '@/configs/staticRecords'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import { MasterBatchProductionRecord } from '@/types/masterBatchProductionRecord'
 import React, { useEffect, useState } from 'react'

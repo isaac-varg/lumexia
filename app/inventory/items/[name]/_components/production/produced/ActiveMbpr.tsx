@@ -1,5 +1,4 @@
 import Card from "@/components/Card"
-import { staticRecords } from "@/configs/staticRecords"
 import { useItemSelection } from "@/store/itemSlice"
 import { useEffect, useState } from "react"
 import { ItemActiveMbprBatchSize } from "../../../_actions/production/getActiveMbpr"

@@ -2,7 +2,6 @@ import React from 'react'
 import { getBpr } from './_functions/getBpr';
 import Title from './_components/Title';
 import { getBom } from './_functions/getBom';
-import { staticRecords } from '@/configs/staticRecords';
 import StagingPanel from './_components/staging/StagingPanel';
 import CompoundingPanel from './_components/compounding/CompoundingPanel';
 import QueuedPanel from './_components/queued/QueuedPanel';

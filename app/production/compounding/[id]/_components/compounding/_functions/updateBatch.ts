@@ -1,7 +1,6 @@
 "use server"
 
 import bprActions from "@/actions/production/bprActions"
-import { staticRecords } from "@/configs/staticRecords"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 

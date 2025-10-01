@@ -2,8 +2,6 @@
 import { usePlanningDashboardSelection } from '@/store/planningDashboardSlice'
 import MaterialSufficiencyLine from './MaterialSufficiencyLine'
 import MaterialAllocationDialog from './MaterialAllocationDialog'
-import { staticRecords } from '@/configs/staticRecords'
-import { useAppQuerySelection } from '@/store/appQuerySlice'
 import { useAppSelection } from '@/store/appSlice'
 import { bprStatuses } from '@/configs/staticRecords/bprStatuses'
 

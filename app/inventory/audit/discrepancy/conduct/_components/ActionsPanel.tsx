@@ -4,7 +4,6 @@ import { useDiscrepancyActions, useDiscrepancySelection } from "@/store/discrepa
 import { completeAuditItem } from "../_actions/completeItemAudit"
 import Alert from "@/components/Alert"
 import { useState } from "react"
-import { staticRecords } from "@/configs/staticRecords"
 import useDialog from "@/hooks/useDialog"
 import { completeDiscrepancyAudit } from "../_actions/completeDiscrepancyAudit"
 import { useRouter } from "next/navigation"

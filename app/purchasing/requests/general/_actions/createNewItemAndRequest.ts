@@ -1,9 +1,9 @@
 'use server'
 
 import { getUserId } from "@/actions/users/getUserId";
-import { staticRecords } from "@/configs/staticRecords"
 import { inventoryTypes } from "@/configs/staticRecords/inventoryTypes";
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
+import { requestPriorities } from "@/configs/staticRecords/requestPriorities";
 import { users } from "@/configs/staticRecords/users";
 import prisma from "@/lib/prisma"
 import { DateTime } from "luxon";
@@ -31,7 +31,7 @@ export const createNewItemAndRequest = async (generalRequestId: string, itemType
       statusId: '226db3a6-2756-4a5d-a6c5-b741339baeea',
       itemId: item.id,
       title: `${item.name} <Week ${week}>`,
-      priorityId: staticRecords.purchasing.requestPriorities.normal,
+      priorityId: requestPriorities.normal,
       requestingUserId,
 
     }

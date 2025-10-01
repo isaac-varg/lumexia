@@ -1,5 +1,4 @@
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr'
-import { staticRecords } from '@/configs/staticRecords'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import { useMbprWizardActions } from '@/store/mbprWizardSlice'
 import React from 'react'

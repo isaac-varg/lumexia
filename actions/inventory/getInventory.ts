@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { getLotsByItem } from "../auxiliary/getLotsByItem"
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 
 

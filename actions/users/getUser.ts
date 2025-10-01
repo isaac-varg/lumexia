@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { staticRecords } from "@/configs/staticRecords";
 import { userRoles } from "@/configs/staticRecords/userRoles";
 
 export const getUser = async () => {

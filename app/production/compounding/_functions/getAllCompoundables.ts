@@ -1,4 +1,3 @@
-import { staticRecords } from "@/configs/staticRecords"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import prisma from "@/lib/prisma"
 

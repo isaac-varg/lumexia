@@ -1,7 +1,6 @@
 'use server'
 
 import { productionActions } from "@/actions/production";
-import { staticRecords } from "@/configs/staticRecords";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 export const setActiveBatchSize = async (activeBatchSizeId: string, mbprId: string) => {

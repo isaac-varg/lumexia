@@ -10,7 +10,6 @@ import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma"
 import { ExBprStaging } from "@/types/bprStaging";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 

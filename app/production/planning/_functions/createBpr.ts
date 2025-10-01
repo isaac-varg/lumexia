@@ -1,7 +1,6 @@
 "use server"
 
 import bprActions from "@/actions/production/bprActions"
-import { staticRecords } from "@/configs/staticRecords"
 import { BatchSize } from "@/types/batchSize"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 import { createBprBom } from "./createBprBom"

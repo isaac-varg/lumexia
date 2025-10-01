@@ -1,8 +1,8 @@
 "use server"
 
 import { getUserId } from "@/actions/users/getUserId";
-import { staticRecords } from "@/configs/staticRecords";
 import { containerTypes } from "@/configs/staticRecords/containerTypes";
+import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
@@ -35,7 +35,7 @@ const createPO = async (supplierId: string, userId: string) => {
     data: {
       supplierId,
       submittingUserId: userId,
-      statusId: staticRecords.purchasing.poStatuses.draft,
+      statusId: purchaseOrderStatuses.draft,
     }
   })
 
@@ -56,7 +56,7 @@ const createPOItem = async (poId: string, itemId: string) => {
       quantity: 0,
       pricePerUnit: 0,
       uomId: uom.pounds,
-      purchaseOrderStatusId: staticRecords.purchasing.poStatuses.draft
+      purchaseOrderStatusId: purchaseOrderStatuses.draft
     },
     include: {
       item: true,

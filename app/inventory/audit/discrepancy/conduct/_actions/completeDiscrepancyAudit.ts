@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma"
 import { DiscrepancyItem } from "./getDiscrepancyItem"
-import { staticRecords } from "@/configs/staticRecords"
 import { getUser } from "@/actions/users/getUser"
 import { discrepancyAuditStatuses } from "@/configs/staticRecords/discrepancyAuditStatuses"
 import { discrepancyAuditItemStatuses } from "@/configs/staticRecords/discrepancyAuditItemStatuses"

@@ -1,5 +1,4 @@
 import Card from '@/components/Card'
-import { staticRecords } from '@/configs/staticRecords'
 import { ExBprBom } from '@/types/bprBom'
 import React from 'react'
 import ItemCard from './ItemCard'

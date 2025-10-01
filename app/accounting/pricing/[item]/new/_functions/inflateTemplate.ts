@@ -2,7 +2,6 @@
 
 import { accountingActions } from "@/actions/accounting"
 import { PricingTemplate } from "@/actions/accounting/finishedProducts/templates/getAll";
-import { staticRecords } from "@/configs/staticRecords";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { PricingTemplateAuxiliary } from "@prisma/client";
 

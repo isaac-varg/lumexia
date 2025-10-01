@@ -1,71 +1,71 @@
 'use server'
 
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem";
-import { staticRecords } from "@/configs/staticRecords";
+import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses";
 import prisma from "@/lib/prisma"
 
 export const getAllDiscrepancyAuditItems = async (auditId: string) => {
 
-    const items = await prisma.discrepancyAuditItem.findMany({
-        where: {
-            discrepancyAuditId: auditId,
-        },
+  const items = await prisma.discrepancyAuditItem.findMany({
+    where: {
+      discrepancyAuditId: auditId,
+    },
+    include: {
+      notes: {
         include: {
-            notes: {
-                include: {
-                    noteType: true,
-                    user: true,
-                }
-            },
-            item: true,
-            status: true,
-            discrepancyAuditItemTransaction: {
-                include: {
-                    transaction: {
-                        include: {
-                            user: true
-                        }
-                    },
-
-                },
-                orderBy: {
-                    createdAt: 'desc'
-                }
-            }
+          noteType: true,
+          user: true,
         }
+      },
+      item: true,
+      status: true,
+      discrepancyAuditItemTransaction: {
+        include: {
+          transaction: {
+            include: {
+              user: true
+            }
+          },
+
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      }
+    }
+  });
+
+  const transformedItems = await Promise.all(items.map(async (item) => {
+    const inventory = await getOnHandByItem(item.itemId);
+    const lastPo = await prisma.purchaseOrderItem.findFirst({
+      where: {
+        itemId: item.item.id,
+        purchaseOrderStatusId: purchaseOrderStatuses.received,
+      },
+      include: {
+        purchaseOrders: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
     });
 
-    const transformedItems = await Promise.all(items.map(async (item) => {
-        const inventory = await getOnHandByItem(item.itemId);
-        const lastPo = await prisma.purchaseOrderItem.findFirst({
-            where: {
-                itemId: item.item.id,
-                purchaseOrderStatusId: staticRecords.purchasing.poStatuses.received,
-            },
-            include: {
-               purchaseOrders: true, 
-            },
-            orderBy: {
-                updatedAt: 'desc',
-            },
-        });
 
 
+    const lastInventoryAudit = inventory.lastAudited;
+    const lastDiscrepancyAudit = item.discrepancyAuditItemTransaction.length > 0 ? item.discrepancyAuditItemTransaction[0] : null;
 
-        const lastInventoryAudit = inventory.lastAudited;
-        const lastDiscrepancyAudit = item.discrepancyAuditItemTransaction.length > 0 ? item.discrepancyAuditItemTransaction[0] : null;
-
-        return {
-            ...item,
-            lots: inventory.lots,
-            lastPo,
-            lastInventoryAudit,
-            lastDiscrepancyAudit,
-        }
-    }));
+    return {
+      ...item,
+      lots: inventory.lots,
+      lastPo,
+      lastInventoryAudit,
+      lastDiscrepancyAudit,
+    }
+  }));
 
 
-    return transformedItems;
+  return transformedItems;
 
 
 }

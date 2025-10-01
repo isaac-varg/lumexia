@@ -9,7 +9,6 @@ import { ProducedValidation } from "./validateProducedCommit"
 import { InterimFinishedProduct } from "@/store/pricingProducedSlice"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
-import { staticRecords } from "@/configs/staticRecords"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 export const commitProducedPricingExamination = async (

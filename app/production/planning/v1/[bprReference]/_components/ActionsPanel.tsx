@@ -1,7 +1,6 @@
 "use client"
 import ActionPanel from '@/components/ActionPanel'
 import Layout from '@/components/Layout'
-import { staticRecords } from '@/configs/staticRecords'
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
 import React from 'react'
 import { updateCompletedBprCascade } from '../_functions/updateCompletedBprCascade'

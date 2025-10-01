@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { staticRecords } from "@/configs/staticRecords";
 import { revalidatePage } from "@/actions/app/revalidatePage";
 import Card from "@/components/Card";
 import { User } from "@/actions/users/getUser";

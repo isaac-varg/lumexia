@@ -1,6 +1,5 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords"
 import prisma from "@/lib/prisma"
 import { handleCompletedBprCascade } from "./handleCompletedBprCascasde";
 import { DateTime } from "luxon";

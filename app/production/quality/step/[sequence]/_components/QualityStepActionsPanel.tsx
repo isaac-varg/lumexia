@@ -2,7 +2,6 @@
 import { revalidatePage } from '@/actions/app/revalidatePage'
 import bprBatchStepActions from '@/actions/production/bprBatchSteps'
 import ActionPanel from '@/components/ActionPanel'
-import { staticRecords } from '@/configs/staticRecords'
 import useProduction from '@/hooks/useProduction'
 import { ExBprBatchStep } from '@/types/bprBatchStep'
 import { createActivityLog } from '@/utils/auxiliary/createActivityLog'

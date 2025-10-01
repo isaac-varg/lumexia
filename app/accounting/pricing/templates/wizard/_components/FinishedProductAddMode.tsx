@@ -1,7 +1,6 @@
 import { accountingActions } from "@/actions/accounting"
 import { PricingTemplateFinishedProductPayload } from "@/actions/accounting/finishedProducts/templates/finishedProducts/create"
 import Form from "@/components/Form"
-import { staticRecords } from "@/configs/staticRecords"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import { usePricingTemplateWizardActions, usePricingTemplateWizardSelection } from "@/store/pricingTemplateWizardSlice"
 import { useForm } from "react-hook-form"

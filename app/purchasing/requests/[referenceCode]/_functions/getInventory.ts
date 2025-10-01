@@ -1,7 +1,6 @@
 "use server"
 
 import { getLotsByItem } from "@/actions/auxiliary/getLotsByItem"
-import { staticRecords } from "@/configs/staticRecords";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import prisma from "@/lib/prisma";
 
@@ -11,7 +10,7 @@ export const getInventory = async (itemId: string) => {
 
 
   const lots = await getLotsByItem(itemId);
-  const { queued, stagingMaterials, compounding, completed, awaitingMaterials, draft, allocatedMaterials, verifyingBomFulfillment } = bprStatuses;
+  const { queued, stagingMaterials, compounding, completed, awaitingMaterials, draft, allocatingMaterials, verifyingBomFulfillment } = bprStatuses;
 
 
   const item = await prisma.item.findFirst({
@@ -29,7 +28,7 @@ export const getInventory = async (itemId: string) => {
       bpr: {
         OR: [
           { bprStatusId: draft },
-          { bprStatusId: allocatedMaterials },
+          { bprStatusId: allocatingMaterials },
           { bprStatusId: verifyingBomFulfillment },
         ]
       }
