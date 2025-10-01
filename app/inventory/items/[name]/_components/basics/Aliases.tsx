@@ -2,13 +2,13 @@ import { ItemAlias } from "@/actions/inventory/aliases/getByItem"
 import Card from "@/components/Card"
 import Layout from "@/components/Layout"
 import LabelDataPair from "@/components/Text/LabelDataPair"
-import { staticRecords } from "@/configs/staticRecords"
 import useDialog from "@/hooks/useDialog"
 import { useItemActions, useItemSelection } from "@/store/itemSlice"
 import { TbPlus } from "react-icons/tb"
 import AliasDialog from "./AliasDialog"
+import { aliasTypes } from "@/configs/staticRecords/aliasTypes"
 
-const supplierAliasType = staticRecords.inventory.aliases.types.supplier
+const supplierAliasType = aliasTypes.supplier
 
 const Aliases = () => {
 

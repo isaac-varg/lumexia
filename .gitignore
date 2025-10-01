@@ -38,3 +38,7 @@ yarn-error.log*
 next-env.d.ts
 
 *.drawio.*
+
+# initalizated data
+configs/staticRecords/*
+!configs/staticRecords/.gitkeep

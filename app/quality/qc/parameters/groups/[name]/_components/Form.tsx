@@ -45,18 +45,21 @@ const Form = ({ group, examinationTypes }: { group: QcParameterGroup, examinatio
 
           <form.AppField
             name="name"
-            children={(field) => <field.TextField label="Name" />}
-          />
+          >
+            {(field) => <field.TextField label="Name" />}
+          </form.AppField>
 
           <form.AppField
             name="abbreviation"
-            children={(field) => <field.TextField label="Abbreviation" />}
-          />
+          >
+            {(field) => <field.TextField label="Abbreviation" />}
+          </form.AppField>
 
           <form.AppField
             name="examinationTypeId"
-            children={(field) => <field.SelectField label="Examination Type" options={examinationTypes.map(et => ({ value: et.id, label: et.name }))} />}
-          />
+          >
+            {(field) => <field.SelectField label="Examination Type" options={examinationTypes.map(et => ({ value: et.id, label: et.name }))} />}
+          </form.AppField>
 
           <div>
             <form.AppForm>

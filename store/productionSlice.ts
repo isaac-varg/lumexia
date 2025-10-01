@@ -5,7 +5,7 @@ import { ProductionStep } from "@/app/production/bpr/[bpr]/_actions/compounding/
 import { BprBomItem } from "@/app/production/bpr/[bpr]/_actions/getBprBom"
 import { getBprStagings, BprStagingItem } from "@/app/production/bpr/[bpr]/_actions/getBprStagings"
 import { ProductionBpr } from "@/app/production/bpr/[bpr]/_actions/getProductionBpr"
-import { staticRecords } from "@/configs/staticRecords"
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
 import { create } from "zustand"
 
 
@@ -105,7 +105,7 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
 
     setViewStatuses: () => {
       const { bpr, bom } = get()
-      const { notStarted, staged, verified, secondaryVerification } = staticRecords.production.bprStagingStatuses;
+      const { notStarted, staged, verified, secondaryVerification } = bprStagingStatuses;
 
       if (!bpr || bom.length === 0) return;
 

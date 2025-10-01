@@ -6,7 +6,6 @@ import { TbCheck, TbX } from "react-icons/tb"
 import { Fragment, useState } from "react"
 import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
 import { handleSingleStagingApproval } from "../../_actions/quality/handleSingleStagingApproval"
-import { staticRecords } from "@/configs/staticRecords"
 import { handleSingleStagingDeny } from "../../_actions/quality/handleSingleStagingDeny"
 
 

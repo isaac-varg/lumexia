@@ -1,13 +1,12 @@
 import bprActions from "@/actions/production/bprActions"
-import { staticRecords } from "@/configs/staticRecords"
 import { useProductionSelection } from "@/store/productionSlice"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import StepList from "./StepList"
 import StepDetails from "./StepDetails"
-import Instructions from "./Instructions"
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 
-const compounding = staticRecords.production.bprStatuses.compounding
+const compounding = bprStatuses.compounding
 
 const Compounding = () => {
   const { bpr } = useProductionSelection()

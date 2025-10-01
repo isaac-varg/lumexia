@@ -1,18 +1,17 @@
 'use client'
-import { usePlanningDashboardSelection } from '@/store/planningDashboardSlice'
 import MaterialSufficiencyLine from './MaterialSufficiencyLine'
 import MaterialAllocationDialog from './MaterialAllocationDialog'
-import { staticRecords } from '@/configs/staticRecords'
 import { useAppQuerySelection } from '@/store/appQuerySlice'
 import { useAppSelection } from '@/store/appSlice'
 import { useBprDetailsSelection } from '@/store/bprDetailsSlice'
+import { bprStatuses } from '@/configs/staticRecords/bprStatuses'
 
 const MaterialSufficiencyTable = () => {
 
   const { bomInventory, bpr } = useBprDetailsSelection()
   const { user } = useAppSelection();
   const status = bpr?.status.id
-  const isDraft = status === staticRecords.production.bprStatuses.draft
+  const isDraft = status === bprStatuses.draft
 
   return (
     <div>

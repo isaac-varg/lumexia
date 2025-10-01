@@ -1,29 +1,29 @@
 'use server'
-import { staticRecords } from "@/configs/staticRecords";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import prisma from "@/lib/prisma";
 
 export const getPricingMbpr = async (id: string) => {
-    const mbpr = await prisma.masterBatchProductionRecord.findFirst({
+  const mbpr = await prisma.masterBatchProductionRecord.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      BatchSize: {
         where: {
-            id,
+          recordStatusId: recordStatuses.active
         },
         include: {
-            BatchSize: {
-                where: {
-                    recordStatusId: staticRecords.app.recordStatuses.active
-                },
-                include: {
-                    batchSizeCompoundingVessels: {
-                        include: {
-                            compoundingVessel: true
-                        }
-                    }
-                }
+          batchSizeCompoundingVessels: {
+            include: {
+              compoundingVessel: true
             }
+          }
         }
-    });
+      }
+    }
+  });
 
-    return mbpr
+  return mbpr
 }
 
 export type PricingMbpr = Awaited<ReturnType<typeof getPricingMbpr>>

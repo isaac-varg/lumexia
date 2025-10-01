@@ -3,7 +3,7 @@ import { QcRecordFile } from "@/actions/quality/qc/recordFiles/getAllByRecord";
 import { FileResponseData } from "@/app/api/upload/route";
 import SectionTitle from "@/components/Text/SectionTitle";
 import FileManager from "@/components/Uploader/FileManager";
-import { staticRecords } from "@/configs/staticRecords";
+import { qcRecordFileTypes } from "@/configs/staticRecords/qcRecordFileTypes";
 import { useQcExaminationSelection } from "@/store/qcExaminationSlice";
 
 const Files = () => {
@@ -12,7 +12,7 @@ const Files = () => {
     if (!qcRecord) return;
     await qualityActions.qc.recordFiles.create({
       qcRecordId: qcRecord.id,
-      fileTypeId: staticRecords.quality.recordFiles.types.default,
+      fileTypeId: qcRecordFileTypes.general,
       fileId: data.fileId,
     })
   }

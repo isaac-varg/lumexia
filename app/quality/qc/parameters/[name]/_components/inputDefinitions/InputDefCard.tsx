@@ -47,33 +47,38 @@ const InputDefCard = ({ inputDefinition }: { inputDefinition: ParameterInputDefi
 
         <form.AppField
           name="name"
-          children={(field) => <field.TextField label="Name" />}
-        />
+        >
+          {(field) => <field.TextField label="Name" />}
+        </form.AppField>
         <form.AppField
           name="label"
-          children={(field) => <field.TextField label="Label" />}
-        />
+        >
+          {(field) => <field.TextField label="Label" />}
+        </form.AppField>
 
         <form.AppField
           name="required"
-          children={(field) => <field.ToggleField label="Required" />}
-        />
+        >
+          {(field) => <field.ToggleField label="Required" />}
+        </form.AppField>
 
         <form.AppField
           name="dataTypeId"
-          children={(field) => (
+        >
+          {(field) => (
             <field.SelectField
               label="Data Type"
               options={dataTypes.map(dt => ({ label: dt.name, value: dt.id }))}
             />
 
           )}
-        />
+        </form.AppField>
 
         <form.AppField
           name="unit"
-          children={(field) => <field.TextField label="Unit of Measurement" />}
-        />
+        >
+          {(field) => <field.TextField label="Unit of Measurement" />}
+        </form.AppField>
 
         <div className="flex items-center justify-between">
           <form.AppForm>

@@ -5,12 +5,13 @@ import { UnmanagedForm } from '@/components/UnmanagedForm';
 import { CompoundingVessel } from '@/actions/production/compoundingVessels/getAllCompoundinVessels';
 import { productionActions } from '@/actions/production';
 import { Prisma } from '@prisma/client';
-import { staticRecords } from '@/configs/staticRecords';
 import { createBatchSizeCompoundingVessel } from '../../_functions/createBatchSizeVessel';
 import { toFloat } from 'validator';
 import { updateBatchSizeVessel } from '../../_functions/updateBatchSizeVessel';
 import { setActiveBatchSize } from '../../_functions/setActiveBatchSize';
 import SelectItemStep from '@/app/production/planning/_components/createNewBpr/SelectItemStep';
+import { uom } from '@/configs/staticRecords/unitsOfMeasurement';
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 
 const BatchSizeForm = () => {
 
@@ -41,8 +42,8 @@ const BatchSizeForm = () => {
     const bzPayload: Prisma.BatchSizeUncheckedCreateInput = {
       mbprId: selectedMbpr?.id,
       quantity: parseFloat(sizeInput),
-      uomId: staticRecords.inventory.uom.lb,
-      recordStatusId: staticRecords.app.recordStatuses.inactive,
+      uomId: uom.pounds,
+      recordStatusId: recordStatuses.inactive,
     }
 
     // create batch size

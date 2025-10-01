@@ -1,11 +1,11 @@
 'use server'
 
-import { staticRecords } from "@/configs/staticRecords"
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma";
 
 // this doesn't 100 percent work but it gets most of the cases for having such bad data
 
-const consumptions = staticRecords.inventory.transactionTypes.bprConsumption;
+const consumptions = transactionTypes.bprConsumption;
 
 export const createMissingStagingConsumptionLink = async () => {
   // first get all the transactions whtat have the consumptions id from above and where the bprConsumption relation is null

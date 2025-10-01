@@ -3,7 +3,8 @@
 import billOfMaterialActions from "@/actions/production/billOfMaterials"
 import bprActions from "@/actions/production/bprActions"
 import bprBomActions from "@/actions/production/bprBom"
-import { staticRecords } from "@/configs/staticRecords"
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import { ExBillOfMaterials } from "@/types/billOfMaterials"
 
 export const createBprBom = async (bprId: string) => {
@@ -34,7 +35,7 @@ const createBprBomItem = async (bprId: string, bomId: string, quantity: number) 
     bprId,
     bomId,
     quantity,
-    uomId: staticRecords.inventory.uom.lb,
-    statusId: staticRecords.production.bprBomStatuses.notStarted,
+    uomId: uom.pounds,
+    statusId: bprStagingStatuses.notStarted,
   })
 }

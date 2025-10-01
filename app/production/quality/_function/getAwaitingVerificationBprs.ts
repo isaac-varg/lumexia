@@ -1,13 +1,13 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 import prisma from "@/lib/prisma";
 
-export const getAwaitingVerificationBprs = async (isSecondary: boolean = false)  => {
- const {staged, verified } = staticRecords.production.bprBomStatuses
+export const getAwaitingVerificationBprs = async (isSecondary: boolean = false) => {
+  const { staged, verified } = bprStagingStatuses
 
-  const statusId = isSecondary ? verified : staged 
-  
+  const statusId = isSecondary ? verified : staged
+
 
   const bprs = await prisma.batchProductionRecord.findMany({
     where: {

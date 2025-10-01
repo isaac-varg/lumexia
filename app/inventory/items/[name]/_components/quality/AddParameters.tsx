@@ -1,12 +1,12 @@
 import { QcTemplate } from "@/actions/quality/qc/templates/getAll"
 import SearcherUnmanaged from "@/components/Search/SearcherUnmanaged"
-import { staticRecords } from "@/configs/staticRecords"
 import { useItemActions, useItemSelection } from "@/store/itemSlice"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { handleTemplateCascade } from "../../_actions/quality/handleTemplateCascade"
 import { QcParameter } from "@/actions/quality/qc/parameters/getAll"
 import { handleSingleParameter } from "../../_actions/quality/handleSingleParameter"
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
 
 type AddMethods = 'template' | 'single' | 'ai' | null
 
@@ -51,7 +51,7 @@ const AddParameters = () => {
         <div className="grid grid-cols-3 gap-4">
           <button onClick={() => handleMethodSelect('template')} className={modeButtonClass}>Template</button>
           <button onClick={() => handleMethodSelect('single')} className={modeButtonClass}>Single</button>
-          {item?.procurementTypeId === staticRecords.inventory.procurementTypes.purchased && <button onClick={() => handleMethodSelect('ai')} className={modeButtonClass}>AI</button>}
+          {item?.procurementTypeId === procurementTypes.purchased && <button onClick={() => handleMethodSelect('ai')} className={modeButtonClass}>AI</button>}
         </div>
       )}
 

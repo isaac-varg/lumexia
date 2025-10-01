@@ -2,14 +2,14 @@ import Card from "@/components/Card"
 import { translations } from "../../_configs/translations"
 import { useTranslation } from "@/hooks/useTranslation"
 import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
-import { staticRecords } from "@/configs/staticRecords"
 import { useEffect, useState } from "react"
 import { ProductionStep } from "../../_actions/compounding/getSteps"
 import { handleCompleteActionable } from "../../_actions/compounding/handleCompleteActionable"
 import { useRouter } from "next/navigation"
 import { TbPlus } from "react-icons/tb"
+import { stepActionableTypes } from "@/configs/staticRecords/stepActionableTypes"
 
-const { completeStep } = staticRecords.production.bprStepActionableTypes
+const { completeStep } = stepActionableTypes
 
 const StepActions = () => {
   const { t } = useTranslation()

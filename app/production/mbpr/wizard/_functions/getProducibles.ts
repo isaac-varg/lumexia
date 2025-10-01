@@ -1,29 +1,29 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords"
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
 import prisma from "@/lib/prisma"
 
 export const getProducibles = async () => {
-    const items = await prisma.item.findMany({
-        where: {
-            procurementTypeId: staticRecords.inventory.procurementTypes.produced
-        },
-        include: {
-            aliases: true,
-        }
-    })
+  const items = await prisma.item.findMany({
+    where: {
+      procurementTypeId: procurementTypes.produced
+    },
+    include: {
+      aliases: true,
+    }
+  })
 
-    const transformedItems = items.map((item) => {
+  const transformedItems = items.map((item) => {
 
-        const mergedAliases = item.aliases?.map((alias) => alias.name).join(", ")
+    const mergedAliases = item.aliases?.map((alias) => alias.name).join(", ")
 
-        return {
-            ...item,
-            mergedAliases
-        }
-    })
+    return {
+      ...item,
+      mergedAliases
+    }
+  })
 
-    return transformedItems
+  return transformedItems
 }
 
 export type ProducibleItem = Awaited<ReturnType<typeof getProducibles>>[number]

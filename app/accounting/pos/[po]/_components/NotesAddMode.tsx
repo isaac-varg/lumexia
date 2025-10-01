@@ -5,71 +5,71 @@ import { TagSelectOptions } from '@/components/Form/TagSelect'
 import { useQcExaminationActions, useQcExaminationSelection } from "@/store/qcExaminationSlice"
 import { getUserId } from "@/actions/users/getUserId"
 import { qualityActions } from "@/actions/quality"
-import { staticRecords } from "@/configs/staticRecords"
 import { PoAccountingNoteType } from "@prisma/client"
 import { createAccountingNote } from "../../_actions/createAccountingNote"
 import { useRouter } from "next/navigation"
+import { poAccountingNoteTypes } from "@/configs/staticRecords/poAccountingNoteTypes"
 
 type Inputs = {
-    noteTypeId: string,
-    content: string,
+  noteTypeId: string,
+  content: string,
 }
 
 const NotesAddMode = ({ setMode, poId, noteTypes }: { setMode: Dispatch<SetStateAction<'view' | 'addNote' | 'addType'>>, poId: string, noteTypes: PoAccountingNoteType[] }) => {
 
 
-    const form = useForm<Inputs>({ defaultValues: { content: '', noteTypeId: staticRecords.accounting.notes.types.default } })
+  const form = useForm<Inputs>({ defaultValues: { content: '', noteTypeId: poAccountingNoteTypes.general } })
 
-    const router = useRouter()
-    const typeOptions: TagSelectOptions[] = noteTypes.map((type) => {
-        return { value: type.id, label: type.name, bgColor: type.bgColor, textColor: type.textColor }
-    });
-
-
-    const handleSubmit = async (data: Inputs) => {
-        if (!poId) return;
-
-        const userId = await getUserId()
-        await createAccountingNote({
-            purchaseOrderId: poId,
-            userId,
-            noteTypeId: data.noteTypeId,
-            content: data.content,
-        })
-        router.refresh();
-        setMode('view');
-
-    }
-
-    const handleCancel = () => {
-        setMode("view");
-        form.reset()
-    }
-
-    const handleAddNewType = () => {
-        setMode('addType')
-    }
+  const router = useRouter()
+  const typeOptions: TagSelectOptions[] = noteTypes.map((type) => {
+    return { value: type.id, label: type.name, bgColor: type.bgColor, textColor: type.textColor }
+  });
 
 
+  const handleSubmit = async (data: Inputs) => {
+    if (!poId) return;
 
-    return (
-        <Form.Root form={form} onSubmit={handleSubmit}>
+    const userId = await getUserId()
+    await createAccountingNote({
+      purchaseOrderId: poId,
+      userId,
+      noteTypeId: data.noteTypeId,
+      content: data.content,
+    })
+    router.refresh();
+    setMode('view');
 
+  }
 
-            <Form.TagSelect form={form} fieldName="noteTypeId" onAddNew={handleAddNewType} label="Type" options={typeOptions} />
+  const handleCancel = () => {
+    setMode("view");
+    form.reset()
+  }
 
-            <Form.Text form={form} fieldName="content" label="Content" required />
-
-
-            <div className='flex flex-row justify-end gap-x-2'>
-                <button className='btn btn-warning' onClick={() => handleCancel()}>Cancel</button>
-                <button className='btn btn-success' type='submit'>Submit</button>
-            </div>
+  const handleAddNewType = () => {
+    setMode('addType')
+  }
 
 
 
-        </Form.Root>
-    )
+  return (
+    <Form.Root form={form} onSubmit={handleSubmit}>
+
+
+      <Form.TagSelect form={form} fieldName="noteTypeId" onAddNew={handleAddNewType} label="Type" options={typeOptions} />
+
+      <Form.Text form={form} fieldName="content" label="Content" required />
+
+
+      <div className='flex flex-row justify-end gap-x-2'>
+        <button className='btn btn-warning' onClick={() => handleCancel()}>Cancel</button>
+        <button className='btn btn-success' type='submit'>Submit</button>
+      </div>
+
+
+
+    </Form.Root>
+  )
 }
 
 export default NotesAddMode

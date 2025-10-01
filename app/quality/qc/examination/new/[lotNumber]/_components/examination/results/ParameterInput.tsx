@@ -84,8 +84,9 @@ const ParameterInput = () => {
 
         <form.AppField
           name="value"
-          children={(field) => <field.TextField label={`${selectedItemParameter?.parameter.name} (${selectedItemParameter?.parameter.uom})`} />}
-        />
+        >
+          {(field) => <field.TextField label={`${selectedItemParameter?.parameter.name} (${selectedItemParameter?.parameter.uom})`} />}
+        </form.AppField>
 
 
         <form.AppField name="inputDefinitions" mode="array">

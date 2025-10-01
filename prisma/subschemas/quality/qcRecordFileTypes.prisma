@@ -1,7 +1,7 @@
 model QcRecordFileType {
     id                String             @id @default(uuid())
     name              String
-    abbreviaton       String?
+    abbreviation       String?
     description       String?
     bgColor           String             @map("bg_color")
     textColor         String             @map("text_color")

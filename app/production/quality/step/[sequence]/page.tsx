@@ -16,7 +16,6 @@ import stepAddendumActions from '@/actions/production/stepAddendums';
 import { StepInstruction } from '@/types/stepInstruction';
 import { StepAddendum } from '@/types/stepAddendum';
 import AddendumCard from '@/app/production/compounding/[id]/step/[sequence]/_components/AddendumCard';
-import { staticRecords } from '@/configs/staticRecords';
 import userRoleAssignmentActions from '@/actions/users/userRoleAssignments';
 import { getUserId } from '@/actions/users/getUserId';
 import ActionableCard from './_components/ActionableCard';
@@ -43,8 +42,6 @@ const StepQualityPage = async ({ searchParams }: Props) => {
   if (userRole.length > 1 || userRole.length === 0) { throw new Error("User has too many or no user role assignments.") }
 
   const completedActionables = actionables.filter((actionable) => actionable.isCompounded)
-  // removing quality role actionables for now
-  //    const qualityActionables = actionables.filter((actionable) => actionable.stepActionable.actionableType.userRoleId === staticRecords.app.userRoles.productionQuality)
 
   return (
     <div className='flex flex-col gap-y-4'>

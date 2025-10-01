@@ -1,37 +1,37 @@
-import { staticRecords } from "@/configs/staticRecords"
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import prisma from "@/lib/prisma"
 
 export const getAllCompoundables = async () => {
-    const bprs = await prisma.batchProductionRecord.findMany({
-        where: {
-            OR: [
-                {
-                    bprStatusId: staticRecords.production.bprStatuses.queued
-                },
-                {
-                    bprStatusId: staticRecords.production.bprStatuses.compounding
-                },
-                {
-                    bprStatusId: staticRecords.production.bprStatuses.stagingMaterials
-                }
-            ]
+  const bprs = await prisma.batchProductionRecord.findMany({
+    where: {
+      OR: [
+        {
+          bprStatusId: bprStatuses.queued
         },
-        include: {
-            status: true,
-            batchSize: true,
-            mbpr: {
-                include: {
-                    producesItem: true,
-                }
-            },
-            lotOrigin: {
-                include: {
-                    lot: true,
-                }
-            }
-
+        {
+          bprStatusId: bprStatuses.compounding
+        },
+        {
+          bprStatusId: bprStatuses.stagingMaterials
         }
-    })
+      ]
+    },
+    include: {
+      status: true,
+      batchSize: true,
+      mbpr: {
+        include: {
+          producesItem: true,
+        }
+      },
+      lotOrigin: {
+        include: {
+          lot: true,
+        }
+      }
 
-    return bprs;
+    }
+  })
+
+  return bprs;
 }

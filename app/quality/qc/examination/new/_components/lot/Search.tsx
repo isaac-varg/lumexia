@@ -4,7 +4,8 @@ import { getUserId } from "@/actions/users/getUserId"
 import Card from "@/components/Card"
 import SearcherUnmanaged from "@/components/Search/SearcherUnmanaged"
 import SectionTitle from "@/components/Text/SectionTitle"
-import { staticRecords } from "@/configs/staticRecords"
+import { qcExaminationTypes } from "@/configs/staticRecords/qcExaminationTypes"
+import { qcRecordStatuses } from "@/configs/staticRecords/qcRecordStatuses"
 import { useQcExaminationSelection } from "@/store/qcExaminationSlice"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -21,8 +22,8 @@ const Search = () => {
     const record = await qualityActions.qc.records.create({
       conductedById: userId,
       examinedLotId: lot.id,
-      examinationTypeId: staticRecords.quality.examinations.types.inProcess,
-      statusId: staticRecords.quality.records.statuses.open,
+      examinationTypeId: qcExaminationTypes.inProcess,
+      statusId: qcRecordStatuses.open,
     })
 
     const path = `/quality/qc/examination/new/${lot.lotNumber}?lotId=${lot.id}&examinationId=${record.id}`

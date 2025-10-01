@@ -1,28 +1,28 @@
 'use server'
 
 import { productionActions } from "@/actions/production";
-import { staticRecords } from "@/configs/staticRecords";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 export const setActiveBatchSize = async (activeBatchSizeId: string, mbprId: string) => {
 
 
-    const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(mbprId);
+  const batchSizes = await productionActions.mbprs.batchSizes.getAllByMbpr(mbprId);
 
-    const toDeactive = batchSizes.filter((size) => size.id !== activeBatchSizeId);
+  const toDeactive = batchSizes.filter((size) => size.id !== activeBatchSizeId);
 
-    if (toDeactive.length !== 0) {
+  if (toDeactive.length !== 0) {
 
-        const deactivated = toDeactive.map(async (td) => {
-            const response = await productionActions.mbprs.batchSizes.update(td.id, { recordStatusId: staticRecords.app.recordStatuses.inactive })
+    const deactivated = toDeactive.map(async (td) => {
+      const response = await productionActions.mbprs.batchSizes.update(td.id, { recordStatusId: recordStatuses.inactive })
 
-            return response
-        });
+      return response
+    });
 
-        await Promise.all(deactivated)
-    }
+    await Promise.all(deactivated)
+  }
 
 
-    await productionActions.mbprs.batchSizes.update(activeBatchSizeId, { recordStatusId: staticRecords.app.recordStatuses.active })
+  await productionActions.mbprs.batchSizes.update(activeBatchSizeId, { recordStatusId: recordStatuses.active })
 
 
 }

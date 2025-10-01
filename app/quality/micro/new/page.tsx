@@ -7,7 +7,7 @@ import { appActions } from '@/actions/app'
 const NewMicroSubmissionPage = async () => {
 
     const bprs = await getBprs();
-    const microFormData = await appActions.configs.getByGroup('microForm');
+    const microFormData = await appActions.configs.getByGroup('microform');
 
     return (
         <div className='flex flex-col gap-y-6'>

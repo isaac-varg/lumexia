@@ -3,9 +3,9 @@ import { useTranslation } from "@/hooks/useTranslation"
 import { translations } from "../../_configs/translations"
 import { ProductionStep } from "../../_actions/compounding/getSteps"
 import { useProductionSelection } from "@/store/productionSlice"
-import { staticRecords } from "@/configs/staticRecords"
+import { stepAddendumTypes } from "@/configs/staticRecords/stepAddendumTypes"
 
-const { warning, info } = staticRecords.production.stepAddendaTypes
+const { warning, info } = stepAddendumTypes;
 
 const classes = {
   bg: {

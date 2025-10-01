@@ -30,7 +30,7 @@ export const parameterColumns = [
     columnHelper.display({
         id: "hasInputDef",
         cell: (row) => {
-            const hasData = Object.keys(row.row.original.inputDefinition || {}).length !== 0;
+            const hasData = Object.keys(row.row.original.inputDefinitions || {}).length !== 0;
             return hasData.toString();
         },
         header: 'Has Input Definition'

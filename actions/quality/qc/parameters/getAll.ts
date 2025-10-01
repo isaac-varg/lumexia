@@ -5,6 +5,9 @@ import prisma from "@/lib/prisma"
 export const getAllQcParameters = async (filter?: 'wet') => {
   const parameters = await prisma.qcParameter.findMany({
     ...(filter === 'wet' && { where: { isWetParameter: true } }),
+    include: {
+      inputDefinitions: true,
+    }
   });
 
   return parameters;

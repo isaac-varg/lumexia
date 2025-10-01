@@ -1,11 +1,11 @@
 import batchSizeActions from '@/actions/production/batchSizes'
 import Dialog from '@/components/Dialog'
-import { staticRecords } from '@/configs/staticRecords'
 import { BatchSize } from '@/types/batchSize'
 import React, { useEffect, useState } from 'react'
 import { createBpr } from '../../_functions/createBpr'
 import useDialog from '@/hooks/useDialog'
 import { Item } from '@/types/item'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 
 const BatchSizeStep = ({ selectedMbprId, selectedItem }: { selectedMbprId: string | null, selectedItem: Item | null }) => {
 
@@ -39,7 +39,7 @@ const BatchSizeStep = ({ selectedMbprId, selectedItem }: { selectedMbprId: strin
         return
       }
 
-      const sizes = await batchSizeActions.getAll({ mbprId: selectedMbprId, recordStatusId: staticRecords.app.recordStatuses.active }, ["uom"])
+      const sizes = await batchSizeActions.getAll({ mbprId: selectedMbprId, recordStatusId: recordStatuses.active }, ["uom"])
       setSizes(sizes)
 
     };

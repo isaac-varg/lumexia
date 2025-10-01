@@ -1,19 +1,18 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords"
+import { appConfigGroups } from "@/configs/staticRecords/appConfigGroups"
 import prisma from "@/lib/prisma"
-import { Config } from "@prisma/client"
 
-type ConfigGroup = keyof typeof staticRecords.app.appConfigGroups
+type ConfigGroup = keyof typeof appConfigGroups
 
 export const getConfigByGroup = async (group: ConfigGroup) => {
-    const configs = await prisma.config.findMany({
-        where: {
-            configGroupId: staticRecords.app.appConfigGroups[group]
-        },
-    })
+  const configs = await prisma.config.findMany({
+    where: {
+      configGroupId: appConfigGroups[group]
+    },
+  })
 
-    return configs
+  return configs
 }
 
 

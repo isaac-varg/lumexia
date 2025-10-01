@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { getUserId } from "@/actions/users/getUserId";
-import { staticRecords } from "@/configs/staticRecords";
 import UserIcon from './UserIcon'
 import ConfigurationStateSetter from "../state/ConfigurationStateSetter";
 import AppQuery from "../state/AppQuery";
@@ -8,6 +7,7 @@ import AppStateSetter from "../state/AppStateSetter";
 import ThemeChangerDialog from "@/components/Theme/ThemeChangerDialog";
 import PageBreadcrumbs from "./PageBreadcrumbs";
 import ThemeIcon from "@/components/Theme/ThemeIcon";
+import { userConfigGroups } from "@/configs/staticRecords/userConfigGroups";
 
 const TopBar = async () => {
 
@@ -16,7 +16,7 @@ const TopBar = async () => {
   const panelSelections = await prisma.userConfig.findMany({
     where: {
       userId,
-      configGroupId: staticRecords.app.userConfigGroups.panelSelections
+      configGroupId: userConfigGroups.panelselections
     },
   });
 

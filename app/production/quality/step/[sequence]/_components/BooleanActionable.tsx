@@ -3,47 +3,48 @@ import bprStepActionableVerificationActions from '@/actions/production/bprStepAc
 import bprStepActionableActions from '@/actions/production/bprStepActionables'
 import { getUserId } from '@/actions/users/getUserId'
 import ActionButton from '@/components/ActionButton'
-import { staticRecords } from '@/configs/staticRecords'
+import { bprStepActionableStatuses } from '@/configs/staticRecords/bprStepActionableStatuses'
 import { ExBprStepActionable } from '@/types/bprStepActionable'
 import { createActivityLog } from '@/utils/auxiliary/createActivityLog'
 import React from 'react'
 
 const BooleanActionable = ({ bprStepActionable, bprId }: { bprStepActionable: ExBprStepActionable, bprId: string }) => {
 
-    const handleClick = async () => {
+  const handleClick = async () => {
 
-        const userId = await getUserId()
+    const userId = await getUserId()
 
-        const payload = {
-            completedByUserId: userId,
-            bprStepActionableId: bprStepActionable.id,
-            type: 'primary',
-        };
+    const payload = {
+      completedByUserId: userId,
+      bprStepActionableId: bprStepActionable.id,
+      type: 'primary',
+    };
 
-        await bprStepActionableVerificationActions.createNew(payload)
+    await bprStepActionableVerificationActions.createNew(payload)
 
-       let statusId = staticRecords.production.bprStepActionableStatuses.completed
-       if (bprStepActionable.stepActionable.secondaryVerificationRequired) {
-           statusId = staticRecords.production.bprStepActionableStatuses.secondaryVerification;
-       }
-        
+    let statusId: string = bprStepActionableStatuses.completed
 
-
-        await bprStepActionableActions.update({ id: bprStepActionable.id }, {
-            isVerified: true,
-            statusId,  
-        })
-
-        createActivityLog("VerifyBprActionable", "bpr", bprId, { context: 'Verified BPR batch step actionable.', bprStepActionableId: bprStepActionable.id, })
-
-        revalidatePage("/production/quality/step/[sequence]")
+    if (bprStepActionable.stepActionable.secondaryVerificationRequired) {
+      statusId = bprStepActionableStatuses.secondaryVerification;
     }
 
-    return (
-        <div>
-            <ActionButton onClick={() => handleClick()} >Done</ActionButton>
-        </div>
-    )
+
+
+    await bprStepActionableActions.update({ id: bprStepActionable.id }, {
+      isVerified: true,
+      statusId,
+    })
+
+    createActivityLog("VerifyBprActionable", "bpr", bprId, { context: 'Verified BPR batch step actionable.', bprStepActionableId: bprStepActionable.id, })
+
+    revalidatePage("/production/quality/step/[sequence]")
+  }
+
+  return (
+    <div>
+      <ActionButton onClick={() => handleClick()} >Done</ActionButton>
+    </div>
+  )
 }
 
 export default BooleanActionable

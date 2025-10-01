@@ -4,8 +4,8 @@ import SectionTitle from "@/components/Text/SectionTitle"
 import { useQcParameterSelection } from "@/store/qcParametersSlice"
 import InputDefCard from "./InputDefCard"
 import { qualityActions } from "@/actions/quality"
-import { staticRecords } from "@/configs/staticRecords"
 import { useRouter } from "next/navigation"
+import { qcDataTypes } from "@/configs/staticRecords/qcDataTypes"
 
 const InputDefinitions = () => {
 
@@ -21,7 +21,7 @@ const InputDefinitions = () => {
       parameterId: selectedParameter.id,
       name: '',
       label: '',
-      dataTypeId: staticRecords.quality.dataTypes.text,
+      dataTypeId: qcDataTypes.text,
       unit: '',
       required: false,
     });

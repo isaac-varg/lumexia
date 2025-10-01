@@ -1,7 +1,4 @@
-import { ItemPricingData } from '@/actions/accounting/pricing/getItemPricingData'
-import { Uom } from '@/actions/inventory/getAllUom'
 import Form from '@/components/Form'
-import { staticRecords } from '@/configs/staticRecords'
 import { TextUtils } from '@/utils/text'
 import { Prisma } from '@prisma/client'
 import React, { Dispatch, SetStateAction } from 'react'
@@ -10,6 +7,7 @@ import { updateItemPricingData } from '../../_actions/pricing/updateItemPricingD
 import { createItemPricingData } from '../../_actions/pricing/createItemPricingData'
 import { useItemSelection } from '@/store/itemSlice'
 import { useRouter } from 'next/navigation'
+import { uom as staticUOM } from "@/configs/staticRecords/unitsOfMeasurement"
 
 type Inputs = {
   arrivalCost: number
@@ -29,7 +27,7 @@ const FormMode = ({
   const { pricingData: pricing, item, options } = useItemSelection()
   const uom = options.uom
 
-  const defaults: Inputs = pricing ? { arrivalCost: pricing.arrivalCost, productionUsageCost: pricing.productionUsageCost, auxiliaryUsageCost: pricing.auxiliaryUsageCost, unforeseenDifficultiesCost: pricing.unforeseenDifficultiesCost, isUpcomingPriceActive: pricing.isUpcomingPriceActive, upcomingPrice: pricing.upcomingPrice, upcomingPriceUomId: pricing.upcomingPriceUomId } : { arrivalCost: 0, productionUsageCost: 0, auxiliaryUsageCost: 0, unforeseenDifficultiesCost: 0, isUpcomingPriceActive: false, upcomingPrice: 0, upcomingPriceUomId: staticRecords.inventory.uom.lb }
+  const defaults: Inputs = pricing ? { arrivalCost: pricing.arrivalCost, productionUsageCost: pricing.productionUsageCost, auxiliaryUsageCost: pricing.auxiliaryUsageCost, unforeseenDifficultiesCost: pricing.unforeseenDifficultiesCost, isUpcomingPriceActive: pricing.isUpcomingPriceActive, upcomingPrice: pricing.upcomingPrice, upcomingPriceUomId: pricing.upcomingPriceUomId } : { arrivalCost: 0, productionUsageCost: 0, auxiliaryUsageCost: 0, unforeseenDifficultiesCost: 0, isUpcomingPriceActive: false, upcomingPrice: 0, upcomingPriceUomId: staticUOM.pounds }
 
   const form = useForm<Inputs>({ defaultValues: defaults })
   const router = useRouter()

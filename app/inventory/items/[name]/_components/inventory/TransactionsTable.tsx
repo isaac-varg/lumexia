@@ -5,9 +5,9 @@ import { transactionColumns } from "./TransactionsColumn"
 import { Filter } from "@/types/filter"
 import { toFacetFilter } from "@/utils/data/toFacetFilter"
 import { LotTransaction } from "../../_actions/inventory/getTransactionsByLot"
-import { staticRecords } from "@/configs/staticRecords"
 import { useRouter } from "next/navigation"
 import { getBpr } from "../../_actions/inventory/getBpr"
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes"
 
 const TransactionsTable = () => {
   const { selectedLotTransactions } = useItemSelection()
@@ -30,7 +30,7 @@ const TransactionsTable = () => {
   const handleClick = async (data: LotTransaction) => {
 
     const transactionType = data.transactionTypeId
-    if (transactionType === staticRecords.inventory.transactionTypes.bprConsumption) {
+    if (transactionType === transactionTypes.bprConsumption) {
       const bpr = await getBpr(data.systemNote);
       if (!bpr) return;
       const path = `/production/planning/${bpr.referenceCode}?id=${bpr.id}`

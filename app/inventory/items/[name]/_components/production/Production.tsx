@@ -1,9 +1,9 @@
-import { staticRecords } from "@/configs/staticRecords"
 import { useItemSelection } from "@/store/itemSlice"
 import Produced from "./produced/Produced";
 import Purchased from "./purchased/Purchased";
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
 
-const { produced } = staticRecords.inventory.procurementTypes;
+const { produced } = procurementTypes;
 
 const Production = () => {
   const { item } = useItemSelection()

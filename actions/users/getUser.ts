@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { staticRecords } from "@/configs/staticRecords";
+import { userRoles } from "@/configs/staticRecords/userRoles";
 
 export const getUser = async () => {
   const session = await auth();
@@ -29,16 +29,16 @@ export const getUser = async () => {
 
   const isPurchasing = user &&
     user.UserRoleAssignment.length > 0 &&
-    user.UserRoleAssignment.some(r => r.userRoleId === staticRecords.app.userRoles.purchasing)
+    user.UserRoleAssignment.some(r => r.userRoleId === userRoles.purchasing)
 
   const isProduction = user && user.UserRoleAssignment.length > 0 &&
-    user.UserRoleAssignment.some(r => r.userRoleId === staticRecords.app.userRoles.production)
+    user.UserRoleAssignment.some(r => r.userRoleId === userRoles.production)
 
   const isProductionQuality = user && user.UserRoleAssignment.length > 0 &&
-    user.UserRoleAssignment.some(r => r.userRoleId === staticRecords.app.userRoles.productionQuality)
+    user.UserRoleAssignment.some(r => r.userRoleId === userRoles.productionQuality)
 
   const isProductionQualitySecondary = user && user.UserRoleAssignment.length > 0 &&
-    user.UserRoleAssignment.some(r => r.userRoleId === staticRecords.app.userRoles.productionQualitySecondary)
+    user.UserRoleAssignment.some(r => r.userRoleId === userRoles.productionQualitySecondary)
 
 
 

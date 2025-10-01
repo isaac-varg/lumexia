@@ -2,7 +2,8 @@
 
 import bprActions from "@/actions/production/bprActions";
 import bprBomActions from "@/actions/production/bprBom";
-import { staticRecords } from "@/configs/staticRecords"
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import prisma from "@/lib/prisma";
 import { BprBom } from "@/types/bprBom"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
@@ -13,9 +14,9 @@ import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 
 export const verifyBomItem = async (bomItem: BprBom, isSecondary: boolean) => {
 
-    console.log("oogie,goo", bomItem)
+  console.log("oogie,goo", bomItem)
 
-  const { verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
+  const { verified, secondaryVerification } = bprStagingStatuses;
 
   const statusId = isSecondary ? secondaryVerification : verified
 
@@ -34,27 +35,27 @@ export const verifyBomItem = async (bomItem: BprBom, isSecondary: boolean) => {
 
 const isBprStaged = async (bprId: string) => {
 
-    const boms = await prisma.bprBillOfMaterials.findMany({
-        where: {
-            bprId,
-        },
-        include: {
-            status: true,
-        } 
-    });
-
-    const isAllStaged = boms.every((item) => item.statusId === staticRecords.production.bprBomStatuses.secondaryVerification)
-
-    if (!isAllStaged) {
-        return;
+  const boms = await prisma.bprBillOfMaterials.findMany({
+    where: {
+      bprId,
+    },
+    include: {
+      status: true,
     }
+  });
 
-    handleAllStaged(bprId)
+  const isAllStaged = boms.every((item) => item.statusId === bprStagingStatuses.secondaryVerification)
+
+  if (!isAllStaged) {
+    return;
+  }
+
+  handleAllStaged(bprId)
 }
 
 const handleAllStaged = async (bprId: string) => {
 
-    await bprActions.update({ id: bprId }, { bprStatusId: staticRecords.production.bprStatuses.compounding});
+  await bprActions.update({ id: bprId }, { bprStatusId: bprStatuses.compounding });
 
-    await createActivityLog('updateBpr', 'bpr', bprId, {context: `BPR staging of materials completed`});
+  await createActivityLog('updateBpr', 'bpr', bprId, { context: `BPR staging of materials completed` });
 } 

@@ -14,7 +14,7 @@ const Aliases = () => {
       <p className="text-base-content text-lg font-poppins">{t(translations, 'aliasesContent')}</p>
 
       <div className="grid gap-2 grid-cols-1">
-        {selectedBomItem?.bom.item.aliases.map(alias => <div className="font-poppins text-lg text-base-content">{alias.name}</div>)}
+        {selectedBomItem?.bom.item.aliases.map(alias => <div key={alias.id} className="font-poppins text-lg text-base-content">{alias.name}</div>)}
       </div>
     </Card.Root>
 

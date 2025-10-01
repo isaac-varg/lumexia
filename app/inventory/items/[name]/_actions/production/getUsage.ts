@@ -1,6 +1,7 @@
 "use server"
 
-import { staticRecords } from "@/configs/staticRecords";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma"
 
 
@@ -43,7 +44,7 @@ export const getBomUsage = async (itemId: string) => {
     where: {
       itemId,
       mbpr: {
-        recordStatusId: staticRecords.app.recordStatuses.active,
+        recordStatusId: recordStatuses.active,
       }
     },
     include: {
@@ -52,7 +53,7 @@ export const getBomUsage = async (itemId: string) => {
           producesItem: true,
           BatchSize: {
             where: {
-              recordStatusId: staticRecords.app.recordStatuses.active,
+              recordStatusId: recordStatuses.active,
             },
           }
         }
@@ -62,7 +63,7 @@ export const getBomUsage = async (itemId: string) => {
 
   const consumption = await prisma.transaction.findMany({
     where: {
-      transactionTypeId: staticRecords.inventory.transactionTypes.bprConsumption,
+      transactionTypeId: transactionTypes.bprConsumption,
       lot: {
         itemId: itemId
       }

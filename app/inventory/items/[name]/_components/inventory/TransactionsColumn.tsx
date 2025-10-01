@@ -5,12 +5,11 @@ import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 import { createColumnHelper } from "@tanstack/react-table";
 import { LotTransaction } from "../../_actions/inventory/getTransactionsByLot";
 import { DateTime } from "luxon";
-import { dateFormatString } from "@/configs/data/dateFormatString";
-import { staticRecords } from "@/configs/staticRecords";
 import UserIcon from "@/components/UI/UserIcon";
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 
 
-const { adjustmentAddition, adjustmentRemove, bprConsumption } = staticRecords.inventory.transactionTypes
+const { adjustmentAddition, adjustmentRemoval, bprConsumption } = transactionTypes
 
 const columnHelper = createColumnHelper<LotTransaction>();
 
@@ -34,7 +33,7 @@ export const transactionColumns = [
       switch (type) {
         case adjustmentAddition:
           return <div className="badge badge-success badge-md">Addition</div>
-        case adjustmentRemove:
+        case adjustmentRemoval:
           return <div className="badge badge-error badge-md">Removal</div>
         case bprConsumption:
           return <div className="badge badge-warning badge-md">BPR Consumption</div>
