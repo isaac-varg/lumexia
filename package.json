@@ -11,6 +11,7 @@
     "merge": "npx prisma-multischema",
     "init": "tsx ./scripts/initialization/main.ts",
     "init-data": "tsx ./scripts/initialization/actions/createDataFile.ts",
+    "generate-static-records": "tsx ./scripts/generate/main.ts",
     "seed": "npx prisma db seed",
     "reset": "npx prisma migrate reset",
     "import-staging": "tsx ./utils/importer/modules/staging/main.ts"
