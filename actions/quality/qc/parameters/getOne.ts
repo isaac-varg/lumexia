@@ -7,6 +7,9 @@ export const getOneQcParameter = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      inputDefinitions: true,
+    }
   });
 
   return parameter

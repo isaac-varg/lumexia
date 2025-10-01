@@ -5,6 +5,7 @@ import TabsPanel from '@/components/Tabs'
 import React from 'react'
 import ByStatusPanel from './ByStatusPanel'
 import ByTablePanel from './ByTablePanel'
+import { useBprPlanningSelection } from '@/store/bprPlanningSlice'
 
 
 const PlanningTabs = () => {
@@ -19,6 +20,10 @@ const PlanningTabs = () => {
     }
   ]
 
+  const { bprs, statuses } = useBprPlanningSelection()
+
+  const bprsArray = Object.values(bprs).flat()
+
   return (
     <TabsPanel.Root panelStateName='planningDashboard'>
 
@@ -26,11 +31,11 @@ const PlanningTabs = () => {
 
 
       <TabsPanel.Content identifier='byStatus'>
-        <ByStatusPanel bprs={bprs} statuses={statuses} />
+        <ByStatusPanel bprs={bprsArray} statuses={statuses} />
       </TabsPanel.Content>
 
       <TabsPanel.Content identifier='byTable'>
-        <ByTablePanel bprs={bprs} />
+        <ByTablePanel bprs={bprsArray} />
       </TabsPanel.Content>
 
     </TabsPanel.Root>

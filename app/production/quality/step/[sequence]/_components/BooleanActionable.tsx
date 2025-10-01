@@ -22,7 +22,7 @@ const BooleanActionable = ({ bprStepActionable, bprId }: { bprStepActionable: Ex
 
     await bprStepActionableVerificationActions.createNew(payload)
 
-    let statusId = bprStepActionableStatuses.completed
+    let statusId: string = bprStepActionableStatuses.completed
 
     if (bprStepActionable.stepActionable.secondaryVerificationRequired) {
       statusId = bprStepActionableStatuses.secondaryVerification;

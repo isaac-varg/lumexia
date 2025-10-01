@@ -40,13 +40,15 @@ const Form = ({ template }: { template: QcTemplate }) => {
 
           <form.AppField
             name="name"
-            children={(field) => <field.TextField label="Name" />}
-          />
+          >
+            {(field) => <field.TextField label="Name" />}
+          </form.AppField>
 
           <form.AppField
             name="description"
-            children={(field) => <field.TextField label="Description" />}
-          />
+          >
+            {(field) => <field.TextField label="Description" />}
+          </form.AppField>
           <div>
             <form.AppForm>
               <form.SubmitButton />
