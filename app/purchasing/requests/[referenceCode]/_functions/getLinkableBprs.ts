@@ -1,48 +1,49 @@
 "use server"
 
 import { staticRecords } from "@/configs/staticRecords"
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 import prisma from "@/lib/prisma"
 
 export const getLinkableBprs = async (itemId: string) => {
 
-    const linkables = await prisma.bprBillOfMaterials.findMany({
-        where: {
-            bom: {
-                itemId,
-            },
-            bpr: {
-                OR: [
-                    { bprStatusId: staticRecords.production.bprStatuses.draft },
-                    { bprStatusId: staticRecords.production.bprStatuses.allocatedMaterials },
-                    { bprStatusId: staticRecords.production.bprStatuses.awaitingMaterials },
-                    { bprStatusId: staticRecords.production.bprStatuses.verifyingBomFulfillment },
-                    { bprStatusId: staticRecords.production.bprStatuses.knownMaterialArrival },
-                ]
-            }
-        },
+  const linkables = await prisma.bprBillOfMaterials.findMany({
+    where: {
+      bom: {
+        itemId,
+      },
+      bpr: {
+        OR: [
+          { bprStatusId: bprStatuses.draft },
+          { bprStatusId: bprStatuses.allocatingMaterials },
+          { bprStatusId: bprStatuses.awaitingMaterials },
+          { bprStatusId: bprStatuses.verifyingBomFulfillment },
+          { bprStatusId: bprStatuses.knownMaterialArrival },
+        ]
+      }
+    },
+    include: {
+      bpr: {
         include: {
-            bpr: {
-                include: {
-                    mbpr: {
-                        include: {
-                            producesItem: true
-                        }
-                    },
-                    status: true,
-                    batchSize: true
-                }
-            },
-            bom: true,
-        },
-        orderBy: {
-            bpr: {
-                referenceCode: 'desc'
+          mbpr: {
+            include: {
+              producesItem: true
             }
-        },
-        take: 8
-    })
+          },
+          status: true,
+          batchSize: true
+        }
+      },
+      bom: true,
+    },
+    orderBy: {
+      bpr: {
+        referenceCode: 'desc'
+      }
+    },
+    take: 8
+  })
 
-    return linkables
+  return linkables
 }
 
 export type LinkableBatches = Awaited<ReturnType<typeof getLinkableBprs>>

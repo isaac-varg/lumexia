@@ -5,13 +5,14 @@ import { translations } from "../../_configs/translations"
 import MaterialButton from "../shared/MaterialButton"
 import Card from "@/components/Card"
 import { staticRecords } from "@/configs/staticRecords"
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
 
 const MaterialList = () => {
 
   const { bom } = useProductionSelection()
   const sorted = bom.sort((a, b) => parseInt(a.bom.identifier) - parseInt(b.bom.identifier));
-  const filtered = bom.filter(item => item.statusId === staticRecords.production.bprStagingStatuses.notStarted)
-  const stagedFiltered = sorted.filter(item => item.statusId !== staticRecords.production.bprStagingStatuses.notStarted);
+  const filtered = bom.filter(item => item.statusId === bprStagingStatuses.notStarted)
+  const stagedFiltered = sorted.filter(item => item.statusId !== bprStagingStatuses.notStarted);
   const { t } = useTranslation()
 
   return (

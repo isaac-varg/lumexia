@@ -3,8 +3,9 @@
 import prisma from "@/lib/prisma"
 import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
 
-const { verified, secondaryVerification } = staticRecords.production.bprBomStatuses
+const { verified, secondaryVerification } = bprStagingStatuses
 
 export const handleCompleteVerification = async (qualityMode: 'primary' | 'secondary', bprBomItemId: string, bprBomItemName: string, bprId: string) => {
   const statusId = qualityMode === 'primary' ? verified : secondaryVerification;

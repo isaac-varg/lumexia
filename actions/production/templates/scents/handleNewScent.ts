@@ -1,6 +1,7 @@
 "use server"
 
 import { staticRecords } from "@/configs/staticRecords";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client";
@@ -62,7 +63,7 @@ export const handleNewScent = async (itemId: string) => {
 
   const mbprPayload: Prisma.MasterBatchProductionRecordUncheckedCreateInput = {
     producesItemId: itemId,
-    recordStatusId: staticRecords.app.recordStatuses.active,
+    recordStatusId: recordStatuses.active,
     versionLabel: 'Main',
     estimatedTotalTime: 0.25,
   }
@@ -126,7 +127,7 @@ export const handleNewScent = async (itemId: string) => {
       mbprId: mbpr.id,
       quantity: 5,
       uomId: uom.pounds,
-      recordStatusId: staticRecords.app.recordStatuses.active,
+      recordStatusId: recordStatuses.active,
     }
   });
 

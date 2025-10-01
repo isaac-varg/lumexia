@@ -5,6 +5,7 @@ import { InterimAuxiliaryItem } from "../_components/shared/StepAuxiliaries"
 import { FinishedProductDetails } from "../_components/shared/StepFinishedProductDetails"
 import { staticRecords } from "@/configs/staticRecords"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 
 export const submitNewFinishedProduct = async (fillItemId: string, finishedProductDetails: FinishedProductDetails, auxiliaries: InterimAuxiliaryItem[]) => {
 
@@ -26,7 +27,7 @@ export const submitNewFinishedProduct = async (fillItemId: string, finishedProdu
       markup: 0,
       profit: 0,
       profitPercentage: 0,
-      recordStatusId: staticRecords.app.recordStatuses.active,
+      recordStatusId: recordStatuses.active,
     }
   });
 

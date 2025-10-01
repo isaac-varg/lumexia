@@ -3,6 +3,7 @@ import { staticRecords } from "@/configs/staticRecords"
 import { useItemSelection } from "@/store/itemSlice"
 import { useEffect, useState } from "react"
 import { ItemActiveMbprBatchSize } from "../../../_actions/production/getActiveMbpr"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 
 
 const ActiveMbpr = () => {
@@ -12,7 +13,7 @@ const ActiveMbpr = () => {
 
   useEffect(() => {
     if (!activeMbpr) return;
-    const size = activeMbpr.BatchSize.filter(bz => bz.recordStatusId === staticRecords.app.recordStatuses.active)[0]
+    const size = activeMbpr.BatchSize.filter(bz => bz.recordStatusId === recordStatuses.active)[0]
 
     setActiveSize(size)
   }, [activeMbpr])

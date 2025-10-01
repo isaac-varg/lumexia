@@ -5,6 +5,8 @@ import { ProductionStep } from "./getSteps"
 import { DateTime } from "luxon"
 import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
+import { bprStepActionableStatuses } from "@/configs/staticRecords/bprStepActionableStatuses"
+import { bprBatchStepStatuses } from "@/configs/staticRecords/bprBatchStepStatuses"
 
 // handles an actionable of type complete step
 
@@ -24,7 +26,7 @@ export const handleCompleteActionable = async (batchStep: ProductionStep, comple
     data: {
       completedAt: timestamp,
       isComplete: true,
-      statusId: staticRecords.production.bprBatchStepStatuses.completed,
+      statusId: bprBatchStepStatuses.completed,
     }
   });
 
@@ -34,7 +36,7 @@ export const handleCompleteActionable = async (batchStep: ProductionStep, comple
     },
     data: {
       isCompounded: true,
-      statusId: staticRecords.production.bprStepActionableStatuses.completed
+      statusId: bprStepActionableStatuses.completed
     }
   })
 

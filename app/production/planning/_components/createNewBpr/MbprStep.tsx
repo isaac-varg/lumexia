@@ -1,5 +1,6 @@
 import mbprActions from '@/actions/production/mbprActions'
 import { staticRecords } from '@/configs/staticRecords'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import { MasterBatchProductionRecord } from '@/types/masterBatchProductionRecord'
 import React, { useEffect, useState } from 'react'
 import { useWizard } from 'react-use-wizard'
@@ -17,7 +18,7 @@ const MbprStep = ({ selectedItemId, onMbprSelection }: { selectedItemId: string 
       if (!selectedItemId) {
         return;
       }
-      const data = await mbprActions.getAll({ producesItemId: selectedItemId, recordStatusId: staticRecords.app.recordStatuses.active });
+      const data = await mbprActions.getAll({ producesItemId: selectedItemId, recordStatusId: recordStatuses.active });
 
       setMbprs(data)
     }

@@ -4,6 +4,7 @@ import { getUserId } from "@/actions/users/getUserId";
 import { staticRecords } from "@/configs/staticRecords"
 import { inventoryTypes } from "@/configs/staticRecords/inventoryTypes";
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
+import { users } from "@/configs/staticRecords/users";
 import prisma from "@/lib/prisma"
 import { DateTime } from "luxon";
 
@@ -39,7 +40,7 @@ export const createNewItemAndRequest = async (generalRequestId: string, itemType
   await prisma.requestNote.create({
     data: {
       requestId: request.id,
-      userId: staticRecords.app.lumexia,
+      userId: users.lumexia,
       content: `This was automagically created from General Requst #${generalRequestReferenceCode}`,
       noteTypeId: 'bdf7c7b0-3524-4f2c-a43b-b9a6c8c77322',
 

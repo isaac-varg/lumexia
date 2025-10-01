@@ -1,47 +1,48 @@
 "use server"
 
 import { staticRecords } from "@/configs/staticRecords"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import prisma from "@/lib/prisma"
 
 export const getOneMbpr = async (id: string) => {
 
-    const mbpr = await prisma.masterBatchProductionRecord.findUniqueOrThrow({
-        where: {
-            id,
-        },
+  const mbpr = await prisma.masterBatchProductionRecord.findUniqueOrThrow({
+    where: {
+      id,
+    },
+    include: {
+      producesItem: true,
+      BillOfMaterial: {
         include: {
-            producesItem: true,
-            BillOfMaterial: {
-                include: {
-                    item: true,
-                    step: true,
-                }
-            },
-            BatchSize: {
-                include: {
-                    recordStatus: true
-                }
-            },
-            recordStatus: true,
+          item: true,
+          step: true,
         }
-    })
-
-    const activeBatchSize = mbpr.BatchSize.filter((bs) => bs.recordStatusId ===  staticRecords.app.recordStatuses.active)[0];
-
-    
-    const transformedBOM = mbpr.BillOfMaterial.map((item) => {
-        return {
-            ...item,
-            amount: (item.concentration / 100) *  activeBatchSize.quantity,
+      },
+      BatchSize: {
+        include: {
+          recordStatus: true
         }
-    });
-
-    const transformedMbpr = {
-        ...mbpr,
-        bom: transformedBOM
+      },
+      recordStatus: true,
     }
+  })
 
-    return transformedMbpr 
+  const activeBatchSize = mbpr.BatchSize.filter((bs) => bs.recordStatusId === recordStatuses.active)[0];
+
+
+  const transformedBOM = mbpr.BillOfMaterial.map((item) => {
+    return {
+      ...item,
+      amount: (item.concentration / 100) * activeBatchSize.quantity,
+    }
+  });
+
+  const transformedMbpr = {
+    ...mbpr,
+    bom: transformedBOM
+  }
+
+  return transformedMbpr
 }
 
 export type Mbpr = Awaited<ReturnType<typeof getOneMbpr>>

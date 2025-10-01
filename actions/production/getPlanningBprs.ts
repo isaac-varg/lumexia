@@ -1,10 +1,8 @@
 'use server'
-import { staticRecords } from "@/configs/staticRecords";
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import prisma from "@/lib/prisma";
-import { groupByProperty } from "@/utils/data/groupByProperty";
-import { sortByProperty } from "@/utils/data/sortByProperty.generic";
 
-const { failed, completed, released } = staticRecords.production.bprStatuses;
+const { failed, completed, released } = bprStatuses;
 
 export const getPlanningBprs = async () => {
   const bprs = await prisma.batchProductionRecord.findMany({

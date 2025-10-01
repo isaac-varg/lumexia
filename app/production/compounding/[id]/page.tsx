@@ -6,6 +6,7 @@ import { staticRecords } from '@/configs/staticRecords';
 import StagingPanel from './_components/staging/StagingPanel';
 import CompoundingPanel from './_components/compounding/CompoundingPanel';
 import QueuedPanel from './_components/queued/QueuedPanel';
+import { bprStatuses } from '@/configs/staticRecords/bprStatuses';
 
 type CompoundingPageProps = {
   searchParams: {
@@ -18,9 +19,9 @@ const CompoundingPage = async ({ searchParams }: CompoundingPageProps) => {
   const bpr = await getBpr(searchParams.id)
   const bom = await getBom(bpr?.id)
 
-  const isStaging = bpr?.bprStatusId === staticRecords.production.bprStatuses.stagingMaterials;
-  const isCompoudning = bpr?.bprStatusId === staticRecords.production.bprStatuses.compounding;
-  const isQueued = bpr?.bprStatusId === staticRecords.production.bprStatuses.queued;
+  const isStaging = bpr?.bprStatusId === bprStatuses.stagingMaterials;
+  const isCompoudning = bpr?.bprStatusId === bprStatuses.compounding;
+  const isQueued = bpr?.bprStatusId === bprStatuses.queued;
 
 
 
@@ -32,7 +33,7 @@ const CompoundingPage = async ({ searchParams }: CompoundingPageProps) => {
 
       {isCompoudning && <CompoundingPanel bpr={bpr as any} />}
 
-      {isQueued && <QueuedPanel bpr={bpr as any} />} 
+      {isQueued && <QueuedPanel bpr={bpr as any} />}
 
     </div>
   )

@@ -4,8 +4,9 @@ import { BprStagingItem } from "../getBprStagings";
 import { staticRecords } from "@/configs/staticRecords";
 import { getUserId } from "@/actions/users/getUserId";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 
-const { verified, secondaryVerification } = staticRecords.production.bprStagingStatuses;
+const { verified, secondaryVerification } = bprStagingStatuses;
 
 
 export const handleSingleStagingApproval = async (qualityMode: 'primary' | 'secondary', staging: BprStagingItem, bprId: string, itemName: string) => {

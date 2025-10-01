@@ -12,6 +12,7 @@ import { updateBatchSizeVessel } from '../../_functions/updateBatchSizeVessel';
 import { setActiveBatchSize } from '../../_functions/setActiveBatchSize';
 import SelectItemStep from '@/app/production/planning/_components/createNewBpr/SelectItemStep';
 import { uom } from '@/configs/staticRecords/unitsOfMeasurement';
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 
 const BatchSizeForm = () => {
 
@@ -43,7 +44,7 @@ const BatchSizeForm = () => {
       mbprId: selectedMbpr?.id,
       quantity: parseFloat(sizeInput),
       uomId: uom.pounds,
-      recordStatusId: staticRecords.app.recordStatuses.inactive,
+      recordStatusId: recordStatuses.inactive,
     }
 
     // create batch size

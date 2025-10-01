@@ -23,7 +23,11 @@ const Main = async () => {
     // import the data
     const filePath = path.join(dataDirPath, fileName);
     const { data } = require(filePath);
-    const { modelName, seed, staticRecordName, staticRecordKeyName } = data;
+    const { modelName, seed, staticRecordName, staticRecordKeyName, dependency } = data;
+
+    if (dependency) {
+      // skip and then run once all others done
+    }
 
     // ensure model exists on the prisma client/postgresql database
     if (!prismaClient[modelName]) {

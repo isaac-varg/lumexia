@@ -43,8 +43,6 @@ const StepQualityPage = async ({ searchParams }: Props) => {
   if (userRole.length > 1 || userRole.length === 0) { throw new Error("User has too many or no user role assignments.") }
 
   const completedActionables = actionables.filter((actionable) => actionable.isCompounded)
-  // removing quality role actionables for now
-  //    const qualityActionables = actionables.filter((actionable) => actionable.stepActionable.actionableType.userRoleId === staticRecords.app.userRoles.productionQuality)
 
   return (
     <div className='flex flex-col gap-y-4'>

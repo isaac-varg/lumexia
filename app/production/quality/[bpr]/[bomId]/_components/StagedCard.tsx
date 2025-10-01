@@ -6,10 +6,11 @@ import React, { useState } from 'react';
 import { verifyBomItemStaging } from '../_functions/verifyBomItemStaging';
 import { staticRecords } from '@/configs/staticRecords';
 import useProduction from '@/hooks/useProduction';
+import { bprStagingStatuses } from '@/configs/staticRecords/bprStagingStatuses';
 
 const StagedCard = ({ staging }: { staging: ExBprStaging }) => {
 
-  const { staged, verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
+  const { staged, verified, secondaryVerification } = bprStagingStatuses;
   const { isSecondaryVerificationMode } = useProduction()
 
   const completedStatus = isSecondaryVerificationMode ? secondaryVerification : verified;

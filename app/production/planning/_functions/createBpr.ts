@@ -17,6 +17,7 @@ import { createNotionNotification } from "./createNotionNotification"
 import { accountingActions } from "@/actions/accounting"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import { containerTypes } from "@/configs/staticRecords/containerTypes"
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 
 interface BprWizardData {
   size: BatchSize,
@@ -28,7 +29,7 @@ export const createBpr = async (wizardData: BprWizardData) => {
 
   const payload = {
     mbprId: wizardData.mbprId,
-    bprStatusId: staticRecords.production.bprStatuses.draft,
+    bprStatusId: bprStatuses.draft,
     batchSizeId: wizardData.size.id
   };
 

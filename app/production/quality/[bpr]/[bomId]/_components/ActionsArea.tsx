@@ -7,13 +7,14 @@ import { verifyBomItem } from '../_functions/verifyBomItem'
 import { ExBprBom } from '@/types/bprBom'
 import { useRouter } from 'next/navigation'
 import useProduction from '@/hooks/useProduction'
+import { bprStagingStatuses } from '@/configs/staticRecords/bprStagingStatuses'
 
 const ActionsArea = ({ stagings, bomItem }: { stagings: ExBprStaging[], bomItem: ExBprBom }) => {
 
   const router = useRouter();
   const { isSecondaryVerificationMode } = useProduction()
 
-  const { verified, secondaryVerification } = staticRecords.production.bprBomStatuses;
+  const { verified, secondaryVerification } = bprStagingStatuses;
   const allVerifiedComparison = isSecondaryVerificationMode ? secondaryVerification : verified;
 
   const allVerified = stagings.every((staging) => staging.bprStagingStatusId === allVerifiedComparison)

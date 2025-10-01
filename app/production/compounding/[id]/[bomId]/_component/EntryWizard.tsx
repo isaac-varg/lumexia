@@ -14,6 +14,7 @@ import InvalidLotAlert from './InvalidLotAlert'
 import { validateInventory } from '../_functions/validateInventory'
 import InvalidQuantityLotAlert from './InvalidQuantityAlert'
 import { uom } from '@/configs/staticRecords/unitsOfMeasurement'
+import { bprStagingStatuses } from '@/configs/staticRecords/bprStagingStatuses'
 
 const EntryWizard = ({ bomItem, setIsViewMode }: { bomItem: any, setIsViewMode: Dispatch<React.SetStateAction<boolean>> }) => {
   const [lot, setLot] = useState<null | string>(null)
@@ -41,7 +42,7 @@ const EntryWizard = ({ bomItem, setIsViewMode }: { bomItem: any, setIsViewMode: 
         lotId: lot,
         pulledByUserId: user,
         quantity,
-        bprStagingStatusId: staticRecords.production.bprBomStatuses.staged,
+        bprStagingStatusId: bprStagingStatuses.staged,
         uomId: uom.pounds,
       }
 

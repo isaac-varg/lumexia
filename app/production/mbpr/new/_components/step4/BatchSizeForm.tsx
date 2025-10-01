@@ -3,6 +3,7 @@ import batchSizeActions from '@/actions/production/batchSizes'
 import Dialog from '@/components/Dialog'
 import Form from '@/components/Form'
 import { staticRecords } from '@/configs/staticRecords'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import { uom } from '@/configs/staticRecords/unitsOfMeasurement'
 import useDialog from '@/hooks/useDialog'
 import useProductionWizard from '@/hooks/useProductionWizard'
@@ -27,7 +28,7 @@ const BatchSizeForm = () => {
     const payload = {
       mbprId: selectedMbpr.id,
       uomId: uom.pounds,
-      recordStatusId: staticRecords.app.recordStatuses.active,
+      recordStatusId: recordStatuses.active,
       quantity: data.quantity,
     }
 

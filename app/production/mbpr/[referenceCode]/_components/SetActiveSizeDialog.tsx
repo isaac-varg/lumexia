@@ -3,6 +3,7 @@ import { productionActions } from '@/actions/production'
 import { Mbpr } from '@/actions/production/mbpr/getOneMbpr'
 import Dialog from '@/components/Dialog'
 import { staticRecords } from '@/configs/staticRecords'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import React from 'react'
 
 type batchSize = Mbpr['BatchSize'][number]
@@ -16,7 +17,7 @@ const SetActiveSizeDialog = ({ sizes }: { sizes: batchSize[] }) => {
     if (toDeactive.length !== 0) {
 
       const deactivated = toDeactive.map(async (td) => {
-        const response = await productionActions.mbprs.batchSizes.update(td.id, { recordStatusId: staticRecords.app.recordStatuses.inactive })
+        const response = await productionActions.mbprs.batchSizes.update(td.id, { recordStatusId: recordStatuses.inactive })
 
         return response
       });
@@ -25,7 +26,7 @@ const SetActiveSizeDialog = ({ sizes }: { sizes: batchSize[] }) => {
     }
 
 
-    await productionActions.mbprs.batchSizes.update(selectedSize.id, { recordStatusId: staticRecords.app.recordStatuses.active })
+    await productionActions.mbprs.batchSizes.update(selectedSize.id, { recordStatusId: recordStatuses.active })
 
     location.reload()
 

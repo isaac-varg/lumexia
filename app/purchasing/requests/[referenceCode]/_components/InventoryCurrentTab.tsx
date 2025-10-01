@@ -11,14 +11,15 @@ import { LastAuditRequest } from '../_functions/getAuditRequests'
 import { staticRecords } from '@/configs/staticRecords'
 import { DateTime } from 'luxon'
 import { dateFormatString } from '@/configs/data/dateFormatString'
+import { auditRequestStatuses } from '@/configs/staticRecords/auditRequestStatuses'
 
 const InventoryCurrentTab = ({ inventory, otherRequests, lastAuditRequests }: { inventory: ItemInventory, otherRequests: OtherRequest[], lastAuditRequests: LastAuditRequest[] }) => {
 
 
   const router = useRouter();
   const { showDialog } = useDialog()
-  const hasPendingAuditRequest = lastAuditRequests.filter((audit) => audit.statusId === staticRecords.inventory.auditRequests.statuses.open).length !== 0;
-  const lastAuditRequestCompleted = lastAuditRequests.filter((audit) => audit.statusId === staticRecords.inventory.auditRequests.statuses.completed);
+  const hasPendingAuditRequest = lastAuditRequests.filter((audit) => audit.statusId === auditRequestStatuses.open).length !== 0;
+  const lastAuditRequestCompleted = lastAuditRequests.filter((audit) => audit.statusId === auditRequestStatuses.completed);
   const lastInventoryAuditDate = (lastAuditRequestCompleted.length !== 0 && lastAuditRequestCompleted[0].inventoryAudit) ? DateTime.fromJSDate(lastAuditRequestCompleted[0].inventoryAudit.createdAt).toFormat(dateFormatString) : 'None';
 
 

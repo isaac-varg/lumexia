@@ -2,10 +2,9 @@
 
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
 import prisma from "@/lib/prisma"
-import { staticRecords } from "@/configs/staticRecords";
-import { ProducedPricingSummations } from "@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing";
 import { BatchSummations } from "@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 export const getFinishedProductsByProducedItem = async (itemId: string, summations: BatchSummations) => {
 
@@ -13,7 +12,7 @@ export const getFinishedProductsByProducedItem = async (itemId: string, summatio
     where: {
       filledWithItemId: itemId,
       recordStatusId: {
-        not: staticRecords.app.recordStatuses.archived,
+        not: recordStatuses.archived,
       }
     },
     include: {

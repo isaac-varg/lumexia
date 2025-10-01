@@ -4,8 +4,9 @@ import prisma from "@/lib/prisma"
 import { BprStagingItem } from "../getBprStagings"
 import { staticRecords } from "@/configs/staticRecords"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
+import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 
-const notStarted = staticRecords.production.bprStagingStatuses.notStarted;
+const notStarted = bprStagingStatuses.notStarted;
 
 export const handleSingleStagingDeny = async (qualityMode: 'primary' | 'secondary', note: string, staging: BprStagingItem, bprId: string, itemName: string) => {
 
@@ -27,7 +28,7 @@ export const handleSingleStagingDeny = async (qualityMode: 'primary' | 'secondar
       id: staging.bprBomId,
     },
     data: {
-      statusId: staticRecords.production.bprBomStatuses.notStarted,
+      statusId: bprStagingStatuses.notStarted,
     }
   });
   // make note

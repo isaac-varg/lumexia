@@ -6,6 +6,7 @@ import { FinishedProductDetails } from "../_components/shared/StepFinishedProduc
 import { staticRecords } from "@/configs/staticRecords"
 import { InterimAuxiliaryItemEditMode } from "../_components/shared/editFinishedProduct/EditModeStepAuxiliaries"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 
 export const updateFinishedProduct = async (finishedProductId: string, finishedProductDetails: FinishedProductDetails, auxiliaries: InterimAuxiliaryItemEditMode[]) => {
 
@@ -28,7 +29,7 @@ export const updateFinishedProduct = async (finishedProductId: string, finishedP
       markup: 0,
       profit: 0,
       profitPercentage: 0,
-      recordStatusId: staticRecords.app.recordStatuses.active,
+      recordStatusId: recordStatuses.active,
     }
   })
 

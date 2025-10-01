@@ -1,6 +1,7 @@
 "use server"
 
 import { staticRecords } from "@/configs/staticRecords";
+import { bprBatchStepStatuses } from "@/configs/staticRecords/bprBatchStepStatuses";
 import { ExBprBatchStep } from "@/types/bprBatchStep"
 
 // the current step is defined as
@@ -11,10 +12,10 @@ import { ExBprBatchStep } from "@/types/bprBatchStep"
 
 export const getCurrentStep = async (batchSteps: ExBprBatchStep[]) => {
 
-    return batchSteps.find(step =>
-        step.statusId === staticRecords.production.bprBatchStepStatuses.fulfillStep &&
-        step.bprStepActionables.some(actionable => !actionable.isCompounded)
-    );
+  return batchSteps.find(step =>
+    step.statusId === bprBatchStepStatuses.fulfillStep &&
+    step.bprStepActionables.some(actionable => !actionable.isCompounded)
+  );
 
 
 }

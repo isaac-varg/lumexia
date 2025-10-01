@@ -18,6 +18,7 @@ import { useAppSelection } from "@/store/appSlice";
 import createColumns from "../../_configs/ItemTableColumns";
 import AddItemDialog from "./AddItemDialog";
 import { ItemTableLockedColumns } from "../../_configs/ItemTableLockedLocked";
+import { userRoles } from "@/configs/staticRecords/userRoles";
 
 
 
@@ -28,7 +29,7 @@ const ItemTable = () => {
   const { showDialog } = useDialog();
   const [columns, setColumns] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true)
-  const isLocked = !user || user.UserRoleAssignment.length === 0 || user.UserRoleAssignment.every(r => r.userRoleId !== staticRecords.app.userRoles.purchasing)
+  const isLocked = !user || user.UserRoleAssignment.length === 0 || user.UserRoleAssignment.every(r => r.userRoleId !== userRoles.purchasing)
 
 
   const router = useRouter();

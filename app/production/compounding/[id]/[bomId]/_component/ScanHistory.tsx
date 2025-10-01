@@ -7,6 +7,7 @@ import { staticRecords } from '@/configs/staticRecords'
 import { updateBomItem } from '../_functions/updateBomItem'
 import { useRouter } from 'next/navigation'
 import { productionConfigs } from '@/configs/data/productionConfigs'
+import { bprStagingStatuses } from '@/configs/staticRecords/bprStagingStatuses'
 
 
 const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isViewMode: boolean) => void, stagings: any, bomItem: ExBprBom }) => {
@@ -16,12 +17,12 @@ const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isV
   const requiredQuantity = bomItem.quantity;
   const router = useRouter()
 
- 
+
   // determine if remaining is within acceptable tolerance range
   const acceptableQtyLower = requiredQuantity - (requiredQuantity * productionConfigs.compounding.toleranceThreshold)
   const acceptableQtyUpper = requiredQuantity + (requiredQuantity * productionConfigs.compounding.toleranceThreshold)
 
-  const isStagedAcceptable = stagedQuantity >= acceptableQtyLower  && stagedQuantity <= acceptableQtyUpper;
+  const isStagedAcceptable = stagedQuantity >= acceptableQtyLower && stagedQuantity <= acceptableQtyUpper;
 
   const handleAdd = () => {
     setIsViewMode(false)
@@ -30,7 +31,7 @@ const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isV
   const handleComplete = () => {
 
     const payload = {
-      statusId: staticRecords.production.bprBomStatuses.staged,
+      statusId: bprStagingStatuses.staged,
     }
 
     updateBomItem(payload, bomItem.id)
@@ -39,7 +40,7 @@ const ScanHistory = ({ setIsViewMode, stagings, bomItem }: { setIsViewMode: (isV
   return (
     <div className='flex flex-col gap-y-4'>
 
-      {bomItem.statusId === staticRecords.production.bprBomStatuses.notStarted && <div className='grid grid-cols-2 gap-4'>
+      {bomItem.statusId === bprStagingStatuses.notStarted && <div className='grid grid-cols-2 gap-4'>
         <ActionPanel onClick={() => handleAdd()}>
           Add New
         </ActionPanel>
