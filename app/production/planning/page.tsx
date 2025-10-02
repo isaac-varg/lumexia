@@ -5,6 +5,7 @@ import { productionActions } from '@/actions/production';
 import StateSetter from './_components/state/StateSetter';
 import TabSelector from './_components/shared/TabSelector';
 import TabsContainer from './_components/shared/TabsContainer';
+import CompleteBprs from './_components/shared/CompleteBprs';
 
 const PlanningPage = async () => {
   const bprs = await productionActions.planning.getBprs()
@@ -17,7 +18,10 @@ const PlanningPage = async () => {
 
       <div className='flex justify-between items-center'>
         <PageTitle>Planning</PageTitle>
-        <AddBprButton />
+        <div className='flex gap-2'>
+          <AddBprButton />
+          <CompleteBprs />
+        </div>
       </div>
 
       <TabSelector />

@@ -9,7 +9,7 @@ export const getPlanningBprs = async () => {
     where: {
       NOT: {
         bprStatusId: {
-          in: [failed, completed, released]
+          in: [failed, released]
         }
       }
     },

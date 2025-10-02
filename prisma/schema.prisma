@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Oct 01 2025 14:46:58 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Oct 02 2025 09:44:10 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")

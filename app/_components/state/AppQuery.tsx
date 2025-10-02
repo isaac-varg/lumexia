@@ -8,14 +8,14 @@ import { usesPurchasingRequestsPollingQuery } from "@/hooks/appQuery/usePurchasi
 
 const AppQuery = () => {
 
-    usesPurchasingRequestsPollingQuery()
-    usePurchasingReceivables()
-    usePricingQueue()
-    usePricingReviews()
-    useCompletedBprs()
-    
+  usesPurchasingRequestsPollingQuery()
+  usePurchasingReceivables()
+  usePricingQueue()
+  usePricingReviews()
+  //useCompletedBprs()
 
-    return false
+
+  return false
 }
 
 export default AppQuery
