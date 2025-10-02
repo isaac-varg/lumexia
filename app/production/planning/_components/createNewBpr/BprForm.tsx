@@ -12,42 +12,42 @@ import { getProducedItems } from '@/app/production/mbpr/new/_functions/getProduc
 
 const BprForm = () => {
 
-    const [items, setItems] = useState<ItemDataForSearch[]>([])
-    const [selectedItem, setSelectedItem] = useState<ItemDataForSearch>()
-    const [selectedMbpr, setSelectedMbpr] = useState<MasterBatchProductionRecord>()
+  const [items, setItems] = useState<ItemDataForSearch[]>([])
+  const [selectedItem, setSelectedItem] = useState<ItemDataForSearch>()
+  const [selectedMbpr, setSelectedMbpr] = useState<MasterBatchProductionRecord>()
 
-    const handleItemSelection = (item: ItemDataForSearch) => {
-        setSelectedItem(item);
+  const handleItemSelection = (item: ItemDataForSearch) => {
+    setSelectedItem(item);
 
+  }
+
+  const handleMbprSelection = (mbpr: MasterBatchProductionRecord) => {
+    setSelectedMbpr(mbpr)
+  }
+
+  useEffect(() => {
+
+    const getItems = async () => {
+      const items = await getProducedItems();
+
+      setItems(items)
     }
 
-    const handleMbprSelection = (mbpr: MasterBatchProductionRecord) => {
-        setSelectedMbpr(mbpr)
-    }
-
-    useEffect(() => {
-
-        const getItems = async () => {
-            const items = await getProducedItems();
-
-            setItems(items)
-        }
-
-        getItems()
-    }, [])
+    getItems()
+  }, [])
 
 
 
 
-    return (
-        <Dialog.Root identifier='newBprForm' >
-            <Wizard>
-                <SelectItemStep items={items} onItemSelection={handleItemSelection} />
-                <MbprStep selectedItemId={selectedItem ? selectedItem.id : null} onMbprSelection={handleMbprSelection} />
-                <BatchSizeStep selectedItem={selectedItem ? selectedItem : null} selectedMbprId={selectedMbpr ? selectedMbpr.id : null} />
-            </Wizard>
-        </Dialog.Root>
-    )
+  return (
+    <Dialog.Root identifier='newBprForm' >
+      <Wizard>
+        <SelectItemStep items={items} onItemSelection={handleItemSelection} />
+        <MbprStep selectedItemId={selectedItem ? selectedItem.id : null} onMbprSelection={handleMbprSelection} />
+        <BatchSizeStep selectedItem={selectedItem ? selectedItem : null} selectedMbprId={selectedMbpr ? selectedMbpr.id : null} />
+      </Wizard>
+    </Dialog.Root>
+  )
 }
 
 export default BprForm

@@ -6,10 +6,12 @@ import { createBpr } from '../../_functions/createBpr'
 import useDialog from '@/hooks/useDialog'
 import { Item } from '@/types/item'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
+import { useRouter } from 'next/navigation'
 
 const BatchSizeStep = ({ selectedMbprId, selectedItem }: { selectedMbprId: string | null, selectedItem: Item | null }) => {
 
   const [sizes, setSizes] = useState<BatchSize[]>([])
+  const router = useRouter()
   const { resetDialogContext } = useDialog()
 
   const handleSizeSelection = async (size: BatchSize) => {
@@ -23,12 +25,11 @@ const BatchSizeStep = ({ selectedMbprId, selectedItem }: { selectedMbprId: strin
       mbprId: selectedMbprId,
       selectedItem,
     }
+
     await createBpr(data)
-
-
-
-    location.reload()
+    router.refresh()
     resetDialogContext()
+    location.reload()
 
 
   }

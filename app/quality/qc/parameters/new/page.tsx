@@ -1,6 +1,4 @@
 import { qualityActions } from "@/actions/quality"
-import PageBreadcrumbs from "@/components/App/PageBreadcrumbs"
-import ParameterWizard from "./_components/ParameterWizard"
 import PageTitle from "@/components/Text/PageTitle"
 import ManualEntry from "./_components/ManualEntry"
 
