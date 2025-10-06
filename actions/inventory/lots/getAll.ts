@@ -26,7 +26,6 @@ export const getAllLots = async () => {
     orderBy: {
       createdAt: 'desc'
     },
-    take: 400,
   });
 
   const transformed = lots.map(l => {
