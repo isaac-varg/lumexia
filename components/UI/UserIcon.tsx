@@ -4,9 +4,10 @@ type Props = {
   image?: string;
   name?: string;
   isHoverable?: boolean;
+  onClick?: () => void;
 };
 
-const UserIcon = ({ image, name, isHoverable = false }: Props) => {
+const UserIcon = ({ image, name, isHoverable = false, onClick }: Props) => {
   if (!image || !name) {
     return <div className="w-8 h-8 skeleton rounded-full" />;
   }
@@ -15,6 +16,7 @@ const UserIcon = ({ image, name, isHoverable = false }: Props) => {
     <div className="tooltip" data-tip={name}>
       <div className="avatar">
         <div
+          onClick={onClick}
           className={`
             w-8 rounded-full
             ${isHoverable && `

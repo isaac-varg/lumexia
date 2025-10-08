@@ -12,10 +12,7 @@ const User = () => {
 
 
   return (
-    <div onClick={() => router.push('/settings/user')} className="">
-
-      <UserIcon image={user?.image || ''} name={user?.name || ''} isHoverable={true} />
-    </div>
+    <UserIcon onClick={() => router.push('/settings/user')} image={user?.image || ''} name={user?.name || ''} isHoverable={true} />
   );
 };
 
