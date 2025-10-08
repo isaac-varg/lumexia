@@ -1,4 +1,6 @@
 "use client"
+import Tag from '@/components/Text/Tag'
+import TagLabel from '@/components/Text/TagLabel'
 import useProduction from '@/hooks/useProduction'
 import { useProductionActions } from '@/store/productionSlice'
 import { BatchProductionRecord } from '@/types/batchProductionRecord'
@@ -19,16 +21,16 @@ const BprCard = ({ bpr, isSecondary = false }: { bpr: BatchProductionRecord, isS
     router.push(`/production/bpr/${bpr.referenceCode}?id=${bpr.id}`)
   }
   return (
-    <div className='flex flex-col bg-base-200 rounded-lg p-4 gap-y-4 hover:cursor-pointer hover:bg-base-200/50' onClick={() => handleClick()}>
+    <div className='flex flex-col bg-base-300 rounded-lg p-4 gap-y-4 hover:cursor-pointer hover:bg-accent/50' onClick={() => handleClick()}>
       <div className='flex justify-between items-center'>
-        <h1 className='font-poppins font-bold text-2xl text-neutral-800'>{bpr.referenceCode} </h1>
+        <h1 className='font-poppins font-bold text-2xl text-base-content/80'>{bpr.referenceCode} </h1>
         <span className='text-3xl'><MdOilBarrel /></span>
       </div>
-      <h1 className='font-poppins font-bold text-2xl text-neutral-600'>{bpr.mbpr.producesItem.name} </h1>
+      <h1 className='font-poppins font-bold text-2xl text-base-content/60'>{bpr.mbpr.producesItem.name} </h1>
       <div className='flex w-full'>
-        <div className='rounded-lg px-4 py-2 bg-orange-200 font-poppins font-semibold text-orange-900'>{bpr.status.name}</div>
+        <div className='rounded-lg px-4 py-2 bg-secondary/50 font-poppins font-semibold text-secondary-content'>{bpr.status.name}</div>
       </div>
-    </div>
+    </div >
   )
 }
 

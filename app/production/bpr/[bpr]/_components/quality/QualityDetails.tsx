@@ -3,6 +3,8 @@ import { useProductionSelection } from "@/store/productionSlice"
 import Amounts from "../shared/Amounts"
 import StagedQualityCard from "./StagedQualityCard"
 import QualityActions from "./QualityActions"
+import { Fragment } from "react"
+import Notes from "../shared/Notes"
 
 const QualityDetails = () => {
   const { selectedBomItem, stagings, qualityDetailsViewMode } = useProductionSelection()
@@ -12,22 +14,24 @@ const QualityDetails = () => {
   return (
     <div className="col-span-3" >
       <div className="flex flex-col gap-6">
-        <SectionTitle>{`#${selectedBomItem.bom.identifier} ${selectedBomItem.bom.item.name}`}</SectionTitle>
 
-        <QualityActions />
+        {qualityDetailsViewMode === 'main' && (
+          <Fragment>
+            <QualityActions />
+            <Amounts />
+            {stagings.map(s => {
+              return (
+                <StagedQualityCard key={s.id} staged={s} />
+              )
+            })}
 
+            <QualityActions />
+          </Fragment>
+        )}
 
-        <Amounts />
-
-
-
-        {stagings.map(s => {
-          return (
-            <StagedQualityCard key={s.id} staged={s} />
-          )
-        })}
-
-
+        {qualityDetailsViewMode === 'note' && (
+          <Notes />
+        )}
 
 
 

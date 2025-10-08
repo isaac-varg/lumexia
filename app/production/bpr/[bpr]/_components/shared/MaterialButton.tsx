@@ -1,7 +1,7 @@
 import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
 import { BprBomItem } from "../../_actions/getBprBom"
 
-const MaterialButton = ({ material }: { material: BprBomItem }) => {
+const MaterialButton = ({ material, isQuality = false }: { material: BprBomItem, isQuality?: boolean }) => {
 
   const { selectedBomItem } = useProductionSelection()
   const { setSelectedBomItem } = useProductionActions()

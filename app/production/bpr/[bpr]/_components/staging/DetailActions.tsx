@@ -7,7 +7,7 @@ import CompleteStagingButton from "./CompleteStagingButton"
 
 const DetailActions = () => {
   const { t } = useTranslation()
-  const { setStagingsMode, setStagingDetailsMode } = useProductionActions()
+  const { setStagingDetailsMode } = useProductionActions()
   const { bprNotes } = useProductionSelection()
 
 
@@ -18,7 +18,7 @@ const DetailActions = () => {
 
       <div className="grid grid-cols-1 gap-2">
 
-        <button className="btn btn-lg btn-accent min-h-20" onClick={() => setStagingsMode('add')}>
+        <button className="btn btn-lg btn-accent min-h-20" onClick={() => setStagingDetailsMode('add')}>
           <div className="flex gap-2 items-center">
             <TbPlus className="text-base-content text-3xl" />
             {t(translations, 'addStagedButton')}

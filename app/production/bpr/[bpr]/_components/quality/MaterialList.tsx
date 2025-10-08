@@ -18,17 +18,10 @@ const MaterialList = () => {
 
   return (
     <div className="flex flex-col gap-6 col-span-2">
-
-      <SectionTitle>Bill of Materials</SectionTitle>
-
-      <Card.Root>
-
-
-        <div className="flex flex-col gap-6">
-          <SectionTitle size="small">{qualityMode === 'primary' ? 'To Verify' : 'To Secondary Verify'}</SectionTitle>
-
+      <div className="flex flex-col gap-4">
+        <SectionTitle >{qualityMode === 'primary' ? 'To Verify' : 'To Secondary Verify'}</SectionTitle>
+        <Card.Root>
           {staged.length === 0 && <p className={"text-base-content text-lg text-medium"}>None</p>}
-
           <div className="grid grid-cols-1 gap-4">
             {staged.map(item => <MaterialButton key={item.id} material={item} />)}
 
@@ -39,9 +32,25 @@ const MaterialList = () => {
             {verified.map(item => <MaterialButton key={item.id} material={item} />)}
           </div>
 
-        </div>
 
-      </Card.Root>
+        </Card.Root>
+
+      </div>
+
+      <div className="flex flex-col gap-4">
+
+        <SectionTitle >{qualityMode === 'primary' ? 'Verified' : 'Twice Verified'}</SectionTitle>
+        <Card.Root>
+
+          <div className="grid grid-cols-1 gap-4">
+            {verified.map(item => <MaterialButton key={item.id} material={item} />)}
+          </div>
+
+
+        </Card.Root>
+
+      </div>
+
 
     </div>
   )

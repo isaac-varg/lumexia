@@ -19,7 +19,7 @@ const StagedAddMode = () => {
   const [scannedLot, setScannedLot] = useState<string>('')
   const [quantity, setQuantity] = useState<number | null>(null)
   const { selectedBomItem, bpr } = useProductionSelection()
-  const { fetchStagings, setStagingsMode } = useProductionActions()
+  const { fetchStagings, setStagingDetailsMode } = useProductionActions()
   const { showDialog } = useDialog()
 
   const handleLotScan = async (lot: string) => {
@@ -70,7 +70,7 @@ const StagedAddMode = () => {
     // last step so submit
     await handleStagingCascade(selectedBomItem.id, scannedLot, quantity, images, selectedBomItem.bprId, selectedBomItem.bom.item.name, selectedBomItem.bom.identifier)
     fetchStagings(selectedBomItem.id)
-    setStagingsMode('view')
+    setStagingDetailsMode('main')
 
   }
 

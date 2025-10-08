@@ -22,7 +22,7 @@ const ButtonCompleteVerification = () => {
   if (!isCompletable) return false
 
   return (
-    <button onClick={handleComplete} className="btn btn-success capitalize">
+    <button onClick={handleComplete} className="btn btn-success capitalize btn-xl min-h-20">
       <LuBadgeCheck className="size-8" />
       {`Complete ${qualityMode} Verification`}
     </button>
