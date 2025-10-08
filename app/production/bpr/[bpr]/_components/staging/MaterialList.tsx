@@ -17,29 +17,30 @@ const MaterialList = () => {
   return (
     <div className="flex flex-col gap-6 col-span-2">
 
-      <SectionTitle>{t(translations, 'bomItmeListTitle')}</SectionTitle>
+      <div className="flex flex-col gap-4">
+        <SectionTitle >{t(translations, "bomItemList")}</SectionTitle>
+        <Card.Root>
 
-      <Card.Root>
+          <div className="flex flex-col gap-6">
 
+            {filtered.length === 0 && <p className={"text-base-content text-lg text-medium"}>{t(translations, 'noMaterialsToStage')}</p>}
 
-        <div className="flex flex-col gap-6">
-          <SectionTitle size="small">{t(translations, "bomItemList")}</SectionTitle>
-
-          {filtered.length === 0 && <p className={"text-base-content text-lg text-medium"}>{t(translations, 'noMaterialsToStage')}</p>}
-
-          <div className="grid grid-cols-1 gap-4">
-            {filtered.map(item => <MaterialButton key={item.id} material={item} />)}
-
+            <div className="grid grid-cols-1 gap-4">
+              {filtered.map(item => <MaterialButton key={item.id} material={item} />)}
+            </div>
           </div>
-
-          <SectionTitle size="small">{t(translations, "bomItemListStaged")}</SectionTitle>
+        </Card.Root>
+      </div>
+      <div className="flex flex-col gap-4">
+        <SectionTitle >{t(translations, "bomItemListStaged")}</SectionTitle>
+        <Card.Root>
           <div className="grid grid-cols-1 gap-4">
             {stagedFiltered.map(item => <MaterialButton key={item.id} material={item} />)}
           </div>
 
-        </div>
+        </Card.Root>
+      </div>
 
-      </Card.Root>
 
     </div>
   )

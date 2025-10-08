@@ -15,13 +15,12 @@ type State = {
   bom: BprBomItem[],
   selectedBomItem: BprBomItem | null,
   stagings: BprStagingItem[],
-  stagingsMode: 'view' | 'add'
-  stagingDetailsMode: 'main' | 'note'
+  stagingDetailsMode: 'main' | 'note' | 'add'
   compoundingDetailsMode: 'main' | 'note'
   steps: ProductionStep[]
   selectedStep: ProductionStep | null
   isStagingsLoading: boolean,
-  qualityDetailsViewMode: 'view' | 'note'
+  qualityDetailsViewMode: 'main' | 'note'
   bprNoteTypes: BprNoteType[]
   bprNotes: BprNote[]
   qualityMode: 'primary' | 'secondary'
@@ -39,14 +38,13 @@ type Actions = {
     setBpr: (bpr: ProductionBpr | null) => void;
     setBom: (bom: BprBomItem[]) => void;
     setSelectedBomItem: (item: BprBomItem | null) => void;
-    setStagingsMode: (mode: 'view' | 'add') => void;
     fetchStagings: (bprBomId: string) => Promise<void>;
     setViewStatuses: () => void;
-    setQualityDetailsViewMode: (mode: 'note' | 'view') => void;
+    setQualityDetailsViewMode: (mode: 'note' | 'main') => void;
     setQualityMode: (mode: 'primary' | 'secondary') => void;
     setSteps: (steps: ProductionStep[]) => void;
     setSelectedStep: (step: ProductionStep | null) => void;
-    setStagingDetailsMode: (mode: 'main' | 'note') => void;
+    setStagingDetailsMode: (mode: 'main' | 'note' | 'add') => void;
     getBprNoteType: () => void;
     setBprNotes: (notes: BprNote[]) => void;
     setCompoundingDetailsMode: (mode: 'main' | 'note') => void;
@@ -60,13 +58,12 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
   bprNotes: [],
   selectedBomItem: null,
   stagings: [],
-  stagingsMode: 'view' as any,
   stagingDetailsMode: 'main' as any,
   steps: [],
   selectedStep: null,
   isStagingsLoading: false,
   qualityMode: 'primary' as any,
-  qualityDetailsViewMode: 'view' as any,
+  qualityDetailsViewMode: 'main' as any,
   compoundingDetailsMode: 'main' as any,
   viewStatuses: {
     isStaging: false,
@@ -101,7 +98,6 @@ export const useProductionSelection = create<State & Actions>((set, get) => ({
       set(() => ({ bprNoteTypes: types }));
     },
 
-    setStagingsMode: (mode) => set(() => ({ stagingsMode: mode })),
 
     setViewStatuses: () => {
       const { bpr, bom } = get()

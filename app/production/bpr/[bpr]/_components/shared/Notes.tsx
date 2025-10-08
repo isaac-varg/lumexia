@@ -13,7 +13,7 @@ import { TbX } from "react-icons/tb"
 const Notes = () => {
 
   const { bpr, bprNoteTypes, bprNotes, } = useProductionSelection()
-  const { getBprNoteType, setStagingDetailsMode, setCompoundingDetailsMode, } = useProductionActions()
+  const { getBprNoteType, setStagingDetailsMode, setCompoundingDetailsMode, setQualityDetailsViewMode } = useProductionActions()
   const router = useRouter()
 
   const handleNoteAdd = async (data: NoteInputs) => {
@@ -36,6 +36,7 @@ const Notes = () => {
 
   const handleBack = () => {
     setStagingDetailsMode('main');
+    setQualityDetailsViewMode('main');
     setCompoundingDetailsMode('main');
   }
 
