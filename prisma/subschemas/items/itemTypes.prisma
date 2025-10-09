@@ -6,6 +6,7 @@ model ItemType {
     items             Item[]
     pricingTemplates  PricingTemplate[]
     discrepancyAudits DiscrepancyAudit[]
+    config            ItemTypeConfig?
 
     @@map("item_types")
 }

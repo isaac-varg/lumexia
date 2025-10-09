@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Oct 02 2025 09:44:10 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Oct 09 2025 09:24:26 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1031,6 +1031,7 @@ model Alias {
 model InventoryType {
   id        String   @id @default(uuid())
   name      String
+  isTracked Boolean  @default(false) @map("is_tracked")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   items     Item[]
@@ -1094,6 +1095,17 @@ model ItemNote {
   @@map("item_notes")
 }
 
+model ItemTypeConfig {
+  id                                 String   @id @default(uuid())
+  isPricingExaminationTriggerEnabled Boolean  @map("is_pricing_examination_trigger_enabled")
+  createdAt                          DateTime @default(now()) @map("created_at")
+  updatedAt                          DateTime @updatedAt @map("updated_at")
+  itemType                           ItemType @relation(fields: [itemTypeId], references: [id])
+  itemTypeId                         String   @unique @map("item_type_id")
+
+  @@map("item_type_configs")
+}
+
 model ItemType {
   id                String             @id @default(uuid())
   name              String
@@ -1102,6 +1114,7 @@ model ItemType {
   items             Item[]
   pricingTemplates  PricingTemplate[]
   discrepancyAudits DiscrepancyAudit[]
+  config            ItemTypeConfig?
 
   @@map("item_types")
 }

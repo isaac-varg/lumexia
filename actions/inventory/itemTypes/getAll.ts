@@ -4,9 +4,13 @@ import prisma from "@/lib/prisma"
 
 
 export const getAllItemTypes = async () => {
-    const types = await prisma.itemType.findMany();
+  const types = await prisma.itemType.findMany({
+    include: {
+      config: true,
+    }
+  });
 
-    return types
+  return types
 }
 
 export type ItemType = Awaited<ReturnType<typeof getAllItemTypes>>[number]
