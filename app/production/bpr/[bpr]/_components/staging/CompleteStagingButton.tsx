@@ -1,7 +1,7 @@
 import { useTranslation } from "@/hooks/useTranslation"
 import { translations } from "../../_configs/translations"
 import { useEffect, useState } from "react"
-import { useProductionSelection } from "@/store/productionSlice"
+import { useProductionActions, useProductionSelection } from "@/store/productionSlice"
 import { handleStagingComplete } from "../../_actions/stagings/handleCompleteStaging";
 import { useRouter } from "next/navigation";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
@@ -13,11 +13,12 @@ const CompleteStagingButton = () => {
   const router = useRouter()
   const [isCompletable, setIsCompletable] = useState(false);
   const { selectedBomItem, stagings } = useProductionSelection()
+  const { setStagingDetailsMode } = useProductionActions()
   const handleClick = async () => {
     if (!selectedBomItem) return;
     handleStagingComplete(selectedBomItem);
     router.refresh()
-
+    setStagingDetailsMode('main');
   }
   useEffect(() => {
     if (!selectedBomItem) {

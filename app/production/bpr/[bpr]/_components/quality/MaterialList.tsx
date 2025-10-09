@@ -23,7 +23,6 @@ const MaterialList = () => {
 
       <Card.Root>
 
-
         <div className="flex flex-col gap-6">
           <SectionTitle size="small">{qualityMode === 'primary' ? 'To Verify' : 'To Secondary Verify'}</SectionTitle>
 
