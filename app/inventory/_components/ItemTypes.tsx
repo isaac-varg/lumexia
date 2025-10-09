@@ -13,7 +13,6 @@ const ItemTypes = ({ itemTypes }: { itemTypes: ItemType[] }) => {
 
 
   const [isAdd, setIsAdd] = useState(false);
-  const router = useRouter();
   const form = useAppForm({
     defaultValues: {
       itemTypes,
@@ -21,7 +20,7 @@ const ItemTypes = ({ itemTypes }: { itemTypes: ItemType[] }) => {
     onSubmit: async ({ value }) => {
       console.log('make sure not running')
       await updateItemTypes(value.itemTypes);
-      router.refresh()
+      location.reload()
       form.reset()
 
     }
@@ -31,7 +30,7 @@ const ItemTypes = ({ itemTypes }: { itemTypes: ItemType[] }) => {
       <div className="flex justify-between items-center">
         <SectionTitle>Item Types</SectionTitle>
 
-        <button className="btn btn-secondary"><TbPlus className="size-4" onClick={() => setIsAdd(true)} /> </button>
+        <button onClick={() => setIsAdd(true)} className="btn btn-secondary"><TbPlus className="size-4" /> </button>
 
       </div>
 

@@ -35,7 +35,7 @@ const AliasTypes = ({ aliasTypes }: { aliasTypes: AliasType[] }) => {
       <div className="flex justify-between items-center">
         <SectionTitle>Alias Types</SectionTitle>
 
-        <button className="btn btn-secondary"><TbPlus className="size-4" onClick={() => setIsAdd(true)} /> </button>
+        <button onClick={() => setIsAdd(true)} className="btn btn-secondary"><TbPlus className="size-4" /> </button>
 
       </div>
 

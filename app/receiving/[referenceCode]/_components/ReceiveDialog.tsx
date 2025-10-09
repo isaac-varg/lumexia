@@ -78,11 +78,9 @@ const ReceiveDialog = ({ item, containerTypes }: ReceiveDialogProps) => {
     }
 
     // add to pricing queue
+    console.log(item)
 
-    const { packaging, warehouseSupplies, officeSupplies } = itemTypes;
-    const itemTypeId = item.item.itemTypeId
-
-    if (itemTypeId !== packaging && itemTypeId !== warehouseSupplies && itemTypeId !== officeSupplies) {
+    if (item.item.itemType && item.item.itemType.config && item.item.itemType.config.isPricingExaminationTriggerEnabled) {
 
       await accountingActions.pricing.createQueue({
         itemId: item.item.id,
