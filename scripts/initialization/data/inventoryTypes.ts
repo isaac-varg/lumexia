@@ -5,9 +5,11 @@ export const data = {
   seed: [
     {
       name: 'Consumable',
+      isTracked: false,
     },
     {
       name: 'Tracked',
+      isTracked: true,
     }
   ],
 };

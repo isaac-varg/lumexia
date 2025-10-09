@@ -11,46 +11,46 @@ import TemplatesButton from './_components/TemplatesButton'
 
 const PricingPage = async () => {
 
-    const items = await getItems();
-    const examinations = await accountingActions.examinations.getAll(15)
+  const items = await getItems();
+  const examinations = await accountingActions.examinations.getAll()
 
-    return (
-        <div className='flex flex-col gap-y-6'>
+  return (
+    <div className='flex flex-col gap-y-6'>
 
-            <BeginPricingExamDialog items={items} />
+      <BeginPricingExamDialog items={items} />
 
-            <PageBreadcrumbs />
+      <PageBreadcrumbs />
 
-            <div className='flex justify-between items-center'>
-                <div className='flex gap-x-4'>
-                    <BeginPricingExaminationButton />
-                </div>
+      <div className='flex justify-between items-center'>
+        <div className='flex gap-x-4'>
+          <BeginPricingExaminationButton />
+        </div>
 
-                <TemplatesButton />
-
-
-            </div>
-
-            <div className='grid grid-cols-2 gap-6'>
-
-                <Card.Root>
-                    <Card.Title>Queue</Card.Title>
-                    <QueueList />
+        <TemplatesButton />
 
 
-                </Card.Root>
+      </div>
 
-                <Card.Root>
-                    <Card.Title>Latest</Card.Title>
+      <div className='grid grid-cols-2 gap-6'>
 
-                    <LatestExaminationsTable examinations={examinations} />
-                </Card.Root>
-
-            </div>
+        <Card.Root>
+          <Card.Title>Queue</Card.Title>
+          <QueueList />
 
 
-        </div >
-    )
+        </Card.Root>
+
+        <Card.Root>
+          <Card.Title>Latest</Card.Title>
+
+          <LatestExaminationsTable examinations={examinations} />
+        </Card.Root>
+
+      </div>
+
+
+    </div >
+  )
 }
 
 export default PricingPage

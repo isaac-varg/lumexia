@@ -8,6 +8,8 @@ import ThemeChangerDialog from "@/components/Theme/ThemeChangerDialog";
 import PageBreadcrumbs from "./PageBreadcrumbs";
 import ThemeIcon from "@/components/Theme/ThemeIcon";
 import { userConfigGroups } from "@/configs/staticRecords/userConfigGroups";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 const TopBar = async () => {
 
@@ -20,7 +22,11 @@ const TopBar = async () => {
     },
   });
 
+  const session = await auth();
 
+  if (!session) {
+    redirect("/api/auth/signin")
+  }
 
   return (
     <>

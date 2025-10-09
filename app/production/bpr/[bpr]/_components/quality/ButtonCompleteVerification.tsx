@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 const ButtonCompleteVerification = () => {
   const { selectedBomItem, stagings, qualityMode, bpr } = useProductionSelection()
-  const { setQualityMode } = useProductionActions();
+  const { setQualityMode, setQualityDetailsViewMode } = useProductionActions();
   const router = useRouter();
   const isCompletable = (qualityMode === 'primary' && stagings.every(s => s.isPrimaryVerified)) ||
     (qualityMode === 'secondary' && stagings.every(s => s.isSecondaryVerified));
@@ -16,6 +16,7 @@ const ButtonCompleteVerification = () => {
     handleCompleteVerification(qualityMode, selectedBomItem.id, selectedBomItem.bom.item.name, bpr.id)
     router.refresh();
     setQualityMode(qualityMode)
+    setQualityDetailsViewMode('view')
   }
 
 
