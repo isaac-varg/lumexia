@@ -9,6 +9,7 @@ import ProcurementTypes from './_components/ProcurementTypes';
 import ItemTypes from './_components/ItemTypes';
 import { inventoryActions } from '@/actions/inventory';
 import { getAllItemTypes } from '@/actions/inventory/itemTypes/getAll';
+import AliasTypes from './_components/AliasTypes';
 
 const InventoryDashboardPage = async () => {
   const inventoryTypesData = await inventoryTypeActions.getAll();
@@ -26,9 +27,10 @@ const InventoryDashboardPage = async () => {
         <p className='font-poppins text-xl text-base-content'>hello</p>
       </div>
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-3 gap-6'>
         <InventoryTypes inventoryTypes={inventoryTypes} />
         <ProcurementTypes />
+        <AliasTypes aliasTypes={aliasTypes} />
 
         <ItemTypes itemTypes={itemTypes} />
       </div>

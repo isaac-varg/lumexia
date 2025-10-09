@@ -1,16 +1,24 @@
 import { useFieldContext } from "."
 
-type ToggleFieldProps = {
-  label: string,
+const classes = {
+  label: {
+    default: "font-medium text-xl text-base-content",
+    soft: "font-normal text-lg text-base-content/70",
+  }
 }
 
-const ToggleField = ({ label }: ToggleFieldProps) => {
+type ToggleFieldProps = {
+  label: string,
+  labelClass?: keyof typeof classes.label
+}
+
+const ToggleField = ({ label, labelClass = 'default' }: ToggleFieldProps) => {
 
   const field = useFieldContext<boolean>()
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="font-medium text-xl text-base-content">{label}</label>
+      <label className={classes.label[labelClass]}>{label}</label>
 
       <input
         type="checkbox"
