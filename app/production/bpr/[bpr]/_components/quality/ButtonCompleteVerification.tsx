@@ -16,7 +16,7 @@ const ButtonCompleteVerification = () => {
     handleCompleteVerification(qualityMode, selectedBomItem.id, selectedBomItem.bom.item.name, bpr.id)
     router.refresh();
     setQualityMode(qualityMode)
-    setQualityDetailsViewMode('view')
+    setQualityDetailsViewMode('main')
   }
 
 
