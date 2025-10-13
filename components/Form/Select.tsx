@@ -1,27 +1,45 @@
 "use client"
 import { SelectOption } from "@/types/selectOption";
 import React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/UI/select";
 
 type SelectFieldProps = {
   form: UseFormReturn<any>;
   label: string;
   fieldName: string;
-  options: SelectOption[]
+  options: SelectOption[];
+  placeholder?: string;
 };
 
-const SelectField = ({ form, label, fieldName, options }: SelectFieldProps) => {
+const SelectField = ({ form, label, fieldName, options, placeholder }: SelectFieldProps) => {
   return (
     <div className='flex flex-col gap-y-1'>
-    <label className="font-poppins text-cutty-sark-950 text-xl">{label}</label>
-      <select
-          className="select select-lg w-full"
-        //className="px-4 py-4 border-2 border-cutt-sark-100 bg-cutt-sark-100 rounded-lg focus:outline-none focus:ring-0 font-inter font-medium focus:border-cutt-sark-500 text-xl text-cutt-sark-900 space-y-4"
-        {...form.register(fieldName)}
-      >
-            {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-    
-      </select>
+      <label className="font-poppins text-base-content text-xl">{label}</label>
+      <Controller
+        control={form.control}
+        name={fieldName}
+        render={({ field }) => (
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={placeholder || "Select an option"} />
+            </SelectTrigger>
+            <SelectContent>
+              {options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      />
     </div>
   );
 };
