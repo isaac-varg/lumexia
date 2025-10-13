@@ -7,9 +7,7 @@ export const getAuditRequestCount = async () => {
 
   const incompleteRequestCount = await prisma.auditRequest.count({
     where: {
-      NOT: {
-        statusId: auditRequestStatuses.open,
-      },
+      statusId: auditRequestStatuses.open,
     },
   });
 
