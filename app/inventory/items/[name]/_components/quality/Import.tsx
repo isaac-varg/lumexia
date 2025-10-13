@@ -7,7 +7,6 @@ import useDialog from "@/hooks/useDialog"
 
 const Import = () => {
   const { qcItemParameters } = useItemSelection()
-  const [formatButtonText, setFormatButtonText] = useState('Generate Import Format');
   const [importData, setImportData] = useState('');
   const [isImporting, setIsImporting] = useState(false);
   const { showDialog, resetDialogContext } = useDialog()
@@ -34,12 +33,21 @@ const Import = () => {
       })
     })
     const format = [{
-      parameterResults,
-      "examinationType": `<${examinationTypes.join(" OR ")}>`,
       "lotNumber": '<lotNumber>',
+      "examinationType": `<${examinationTypes.join(" OR ")}>`,
+      parameterResults,
     }]
 
-    handleCopy(format);
+    const jsonString = JSON.stringify(format, null, 4);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "qc_import_format.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
   const handleImport = async () => {
@@ -62,17 +70,6 @@ const Import = () => {
     }
   }
 
-  const handleCopy = async (copy: any) => {
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(copy, null, 4));
-      setFormatButtonText('Copied');
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-    } finally {
-      setTimeout(() => setFormatButtonText('Generate Import Format'), 5000)
-    }
-  };
-
   return (
     <Card.Root>
       <Alert.Root identifier='importQualityError'>
@@ -91,7 +88,7 @@ const Import = () => {
 
 
       <div className="flex gap-2">
-        <button onClick={generateFormat} className="btn btn-secondary"> {formatButtonText} </button>
+        <button onClick={generateFormat} className="btn btn-secondary"> Generate Import Format </button>
       </div>
       <div className="form-control">
         <label className="label">
