@@ -7,23 +7,31 @@ import { dateFormatWithTime } from "@/configs/data/dateFormatString"
 import { useItemSelection } from "@/store/itemSlice"
 import { DateTime } from "luxon"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { TbCalendar } from "react-icons/tb"
+import Import from "./Import"
 
 const Examinations = () => {
 
   const { qcRecords } = useItemSelection()
   const router = useRouter()
+  const [isImport, setIsImport] = useState(false);
   const handleClick = (record: QcRecordExpanded) => {
     const path = `/quality/qc/examination/new/${record.examinedLot.lotNumber}?lotId=${record.examinedLot.id}&examinationId=${record.id}`
     router.push(path)
-
-
   }
+
+
   return (
     <div className="flex flex-col gap-4">
-      <SectionTitle>Examinations</SectionTitle>
+      <div className="flex justify-between items-center">
+        <SectionTitle>Examinations</SectionTitle>
+        <button onClick={() => setIsImport(true)} className='btn btn-primary'>Import</button>
+      </div>
 
-      <Card.Root>
+      {isImport && <Import />}
+
+      {!isImport && (<Card.Root>
         {qcRecords.map(record => {
           return (
             <div
@@ -65,7 +73,7 @@ const Examinations = () => {
           )
         })}
       </Card.Root>
-
+      )}
     </div>
   )
 }
