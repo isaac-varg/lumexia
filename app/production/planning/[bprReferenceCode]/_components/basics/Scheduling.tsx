@@ -11,6 +11,7 @@ import Card from '@/components/Card';
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
 import { useRouter } from 'next/navigation';
+import { createActivityLog } from '@/utils/auxiliary/createActivityLog';
 
 
 const Scheduling = () => {
@@ -36,6 +37,7 @@ const Scheduling = () => {
     });
 
     setIsEdit(false);
+    await createActivityLog('modifySchedule', 'bpr', bpr.id, { context: `The schedule date was set to start ${selectedRange?.from ? DateTime.fromJSDate(selectedRange.from).toFormat(dateFormatString) : ''} to ${selectedRange?.to ? DateTime.fromJSDate(selectedRange.to).toFormat(dateFormatString) : ''}` })
     router.refresh()
   }
 
@@ -46,6 +48,7 @@ const Scheduling = () => {
       scheduledForStart: null,
       scheduledForEnd: null,
     })
+    await createActivityLog('modifySchedule', 'bpr', bpr.id, { context: `The schedule date was cleared.` })
 
     setIsEdit(false);
     router.refresh()
