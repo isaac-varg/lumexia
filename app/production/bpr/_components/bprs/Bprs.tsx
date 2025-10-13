@@ -71,7 +71,21 @@ const Bprs = ({ bprs }: { bprs: ProducibleBpr[] }) => {
             day={day}
             bprs={bprs.filter((bpr) => {
               if (!bpr.scheduledForStart) { return false; }
-              return DateTime.fromJSDate(bpr.scheduledForStart).toISODate() === DateTime.fromISO(day.date).toISODate();
+              const panelDate = DateTime.fromISO(day.date);
+              const bprStart = DateTime.fromJSDate(bpr.scheduledForStart);
+
+              if (panelDate.startOf('day') < bprStart.startOf('day')) {
+                return false;
+              }
+
+              if (bpr.scheduledForEnd) {
+                const bprEnd = DateTime.fromJSDate(bpr.scheduledForEnd);
+                if (panelDate.startOf('day') > bprEnd.startOf('day')) {
+                  return false;
+                }
+              }
+
+              return true;
             }) as any}
           />
         ))}
@@ -87,7 +101,21 @@ const Bprs = ({ bprs }: { bprs: ProducibleBpr[] }) => {
             day={day}
             bprs={bprs.filter((bpr) => {
               if (!bpr.scheduledForStart) { return false; }
-              return DateTime.fromJSDate(bpr.scheduledForStart).toISODate() === DateTime.fromISO(day.date).toISODate();
+              const panelDate = DateTime.fromISO(day.date);
+              const bprStart = DateTime.fromJSDate(bpr.scheduledForStart);
+
+              if (panelDate.startOf('day') < bprStart.startOf('day')) {
+                return false;
+              }
+
+              if (bpr.scheduledForEnd) {
+                const bprEnd = DateTime.fromJSDate(bpr.scheduledForEnd);
+                if (panelDate.startOf('day') > bprEnd.startOf('day')) {
+                  return false;
+                }
+              }
+
+              return true;
             }) as any}
           />
         ))}

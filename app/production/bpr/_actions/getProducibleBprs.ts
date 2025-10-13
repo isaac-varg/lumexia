@@ -10,10 +10,20 @@ export const getProducibleBprs = async () => {
 
   const bprs = await prisma.batchProductionRecord.findMany({
     where: {
+      completedAt: null,
       scheduledForStart: {
-        gte: startOfWeek,
-        lte: endOfWeek
-      }
+        lte: endOfWeek,
+      },
+      OR: [
+        {
+          scheduledForEnd: {
+            gte: startOfWeek,
+          },
+        },
+        {
+          scheduledForEnd: null,
+        },
+      ],
     },
     include: {
       status: true,
