@@ -8,7 +8,7 @@ import { useItemSelection } from "@/store/itemSlice"
 import { DateTime } from "luxon"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { TbCalendar } from "react-icons/tb"
+import { TbCalendar, TbX } from "react-icons/tb"
 import Import from "./Import"
 
 const Examinations = () => {
@@ -26,7 +26,7 @@ const Examinations = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <SectionTitle>Examinations</SectionTitle>
-        <button onClick={() => setIsImport(true)} className='btn btn-primary'>Import</button>
+        {isImport ? <button onClick={() => setIsImport(false)} className='btn btn-error'><TbX className="size-4" /> </button> : <button onClick={() => setIsImport(true)} className='btn btn-primary'>Import</button>}
       </div>
 
       {isImport && <Import />}
