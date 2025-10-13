@@ -74,6 +74,12 @@ const StateSetter = ({
     setQcItemParameters,
     getFilteredPurchaseOrders,
     setQcRecords,
+    setCurrentTab,
+    setSelectedAlias,
+    setLotsViewMode,
+    setPurchasingFilterMode,
+    setQualityTemplateViewMode,
+    setSelectedLot,
 
   } = useItemActions();
 
@@ -86,6 +92,16 @@ const StateSetter = ({
 
   useEffect(() => {
     setItem(item)
+
+    // clear everything else
+    setCurrentTab('basics');
+    setSelectedAlias(null);
+    setLotsViewMode('table');
+    setPurchasingFilterMode('yearToDate');
+    setQualityTemplateViewMode('view');
+    setSelectedLot(null);
+
+
   }, [item, setItem])
 
   // get options only if the state is empty 
