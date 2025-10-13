@@ -48,6 +48,7 @@ const StateSetter = ({
     setPublicNotes,
     setPoSupplierNotes,
     setActivity,
+    setCurrentTab,
   } = usePurchasingActions();
 
 
@@ -58,6 +59,8 @@ const StateSetter = ({
       getPurchasableItems();
       getOptions();
     }
+
+    setCurrentTab('items')
 
   }, [serverPurchaseOrder, getOptions, getPurchasableItems, purchasableItems.length, setPurchaseOrder])
 
