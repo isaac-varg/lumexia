@@ -44,6 +44,14 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
 
   }
 
+  const handleCancel = () => {
+    if (setMode) {
+      setMode('default');
+    }
+    resetDialogContext();
+
+  }
+
   useEffect(() => {
     const getter = async () => {
       const types = await inventoryActions.auditReqests.noteTypes.getAll();
@@ -86,7 +94,7 @@ const AuditRequest = ({ setMode, itemId }: AuditRequestProps) => {
 
       {reqMode === 'view' && (
         <div className='flex gap-x-2 justify-end'>
-          <button className='btn btn-warning' onClick={() => setMode && setMode('default')}>Cancel</button>
+          <button className='btn btn-warning' onClick={() => handleCancel()}>Cancel</button>
 
           <button className='btn btn-success' onClick={() => handleCompleteAuditRequest()}>Submit</button>
         </div>

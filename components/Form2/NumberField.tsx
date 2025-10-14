@@ -10,16 +10,16 @@ const classes = {
   }
 }
 
-type TextFieldProps = {
+type NumberFieldProps = {
   label: string,
   labelClass?: keyof typeof classes.label,
   errorClass?: keyof typeof classes.errors,
   description?: string,
 }
 
-const TextField = ({ label, description, labelClass = 'default', errorClass = 'default' }: TextFieldProps) => {
+const NumberField = ({ label, description, labelClass = 'default', errorClass = 'default' }: NumberFieldProps) => {
 
-  const field = useFieldContext<string>()
+  const field = useFieldContext<number>()
   const meta = field.state.meta;
   const errors = meta.errors.map(e => e.message).join(',');
 
@@ -30,7 +30,8 @@ const TextField = ({ label, description, labelClass = 'default', errorClass = 'd
       <input
         value={field.state.value}
         className="input w-full input-lg"
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+        type="number"
       />
       {meta.isTouched && meta.errors.length > 0 ? (
         <p className={classes.errors[errorClass]}>{errors}</p>
@@ -39,6 +40,6 @@ const TextField = ({ label, description, labelClass = 'default', errorClass = 'd
   )
 }
 
-export default TextField
+export default NumberField
 
 

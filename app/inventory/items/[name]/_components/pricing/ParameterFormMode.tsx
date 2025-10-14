@@ -1,13 +1,13 @@
-import Form from '@/components/Form'
 import { TextUtils } from '@/utils/text'
 import { Prisma } from '@prisma/client'
 import React, { Dispatch, SetStateAction } from 'react'
-import { useForm } from 'react-hook-form'
 import { updateItemPricingData } from '../../_actions/pricing/updateItemPricingData'
 import { createItemPricingData } from '../../_actions/pricing/createItemPricingData'
-import { useItemSelection } from '@/store/itemSlice'
+import { useItemActions, useItemSelection } from '@/store/itemSlice'
 import { useRouter } from 'next/navigation'
 import { uom as staticUOM } from "@/configs/staticRecords/unitsOfMeasurement"
+import { useAppForm } from '@/components/Form2'
+import { z } from "zod"
 
 type Inputs = {
   arrivalCost: number
@@ -18,6 +18,7 @@ type Inputs = {
   upcomingPrice: number
   upcomingPriceUomId: string
 }
+
 const FormMode = ({
   setMode
 }: {
@@ -26,10 +27,20 @@ const FormMode = ({
 
   const { pricingData: pricing, item, options } = useItemSelection()
   const uom = options.uom
+  const { setCurrentTab } = useItemActions()
 
   const defaults: Inputs = pricing ? { arrivalCost: pricing.arrivalCost, productionUsageCost: pricing.productionUsageCost, auxiliaryUsageCost: pricing.auxiliaryUsageCost, unforeseenDifficultiesCost: pricing.unforeseenDifficultiesCost, isUpcomingPriceActive: pricing.isUpcomingPriceActive, upcomingPrice: pricing.upcomingPrice, upcomingPriceUomId: pricing.upcomingPriceUomId } : { arrivalCost: 0, productionUsageCost: 0, auxiliaryUsageCost: 0, unforeseenDifficultiesCost: 0, isUpcomingPriceActive: false, upcomingPrice: 0, upcomingPriceUomId: staticUOM.pounds }
 
-  const form = useForm<Inputs>({ defaultValues: defaults })
+  const form = useAppForm({
+    defaultValues: defaults,
+    onSubmit: async ({ value }) => {
+      if (!pricing) {
+        handleCreate(value);
+        return;
+      }
+      handleUpdate(value);
+    }
+  })
   const router = useRouter()
 
   const uomOptions = uom.map((u) => ({
@@ -37,22 +48,13 @@ const FormMode = ({
     value: u.id,
   }))
 
-  const handleSubmit = (data: Inputs) => {
-
-    if (!pricing) {
-      handleCreate(data);
-      return;
-    }
-
-    handleUpdate(data);
-
-  }
 
   const handleUpdate = async (data: Inputs) => {
 
     if (!pricing) {
       return;
     }
+
     const payload: Prisma.ItemPricingDataUncheckedUpdateInput = {
       ...data,
     }
@@ -61,6 +63,8 @@ const FormMode = ({
 
     setMode('view')
     router.refresh()
+    setCurrentTab('pricing')
+
 
   }
 
@@ -76,64 +80,93 @@ const FormMode = ({
 
     setMode('view')
     router.refresh()
+    setCurrentTab('pricing')
   }
 
   return (
-    <Form.Root onSubmit={handleSubmit} form={form}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
+      className="flex flex-col gap-4"
+    >
 
-      <Form.Number
-        form={form}
-        fieldName='arrivalCost'
-        label='Arrival Cost'
-        required
-      />
+      <form.AppField
+        name="arrivalCost"
+        validators={{
+          onChange: z.coerce.number().nonnegative()
+        }}
+      >
+        {(field) => <field.NumberField label="Arrival Cost ($/lb)" />}
+      </form.AppField>
 
-      <Form.Number
-        form={form}
-        fieldName='productionUsageCost'
-        label='Production Usage Cost'
-        required
-      />
+      <form.AppField
+        name="productionUsageCost"
+        validators={{
+          onChange: z.coerce.number().nonnegative()
+        }}
+      >
+        {(field) => <field.NumberField label="Production Usage Cost ($/lb)" />}
+      </form.AppField>
 
-      <Form.Number
-        form={form}
-        fieldName='auxiliaryUsageCost'
-        label='Auxiliary Usage Cost'
-        required
-      />
+      <form.AppField
+        name="auxiliaryUsageCost"
+        validators={{
+          onChange: z.coerce.number().nonnegative()
+        }}
+      >
+        {(field) => <field.NumberField label="Auxiliary Usage Cost ($/lb)" />}
+      </form.AppField>
 
-      <Form.Number
-        form={form}
-        fieldName='unforeseenDifficultiesCost'
-        label='Unforeseen Difficulties Cost'
-        required
-      />
-
-      <Form.Number
-        form={form}
-        fieldName='upcomingPrice'
-        label='Upcoming Price'
-        required
-      />
-
-      <Form.Select
-        form={form}
-        fieldName='upcomingPriceUomId'
-        label='Upcoming Price Uom ($/UOM)'
-        options={uomOptions}
-      />
-
-      <Form.Toggle
-        form={form}
-        fieldName='isUpcomingPriceActive'
-        label='Is Upcoming Price Active'
-      />
-
-      <Form.ActionRow form={form} />
+      <form.AppField
+        name="unforeseenDifficultiesCost"
+        validators={{
+          onChange: z.coerce.number().nonnegative()
+        }}
+      >
+        {(field) => <field.NumberField label="Unforeseen Difficulties Cost ($/lb)" />}
+      </form.AppField>
 
 
+      <form.AppField
+        name="upcomingPrice"
+        validators={{
+          onChange: z.coerce.number().nonnegative()
+        }}
+      >
+        {(field) => <field.NumberField label="Upcoming Price ($/unit)" />}
+      </form.AppField>
 
-    </Form.Root>
+      <form.AppField
+        name="upcomingPriceUomId"
+        validators={{
+          onChange: z.string()
+        }}
+      >
+        {(field) => <field.SelectField label="Upcoming Price UOM" options={uomOptions} />}
+      </form.AppField>
+
+      <form.AppField
+        name="isUpcomingPriceActive"
+      >
+        {(field) => <field.ToggleField label="Is Upcomming Price Active ($/lb)" />}
+      </form.AppField>
+
+
+      <div>
+        <form.AppForm>
+          <form.SubmitButton />
+        </form.AppForm>
+
+        <button className="btn btn-error btn-soft" onClick={() => {
+          form.reset();
+          setMode('view');
+        }}>Cancel</button>
+      </div>
+
+    </form>
+
   )
 }
 

@@ -7,6 +7,7 @@ import SectionTitle from "@/components/Text/SectionTitle"
 import { useQcParameterSelection } from "@/store/qcParametersSlice"
 import { useRouter } from "next/navigation"
 
+
 const Basics = () => {
   const { selectedParameter, dataTypes } = useQcParameterSelection()
   const router = useRouter()

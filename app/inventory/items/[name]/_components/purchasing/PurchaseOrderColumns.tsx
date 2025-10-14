@@ -37,5 +37,11 @@ export const purchaseOrderColumns = [
     header: 'Price UOM',
     cell: (row) => `$/ ${row.row.original.uom.abbreviation}`
   }),
+  columnHelper.accessor("updatedAt", {
+    header: SortableHeaderType("Updated"),
+    cell: (row) => {
+      return DateTime.fromJSDate(row.row.original.updatedAt).toFormat("DD @ t")
+    }
+  }),
 
 ]
