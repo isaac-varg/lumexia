@@ -138,6 +138,34 @@ export const translations = {
   notesButton: {
     en: 'Add Note',
     es: 'Añadir Nota'
+  },
+  compoundingHeaderTitle: {
+    en: 'Step Details',
+    es: 'Detalles del Paso'
+  },
+  compoundingHeaderBackButton: {
+    en: 'Back to Steps',
+    es: 'Volver a los Pasos'
+  },
+  stagingHeaderButton: {
+    en: 'Back to Materials',
+    es: 'Volver a los Materiales',
+  },
+  compoundingMaterialsTitle: {
+    en: 'Step Materials',
+    es: 'Materiales del Paso'
+  },
+  compoundingTodo: {
+    en: 'To Do',
+    es: 'Faltante',
+  },
+  compoundingCompleted: {
+    en: 'Completed',
+    es: 'Completado',
+  },
+  compoundingAllCompleted: {
+    en: 'All steps are completed!',
+    es: 'Todos los pasos están completados!'
   }
 
 }

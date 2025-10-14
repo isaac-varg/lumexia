@@ -13,7 +13,7 @@ const StagingHeader = () => {
 
   return (
     <div className="flex gap-4 items-center">
-      <button className="btn" onClick={() => setSelectedBomItem(null)}>Back to Materials</button>
+      <button className="btn" onClick={() => setSelectedBomItem(null)}>{t(translations, "stagingHeaderButton")}</button>
 
       <SectionTitle>{`#${selectedBomItem.bom.identifier} ${selectedBomItem.bom.item.name} ${t(translations, 'stagingItemDetailsTitle')}`}</SectionTitle>
 

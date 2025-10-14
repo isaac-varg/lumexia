@@ -27,6 +27,11 @@ export const getSteps = async (bprId: string) => {
           },
           StepEquipment: true,
           StepInstruction: true,
+          BillOfMaterial: {
+            include: {
+              item: true
+            }
+          }
         }
       },
     }

@@ -5,11 +5,12 @@ import { useEffect } from "react"
 import StepList from "./StepList"
 import StepDetails from "./StepDetails"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
+import CompoundingHeader from "./CompoundingHeader"
 
 const compounding = bprStatuses.compounding
 
 const Compounding = () => {
-  const { bpr } = useProductionSelection()
+  const { bpr, selectedStep } = useProductionSelection()
   const notStarted = bpr?.bprStatusId !== compounding
   const router = useRouter()
 
@@ -28,11 +29,10 @@ const Compounding = () => {
 
 
   return (
-    <div className="grid grid-cols-5 gap-6">
-
-      <StepList />
-      <StepDetails />
-
+    <div className="flex flex-col gap-6">
+      <CompoundingHeader />
+      {!selectedStep && <StepList />}
+      {selectedStep && <StepDetails />}
     </div>
 
   )
