@@ -1,9 +1,12 @@
+import { ItemTab } from '@/app/inventory/items/[name]/_components/shared/TabSelector';
+import { PurchasingTab } from '@/app/purchasing/purchase-orders/[purchaseOrder]/_components/shared/TabSelector';
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 
 export type TabsConfig = {
-  itemDetails: 'basics' | 'inventory' | 'purchasing' | 'pricing' | 'production' | 'quality' | 'files';
+  itemDetails: ItemTab
+  purchasing: PurchasingTab,
 };
 
 type TabGroupKey = keyof TabsConfig;
@@ -22,6 +25,7 @@ type TabActions = {
 const initialState: TabState = {
   activeTab: {
     itemDetails: 'basics',
+    purchasing: 'items',
   },
 }
 
@@ -30,7 +34,7 @@ export const useTabSelection = create<TabState & TabActions>()(
     (set) => ({
       ...initialState,
       actions: {
-        setActiveTab: (key, tab) => {
+        setActiveTab: <K extends TabGroupKey>(key: K, tab: TabValue<K>) => {
           set((state) => ({
             activeTab: {
               ...state.activeTab,

@@ -1,16 +1,16 @@
 "use client"
-import { useItemSelection } from "@/store/itemSlice"
-import { usePurchasingSelection } from "@/store/purchasingSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import Items from "../items/Items";
 import AccountingPanel from "../accounting/AccountingPanel";
 import Notes from "../notes/Notes";
 import ActivityPanel from "../activity/ActivityPanel";
+import { useTabSelection } from "@/store/tabSlice";
 
 
 const TabsContainer = () => {
 
-  const { currentTab } = usePurchasingSelection();
+  const { activeTab } = useTabSelection()
+  const currentTab = activeTab['purchasing'];
 
   return (
     <AnimatePresence mode="wait">
