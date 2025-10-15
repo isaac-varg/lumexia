@@ -6,27 +6,21 @@ import { inventoryActions } from '@/actions/inventory'
 
 const NewRequestPage = async ({ searchParams }: { searchParams: { itemId: string } }) => {
 
-    const items = await inventoryActions.getPurchasedItems();
+  const items = await inventoryActions.getPurchasedItems();
 
 
-    return (
-        <div className='flex flex-col gap-y-6'>
-            <div className='flex justify-between items-center'>
-
-                <div className='flex flex-col gap-y-4'>
-                    <PageTitle>Create Request</PageTitle>
-                    <PageBreadcrumbs />
-                </div>
-                <div>
-                </div>
-            </div>
+  return (
+    <div className='flex flex-col gap-y-6'>
+      <div className='flex justify-between items-center'>
+        <PageTitle>Create Request</PageTitle>
+      </div>
 
 
 
-            <MainPanel items={items} incomingItemId={searchParams.itemId} />
-        </div>
+      <MainPanel items={items} incomingItemId={searchParams.itemId} />
+    </div>
 
-    )
+  )
 }
 
 export default NewRequestPage 

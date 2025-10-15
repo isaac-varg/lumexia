@@ -8,11 +8,14 @@ import Pricing from "../pricing/Pricing";
 import Production from "../production/Production";
 import Files from "../files/Files";
 import Quality from "../quality/Quality";
+import { useTabSelection } from "@/store/tabSlice";
 
 
 const TabsContainer = () => {
 
-  const { currentTab } = useItemSelection();
+  const { activeTab } = useTabSelection();
+
+  const currentTab = activeTab['itemDetails'];
 
   return (
     <AnimatePresence mode="wait">
