@@ -1,0 +1,12 @@
+model PurchasingRequestSupplierTag {
+    id               String         @id @default(uuid())
+    purchasingRequestId String         @map("purchasing_request_id")
+    supplierId String @map("supplier_id")
+    createdAt        DateTime       @default(now()) @map("created_at")
+    updatedAt        DateTime       @updatedAt @map("updated_at")
+    purchasingRequest PurchasingRequest @relation(fields: [purchasingRequestId], references: [id])
+    supplier Supplier @relation(fields: [supplierId], references: [id])
+    @@unique([purchasingRequestId, supplierId])
+
+    @@map("purchasing_request_supplier_tags")
+}

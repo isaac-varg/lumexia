@@ -18,6 +18,7 @@ model PurchasingRequest {
     notionRequests            NotionPurchasingRequest[]
     notionBprs                NotionBpr[]
     generalRequestLink        GeneralRequestLink[]
+    supplierTags PurchasingRequestSupplierTag[]
 
     @@map("purchasing_requests")
 }

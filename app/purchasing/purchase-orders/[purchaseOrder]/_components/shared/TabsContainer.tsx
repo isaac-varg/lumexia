@@ -5,6 +5,7 @@ import AccountingPanel from "../accounting/AccountingPanel";
 import Notes from "../notes/Notes";
 import ActivityPanel from "../activity/ActivityPanel";
 import { useTabSelection } from "@/store/tabSlice";
+import LineItems from "../lineItems/LineItems";
 
 
 const TabsContainer = () => {
@@ -21,7 +22,7 @@ const TabsContainer = () => {
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.2 }}
       >
-        {currentTab === 'items' && <Items />}
+        {currentTab === 'items' && <LineItems />}
         {currentTab === 'accounting' && <AccountingPanel />}
         {currentTab === 'notes' && <Notes />}
         {currentTab === 'activity' && <ActivityPanel />}

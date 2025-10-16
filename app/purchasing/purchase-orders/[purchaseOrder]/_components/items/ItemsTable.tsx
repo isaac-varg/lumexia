@@ -37,6 +37,7 @@ const ItemTable = () => {
   const handleRowUpdate = (row: any) => {
     if (!purchaseOrder) return;
 
+    console.log(row)
     const rowQuantity = row.quantity as any;
     // const rowPricePerUnit = row.pricePerUnit as any;
     const updateData = {
@@ -44,6 +45,8 @@ const ItemTable = () => {
       quantity: parseFloat(rowQuantity),
       uomId: row.uomId,
     };
+
+    console.log(updateData);
 
     purchaseOrderItemActions.update({ id: row.id }, updateData);
 

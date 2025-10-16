@@ -22,6 +22,8 @@ import { PurchaseOrderDetails } from "@/app/purchasing/purchase-orders/[purchase
 import { Config, PoAccountingNoteType, PurchaseOrderStatus } from "@prisma/client"
 import { create } from "zustand"
 import { PurchaseOrderActivity } from "@/actions/purchasing/purchaseOrders/getActivity"
+import { LineItemsMode } from "@/app/purchasing/purchase-orders/[purchaseOrder]/_components/lineItems/LineItems"
+import { Uom, getAllUom } from "@/actions/inventory/getAllUom"
 
 type Options = {
   company: Config[]
@@ -33,6 +35,7 @@ type Options = {
   internalNoteTypes: PoInternalNoteType[]
   publicNoteTypes: PoPublicNoteType[]
   poSupplierNoteTypes: PoSupplierNoteType[]
+  uoms: Uom[];
 }
 
 
@@ -48,6 +51,7 @@ type State = {
   publicNotes: PoPublicNote[]
   poSupplierNotes: PoSupplierNote[]
   activity: PurchaseOrderActivity
+  lineItemsMode: LineItemsMode;
 }
 
 type Actions = {
@@ -63,11 +67,13 @@ type Actions = {
     setPublicNotes: (notes: PoPublicNote[]) => void;
     setPoSupplierNotes: (notes: PoSupplierNote[]) => void;
     setActivity: (activity: PurchaseOrderActivity) => void;
+    setLineItemsMode: (mode: LineItemsMode) => void;
   }
 }
 
 export const usePurchasingSelection = create<State & Actions>((set) => ({
   currentTab: 'items' as PurchasingTab,
+  lineItemsMode: 'view' as LineItemsMode,
   options: {
     company: [],
     poStatuses: [],
@@ -78,6 +84,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
     internalNoteTypes: [],
     publicNoteTypes: [],
     poSupplierNoteTypes: [],
+    uoms: [],
   },
   files: [],
   orderItems: [],
@@ -103,6 +110,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
         internalNoteTypes,
         publicNoteTypes,
         poSupplierNoteTypes,
+        uoms,
       ] = await Promise.all([
         await appActions.configs.getByGroup('company'),
         await purchaseOrderStatusActions.getAll(),
@@ -113,6 +121,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
         await purchasingActions.purchaseOrders.notes.internal.types.getAll(),
         await purchasingActions.purchaseOrders.notes.public.types.getAll(),
         await purchasingActions.purchaseOrders.notes.supplier.types.getAll(),
+        await getAllUom(),
       ])
 
       set(() => ({
@@ -126,6 +135,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
           internalNoteTypes,
           publicNoteTypes,
           poSupplierNoteTypes,
+          uoms,
         }
 
       }))
@@ -150,6 +160,7 @@ export const usePurchasingSelection = create<State & Actions>((set) => ({
     setPublicNotes: (notes) => set(() => ({ publicNotes: notes, })),
     setPoSupplierNotes: (notes) => set(() => ({ poSupplierNotes: notes })),
     setActivity: (activity) => set(() => ({ activity })),
+    setLineItemsMode: (mode) => set(() => ({ lineItemsMode: mode })),
 
   },
 

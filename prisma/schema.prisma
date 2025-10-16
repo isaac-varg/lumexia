@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Oct 09 2025 09:24:26 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Oct 15 2025 16:21:21 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1927,26 +1927,40 @@ model PurchaseOrder {
   @@map("purchase_orders")
 }
 
+model PurchasingRequestSupplierTag {
+  id                  String            @id @default(uuid())
+  purchasingRequestId String            @map("purchasing_request_id")
+  supplierId          String            @map("supplier_id")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+  purchasingRequest   PurchasingRequest @relation(fields: [purchasingRequestId], references: [id])
+  supplier            Supplier          @relation(fields: [supplierId], references: [id])
+
+  @@unique([purchasingRequestId, supplierId])
+  @@map("purchasing_request_supplier_tags")
+}
+
 model PurchasingRequest {
-  id                        String                     @id @default(uuid())
-  requestingUserId          String                     @map("requesting_user_id")
-  statusId                  String                     @map("status_id")
-  priorityId                String                     @map("priority_id")
-  referenceCode             Int                        @default(autoincrement()) @map("reference_code")
-  itemId                    String                     @map("item_id")
+  id                        String                         @id @default(uuid())
+  requestingUserId          String                         @map("requesting_user_id")
+  statusId                  String                         @map("status_id")
+  priorityId                String                         @map("priority_id")
+  referenceCode             Int                            @default(autoincrement()) @map("reference_code")
+  itemId                    String                         @map("item_id")
   title                     String
-  createdAt                 DateTime                   @default(now()) @map("created_at")
-  updatedAt                 DateTime                   @updatedAt @map("updated_at")
-  status                    RequestStatus              @relation(fields: [statusId], references: [id])
-  requestingUser            User                       @relation(fields: [requestingUserId], references: [id])
-  item                      Item                       @relation(fields: [itemId], references: [id])
+  createdAt                 DateTime                       @default(now()) @map("created_at")
+  updatedAt                 DateTime                       @updatedAt @map("updated_at")
+  status                    RequestStatus                  @relation(fields: [statusId], references: [id])
+  requestingUser            User                           @relation(fields: [requestingUserId], references: [id])
+  item                      Item                           @relation(fields: [itemId], references: [id])
   requestInventorySnapshots RequestInventorySnapshot[]
-  priority                  RequestPriority            @relation(fields: [priorityId], references: [id])
+  priority                  RequestPriority                @relation(fields: [priorityId], references: [id])
   bprs                      RequestBpr[]
   pos                       RequestPurchaseOrder[]
   notionRequests            NotionPurchasingRequest[]
   notionBprs                NotionBpr[]
   generalRequestLink        GeneralRequestLink[]
+  supplierTags              PurchasingRequestSupplierTag[]
   RequestNote               RequestNote[]
 
   @@map("purchasing_requests")
@@ -2115,13 +2129,13 @@ model SupplierPaymentMethod {
 }
 
 model Supplier {
-  id                           String                        @id @default(uuid())
+  id                           String                         @id @default(uuid())
   name                         String
-  addressStreet1               String                        @map("address_street1")
-  addressStreet2               String?                       @map("address_street2")
-  addressCity                  String                        @map("address_city")
-  addressState                 String                        @map("address_state")
-  addressZip                   String                        @map("address_zip")
+  addressStreet1               String                         @map("address_street1")
+  addressStreet2               String?                        @map("address_street2")
+  addressCity                  String                         @map("address_city")
+  addressState                 String                         @map("address_state")
+  addressZip                   String                         @map("address_zip")
   phone                        String
   purchaseOrders               PurchaseOrder[]
   supplierAlias                SupplierAlias[]
@@ -2129,6 +2143,7 @@ model Supplier {
   SupplierPaymentMethod        SupplierPaymentMethod[]
   genericUnitConversionFactors GenericUnitConversionFactor[]
   poSupplierNotes              PoSupplierNote[]
+  PurchasingRequestSupplierTag PurchasingRequestSupplierTag[]
   SupplierContact              SupplierContact[]
 
   @@map("suppliers")

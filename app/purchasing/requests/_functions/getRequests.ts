@@ -34,6 +34,11 @@ export const getRequests = async () => {
             }
           }
         }
+      },
+      supplierTags: {
+        include: {
+          supplier: true
+        }
       }
     },
     orderBy: {

@@ -1,34 +1,27 @@
-import PageBreadcrumbs from '@/components/App/PageBreadcrumbs'
-import PageTitle from '@/components/Text/PageTitle'
 import React from 'react'
 import { getRequests } from './_functions/getRequests'
 import RequestTabs from './_components/RequestTabs'
-import { getRequestStatuses } from './[referenceCode]/_functions/getRequestStatuses'
-import { getPriorities } from './_functions/getPriorities'
-import CreateRequestButton from './_components/CreateRequestButton'
-import ArchiveButton from './_components/ArchiveButton'
 import { getAllGeneralRequests } from './general/_actions/getAllGeneralRequests'
+import Header from './_components/shared/Header'
+import StateSetter from './_components/shared/StateSetter'
 
 const RequestsPage = async () => {
 
   const requests = await getRequests()
-  const statuses = await getRequestStatuses();
-  const priorities = await getPriorities();
   const generalRequests = await getAllGeneralRequests(false);
 
 
   return (
-    <div className='flex flex-col gap-y-4'>
-      <div className='flex justify-between items-center'>
+    <div className='flex flex-col gap-y-6'>
 
-        <PageTitle>Requests</PageTitle>
-        <div className='flex gap-x-2'>
-          <CreateRequestButton />
-          <ArchiveButton />
-        </div>
-      </div>
+      <Header />
 
-      <RequestTabs requests={requests} statuses={statuses} generalRequests={generalRequests} priorities={priorities} />
+      <StateSetter
+        requests={requests}
+        generalRequests={generalRequests}
+      />
+
+
 
 
     </div>

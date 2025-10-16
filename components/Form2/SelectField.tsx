@@ -1,17 +1,30 @@
 import { useFieldContext } from "."
 
+const classes = {
+  label: {
+    default: "font-medium text-xl text-base-content",
+    soft: "font-normal text-lg text-base-content/70",
+  },
+  errors: {
+    default: "font-medium text-lg text-error underline decoration-wavy decoration-error"
+  }
+}
+
 type SelectFieldProps = {
   label: string,
   options: { label: string, value: string }[]
+  labelClass: keyof typeof classes.label
 }
 
-const SelectField = ({ label, options }: SelectFieldProps) => {
+
+
+const SelectField = ({ label, options, labelClass = 'default' }: SelectFieldProps) => {
 
   const field = useFieldContext<string>()
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="font-medium text-xl text-base-content">{label}</label>
+      <label className={`${classes.label[labelClass]}`}>{label}</label>
       <select
         value={field.state.value}
         className="select"
