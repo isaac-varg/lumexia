@@ -27,7 +27,7 @@ const SelectField = ({ label, options, labelClass = 'default' }: SelectFieldProp
       <label className={`${classes.label[labelClass]}`}>{label}</label>
       <select
         value={field.state.value}
-        className="select"
+        className="select h-full"
         onChange={(e) => field.handleChange(e.target.value)}
       >
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}

@@ -2,11 +2,24 @@ import Card from "@/components/Card"
 import Table from "@/components/Table"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { usePurchasingActions, usePurchasingSelection } from "@/store/purchasingSlice"
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+import { useEffect, useState } from "react"
 
 const ViewMode = () => {
 
-  const { orderItems } = usePurchasingSelection()
+  const { orderItems, lineItemsMode } = usePurchasingSelection()
   const { setLineItemsMode } = usePurchasingActions()
+  const [total, setTotal] = useState(0)
+
+  useEffect(() => {
+
+    const total = orderItems.reduce((acc, curr) => {
+      return acc + (curr.pricePerUnit * curr.quantity)
+    }, 0)
+
+    setTotal(total);
+
+  }, [orderItems, lineItemsMode])
 
   return (
     <div className="flex flex-col gap-6">
@@ -39,10 +52,10 @@ const ViewMode = () => {
                   >
                     <td>{i.item.referenceCode}</td>
                     <td>{i.item.name}</td>
-                    <td>{i.pricePerUnit}</td>
-                    <td>{i.quantity}</td>
+                    <td>{`$ ${toFracitonalDigits.weight(i.pricePerUnit)}`}</td>
+                    <td>{toFracitonalDigits.weight(i.quantity)}</td>
                     <td>{i.uomAbbreviation}</td>
-                    <td>{i.pricePerUnit * i.quantity}</td>
+                    <td>{toFracitonalDigits.curreny(i.pricePerUnit * i.quantity)}</td>
                   </tr>
                 )
               })}
@@ -54,6 +67,20 @@ const ViewMode = () => {
 
         </div>
       </Card.Root>
+
+      <div className="grid grid-cols-3 gap-6">
+
+        <div />
+        <div />
+
+        <div className="flex flex-col gap-4">
+          <SectionTitle>Total</SectionTitle>
+          <Card.Root>
+            <div className="font-poppins text-lg font-medium text-base-content">$ {toFracitonalDigits.curreny(total)}</div>
+          </Card.Root>
+        </div>
+
+      </div>
 
 
     </div>

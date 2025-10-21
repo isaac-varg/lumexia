@@ -1,11 +1,11 @@
 "use client"
 import { AnimatePresence, motion } from "framer-motion";
-import Items from "../items/Items";
 import AccountingPanel from "../accounting/AccountingPanel";
 import Notes from "../notes/Notes";
 import ActivityPanel from "../activity/ActivityPanel";
 import { useTabSelection } from "@/store/tabSlice";
 import LineItems from "../lineItems/LineItems";
+import Options from "../options/Options";
 
 
 const TabsContainer = () => {
@@ -26,6 +26,7 @@ const TabsContainer = () => {
         {currentTab === 'accounting' && <AccountingPanel />}
         {currentTab === 'notes' && <Notes />}
         {currentTab === 'activity' && <ActivityPanel />}
+        {currentTab === 'options' && <Options />}
       </motion.div>
     </AnimatePresence>
   )

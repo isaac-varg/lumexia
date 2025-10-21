@@ -7,6 +7,7 @@ model RecordStatus {
     createdAt              DateTime                @default(now()) @map("created_at")
     updatedAt              DateTime                @updatedAt @map("updated_at")
     itemConsumerContainers ItemConsumerContainer[]
+    purchaseOrders          PurchaseOrder[] 
 
     @@map("record_statuses")
 }
