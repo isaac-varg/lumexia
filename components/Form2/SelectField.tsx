@@ -13,7 +13,7 @@ const classes = {
 type SelectFieldProps = {
   label: string,
   options: { label: string, value: string }[]
-  labelClass: keyof typeof classes.label
+  labelClass?: keyof typeof classes.label
 }
 
 

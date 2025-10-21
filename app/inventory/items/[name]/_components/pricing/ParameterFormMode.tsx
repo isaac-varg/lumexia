@@ -144,7 +144,7 @@ const FormMode = ({
           onChange: z.string()
         }}
       >
-        {(field) => <field.SelectField label="Upcoming Price UOM" options={uomOptions} />}
+        {(field) => <field.SelectField label="Upcoming Price UOM" options={uomOptions} labelClass='soft' />}
       </form.AppField>
 
       <form.AppField

@@ -3,6 +3,7 @@
 import { getUserId } from "@/actions/users/getUserId";
 import { containerTypes } from "@/configs/staticRecords/containerTypes";
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
@@ -36,6 +37,7 @@ const createPO = async (supplierId: string, userId: string) => {
       supplierId,
       submittingUserId: userId,
       statusId: purchaseOrderStatuses.draft,
+      recordStatusId: recordStatuses.active,
     }
   })
 

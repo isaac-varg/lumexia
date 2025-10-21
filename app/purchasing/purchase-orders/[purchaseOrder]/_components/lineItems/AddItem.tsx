@@ -38,6 +38,7 @@ const AddItem = ({ setIsAddMode }: { setIsAddMode: Dispatch<SetStateAction<boole
           {results.map(r => {
             return (
               <div
+                key={r.id}
                 className="bg-accent/20 rounded-xl py-1 px-4 font-poppins text-lg text-base-content hover:bg-accent/40 hover:cursor-pointer"
                 onClick={() => handleAdd(r)}
               >
