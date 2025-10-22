@@ -38,7 +38,6 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   const theme = await getUserConfig('theme');
-  console.log('theme', theme)
 
   return (
     <html lang="en" data-theme={theme?.value || 'light'}>

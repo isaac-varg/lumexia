@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { IPurchasingRequest } from '../_functions/getRequests';
+import { IPurchasingRequest } from '../../_functions/getRequests';
 import Dropdown from '@/components/Dropdown';
-import { updatePoItemDetails } from '../_functions/updatePoItemDetails';
+import { updatePoItemDetails } from '../../_functions/updatePoItemDetails';
 import { DatepickerRange } from '@/components/Dropdown/DateSelector';
 
 const DateBadge = ({ request }: { request: IPurchasingRequest }) => {
@@ -16,8 +16,6 @@ const DateBadge = ({ request }: { request: IPurchasingRequest }) => {
   useEffect(() => {
     if (!relevantPoItems || !poItemDetails) {
       setHasPO(false);
-      if (!relevantPoItems) console.error('No relevant po items');
-      if (!poItemDetails) console.error('No PO Item Details');
     }
   }, [relevantPoItems, poItemDetails]);
 

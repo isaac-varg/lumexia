@@ -49,12 +49,18 @@ export const getRequests = async () => {
   const workedUp = requests.map((r) => {
     const relevantPoItems = r.pos.length > 0 ? r.pos[0].po.purchaseOrderItems.filter((i) => i.itemId === r.itemId) : null;
 
-    const uniquePoSuppliers = r.pos.reduce((acc: any, item) => {
-      if (!acc.includes(item.po.supplier.name)) {
-        acc.push(item.po.supplier.name);
+    const suppliers = new Map();
+    r.supplierTags.forEach(tag => {
+      if (tag.supplier) {
+        suppliers.set(tag.supplier.id, tag.supplier);
       }
-      return acc;
-    }, []);
+    });
+    r.pos.forEach(p => {
+      if (p.po.supplier) {
+        suppliers.set(p.po.supplier.id, p.po.supplier);
+      }
+    });
+    const uniqueSuppliers = Array.from(suppliers.values());
 
     return ({
       ...r,
@@ -62,7 +68,7 @@ export const getRequests = async () => {
       statusName: r.status.name,
       priorityName: r.priority.name,
       relevantPoItems,
-      connectedPoSuppliers: uniquePoSuppliers
+      suppliers: uniqueSuppliers
     })
   })
 

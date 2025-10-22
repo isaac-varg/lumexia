@@ -1,6 +1,8 @@
 import UserIcon from "@/components/UI/UserIcon"
-import { GeneralRequestMinimal } from "../general/_actions/getAllGeneralRequests"
+import { GeneralRequestMinimal } from "../../general/_actions/getAllGeneralRequests"
 import { useRouter } from "next/navigation"
+import { DateTime } from "luxon"
+import { dateFormatWithTime } from "@/configs/data/dateFormatString"
 
 const GeneralRequestCard = ({ request }: { request: GeneralRequestMinimal }) => {
   const router = useRouter()
@@ -13,7 +15,11 @@ const GeneralRequestCard = ({ request }: { request: GeneralRequestMinimal }) => 
       onClick={() => handleClick()}
       className='card bg-white bg-opacity-70 border-neutral-800/50 border-2 hover:cursor-pointer hover:bg-lilac-300' >
       <div className='card-body flex flex-col gap-y-2'>
-        <div className='card-title'>{`${request.title}`}</div>
+
+        <div className="flex flex-col">
+          <div className='text-xs text-base-content/65'>{DateTime.fromJSDate(request.createdAt).toFormat(dateFormatWithTime)}</div>
+          <div className='card-title'>{`${request.title}`}</div>
+        </div>
 
         <div className='flex flex-row gap-2  items-center'>
           <UserIcon name={request.user.name || ''} image={request.user.image || ''} />

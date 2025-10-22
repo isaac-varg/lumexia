@@ -1,9 +1,10 @@
 import React from 'react'
 import { getRequests } from './_functions/getRequests'
-import RequestTabs from './_components/RequestTabs'
 import { getAllGeneralRequests } from './general/_actions/getAllGeneralRequests'
 import Header from './_components/shared/Header'
 import StateSetter from './_components/shared/StateSetter'
+import TabSelector from './_components/shared/TabSelector'
+import TabsContainer from './_components/shared/TabContainer'
 
 const RequestsPage = async () => {
 
@@ -21,6 +22,8 @@ const RequestsPage = async () => {
         generalRequests={generalRequests}
       />
 
+      <TabSelector />
+      <TabsContainer />
 
 
 

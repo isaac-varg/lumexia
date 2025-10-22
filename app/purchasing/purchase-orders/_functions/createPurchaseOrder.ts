@@ -3,6 +3,7 @@ import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions";
 import purchaseOrderStatusActions from "@/actions/purchasing/purchaseOrderStatusActions";
 import userActions from "@/actions/users/userAction";
 import { poAccountingStatuses } from "@/configs/staticRecords/poAccountingStatuses";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { Supplier } from "@/types/supplier";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 
@@ -19,6 +20,7 @@ export const createPurchaseOrder = async (supplier: Supplier, session: any) => {
     supplierId: supplier.id,
     submittingUserId: user.id,
     statusId: defaultStatus.id,
+    recordStatusId: recordStatuses.active,
   }
   const po = await purchaseOrderActions.createNew(poData);
 
