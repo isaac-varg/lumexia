@@ -4,7 +4,7 @@ const SupplierButton = ({ supplierId }: { supplierId: string }) => {
 
   const { selectedSupplierId, supplierCounts, options } = usePurchasingRequestSelection()
   const { setSelectedSupplierId } = usePurchasingRequestActions();
-  const supplierName = options.suppliers.get(supplierId);
+  const supplierName = options.suppliers.has(supplierId) ? options.suppliers.get(supplierId) : 'Untagged'
   const isActive = selectedSupplierId === supplierId
   const count = supplierCounts.get(supplierId) || 0;
 

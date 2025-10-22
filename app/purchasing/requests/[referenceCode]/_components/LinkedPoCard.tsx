@@ -16,7 +16,7 @@ const LinkedPoCard = ({ po, containerTypes }: { po: LinkedPos, containerTypes: C
 
     const hasDetails = po.po.purchaseOrderItems[0].details.length !== 0;
     const poItemDetail = po.po.purchaseOrderItems[0].details[0]
-    const expectedDate: DatepickerRange = { start: poItemDetail.expectedDateStart, end: poItemDetail.expectedDateEnd }
+    const expectedDate: DatepickerRange = poItemDetail ? { start: poItemDetail.expectedDateStart, end: poItemDetail.expectedDateEnd } : { start: null, end: null }
 
 
     const handleDelete = async (e: any) => {
@@ -30,11 +30,13 @@ const LinkedPoCard = ({ po, containerTypes }: { po: LinkedPos, containerTypes: C
 
     const handleDateSelection = async (value: DatepickerRange) => {
 
-        const poItemDetailId = po.po.purchaseOrderItems[0].details[0].id
-        const update = await updatePoItemDetails(poItemDetailId, {
-            expectedDateStart: value.start,
-            expectedDateEnd: value.end,
-        });
+        if (poItemDetail) {
+            const poItemDetailId = po.po.purchaseOrderItems[0].details[0].id
+            const update = await updatePoItemDetails(poItemDetailId, {
+                expectedDateStart: value.start,
+                expectedDateEnd: value.end,
+            });
+        }
 
     };
 

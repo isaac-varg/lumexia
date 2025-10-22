@@ -6,7 +6,7 @@ import RequestCard from "../shared/RequestCard"
 const SupplierTab = () => {
 
   const { requests, suppliersGrouped, selectedSupplierId } = usePurchasingRequestSelection()
-  const { setSelectedSupplierId } = usePurchasingRequestActions()
+
 
   const filteredRequests = useMemo(() => {
     if (!selectedSupplierId) {
@@ -18,20 +18,28 @@ const SupplierTab = () => {
     [suppliersGrouped, selectedSupplierId]
   );
 
+  const sortedSupplierIds = useMemo(() => {
+    return Array.from(suppliersGrouped.keys()).sort((a, b) => {
+      if (a === 'untagged') return -1;
+      if (b === 'untagged') return 1;
+
+      const groupA = suppliersGrouped.get(a);
+      const supplierA = groupA?.[0]?.suppliers.find(s => s.id === a);
+      const nameA = supplierA?.name || '';
+
+      const groupB = suppliersGrouped.get(b);
+      const supplierB = groupB?.[0]?.suppliers.find(s => s.id === b);
+      const nameB = supplierB?.name || '';
+
+      return nameA.localeCompare(nameB);
+    });
+  }, [suppliersGrouped]);
+
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-3 gap-4">
-        <button
-          className={`btn-lg btn ${!selectedSupplierId ? 'btn-secondary' : 'btn-soft'} flex w-full  justify-between`}
-          onClick={() => setSelectedSupplierId(null)}
-        >
-          <span>All</span>
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-info text-xs font-semibold text-info-content">
-            {requests.length}
-          </div>
-        </button>
 
-        {Array.from(suppliersGrouped.entries()).map(([group, supplier]) => <SupplierButton key={group} supplierId={group} />)}
+        {sortedSupplierIds.map((supplierId) => <SupplierButton key={supplierId} supplierId={supplierId} />)}
 
       </div>
 

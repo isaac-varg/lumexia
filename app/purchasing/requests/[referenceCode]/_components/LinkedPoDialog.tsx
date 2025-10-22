@@ -32,10 +32,14 @@ const restructureAs = [
 
 const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) => {
 
-  const isNewDetailsEntry = purchaseOrder.po.purchaseOrderItems.length === 0 && purchaseOrder.po.purchaseOrderItems[0].details.length === 0
-  const detailId = purchaseOrder.po.purchaseOrderItems[0].details[0].id
+  const poItem = purchaseOrder.po.purchaseOrderItems[0];
+  const poItemDetail = poItem?.details[0];
 
-  const { weightPerContainer, containerTypeId, quantityOfContainers } = purchaseOrder.po.purchaseOrderItems[0].details[0] ? purchaseOrder.po.purchaseOrderItems[0].details[0] : { weightPerContainer: 0, containerTypeId: '', quantityOfContainers: 0 }
+  const isNewDetailsEntry = !poItemDetail;
+  const detailId = poItemDetail?.id;
+
+  const { weightPerContainer, containerTypeId, quantityOfContainers } = poItemDetail || { weightPerContainer: 0, containerTypeId: '', quantityOfContainers: 0 };
+
 
   const defaultFormValues: Inputs = {
     weightPerContainer,

@@ -58,14 +58,19 @@ export const usePurchasingRequestSelection = create<State & Actions>((set) => ({
       // for suppliers
       const suppliersGrouped = new Map<string, RequestForDashboard[]>();
       requests.forEach(request => {
-        request.suppliers.forEach(supplier => {
-          if (supplier) {
-            const existingRequests = suppliersGrouped.get(supplier.id) || [];
-            if (!existingRequests.find(r => r.id === request.id)) {
-              suppliersGrouped.set(supplier.id, [...existingRequests, request]);
+        if (request.suppliers && request.suppliers.length > 0) {
+          request.suppliers.forEach(supplier => {
+            if (supplier) {
+              const existingRequests = suppliersGrouped.get(supplier.id) || [];
+              if (!existingRequests.find(r => r.id === request.id)) {
+                suppliersGrouped.set(supplier.id, [...existingRequests, request]);
+              }
             }
-          }
-        });
+          });
+        } else {
+          const untaggedRequests = suppliersGrouped.get('untagged') || [];
+          suppliersGrouped.set('untagged', [...untaggedRequests, request]);
+        }
       });
 
       const supplierCounts = new Map<string, number>();
