@@ -12,50 +12,50 @@ import { updatePoItemDetails } from '../_functions/updatePoItemDetails'
 
 const LinkedPoCard = ({ po, containerTypes }: { po: LinkedPos, containerTypes: Containers[] }) => {
 
-    const { showDialog } = useDialog()
+  const { showDialog } = useDialog()
 
-    const hasDetails = po.po.purchaseOrderItems[0].details.length !== 0;
-    const poItemDetail = po.po.purchaseOrderItems[0].details[0]
-    const expectedDate: DatepickerRange = poItemDetail ? { start: poItemDetail.expectedDateStart, end: poItemDetail.expectedDateEnd } : { start: null, end: null }
+  const hasDetails = po.po.purchaseOrderItems[0].details.length !== 0;
+  const poItemDetail = po.po.purchaseOrderItems[0].details[0]
+  const expectedDate: DatepickerRange = poItemDetail ? { start: poItemDetail.expectedDateStart, end: poItemDetail.expectedDateEnd } : { start: null, end: null }
 
 
-    const handleDelete = async (e: any) => {
-        e.stopPropagation();
-        await deleteLinkedPo(po.id, po.requestId)
+  const handleDelete = async (e: any) => {
+    e.stopPropagation();
+    await deleteLinkedPo(po.id, po.requestId)
+  }
+
+  const handleClick = () => {
+    showDialog(`linkedPoDialog-${po.po.purchaseOrderItems[0].id}`)
+  }
+
+  const handleDateSelection = async (value: DatepickerRange) => {
+
+    if (poItemDetail) {
+      const poItemDetailId = po.po.purchaseOrderItems[0].details[0].id
+      const update = await updatePoItemDetails(poItemDetailId, {
+        expectedDateStart: value.start,
+        expectedDateEnd: value.end,
+      });
     }
 
-    const handleClick = () => {
-        showDialog(`linkedPoDialog-${po.po.purchaseOrderItems[0].id}`)
-    }
-
-    const handleDateSelection = async (value: DatepickerRange) => {
-
-        if (poItemDetail) {
-            const poItemDetailId = po.po.purchaseOrderItems[0].details[0].id
-            const update = await updatePoItemDetails(poItemDetailId, {
-                expectedDateStart: value.start,
-                expectedDateEnd: value.end,
-            });
-        }
-
-    };
+  };
 
 
-    return (
-        <div className='card bg-lilac-50 hover:cursor-pointer hover:bg-lilac-200' onClick={handleClick}>
-            <LinkedPoDialog purchaseOrder={po} containerTypes={containerTypes} />
-            <div className='card-body'>
-                <div className='flex justify-between'>
-                    <div className='card-title'>PO# {po.po.referenceCode} - {po.po.supplier.name} </div>
-                    <span className='text-2xl hover:text-red-500' onClick={(e) => handleDelete(e)}><TbTrash /></span>
-                </div>
-                <div>
-                    <Dropdown.Date onClick={handleDateSelection} value={expectedDate} />
-
-                </div>
-            </div>
+  return (
+    <div className='card bg-accent/50 hover:cursor-pointer hover:bg-accent/35' onClick={handleClick}>
+      <LinkedPoDialog purchaseOrder={po} containerTypes={containerTypes} />
+      <div className='card-body'>
+        <div className='flex justify-between'>
+          <div className='card-title'>PO# {po.po.referenceCode} - {po.po.supplier.name} </div>
+          <button className='btn btn-circle btn-sm btn-error btn-outline' onClick={(e) => handleDelete(e)}><TbTrash className='size-4' /></button>
         </div>
-    )
+        <div>
+          <Dropdown.Date onClick={handleDateSelection} value={expectedDate} />
+
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default LinkedPoCard

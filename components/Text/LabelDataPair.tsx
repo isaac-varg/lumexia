@@ -23,7 +23,7 @@ const LabelDataPair = ({
   onClick,
 }: {
   label?: string;
-  data: string | number;
+  data?: string | number;
   children?: React.ReactNode;
   tooltip?: string;
   displayType?: keyof typeof classes.displayType;

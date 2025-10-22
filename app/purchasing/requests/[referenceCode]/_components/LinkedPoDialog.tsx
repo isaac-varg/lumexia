@@ -92,11 +92,10 @@ const LinkedPoDialog = ({ purchaseOrder, containerTypes }: LinkedPoDialogProps) 
   return (
     <Dialog.Root identifier={`linkedPoDialog-${purchaseOrder.po.purchaseOrderItems[0].id}`}>
       <Dialog.Title>
-        <span>Details for PO# </span>
-        <span onClick={() => handlePoTitleClick()} className="underline decoration-wavy hover:cursor-pointer hover:text-sky-900 ">{`${purchaseOrder.po.referenceCode} - ${purchaseOrder.po.supplier.name}`}</span>
+        <span>Details for PO </span>
+        <span onClick={() => handlePoTitleClick()} className="underline decoration-wavy hover:cursor-pointer text-base-content hover:text-accent">{`#${purchaseOrder.po.referenceCode} - ${purchaseOrder.po.supplier.name}`}</span>
       </Dialog.Title>
       <p>You can specify pack sizes for the order item.</p>
-
 
 
       <Form.Root form={form} onSubmit={(data) => handleSubmit(data)}>

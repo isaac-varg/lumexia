@@ -23,73 +23,78 @@ import NewNoteDialog from './_components/NewNoteDialog';
 import { getNoteTypes } from './_functions/getNoteTypes';
 import { getRequestNotes } from './_functions/getRequestNotes';
 import { getRequestPriorities } from './_functions/getRequestPriorities';
+import { getSupplierTags } from './_functions/getSupplierTags';
 
 type RequestDetailsProps = {
-    searchParams: {
-        id: string;
-    };
+  searchParams: {
+    id: string;
+  };
 };
 
 
 const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
 
-    const request = await getRequest(searchParams.id)
-    const linkedBprs = await getLinkedBatches(searchParams.id)
-    const linkedPos = await getLinkedPos(searchParams.id, request.itemId)
-    const linkableBprs = await getLinkableBprs(request.itemId);
-    const linkablePos = await getLinkablePos(request.itemId);
-    const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)
-    const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId), request.itemId)
-    const requestStatuses = await getRequestStatuses();
-    const requestPriorities = await getRequestPriorities();
-    const containerTypes = await getContainerTypes();
-    const suppliers = await getSuppliers();
-    const noteTypes = await getNoteTypes()
-    const requestNotes = await getRequestNotes(request.id)
+  const request = await getRequest(searchParams.id)
+  const linkedBprs = await getLinkedBatches(searchParams.id)
+  const linkedPos = await getLinkedPos(searchParams.id, request.itemId)
+  const linkableBprs = await getLinkableBprs(request.itemId);
+  const linkablePos = await getLinkablePos(request.itemId);
+  const linkedPoAmounts = await getLinkedPosAmount(linkedPos.map((po) => po.poId), request.itemId)
+  const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId), request.itemId)
+  const requestStatuses = await getRequestStatuses();
+  const requestPriorities = await getRequestPriorities();
+  const containerTypes = await getContainerTypes();
+  const suppliers = await getSuppliers();
+  const noteTypes = await getNoteTypes()
+  const requestNotes = await getRequestNotes(request.id)
+  const supplierTags = await getSupplierTags(request.id);
 
 
 
-    if (!request) {
-        return null
-    }
+  if (!request) {
+    return null
+  }
 
-    return (
-        <div className='flex flex-col gap-y-4'>
+  return (
+    <div className='flex flex-col gap-y-4'>
 
-            <SelectBprDialog requestId={request.id} linkableBprs={linkableBprs} />
-            <SelectPoDialog requestId={request.id} linkablePos={linkablePos} />
-            <NewPurchaseOrderDialog requestId={request.id} suppliers={suppliers} linkablePOs={linkablePos} itemId={request.itemId} />
-            <NewNoteDialog types={noteTypes} requestId={request.id} />
+      <SelectBprDialog requestId={request.id} linkableBprs={linkableBprs} />
+      <SelectPoDialog requestId={request.id} linkablePos={linkablePos} />
+      <NewPurchaseOrderDialog requestId={request.id} suppliers={suppliers} linkablePOs={linkablePos} itemId={request.itemId} />
+      <NewNoteDialog types={noteTypes} requestId={request.id} />
 
-            <RequestDetailsPageTitle request={request} />
-            <PageBreadcrumbs />
+      <RequestDetailsPageTitle request={request} />
 
-            <div className='grid grid-cols-2 gap-4'>
+      <div className='grid grid-cols-2 gap-4'>
 
-                <BasicDetailsPanel
-                    requestingUser={request.requestingUser.name ?? ""}
-                    statusName={request.status.name ?? ""}
-                    priorityName={request.priority.name}
-                    requestDate={request.createdAt}
-                    requestId={request.id}
-                    allStatuses={requestStatuses}
-                    allPriorities={requestPriorities}
+        <BasicDetailsPanel
+          suppliers={suppliers}
+          supplierTags={supplierTags}
+          requestingUser={request.requestingUser.name ?? ""}
+          statusName={request.status.name ?? ""}
+          priorityName={request.priority.name}
+          requestDate={request.createdAt}
+          requestId={request.id}
+          allStatuses={requestStatuses}
+          allPriorities={requestPriorities}
+          statusId={request.statusId}
+          priorityId={request.priorityId}
 
-                />
+        />
 
-                <NotesPanel notes={requestNotes} noteTypes={noteTypes} />
+        <NotesPanel notes={requestNotes} noteTypes={noteTypes} />
 
-                <LinkedBatchesPanel bprs={linkedBprs} linkedBprAmounts={linkedBprAmounts} />
+        <LinkedBatchesPanel bprs={linkedBprs} linkedBprAmounts={linkedBprAmounts} />
 
-                <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} linkedPosAmounts={linkedPoAmounts} />
+        <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} linkedPosAmounts={linkedPoAmounts} />
 
-                <InventoryPanel notes={requestNotes} noteTypes={noteTypes} requestId={searchParams.id} itemId={request.itemId} />
+        <InventoryPanel notes={requestNotes} noteTypes={noteTypes} requestId={searchParams.id} itemId={request.itemId} />
 
-            </div>
+      </div>
 
 
-        </div>
-    )
+    </div>
+  )
 }
 
 export default RequestDetailsPage

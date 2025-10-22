@@ -5,6 +5,9 @@ import LinkedBprCard from './LinkedBprCard'
 import useDialog from '@/hooks/useDialog'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 import { LinkedBprsAmounts } from '../_functions/getLinkedBprAmounts'
+import SectionTitle from '@/components/Text/SectionTitle'
+import { TbPlugConnected } from 'react-icons/tb'
+import Card from '@/components/Card'
 
 type LinkedBprsPanelProps = {
   bprs: LinkedBatchesType
@@ -20,15 +23,18 @@ const LinkedBatchesPanel = ({ bprs, linkedBprAmounts }: LinkedBprsPanelProps) =>
   }
 
   return (
+    <div className='flex flex-col gap-2'>
+      <div className='flex justify-between items-end'>
+        <SectionTitle>Linked Batches</SectionTitle>
+        <button className='btn btn-secondary' onClick={handleAdd}>
+          <span className='text-xl'> <TbPlugConnected /></span>
+          <h2>Connect Existing</h2>
+        </button>
+      </div>
 
-    <div className="card bg-base-300">
-      <div className="card-body flex flex-col gap-y-4 justify-between h-full">
-        <div className="flex justify-between items-center gap-y-2">
-          <div className="card-title">Linked Batches</div>
-          <button className="btn btn-neutral btn-soft" onClick={handleAdd}>
-            Connect
-          </button>
-        </div>
+
+      <Card.Root>
+
 
         <div className="grow grid grid-cols-2 gap-4">
           {bprs.map((bpr) => (
@@ -39,8 +45,9 @@ const LinkedBatchesPanel = ({ bprs, linkedBprAmounts }: LinkedBprsPanelProps) =>
         <div className="flex justify-end font-poppins text-sm font-medium">
           Total: {toFracitonalDigits.weight(linkedBprAmounts.totalNeeded)} lbs
         </div>
-      </div>
-    </div>
+      </Card.Root >
+    </div >
+
   )
 }
 

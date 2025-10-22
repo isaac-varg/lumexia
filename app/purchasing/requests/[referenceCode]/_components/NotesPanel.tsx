@@ -5,32 +5,36 @@ import { TbGhost2, TbPlus, TbUser } from 'react-icons/tb'
 import { RequestNoteType } from '../_functions/getNoteTypes'
 import { RequestNote } from '../_functions/getRequestNotes'
 import { DateTime } from 'luxon'
+import SectionTitle from '@/components/Text/SectionTitle'
+import Card from '@/components/Card'
 
 const NotesPanel = ({ notes, noteTypes }: { notes: RequestNote[], noteTypes: RequestNoteType[] }) => {
 
   const { showDialog } = useDialog()
 
   return (
-    <div className='card bg-base-300 shadow-xl'>
-      <div className='card-body'>
-        <div className='flex justify-between items-center'>
-          <div className='card-title'>Notes</div>
-
-          <button className='btn btn-neutral' onClick={() => showDialog('newrequestnotedialog')}>
-            <span className='text-xl'> <TbPlus /></span>
-            <h2>New Note</h2>
-          </button>
-        </div>
+    <div className='flex flex-col gap-2'>
 
 
+      <div className='flex justify-between items-center'>
+        <SectionTitle>Recent Notes</SectionTitle>
+        <button className='btn btn-secondary flex items-center' onClick={() => showDialog('newrequestnotedialog')}>
+          <span className='size-4'> <TbPlus /></span>
+          New Note
+        </button>
+
+      </div>
+
+
+      <Card.Root>
         <div className='grid grid-cols-1 gap-4 max-h-72 overflow-y-auto'>
           {notes.map((note) => {
             return (
-              <div key={note.id} className='flex flex-col gap-y-4 bg-lilac-100 p-6 rounded-xl'>
+              <div key={note.id} className='flex flex-col gap-y-4 bg-accent/35 p-6 rounded-xl'>
 
                 <div className='flex flex-row justify-start gap-x-4 items-center'>
 
-                  <div className='bg-lilac-300 flex items-center gap-x-2 rounded-xl px-4 py-2'>
+                  <div className='bg-secondary/40 flex items-center gap-x-2 rounded-xl px-4 py-2'>
 
                     <span className='text-xl'><TbGhost2 /></span>
                     <h3 className='font-poppins text-base font-medium'>{note.user.name}</h3>
@@ -40,17 +44,16 @@ const NotesPanel = ({ notes, noteTypes }: { notes: RequestNote[], noteTypes: Req
                     style={{ backgroundColor: note.noteType.bgColor, color: note.noteType.textColor }}
                     className={`font-poppins font-medium text-sm rounded-xl py-2 px-4 `}
                   >
-                    <h3 className='font-poppins font-medium text-sm'>{note.noteType.name}</h3>
+                    <h3 className='font-poppins font-medium text-sm text-shadow-base-content'>{note.noteType.name}</h3>
                   </div>
 
-                  <div className='font-poppins text-base font-medium'>
+                  <div className='font-poppins font-medium text-base text-base-content'>
                     {DateTime.fromJSDate(note.createdAt).toFormat('DDDD @ t')}
                   </div>
 
                 </div>
 
-
-                <div className='font-poppins text-lg'>
+                <div className='font-poppins text-lg text-base-content'>
                   {note.content}
                 </div>
 
@@ -59,9 +62,8 @@ const NotesPanel = ({ notes, noteTypes }: { notes: RequestNote[], noteTypes: Req
             )
           })}
         </div>
-      </div>
+      </Card.Root>
     </div>
-
   )
 }
 
