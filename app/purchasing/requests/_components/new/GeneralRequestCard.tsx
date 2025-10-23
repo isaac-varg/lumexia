@@ -13,7 +13,7 @@ const GeneralRequestCard = ({ request }: { request: GeneralRequestMinimal }) => 
   return (
     <div
       onClick={() => handleClick()}
-      className='card bg-white bg-opacity-70 border-neutral-800/50 border-2 hover:cursor-pointer hover:bg-lilac-300' >
+      className='card bg-base-300/50 border-base-300/50 border-2 hover:cursor-pointer hover:bg-base-300/30' >
       <div className='card-body flex flex-col gap-y-2'>
 
         <div className="flex flex-col">

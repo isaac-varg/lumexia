@@ -3,10 +3,12 @@ import { usePurchasingRequestSelection } from "@/store/purchasingRequestSlice"
 import Card from "@/components/Card"
 import GeneralRequestCard from "./GeneralRequestCard"
 import RequestCard from "../shared/RequestCard"
+import { requestStatuses } from "@/configs/staticRecords/requestStatuses"
 
 const NewTab = () => {
 
   const { requests, generalRequests } = usePurchasingRequestSelection()
+  const newRequests = requests.filter(r => r.statusId === requestStatuses.requested);
 
   return (
     <div className="grid grid-cols-2 gap-6">
@@ -17,7 +19,7 @@ const NewTab = () => {
 
         <Card.Root>
           <div className='grid grid-cols-3 gap-4 max-h-[600px] overflow-auto'>
-            {requests.map((request) => <RequestCard key={request.id} request={request} />)}
+            {newRequests.map((request) => <RequestCard key={request.id} request={request} />)}
           </div>
         </Card.Root>
 
