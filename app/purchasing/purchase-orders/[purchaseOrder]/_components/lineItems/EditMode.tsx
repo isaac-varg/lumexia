@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { TbPlus, TbTrash, TbX } from "react-icons/tb"
 import AddItem from "./AddItem"
 import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions"
+import { useHotkeys } from "react-hotkeys-hook"
 
 const LineItemRow = ({ form, index, options, itemName }: {
   form: any,
@@ -89,7 +90,6 @@ const EditMode = () => {
   }, [orderItems])
 
   const handleAddItem = async () => {
-
     setIsAddMode(true);
   }
 
@@ -106,6 +106,8 @@ const EditMode = () => {
 
     }
   });
+
+  useHotkeys('ctrl+r', () => setIsAddMode(state => !state), { preventDefault: true })
 
 
   return (

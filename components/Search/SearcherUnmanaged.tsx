@@ -59,7 +59,7 @@ const SearcherUnmanaged = <T,>({ data, keys, input, setInput, onQueryComplete, l
   return (
     <div className="flex flex-col gap-y-4">
       <label className="input input-bordered flex items-center w-full gap-2">
-        <input type="text" className="grow" placeholder="Search" value={input} onChange={(e) => {
+        <input autoFocus type="text" className="grow" placeholder="Search" value={input} onChange={(e) => {
           setInput(e.target.value)
         }} />
         <span className="text-2xl"><TbSearch /></span>

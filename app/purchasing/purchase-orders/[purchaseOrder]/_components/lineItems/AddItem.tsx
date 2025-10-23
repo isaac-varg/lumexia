@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { PurchasableItem } from "../../_functions/getAllItems"
 import { handleItemAdd } from "../../_functions/handleItemAdd"
 import { useRouter } from "next/navigation"
+import { useHotkeys } from "react-hotkeys-hook"
 
 const AddItem = ({ setIsAddMode }: { setIsAddMode: Dispatch<SetStateAction<boolean>> }) => {
   const { purchasableItems, purchaseOrder, } = usePurchasingSelection()
@@ -17,9 +18,17 @@ const AddItem = ({ setIsAddMode }: { setIsAddMode: Dispatch<SetStateAction<boole
     await handleItemAdd(purchaseOrder.id, item, purchaseOrder.statusId)
     setIsAddMode(false)
     router.refresh()
-
-
   }
+
+  useHotkeys(
+    'enter',
+    (event) => {
+      event.preventDefault()
+      handleAdd(results[0]);
+
+    },
+    { enableOnFormTags: true, preventDefault: true }
+  )
 
 
   return (
@@ -35,14 +44,19 @@ const AddItem = ({ setIsAddMode }: { setIsAddMode: Dispatch<SetStateAction<boole
 
 
         <div className="grid grid-cols-1 gap-1 overflow-auto max-h-[500px]">
-          {results.map(r => {
+          {results.map((r, i) => {
             return (
               <div
                 key={r.id}
                 className="bg-accent/20 rounded-xl py-1 px-4 font-poppins text-lg text-base-content hover:bg-accent/40 hover:cursor-pointer"
                 onClick={() => handleAdd(r)}
               >
-                {`${r.name} ${r.aliases.length !== 0 ? `(${r.aliasesAll})` : ''}`}
+                <div className="flex justify-between items-center">
+                  {`${r.name} ${r.aliases.length !== 0 ? `(${r.aliasesAll})` : ''}`}
+
+                  {i === 0 && (<kbd className="kbd kbd-md">enter</kbd>
+                  )}
+                </div>
               </div>
             )
           })}
