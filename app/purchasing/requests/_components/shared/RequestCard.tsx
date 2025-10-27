@@ -53,6 +53,7 @@ const RequestCard = ({ request }: RequestCardProps) => {
           {options.statuses.map(s => {
             return (
               <button
+                key={s.id}
                 onClick={() => handleChangeClick(s.id, 'status')}
                 className='btn btn-sm btn-accent'>{s.name}</button>
             )
@@ -71,6 +72,7 @@ const RequestCard = ({ request }: RequestCardProps) => {
           {options.priorities.map(s => {
             return (
               <button
+                key={s.id}
                 onClick={() => handleChangeClick(s.id, 'priority')}
                 className='btn btn-sm btn-accent'>{s.name}</button>
             )

@@ -84,6 +84,7 @@ const MotionsDialog = ({ segments }: { segments: string[] }) => {
                   return (
                     <div
                       className="flex justify-between bg-base-300/70 rounded-xl p-4"
+                      key={k.keybind}
                     >
                       <label className="font-poppins text-lg font-semibold">{k.description}</label>
                       <div className="kbd kbd-xl">{k.keybind}</div>
