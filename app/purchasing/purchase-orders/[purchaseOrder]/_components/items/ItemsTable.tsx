@@ -46,12 +46,11 @@ const ItemTable = () => {
       uomId: row.uomId,
     };
 
-    console.log(updateData);
 
     purchaseOrderItemActions.update({ id: row.id }, updateData);
 
     createActivityLog(
-      "modifyPurchaseOrderItem",
+      "Modify PO Item",
       "purchaseOrder",
       purchaseOrder.id,
       {

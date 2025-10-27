@@ -1,15 +1,18 @@
 import Card from "@/components/Card"
 import Table from "@/components/Table"
 import SectionTitle from "@/components/Text/SectionTitle"
+import useDialog from "@/hooks/useDialog"
 import { usePurchasingActions, usePurchasingSelection } from "@/store/purchasingSlice"
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
 import { useEffect, useState } from "react"
+import { TbKeyboard, TbQuestionMark } from "react-icons/tb"
 
 const ViewMode = () => {
 
   const { orderItems, lineItemsMode } = usePurchasingSelection()
   const { setLineItemsMode } = usePurchasingActions()
   const [total, setTotal] = useState(0)
+  const { showDialog } = useDialog();
 
   useEffect(() => {
 
@@ -24,8 +27,14 @@ const ViewMode = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row items-center justify-between">
+
         <SectionTitle>Order Items</SectionTitle>
-        <button onClick={() => setLineItemsMode('edit')} className="btn btn-secondary">Modify</button>
+        <div className="flex gap-1">
+          <button onClick={() => showDialog("motions")} className="btn btn-secondary">
+            <TbKeyboard className="size-6" />
+          </button>
+          <button onClick={() => setLineItemsMode('edit')} className="btn btn-secondary">Modify</button>
+        </div>
       </div>
 
       <Card.Root>

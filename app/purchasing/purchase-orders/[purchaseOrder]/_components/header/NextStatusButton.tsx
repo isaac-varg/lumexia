@@ -8,49 +8,49 @@ import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { nextItemStatuses } from "../../_functions/nextItemStatuses";
 
 const NextStatusButton = ({
-	poStatuses,
-	currentStatusSequence,
-	purchaseOrderId,
+  poStatuses,
+  currentStatusSequence,
+  purchaseOrderId,
 }: {
-	poStatuses: PurchaseOrderStatus[];
-	currentStatusSequence: number;
-	purchaseOrderId: string;
+  poStatuses: PurchaseOrderStatus[];
+  currentStatusSequence: number;
+  purchaseOrderId: string;
 }) => {
-	const nextStatus =
-		poStatuses[
-		poStatuses.findIndex(
-			(status: PurchaseOrderStatus) =>
-				status.sequence === currentStatusSequence + 1,
-		)
-		];
+  const nextStatus =
+    poStatuses[
+    poStatuses.findIndex(
+      (status: PurchaseOrderStatus) =>
+        status.sequence === currentStatusSequence + 1,
+    )
+    ];
 
-	if (!nextStatus || nextStatus.sequence > 3) {
-		return false;
-	}
+  if (!nextStatus || nextStatus.sequence > 3) {
+    return false;
+  }
 
-	const handleClick = async () => {
-		await nextPOStatus(nextStatus.id, purchaseOrderId);
+  const handleClick = async () => {
+    await nextPOStatus(nextStatus.id, purchaseOrderId);
 
-		// change status on all items
-		await nextItemStatuses(nextStatus.id, purchaseOrderId);
+    // change status on all items
+    await nextItemStatuses(nextStatus.id, purchaseOrderId);
 
-		await createActivityLog(
-			"modifyPurchaseOrderStatus",
-			"purchaseOrder",
-			purchaseOrderId,
-			{
-				context: `PO Status changed to ${nextStatus.name}`,
-			},
-		);
-	};
+    await createActivityLog(
+      "Modify PO Status",
+      "purchaseOrder",
+      purchaseOrderId,
+      {
+        context: `PO Status changed to ${nextStatus.name}`,
+      },
+    );
+  };
 
-	return (
-		<>
-			<ActionButton color="success" onClick={() => handleClick()}>
-				Set to {nextStatus.name}
-			</ActionButton>
-		</>
-	);
+  return (
+    <>
+      <ActionButton color="success" onClick={() => handleClick()}>
+        Set to {nextStatus.name}
+      </ActionButton>
+    </>
+  );
 };
 
 export default NextStatusButton;

@@ -35,7 +35,7 @@ const PreviousStatusButton = ({
     await nextItemStatuses(nextStatus.id, purchaseOrderId);
 
     await createActivityLog(
-      "modifyPurchaseOrderStatus",
+      "Modify PO Status",
       "purchaseOrder",
       purchaseOrderId,
       {

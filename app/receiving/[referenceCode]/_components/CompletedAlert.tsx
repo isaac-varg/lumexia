@@ -12,70 +12,70 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 const CompletedAlert = ({
-    isAwaitingItems,
-    purchaseOrder,
+  isAwaitingItems,
+  purchaseOrder,
 }: {
-    isAwaitingItems: boolean;
-    purchaseOrder: PurchaseOrder;
+  isAwaitingItems: boolean;
+  purchaseOrder: PurchaseOrder;
 }) => {
 
-    const [showAlert, setShowAlert] = useState(false)
-    const { showDialog } = useDialog()
-    const router = useRouter()
-    const { toast } = useToast()
+  const [showAlert, setShowAlert] = useState(false)
+  const { showDialog } = useDialog()
+  const router = useRouter()
+  const { toast } = useToast()
 
-    const handleCompletion = useCallback(async () => {
+  const handleCompletion = useCallback(async () => {
 
-        await purchaseOrderActions.update(
-            { id: purchaseOrder.id },
-            { statusId: "db907b0f-4aac-42d7-9118-ee35e178d9b3" },
-        );
+    await purchaseOrderActions.update(
+      { id: purchaseOrder.id },
+      { statusId: "db907b0f-4aac-42d7-9118-ee35e178d9b3" },
+    );
 
-        await createActivityLog('modifyPurchaseOrder', 'purchaseOrder', purchaseOrder.id, { context: `Purchase Order completed and received` })
-        revalidatePage('/receiving/');
-        router.push('/receiving/');
-        toast('Received!', `Successfully finished receiving PO# ${purchaseOrder.referenceCode}`, 'success');
+    await createActivityLog('Modify PO', 'purchaseOrder', purchaseOrder.id, { context: `Purchase Order completed and received` })
+    revalidatePage('/receiving/');
+    router.push('/receiving/');
+    toast('Received!', `Successfully finished receiving PO# ${purchaseOrder.referenceCode}`, 'success');
 
-    }, [purchaseOrder, router, toast])
-
-
-    useEffect(() => {
-        if (!isAwaitingItems && purchaseOrder.status.sequence !== 4) {
-            setShowAlert(true)
-        }
-    }, [purchaseOrder, isAwaitingItems])
-
-    useEffect(() => {
-        if (!showAlert) {
-            return;
-        }
-
-        //instead just doing it automatically
-        //
-
-        handleCompletion()
+  }, [purchaseOrder, router, toast])
 
 
-    }, [showAlert, handleCompletion])
+  useEffect(() => {
+    if (!isAwaitingItems && purchaseOrder.status.sequence !== 4) {
+      setShowAlert(true)
+    }
+  }, [purchaseOrder, isAwaitingItems])
+
+  useEffect(() => {
+    if (!showAlert) {
+      return;
+    }
+
+    //instead just doing it automatically
+    //
+
+    handleCompletion()
+
+
+  }, [showAlert, handleCompletion])
 
 
 
-    return (
-        <Alert.Root identifier="completedDialog">
-            <Alert.Content
-                title="Receiving Completed"
-                actionLabel="Complete"
-                action={() => handleCompletion()}
-                actionColor="success"
-                cancelAction={() => console.log('Cancelled')}
+  return (
+    <Alert.Root identifier="completedDialog">
+      <Alert.Content
+        title="Receiving Completed"
+        actionLabel="Complete"
+        action={() => handleCompletion()}
+        actionColor="success"
+        cancelAction={() => console.log('Cancelled')}
 
-            >
-                It looks like everything on this PO was received, so it is being automatically marked as Received.
+      >
+        It looks like everything on this PO was received, so it is being automatically marked as Received.
 
-            </Alert.Content>
+      </Alert.Content>
 
-        </Alert.Root>
-    )
+    </Alert.Root>
+  )
 }
 
 export default CompletedAlert

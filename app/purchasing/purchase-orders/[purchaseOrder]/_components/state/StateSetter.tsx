@@ -10,6 +10,7 @@ import { PoInternalNote } from "@/actions/purchasing/purchaseOrders/notes/intera
 import { PoPublicNote } from "@/actions/purchasing/purchaseOrders/notes/public/getAll"
 import { PoSupplierNote } from "@/actions/purchasing/purchaseOrders/notes/supplier/getAll"
 import { PurchaseOrderActivity } from "@/actions/purchasing/purchaseOrders/getActivity"
+import { useTabActions, useTabSelection } from "@/store/tabSlice"
 
 type StateSetterProps = {
   purchaseOrder: PurchaseOrderDetails,
@@ -37,6 +38,9 @@ const StateSetter = ({
     purchasableItems,
     purchaseOrder,
   } = usePurchasingSelection();
+
+  const { setActiveTab } = useTabActions()
+
   const {
     getPurchasableItems,
     getOptions,
@@ -48,7 +52,6 @@ const StateSetter = ({
     setPublicNotes,
     setPoSupplierNotes,
     setActivity,
-    setCurrentTab,
   } = usePurchasingActions();
 
 
@@ -60,7 +63,7 @@ const StateSetter = ({
       getOptions();
     }
 
-    setCurrentTab('items')
+    setActiveTab('purchasing', 'items')
 
   }, [serverPurchaseOrder, getOptions, getPurchasableItems, purchasableItems.length, setPurchaseOrder])
 

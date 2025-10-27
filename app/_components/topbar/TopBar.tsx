@@ -10,6 +10,7 @@ import ThemeIcon from "@/components/Theme/ThemeIcon";
 import { userConfigGroups } from "@/configs/staticRecords/userConfigGroups";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import Motions from "./Motions";
 
 const TopBar = async () => {
 
@@ -42,6 +43,7 @@ const TopBar = async () => {
 
         <div className="flex items-center gap-x-4">
 
+          <Motions />
           <ThemeIcon />
           <UserIcon />
 
