@@ -8,6 +8,7 @@ import { TbPlus } from 'react-icons/tb'
 import { DateTime } from 'luxon'
 import { BprBomItemInventory } from '@/actions/inventory/inventory/getAllByBom'
 import { PurchasingRequestForPlanning } from '@/actions/purchasing/requests/getByItem'
+import { getDisplayDate } from '@/utils/dateTime/getDisplayDate'
 
 const MaterialAllocationPanels = ({
   material,
@@ -72,13 +73,13 @@ const MaterialAllocationPanels = ({
             </div>
             {requests.map((request) => {
 
-              const { expectedDateStart, expectedDateEnd } = request.pos.length !== 0 && request.pos[0].po.purchaseOrderItems[0].details.length !== 0 ? request.pos[0].po.purchaseOrderItems[0].details[0] : { expectedDateEnd: null, expectedDateStart: null }
-              const expectedDateLabel = expectedDateStart && expectedDateEnd ? `${DateTime.fromJSDate(expectedDateStart).toFormat('DDDD')} to ${DateTime.fromJSDate(expectedDateEnd).toFormat('DDDD')} ` : 'No Expected Date Set';
+              const { expectedDateStart, expectedDateEnd } = request;
+              const expectedDateLabel = getDisplayDate((expectedDateStart && expectedDateEnd) ? { to: expectedDateStart, from: expectedDateEnd } : undefined)
               return (
-                <div key={request.id} className="card bg-base-300 hover:cursor-pointer hover:bg-lilac-200 " onClick={() => handleRequestClick(request)}>
-                  <div className="card-body">
-                    <div className='card-title'>{request.title}</div>
-                    <div>{expectedDateLabel}</div>
+                <div key={request.id} className="bg-base-300/70 hover:cursor-pointer p-4 rounded-xl hover:bg-base-300/50 " onClick={() => handleRequestClick(request)}>
+                  <div className="flex flex-col gap-2">
+                    <div className='font-poppins text-lg font-semibold'>{request.title}</div>
+                    <div className='font-inter text-base font-medium'>{expectedDateStart ? `Expected on ${expectedDateLabel}` : 'No Expected Dates'}</div>
                   </div>
                 </div>
               )

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Oct 21 2025 10:41:07 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Oct 28 2025 08:57:56 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -1948,6 +1948,8 @@ model PurchasingRequest {
   id                        String                         @id @default(uuid())
   requestingUserId          String                         @map("requesting_user_id")
   statusId                  String                         @map("status_id")
+  expectedDateStart         DateTime?                      @map("expected_date_start")
+  expectedDateEnd           DateTime?                      @map("expected_date_end")
   priorityId                String                         @map("priority_id")
   referenceCode             Int                            @default(autoincrement()) @map("reference_code")
   itemId                    String                         @map("item_id")

@@ -79,7 +79,8 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
           allPriorities={requestPriorities}
           statusId={request.statusId}
           priorityId={request.priorityId}
-
+          expectedDateStart={request.expectedDateStart}
+          expectedDateEnd={request.expectedDateEnd}
         />
 
         <NotesPanel notes={requestNotes} noteTypes={noteTypes} />
