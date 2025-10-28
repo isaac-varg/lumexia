@@ -6,53 +6,53 @@ import Card from '@/components/Card';
 import Notes from './_components/Notes';
 import { createOpenedNote } from './_functions/createOpenedNote';
 import CompleteButton from './_components/CompleteButton';
+import SectionTitle from '@/components/Text/SectionTitle';
 
 type RequestPageProps = {
-    searchParams: {
-        id: string;
-    };
+  searchParams: {
+    id: string;
+  };
 };
 
 const RequestPage = async ({ searchParams }: RequestPageProps) => {
 
-    const { id } = searchParams
-    const request = await inventoryActions.auditReqests.getOne(id);
-    const itemLots = await inventoryActions.getItemLots(request.item.id);
-    await createOpenedNote(request.id);
-    
-
-    return (
-        <div className='flex flex-col gap-y-2'>
-            <PageTitle>Audit Request for {request.item.name}</PageTitle>
-
-            <div className='grid grid-cols-2 gap-x-6'>
-                <Card.Root>
-                    <Card.Title>Notes</Card.Title>
-
-                    <Notes notes={request.notes} />
+  const { id } = searchParams
+  const request = await inventoryActions.auditReqests.getOne(id);
+  const itemLots = await inventoryActions.getItemLots(request.item.id);
+  const noteTypes = await inventoryActions.auditReqests.noteTypes.getAll();
+  await createOpenedNote(request.id);
 
 
+  return (
+    <div className='flex flex-col gap-y-6'>
+      <div className='flex justify-between items-center'>
+        <PageTitle>Audit Request for {request.item.name}</PageTitle>
 
-                </Card.Root>
-                <Card.Root>
-                    <Card.Title>Actions</Card.Title>
+        <CompleteButton requestId={request.id} itemId={request.item.id} />
 
-                    <div className='grid grid-cols-1 gap-4'>
-                        <CompleteButton requestId={request.id} itemId={request.item.id} />
-                    </div>
-                </Card.Root>
-            </div>
+      </div>
 
-            <Card.Root>
-                <Card.Title>Inventory</Card.Title>
+      <div className='flex flex-col gap-2'>
+        <SectionTitle>Notes</SectionTitle>
 
-                <AuditPanel allLots={itemLots as any} />
-            </Card.Root>
+        <Card.Root>
+          <Notes notes={request.notes} noteTypes={noteTypes} requestId={request.id} />
+        </Card.Root>
 
+      </div>
 
+      <div className='flex flex-col gap-2'>
+        <SectionTitle>Inventory</SectionTitle>
 
-        </div>
-    )
+        <Card.Root>
+
+          <AuditPanel allLots={itemLots as any} />
+        </Card.Root>
+
+      </div>
+
+    </div>
+  )
 }
 
 export default RequestPage

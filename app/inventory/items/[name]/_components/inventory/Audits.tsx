@@ -3,10 +3,12 @@ import DataTable from "@/components/DataTable"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { useItemSelection } from "@/store/itemSlice"
 import { auditColumns } from "./AuditColumns"
+import { useRouter } from "next/navigation"
 
 const Audits = () => {
 
   const { audits } = useItemSelection()
+  const router = useRouter()
 
   if (!audits) return;
 
