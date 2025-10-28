@@ -75,8 +75,8 @@ export const createBpr = async (wizardData: BprWizardData) => {
     isCompleted: false,
   })
 
-  await createActivityLog('createBpr', 'bpr', bpr.id, { context: `BPR #${bpr.referenceCode} created` })
-  await createActivityLog('createLot', 'lot', lot.id, { context: `Lot was created from bpr #${bpr.referenceCode}` })
+  await createActivityLog('Create BPR', 'bpr', bpr.id, { context: `BPR #${bpr.referenceCode} created` })
+  await createActivityLog('Create Lot', 'lot', lot.id, { context: `Lot was created from bpr #${bpr.referenceCode}` })
 
 }
 
