@@ -5,6 +5,7 @@ import { discrepancyAuditItemStatuses } from "@/configs/staticRecords/discrepanc
 import { discrepancyAuditStatuses } from "@/configs/staticRecords/discrepancyAuditStatuses"
 import { itemTypes } from "@/configs/staticRecords/itemTypes"
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import prisma from "@/lib/prisma"
 
@@ -27,6 +28,9 @@ export const beginDiscrepancyAuditCascade = async (itemTypeId: string | null) =>
         ]
       },
       procurementTypeId: purchased,
+      recordStatusId: {
+        not: recordStatuses.archived
+      }
     },
     select: {
       id: true

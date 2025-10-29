@@ -2,6 +2,7 @@
 
 import { getLotsByItem } from "@/actions/auxiliary/getLotsByItem"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import prisma from "@/lib/prisma";
 
 // current inventory (now)
@@ -16,6 +17,9 @@ export const getInventory = async (itemId: string) => {
   const item = await prisma.item.findFirst({
     where: {
       id: itemId,
+      recordStatusId: {
+        not: recordStatuses.archived
+      }
     },
   });
 

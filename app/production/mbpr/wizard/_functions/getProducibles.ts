@@ -1,12 +1,16 @@
 "use server"
 
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import prisma from "@/lib/prisma"
 
 export const getProducibles = async () => {
   const items = await prisma.item.findMany({
     where: {
-      procurementTypeId: procurementTypes.produced
+      procurementTypeId: procurementTypes.produced,
+      recordStatusId: {
+        not: recordStatuses.archived
+      }
     },
     include: {
       aliases: true,

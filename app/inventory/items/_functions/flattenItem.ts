@@ -1,4 +1,4 @@
-import { Item } from "@/types/item";
+import { Item } from "@/actions/inventory/getAllItems";
 
 export const flattenItem = (items: Item[]) => {
   return items.map((item) => {
@@ -15,6 +15,6 @@ export const flattenItem = (items: Item[]) => {
 
     const flattenAliases = aliases?.map((alias) => alias.name).join(", ");
 
-    return { ...item, itemTypeName, procurementTypeName, aliasesAll: flattenAliases};
+    return { ...item, itemTypeName, procurementTypeName, aliasesAll: flattenAliases };
   });
 };

@@ -2,11 +2,19 @@
 
 import prisma from "@/lib/prisma"
 import { InventoryLot, getLotsByItem } from "@/actions/auxiliary/getLotsByItem";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 
 export const getOnHandByItem = async (itemId: string) => {
 
-    const item = await prisma.item.findUnique({ where: { id: itemId } });
+    const item = await prisma.item.findFirst({
+        where: {
+            id: itemId,
+            recordStatusId: {
+                not: recordStatuses.archived
+            }
+        }
+    });
     const lots: InventoryLot[] = await getLotsByItem(itemId);
 
     const totalOnHand = lots.reduce(

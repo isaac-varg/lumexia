@@ -9,7 +9,14 @@ const active = recordStatuses.active
 
 export const getActiveMbpr = async (itemId: string) => {
 
-  const item = await prisma.item.findFirst({ where: { id: itemId } });
+  const item = await prisma.item.findFirst({
+    where: {
+      id: itemId,
+      recordStatusId: {
+        not: recordStatuses.archived
+      }
+    }
+  });
 
   // item not found or procurment type not produced
   if (!item || item.procurementTypeId !== produced) return null;

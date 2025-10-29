@@ -1,27 +1,36 @@
 "use server"
 
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import prisma from "@/lib/prisma"
 
 // commandType boolean is for when using with command pallet includce command type
 
 export const getAllItems = async (commandType?: true) => {
-    const items = await prisma.item.findMany({
-        include: {
-            aliases: true
-        }
-    });
+  const items = await prisma.item.findMany({
+    where: {
+      recordStatusId: {
+        not: recordStatuses.archived
+      }
+    },
+    include: {
+      aliases: true,
+      inventoryType: true,
+      procurementType: true,
+      itemType: true,
+    }
+  });
 
-    const transformedItems = await Promise.all(items.map((item) => {
-        const flatAliases = item.aliases.join("");
+  const transformedItems = await Promise.all(items.map((item) => {
+    const flatAliases = item.aliases.join("");
 
-        return {
-            ...item,
-            flatAliases,
-            ...(commandType ? { commandType: "item" } : {})
-        }
-    }));
+    return {
+      ...item,
+      flatAliases,
+      ...(commandType ? { commandType: "item" } : {})
+    }
+  }));
 
-    return transformedItems;
+  return transformedItems;
 }
 
 

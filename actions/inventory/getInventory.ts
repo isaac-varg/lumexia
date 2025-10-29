@@ -3,11 +3,19 @@
 import prisma from "@/lib/prisma"
 import { getLotsByItem } from "../auxiliary/getLotsByItem"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 
 export const getInventory = async (itemId: string) => {
 
-  const item = await prisma.item.findUnique({ where: { id: itemId } })
+  const item = await prisma.item.findFirst({
+    where: {
+      id: itemId,
+      recordStatusId: {
+        not: recordStatuses.archived
+      }
+    }
+  })
   const lots = await getLotsByItem(itemId);
   const { queued, stagingMaterials, compounding, completed, awaitingMaterials } = bprStatuses;
 
