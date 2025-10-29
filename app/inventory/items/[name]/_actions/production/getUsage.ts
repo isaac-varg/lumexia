@@ -7,6 +7,7 @@ import prisma from "@/lib/prisma"
 
 interface Usage {
   producedItem: string
+  producedItemId: string
   concentration: number
   quantity: number
   mbprLabel: string | null
@@ -95,6 +96,7 @@ export const getBomUsage = async (itemId: string) => {
 
     return {
       producedItem: bom.mbpr.producesItem.name,
+      producedItemId: bom.mbpr.producesItem.id,
       concentration: bom.concentration,
       quantity,
       batchSize: bom.mbpr.BatchSize[0].quantity,

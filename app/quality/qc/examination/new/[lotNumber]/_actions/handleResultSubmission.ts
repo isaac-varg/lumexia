@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export const handleResultSubmission = async (qcRecordId: string, parameterId: string, itemParameterId: string, data: Record<string, any>) => {
 
-  const { value, ...inputDefinitions } = data;
+  const { value, inputDefinitions } = data;
   const result = await prisma.qcParameterResult.create({
     data: {
       qcRecordId,
@@ -14,16 +14,17 @@ export const handleResultSubmission = async (qcRecordId: string, parameterId: st
     }
   })
 
-  await Promise.all(Object.keys(inputDefinitions).map(async (id) => {
-    const value = inputDefinitions[id];
-    return await prisma.qcParameterInputResult.create({
-      data: {
-        qcResultId: result.id,
-        parameterInputDefinitionId: id,
-        value,
-      }
-    });
-  }));
+  if (inputDefinitions && Array.isArray(inputDefinitions)) {
+    await Promise.all(inputDefinitions.map(async (def: any) => {
+      return await prisma.qcParameterInputResult.create({
+        data: {
+          qcResultId: result.id,
+          parameterInputDefinitionId: def.id,
+          value: def.value,
+        }
+      });
+    }));
+  }
 
   return result;
 

@@ -2,10 +2,12 @@ import React from 'react'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
 import { useItemSelection } from '@/store/itemSlice'
 import Card from '@/components/Card'
+import { useRouter } from 'next/navigation'
 
 const UsageTable = () => {
 
   const { usage } = useItemSelection()
+  const router = useRouter()
 
   if (!usage) return false;
 
@@ -29,10 +31,14 @@ const UsageTable = () => {
             </tr>
           </thead>
           <tbody>
-            {sorted.map((item) => {
+            {sorted.map((item, index) => {
 
+              const path = `/inventory/items/${item.producedItem}?id=${item.producedItemId}`
               return (
-                <tr key={item.producedItem}>
+                <tr key={`${item.producedItem}-${index}`}
+                  onClick={() => router.push(path)}
+                  className='hover:bg-accent/40 hover:cursor-pointer'
+                >
                   <th>{item.producedItem}</th>
                   <td>{toFracitonalDigits.weight(item.batchSize)}</td>
                   <td>{toFracitonalDigits.weight(item.concentration)}</td>

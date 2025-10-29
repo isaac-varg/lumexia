@@ -1,13 +1,18 @@
+import { qualityActions } from "@/actions/quality"
 import { ExaminationType } from "@/actions/quality/qc/examinationTypes/getAll"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { useQcExaminationActions, useQcExaminationSelection } from "@/store/qcExaminationSlice"
 
 const Type = () => {
 
-  const { examinationTypes } = useQcExaminationSelection()
+  const { examinationTypes, qcRecord } = useQcExaminationSelection()
   const { setSelectedExaminationType, setStep } = useQcExaminationActions()
 
-  const handleSelection = (type: ExaminationType) => {
+  const handleSelection = async (type: ExaminationType) => {
+    if (!qcRecord) return;
+    await qualityActions.qc.records.update(qcRecord.id, {
+      examinationTypeId: type.id,
+    });
     setSelectedExaminationType(type)
     setStep(2)
   }

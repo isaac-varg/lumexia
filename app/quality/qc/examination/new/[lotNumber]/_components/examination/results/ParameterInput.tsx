@@ -69,6 +69,8 @@ const ParameterInput = () => {
     }
   })
 
+  console.log('defaults', defaultValues)
+
 
 
   return (
