@@ -2,6 +2,7 @@
 import PageTitle from "@/components/Text/PageTitle"
 import { useItemSelection } from "@/store/itemSlice"
 import ActionButtons from "./ActionButtons"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 
 const TitleRow = () => {
 
@@ -9,10 +10,16 @@ const TitleRow = () => {
 
   if (!item) return <Skeleton />
 
+  const isArchived = item.recordStatusId === recordStatuses.archived;
+
   return (
     <div className="flex justify-between items-center">
 
-      <PageTitle>{item.name}</PageTitle>
+      <div className="flex gap-1 items-center">
+        <PageTitle>{item.name}</PageTitle>
+
+        {isArchived && <div className="flex items-center justify-center font-poppins text-4xl font-black animate-pulse text-error">Archived Item</div>}
+      </div>
 
       <ActionButtons />
 

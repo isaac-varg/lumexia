@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Oct 28 2025 08:57:56 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Oct 29 2025 13:39:02 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -580,6 +580,7 @@ model RecordStatus {
   updatedAt                   DateTime                      @updatedAt @map("updated_at")
   itemConsumerContainers      ItemConsumerContainer[]
   purchaseOrders              PurchaseOrder[]
+  items                       Item[]
   FinishedProduct             FinishedProduct[]
   BatchSize                   BatchSize[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
@@ -1123,6 +1124,7 @@ model ItemType {
 model Item {
   id                              String                            @id @default(uuid())
   name                            String
+  recordStatusId                  String                            @default("cd5f3f81-493b-4bc0-9637-a36f7157e150") @map("record_status_id")
   referenceCode                   String                            @unique @map("reference_code")
   itemTypeId                      String                            @map("item_type_id")
   procurementTypeId               String                            @map("procurement_type_id")
@@ -1132,6 +1134,7 @@ model Item {
   itemType                        ItemType                          @relation(fields: [itemTypeId], references: [id])
   procurementType                 ProcurementType                   @relation(fields: [procurementTypeId], references: [id])
   inventoryType                   InventoryType                     @relation(fields: [inventoryTypeId], references: [id])
+  recordStatus                    RecordStatus                      @relation(fields: [recordStatusId], references: [id])
   lot                             Lot[]
   aliases                         Alias[]
   purchaseOrderItem               PurchaseOrderItem[]

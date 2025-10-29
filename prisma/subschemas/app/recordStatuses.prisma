@@ -8,6 +8,7 @@ model RecordStatus {
     updatedAt              DateTime                @updatedAt @map("updated_at")
     itemConsumerContainers ItemConsumerContainer[]
     purchaseOrders          PurchaseOrder[] 
+    items Item[]
 
     @@map("record_statuses")
 }

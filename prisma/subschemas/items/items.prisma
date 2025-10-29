@@ -1,6 +1,7 @@
 model Item {
     id                           String                        @id @default(uuid())
     name                         String
+    recordStatusId               String                       @map("record_status_id")
     referenceCode                String                        @unique @map("reference_code")
     itemTypeId                   String                        @map("item_type_id")
     procurementTypeId            String                        @map("procurement_type_id")
@@ -10,6 +11,7 @@ model Item {
     itemType                     ItemType                      @relation(fields: [itemTypeId], references: [id])
     procurementType              ProcurementType               @relation(fields: [procurementTypeId], references: [id])
     inventoryType                InventoryType                 @relation(fields: [inventoryTypeId], references: [id])
+    recordStatus                 RecordStatus                 @relation(fields: [recordStatusId], references: [id])
     lot                          Lot[]
     aliases                      Alias[]
     purchaseOrderItem            PurchaseOrderItem[]
