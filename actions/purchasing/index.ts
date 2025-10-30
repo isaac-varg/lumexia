@@ -21,6 +21,8 @@ import { createPoSupplierNote } from "./purchaseOrders/notes/supplier/create";
 import { createPoSupplierNoteType } from "./purchaseOrders/notes/supplier/createType";
 import { getAllPoSupplierNoteTypes } from "./purchaseOrders/notes/supplier/getAllTypes";
 import { getActivity } from "./purchaseOrders/getActivity";
+import { getOnePurchaseOrder } from "./purchaseOrders/getOne";
+import { getAllPurchaseOrderItems } from "./purchaseOrders/items/getAll";
 
 export const purchasingActions = {
   requests: {
@@ -37,6 +39,10 @@ export const purchasingActions = {
     getAll: getAllSuppliers,
   },
   purchaseOrders: {
+    getOne: getOnePurchaseOrder,
+    items: {
+      getAll: getAllPurchaseOrderItems,
+    },
     getActivity: getActivity,
     notes: {
       internal: {
