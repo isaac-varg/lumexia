@@ -1,35 +1,45 @@
 "use server"
 
-import transactionActions from "@/actions/inventory/transactions";
-import bprActions from "@/actions/production/bprActions";
-import bprBomActions from "@/actions/production/bprBom";
-import bprStagingActions from "@/actions/production/bprStagings";
-import { getUserId } from "@/actions/users/getUserId";
-import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
-import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import prisma from "@/lib/prisma"
 import { ExBprStaging } from "@/types/bprStaging";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
+import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
+import { getUserId } from "@/actions/users/getUserId";
+import { Prisma } from "@prisma/client";
+import bprActions from "@/actions/production/bprActions";
 
 export const handleCompletedBprCascade = async (bprId: string) => {
+  try {
+    const bpr = await bprActions.getOne(bprId);
+    if (!bpr) {
+      throw new Error(`BPR with id ${bprId} not found.`);
+    }
 
-  const stagings = await getStagings(bprId);
-  const bpr = await bprActions.getOne(bprId);
+    const stagings = await getStagings(bprId);
+    const userId = await getUserId();
 
+    await prisma.$transaction(async (tx) => {
+      await Promise.all(stagings.map((staging) => processStaging(staging, userId, tx)));
 
+      await tx.batchProductionRecord.update({
+        where: { id: bprId },
+        data: { bprStatusId: bprStatuses.awaitingQc },
+      });
+    });
 
-  await Promise.all(stagings.map((staging) => processStaging(staging as any)));
+    await createActivityLog('cascadeBprCompletion', 'bpr', bprId, { context: `BPR #${bpr.referenceCode} completion cascade executed.` });
 
-  await bprActions.update({ id: bprId }, { bprStatusId: bprStatuses.awaitingQc })
-
-  await createActivityLog('cascadeBprCompletion', 'bpr', bprId, { context: `BPR #${bpr.referenceCode} completion cascade executed.` })
-
+  } catch (error) {
+    console.error("Failed to execute BPR completion cascade:", error);
+    throw new Error("Failed to execute BPR completion cascade.");
+  }
 }
 
 
-const getStagings = async (bprId: string) => {
+const getStagings = async (bprId: string): Promise<ExBprStaging[]> => {
   const stagings = await prisma.bprStaging.findMany({
     where: {
       bprBom: {
@@ -41,44 +51,47 @@ const getStagings = async (bprId: string) => {
         include: {
           bpr: true
         }
-      }
+      },
+      lot: true,
+      pulledByUser: true,
+      uom: true,
+      status: true,
     }
   })
 
-  return stagings
-
+  return stagings as unknown as ExBprStaging[];
 }
 
-const processStaging = async (staging: ExBprStaging) => {
-  await createTransaction(staging.lotId, staging.quantity, staging.bprBom.bpr.referenceCode, staging.id)
-  await bprBomActions.update({ id: staging.bprBomId }, { statusId: bprStagingStatuses.consumed })
-  await bprStagingActions.update({ id: staging.id }, { bprStagingStatusId: bprStagingStatuses.consumed })
-
-
+const processStaging = async (staging: ExBprStaging, userId: string, tx: Prisma.TransactionClient) => {
+  await createTransaction(staging, userId, tx)
+  await tx.bprBillOfMaterials.update({
+    where: { id: staging.bprBomId },
+    data: { statusId: bprStagingStatuses.consumed }
+  })
+  await tx.bprStaging.update({
+    where: { id: staging.id },
+    data: { bprStagingStatusId: bprStagingStatuses.consumed }
+  })
 }
 
-const createTransaction = async (lotId: string, amount: number, bprReferenceCode: number, stagingId: string) => {
-
-  const userId = await getUserId();
+const createTransaction = async (staging: ExBprStaging, userId: string, tx: Prisma.TransactionClient) => {
 
   const transactionPayload = {
-    lotId: lotId,
+    lotId: staging.lotId,
     transactionTypeId: transactionTypes.bprConsumption,
     userId,
     uomId: uom.pounds,
-    amount,
-    systemNote: `Consumed by BPR# ${bprReferenceCode}`,
+    amount: staging.quantity,
+    systemNote: `Consumed by BPR# ${staging.bprBom.bpr.referenceCode}`,
     userNote: "",
   };
 
-  const transaction = await transactionActions.createNew(transactionPayload)
+  const transaction = await tx.transaction.create({ data: transactionPayload })
 
-  // make the bpr consumption transaction entry
-
-  await prisma.bprStagingConsumption.create({
+  await tx.bprStagingConsumption.create({
     data: {
       transactionId: transaction.id,
-      bprStagingId: stagingId,
+      bprStagingId: staging.id,
     }
   })
 }
