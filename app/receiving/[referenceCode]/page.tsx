@@ -1,6 +1,7 @@
 import { appActions } from "@/actions/app";
 import { purchasingActions } from "@/actions/purchasing";
 import PageTitle from "@/components/Text/PageTitle";
+import ItemTable from "./_components/ItemTable";
 
 const ReceivingDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
@@ -10,13 +11,16 @@ const ReceivingDetails = async ({ searchParams }: { searchParams: { id: string }
 
   if (!purchaseOrder) { return <Skeleton /> }
 
-
   return (
     <div className="flex flex-col gap-y-6">
       <PageTitle>
         {`#${purchaseOrder.referenceCode} - ${purchaseOrder.supplier.name}`}
 
       </PageTitle>
+
+      <ItemTable
+        items={poItems}
+      />
 
 
     </div>
