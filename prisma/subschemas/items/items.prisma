@@ -4,6 +4,7 @@ model Item {
     recordStatusId               String                       @map("record_status_id")
     referenceCode                String                        @unique @map("reference_code")
     itemTypeId                   String                        @map("item_type_id")
+    inventoryUomId               String                         @map("inventory_uom_id") 
     procurementTypeId            String                        @map("procurement_type_id")
     inventoryTypeId              String                        @map("inventory_type_id")
     createdAt                    DateTime                      @default(now()) @map("created_at")
@@ -11,7 +12,8 @@ model Item {
     itemType                     ItemType                      @relation(fields: [itemTypeId], references: [id])
     procurementType              ProcurementType               @relation(fields: [procurementTypeId], references: [id])
     inventoryType                InventoryType                 @relation(fields: [inventoryTypeId], references: [id])
-    recordStatus                 RecordStatus                 @relation(fields: [recordStatusId], references: [id])
+    recordStatus                 RecordStatus                  @relation(fields: [recordStatusId], references: [id])
+    inventoryUom                 UnitOfMeasurement             @relation(fields: [inventoryUomId], references: [id]) 
     lot                          Lot[]
     aliases                      Alias[]
     purchaseOrderItem            PurchaseOrderItem[]

@@ -29,4 +29,4 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
 
 }
 
-export type PurchaseOrerItem = Awaited<ReturnType<typeof getAllPurchaseOrderItems>>[number];
+export type PurchaseOrderItem = Awaited<ReturnType<typeof getAllPurchaseOrderItems>>[number];

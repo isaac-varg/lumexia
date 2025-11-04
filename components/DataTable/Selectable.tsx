@@ -1,13 +1,16 @@
+
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { IndeterminateCheckbox } from "./IndeterminateCheckbox"
 
 type SelectableProps<TData> = {
   data: TData[],
   columns: ColumnDef<TData, any>[],
+  showFooter?: boolean
+  onSelectionChange?: (data: TData[]) => void,
 }
 
-const Selectable = <TData extends object>({ data, columns }: SelectableProps<TData>) => {
+const Selectable = <TData extends object>({ data, columns, onSelectionChange, showFooter = false }: SelectableProps<TData>) => {
 
   const [rowSelection, setRowSelection] = useState({})
   const tableColumns = useMemo<ColumnDef<TData, any>[]>(() => [
@@ -50,14 +53,26 @@ const Selectable = <TData extends object>({ data, columns }: SelectableProps<TDa
     getCoreRowModel: getCoreRowModel(),
   })
 
+  useEffect(() => {
+    if (onSelectionChange) {
+      const selected = table.getSelectedRowModel().flatRows
+      const selectedData = selected.map(s => s.original);
+      onSelectionChange(selectedData);
+    }
+  }, [rowSelection, onSelectionChange])
+
   return (
     <div className="w-full overflow-x-auto">
-      <table className="table">
-        <thead>
+      <table className="table min-w-full text-left text-lg font-light">
+        <thead
+          className="font-semibold text-xl border-accent/35 text-base-content"
+        >
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id}>
+                <th
+                  key={header.id}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -71,9 +86,17 @@ const Selectable = <TData extends object>({ data, columns }: SelectableProps<TDa
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
+            <tr key={row.id}
+              onClick={(e) => {
+                e.stopPropagation()
+                row.getToggleSelectedHandler()(row.id)
+              }}
+              className="hover:bg-accent/25 hover:cursor-pointer hover:text-accent-content"
+            >
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td
+                  key={cell.id}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -81,23 +104,24 @@ const Selectable = <TData extends object>({ data, columns }: SelectableProps<TDa
           ))}
         </tbody>
 
-        <tfoot>
-          {table.getFooterGroups().map(footerGroup => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map(header => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.footer,
-                      header.getContext()
-                    )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
-
+        {showFooter && (
+          <tfoot>
+            {table.getFooterGroups().map(footerGroup => (
+              <tr key={footerGroup.id}>
+                {footerGroup.headers.map(header => (
+                  <th key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </tfoot>
+        )}
       </table>
 
     </div>
