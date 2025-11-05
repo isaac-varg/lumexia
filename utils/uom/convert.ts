@@ -20,6 +20,7 @@ export const convertUom = async (
   if (isGenericUnit) {
     if (!itemId || !supplierId) {
       // Not enough information to convert a generic unit, return original quantity
+      console.error('Missing data for generic unit conversion: itemId or supplierId')
       return quantity;
     }
 

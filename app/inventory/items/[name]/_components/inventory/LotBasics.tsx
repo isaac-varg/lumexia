@@ -2,6 +2,7 @@ import Card from "@/components/Card"
 import LabelDataPair from "@/components/Text/LabelDataPair"
 import { dateFormatWithTime } from "@/configs/data/dateFormatString"
 import { useItemSelection } from "@/store/itemSlice"
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
 import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
 
@@ -43,6 +44,12 @@ const LotBasics = () => {
           label="Origin"
           data={originLabel}
         />
+
+        <LabelDataPair
+          label="Initial Quantity"
+          data={`${toFracitonalDigits.weight(selectedLot.initialQuantity)} ${selectedLot.uom.abbreviation}`}
+        />
+
       </div>
     </Card.Root>
   )

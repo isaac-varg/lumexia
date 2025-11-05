@@ -10,6 +10,10 @@ const classes = {
     secondary: 'badge-secondary',
     success: 'badge-success',
     info: 'badge-info',
+  },
+  textCase: {
+    default: '',
+    capitalize: 'capitalize'
   }
 };
 
@@ -20,7 +24,9 @@ const LabelDataPair = ({
   tooltip,
   displayType = 'default',
   badgeColor = 'primary',
+  textCase = 'default',
   onClick,
+
 }: {
   label?: string;
   data?: string | number;
@@ -28,6 +34,7 @@ const LabelDataPair = ({
   tooltip?: string;
   displayType?: keyof typeof classes.displayType;
   badgeColor?: keyof typeof classes.badgeColor;
+  textCase?: keyof typeof classes.textCase;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
 
@@ -41,11 +48,11 @@ const LabelDataPair = ({
   return (
     <div className={containerClasses} onClick={onClick}>
       <div className="tooltip" data-tip={tooltip || label}>
-        <label className={`font-inter font-medium text-lg text-base-content ${onClick ? 'hover:cursor-pointer' : ''}`}>
+        <label className={`font- font-medium text-lg text-base-content ${onClick ? 'hover:cursor-pointer' : ''}`}>
           {label || children}
         </label>
       </div>
-      <div className={`${classes.displayType[displayType]} ${displayType === 'badge' ? `${classes.badgeColor[badgeColor]} badge-lg` : ''}`}>
+      <div className={`${classes.displayType[displayType]} ${classes.textCase[textCase]} ${displayType === 'badge' ? `${classes.badgeColor[badgeColor]} badge-lg` : ''}`}>
         {data || children}
       </div>
     </div >
