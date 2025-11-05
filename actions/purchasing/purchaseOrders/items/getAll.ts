@@ -20,6 +20,7 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
         },
       },
       uom: true,
+      purchaseOrders: true,
       purchaseOrderStatus: true
     }
   });
