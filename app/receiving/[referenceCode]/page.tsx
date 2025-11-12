@@ -2,6 +2,7 @@ import { appActions } from "@/actions/app";
 import { purchasingActions } from "@/actions/purchasing";
 import PageTitle from "@/components/Text/PageTitle";
 import ItemTable from "./_components/ItemTable";
+import RecievedTable from "./_components/RecievedTable";
 
 const ReceivingDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
@@ -19,6 +20,10 @@ const ReceivingDetails = async ({ searchParams }: { searchParams: { id: string }
       </PageTitle>
 
       <ItemTable
+        items={poItems}
+      />
+
+      <RecievedTable
         items={poItems}
       />
 

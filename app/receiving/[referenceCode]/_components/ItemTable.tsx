@@ -9,6 +9,8 @@ import { useAppForm } from "@/components/Form2"
 import { receiveItems } from "../_actions/receiveItems"
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses"
 import { useRouter } from "next/navigation"
+import { TbQrcode } from "react-icons/tb"
+import LabelForm from "./LabelForm"
 
 type Props = {
   items: PurchaseOrderItem[]
@@ -90,6 +92,8 @@ const ItemTable = ({ items }: Props) => {
               className={`btn ${selectedItems.length === 0 ? "btn-disabled" : 'btn-success'}`}>
               Fully Receive
             </button>
+
+
           </Fragment>
         )}
 
@@ -100,6 +104,8 @@ const ItemTable = ({ items }: Props) => {
             Cancel
           </button>
         )}
+
+
       </div>
 
       <Card.Root>
@@ -159,7 +165,9 @@ const ItemTable = ({ items }: Props) => {
             onSelectionChange={handleSelectionChange}
           />
         )}
+
       </Card.Root>
+
     </div>
   )
 }
