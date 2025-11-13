@@ -23,6 +23,8 @@ const RecievedTable = ({ items }: { items: PurchaseOrderItem[] }) => {
   }, [])
 
   const handleLabelComplete = () => {
+    setIsLabel(false)
+    setSelectedItems([])
 
   }
 
@@ -48,18 +50,13 @@ const RecievedTable = ({ items }: { items: PurchaseOrderItem[] }) => {
           </button>
         )}
 
-        <button
-          onClick={handleLabels}
-          className={`btn ${selectedItems.length === 0 ? "btn-disabled" : 'btn-accent'}`}>
-          <TbQrcode className="size-6" />
-        </button>
-
-        {isLabel && (
-          <LabelForm items={selectedItems} onComplete={handleLabelComplete} />
+        {!isLabel && (
+          <button
+            onClick={handleLabels}
+            className={`btn ${selectedItems.length === 0 ? "btn-disabled" : 'btn-accent'}`}>
+            <TbQrcode className="size-6" />
+          </button>
         )}
-
-
-
       </div>
 
       <Card.Root>
@@ -71,6 +68,9 @@ const RecievedTable = ({ items }: { items: PurchaseOrderItem[] }) => {
           />
         )}
 
+        {isLabel && (
+          <LabelForm items={selectedItems} onComplete={handleLabelComplete} />
+        )}
       </Card.Root>
     </div>
   )
