@@ -4,7 +4,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 
 const columnHelper = createColumnHelper<PurchaseOrderItem>()
 
-export const itemColumns = [
+export const receivedColumns = [
   columnHelper.accessor('item.name', {
     header: 'Item Name',
     cell: info => info.getValue(),

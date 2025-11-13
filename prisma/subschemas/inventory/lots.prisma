@@ -17,6 +17,7 @@ model Lot {
     uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
     qcRecords       QcRecord[]
     notes LotNote[]
+    purchaseOrderItem PurchaseOrderItem?
 
     @@map("lots")
 }
