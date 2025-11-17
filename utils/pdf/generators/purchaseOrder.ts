@@ -154,7 +154,7 @@ export const createPurchaseOrder = async (
   pdf.text("Notes", 30, autoTableEnd + 30);
   pdf.setFont("Lato-Regular", "normal", "normal").setFontSize(10);
 
-  const notes = ['Please note we are closed every Friday.'];
+  const notes = ['Receiving Hours: Monday - Thurdsday: 8:00 a.m. - 4:00 p.m. PST.', 'Closed Friday through Sunday and all major holidays.'];
   if (publicNotes.length > 0) {
     notes.push(...publicNotes.map(note => note.content));
   }
