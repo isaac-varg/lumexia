@@ -2,27 +2,25 @@ import PageTitle from "../Text/PageTitle"
 import PageBreadcrumbs from "./PageBreadcrumbs"
 
 type PageWrapperProps = {
-    children: React.ReactNode,
-    pageTitle?: string | null
+  children: React.ReactNode,
+  pageTitle?: string | null
 }
 
 const PageWrapper = ({ children, pageTitle }: PageWrapperProps) => {
-    return (
-        <div className='flex flex-col gap-y-6'>
-            <div className="flex flex-col gap-y-2">
+  return (
+    <div className='flex flex-col gap-y-6'>
+      <div className="flex flex-col gap-y-2">
 
-                {pageTitle && <PageTitle> {pageTitle}</PageTitle>}
+        {pageTitle && <PageTitle> {pageTitle}</PageTitle>}
 
-                <PageBreadcrumbs />
+      </div>
 
-            </div>
-
-            {children}
+      {children}
 
 
-        </div >
+    </div >
 
-    )
+  )
 }
 
 export default PageWrapper

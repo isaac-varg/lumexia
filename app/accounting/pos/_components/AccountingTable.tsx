@@ -7,31 +7,45 @@ import { PoWithAccounting } from "../_actions/getPoWithAccountingDetails"
 import { Filter } from "@/types/filter"
 import { toFacetFilter } from "@/utils/data/toFacetFilter"
 import { useRouter } from "next/navigation"
+import { toTableFilter } from "@/utils/data/toTableFilter"
 
 const AccountingTable = ({ pos }: { pos: PoWithAccounting[] }) => {
-    const router = useRouter()
-    const filters: Filter[] = [
-        {
-            columnName: "supplier",
-            filterLabel: "Supplier",
-            options: toFacetFilter(pos, "supplier.id", "supplier.name"),
-        },
-    ];
-    return (
-        <Panels.Root>
-            <Text.SectionTitle size="small">Purchase Orders</Text.SectionTitle>
+  const router = useRouter()
+  const filters: Filter[] = [
+    {
+      columnName: "supplier",
+      filterLabel: "Supplier",
+      options: toFacetFilter(pos, "supplier.id", "supplier.name"),
+    },
+    {
+      columnName: "paymentMethod",
+      filterLabel: "Payment Method",
+      options: toTableFilter(pos, (po) => po.poAccountingDetail?.paymentMethod?.id, (po) => po.poAccountingDetail?.paymentMethod?.methodName),
+    },
+  ];
 
 
-            <DataTable.Default
-                tableStateName='poAccounting'
-                columns={poAccountingColumns}
-                data={pos}
-                filters={filters}
-                onRowClick={(row) => router.push(`/accounting/pos/${row.original.referenceCode}?id=${row.original.id}`)}
-            />
+  return (
+    <Panels.Root>
+      <Text.SectionTitle size="small">Purchase Orders</Text.SectionTitle>
 
-        </Panels.Root>
-    )
+
+      <DataTable.Default
+        tableStateName='poAccounting'
+        columns={poAccountingColumns}
+        data={pos}
+        filters={filters}
+        initialSortBy={[{
+          id: 'referenceCode',
+          desc: true,
+        }]}
+
+        onRowClick={(row) => console.log(row.original)}
+      //onRowClick={(row) => router.push(`/accounting/pos/${row.original.referenceCode}?id=${row.original.id}`)}
+      />
+
+    </Panels.Root>
+  )
 }
 
 export default AccountingTable
