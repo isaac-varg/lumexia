@@ -1,83 +1,45 @@
-import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions";
-import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions";
-import Layout from "@/components/Layout";
-import React from "react";
-import { ExPurchaseOrderItem } from "@/types/purchaseOrderItem";
+import { appActions } from "@/actions/app";
+import { purchasingActions } from "@/actions/purchasing";
 import PageTitle from "@/components/Text/PageTitle";
-import LineItemPanels from "./_components/LineItemPanels";
-import activityLogActions from "@/actions/auxiliary/activityLogActions";
-import ActivityPanel from "./_components/ActivityPanel";
-import CompleteReceivingButton from "./_components/CompleteReceivingButton";
-import GoToPOButton from "./_components/GoToPOButton";
-import PrintLabels from "./_components/PrintLabels";
-import CompletedAlert from "./_components/CompletedAlert";
-import prisma from "@/lib/prisma";
+import ItemTable from "./_components/ItemTable";
+import RecievedTable from "./_components/RecievedTable";
 
-type ReceivingPOPageProps = {
-  searchParams: {
-    id: string;
-  };
-};
+const ReceivingDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
-const ReceivingPOPage = async ({ searchParams }: ReceivingPOPageProps) => {
-  const poId = searchParams.id;
+  const purchaseOrder = await purchasingActions.purchaseOrders.getOne(searchParams.id);
+  const poItems = await purchasingActions.purchaseOrders.items.getAll(searchParams.id);
+  //const activity = await appActions.activity.getAll(searchParams.id);
 
-  const purchaseOrder = await purchaseOrderActions.getOne(poId, undefined, [
-    "supplier",
-    "status",
-  ]);
-
-
-  const items: any[] = await prisma.purchaseOrderItem.findMany({
-    where: {
-      purchaseOrderId: poId,
-    },
-    include: {
-      item: {
-        include: {
-          itemType: {
-            include: {
-              config: true
-            }
-          },
-        },
-      },
-      uom: true,
-      purchaseOrderStatus: true
-    }
-  })
-
-  const activity = await activityLogActions.getAll(
-    { entityType: "purchaseOrder", entityId: poId },
-    ["user"],
-    [{ createdAt: "desc" }],
-  );
-
-  const isAwaitingItems = items.some(
-    (item) => item.purchaseOrderStatus.sequence === 3,
-  );
+  if (!purchaseOrder) { return <Skeleton /> }
 
   return (
-    <div className="flex flex-col gap-y-6 mt-6">
-      <CompletedAlert purchaseOrder={purchaseOrder} isAwaitingItems={isAwaitingItems} />
-      <Layout.Row>
-        <PageTitle>
-          #{purchaseOrder.referenceCode} - {purchaseOrder.supplier.name}
-        </PageTitle>
-        <div className="flex gap-x-4">
-          <PrintLabels purchaseOrder={purchaseOrder} />
-          <GoToPOButton purchaseOrder={purchaseOrder} />
-          <CompleteReceivingButton
-            isAwaitingItems={isAwaitingItems}
-            purchaseOrder={purchaseOrder}
-          />
-        </div>
-      </Layout.Row>
-      <LineItemPanels items={items} />
+    <div className="flex flex-col gap-y-6">
+      <PageTitle>
+        {`#${purchaseOrder.referenceCode} - ${purchaseOrder.supplier.name}`}
 
-      <ActivityPanel activities={activity} />
+      </PageTitle>
+
+      <ItemTable
+        items={poItems}
+      />
+
+      <RecievedTable
+        items={poItems}
+      />
+
+
     </div>
-  );
-};
+  )
+}
 
-export default ReceivingPOPage;
+const Skeleton = () => {
+  return (
+    <div className="flex flex-col gap-y-6">
+
+      <div className="skeleton w-40 h-12" />
+
+    </div>
+  )
+}
+
+export default ReceivingDetails; 

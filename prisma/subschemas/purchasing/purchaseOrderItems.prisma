@@ -2,6 +2,7 @@ model PurchaseOrderItem {
     id                    String                    @id @default(uuid())
     purchaseOrderId       String                    @map("purchase_order_id")
     itemId                String                    @map("item_id")
+    lotId                 String?                   @unique @map("lot_id")
     quantity              Float
     pricePerUnit          Float                     @map("price_per_unit")
     uomId                 String                    @map("uom_id")
@@ -12,6 +13,7 @@ model PurchaseOrderItem {
     item                  Item                      @relation(fields: [itemId], references: [id])
     uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
     purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
+    lot                   Lot?                      @relation(fields: [lotId], references: [id])
     details               PurchaseOrderItemDetail[]
     qcRecords             QcRecord[]
 

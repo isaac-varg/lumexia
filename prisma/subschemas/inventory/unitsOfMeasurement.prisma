@@ -8,10 +8,10 @@ model UnitOfMeasurement {
     updatedAt                    DateTime                      @updatedAt @map("updated_at")
     lots                         Lot[]
     transactions                 Transaction[]
-    container                    Container[]
     purchaseOrderItem            PurchaseOrderItem[]
     genericUnitConversionFactors GenericUnitConversionFactor[]
     discrepancyAuditItems        DiscrepancyAuditItem[]
+
 
     @@map("units_of_measurement")
 }

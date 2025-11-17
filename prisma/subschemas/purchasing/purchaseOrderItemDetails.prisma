@@ -1,17 +1,11 @@
 model PurchaseOrderItemDetail {
     id                   String            @id @default(uuid())
     poItemId             String            @map("po_item_id")
-    containerTypeId      String            @map("container_type_id")
-    weightPerContainer   Float             @map("weight_per_container")
-    weightUomId          String            @map("weight_uom_id")
-    quantityOfContainers Int               @map("quantity_of_containers")
     expectedDateStart    DateTime?         @map("expected_date_start")
     expectedDateEnd      DateTime?         @map("expected_date_end")
     createdAt            DateTime          @default(now()) @map("created_at")
     updatedAt            DateTime          @updatedAt @map("updated_at")
     poItem               PurchaseOrderItem @relation(fields: [poItemId], references: [id])
-    containerType        ContainerType     @relation(fields: [containerTypeId], references: [id])
-    uom                  UnitOfMeasurement @relation(fields: [weightUomId], references: [id])
 
 
     @@map("purchase_order_item_details")

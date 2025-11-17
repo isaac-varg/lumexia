@@ -32,7 +32,9 @@ const ItemProperties = () => {
         label="Procurement Type"
         data={item.procurementType.name}
       />
-      <LabelDataPair label="Inventory Type" data={item.inventoryType.name} />
+      <LabelDataPair label="Inventory Type" data={item.inventoryType.name} textCase="capitalize" />
+
+      <LabelDataPair label="Inventory UOM" data={item.inventoryUom.name} textCase="capitalize" />
 
     </Card.Root>
   )

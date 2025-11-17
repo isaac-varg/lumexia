@@ -11,24 +11,24 @@ import { PurchaseOrderAll } from "@/actions/purchasing/purchaseOrders/getAll";
 import { toTableFilter } from "@/utils/data/toTableFilter";
 import { Filter } from "@/types/filter";
 
-type AwaitingDeliveryTableProps = {
+type ReceivedTableProps = {
   purchaseOrders: PurchaseOrderAll[]
 };
 
-const AwaitingDeliveryTable = ({
+const ReceivedTable = ({
   purchaseOrders,
-}: AwaitingDeliveryTableProps) => {
+}: ReceivedTableProps) => {
   const router = useRouter();
 
-  const receivableItems = useMemo(() => {
-    return purchaseOrders.filter(i => (i.statusId === purchaseOrderStatuses.confirmedAwaitingDelivery || i.statusId === purchaseOrderStatuses.partiallyReceived))
+  const receivedItems = useMemo(() => {
+    return purchaseOrders.filter(i => (i.status.id === purchaseOrderStatuses.received))
   }, [purchaseOrders])
 
   const filters: Filter[] = [
     {
       columnName: "supplierCol",
       filterLabel: "Supplier",
-      options: toTableFilter(receivableItems, (i) => i.supplier.id, (i) => i.supplier.name)
+      options: toTableFilter(receivedItems, (i) => i.supplier.id, (i) => i.supplier.name)
     },
   ];
 
@@ -40,14 +40,14 @@ const AwaitingDeliveryTable = ({
 
   return (
     <div className="flex flex-col gap-6">
-      <PageTitle>Awaiting</PageTitle>
+      <PageTitle>Received</PageTitle>
 
 
 
       <Card.Root>
 
         <DataTable.Default
-          data={receivableItems}
+          data={receivedItems}
           onRowClick={(row) => handleRowClick(row.original)}
           columns={columns}
           filters={filters}
@@ -63,4 +63,4 @@ const AwaitingDeliveryTable = ({
   );
 };
 
-export default AwaitingDeliveryTable;
+export default ReceivedTable;

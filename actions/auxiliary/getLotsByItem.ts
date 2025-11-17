@@ -7,9 +7,6 @@ export const getLotsByItem = async (itemId: string) => {
     where: { itemId }, // Simplified where clause
     include: {
       item: true,
-      containers: {
-        include: { containerType: true, lot: true, uom: true },
-      },
       uom: true,
       transactions: { include: { transactionType: true, unitOfMeasurement: true, user: true } },
       lotOrigin: {

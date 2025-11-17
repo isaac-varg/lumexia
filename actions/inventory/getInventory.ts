@@ -13,7 +13,10 @@ export const getInventory = async (itemId: string) => {
       id: itemId,
       recordStatusId: {
         not: recordStatuses.archived
-      }
+      },
+    },
+    include: {
+      inventoryUom: true
     }
   })
   const lots = await getLotsByItem(itemId);

@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Oct 29 2025 13:39:02 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Nov 13 2025 10:33:17 GMT-0800 (Pacific Standard Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -694,32 +694,6 @@ model AuditRequest {
   @@map("audit_requests")
 }
 
-model ContainerType {
-  id                      String                    @id @default(uuid())
-  name                    String
-  createdAt               DateTime                  @default(now()) @map("created_at")
-  updatedAt               DateTime                  @updatedAt @map("updated_at")
-  Container               Container[]
-  PurchaseOrderItemDetail PurchaseOrderItemDetail[]
-
-  @@map("container_types")
-}
-
-model Container {
-  id              String            @id @default(uuid())
-  lotId           String            @map("lot_id")
-  containerTypeId String            @map("container_type_id")
-  uomId           String            @map("uom_id")
-  containerWeight Float             @map("container_weight")
-  containerType   ContainerType     @relation(fields: [containerTypeId], references: [id])
-  uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-  lot             Lot               @relation(fields: [lotId], references: [id])
-
-  @@map("containers")
-}
-
 model DiscrepancyAuditItemNoteType {
   id          String                     @id @default(uuid())
   name        String
@@ -912,21 +886,21 @@ model LotOrigin {
 }
 
 model Lot {
-  id              String            @id @default(uuid())
-  itemId          String            @map("item_id")
-  lotNumber       String            @map("lot_number")
-  initialQuantity Float             @map("initial_quantity")
-  uomId           String            @map("uom_id")
-  item            Item              @relation(fields: [itemId], references: [id])
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-  containers      Container[]
-  transactions    Transaction[]
-  lotOrigin       LotOrigin?
-  uom             UnitOfMeasurement @relation(fields: [uomId], references: [id])
-  qcRecords       QcRecord[]
-  notes           LotNote[]
-  BprStaging      BprStaging[]
+  id                String             @id @default(uuid())
+  itemId            String             @map("item_id")
+  lotNumber         String             @map("lot_number")
+  initialQuantity   Float              @map("initial_quantity")
+  uomId             String             @map("uom_id")
+  item              Item               @relation(fields: [itemId], references: [id])
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  transactions      Transaction[]
+  lotOrigin         LotOrigin?
+  uom               UnitOfMeasurement  @relation(fields: [uomId], references: [id])
+  qcRecords         QcRecord[]
+  notes             LotNote[]
+  purchaseOrderItem PurchaseOrderItem?
+  BprStaging        BprStaging[]
 
   @@map("lots")
 }
@@ -985,7 +959,6 @@ model UnitOfMeasurement {
   updatedAt                       DateTime                          @updatedAt @map("updated_at")
   lots                            Lot[]
   transactions                    Transaction[]
-  container                       Container[]
   purchaseOrderItem               PurchaseOrderItem[]
   genericUnitConversionFactors    GenericUnitConversionFactor[]
   discrepancyAuditItems           DiscrepancyAuditItem[]
@@ -998,10 +971,10 @@ model UnitOfMeasurement {
   ItemPricingData                 ItemPricingData[]
   ItemPricingDataArchive          ItemPricingDataArchive[]
   PricingTemplateFinishedProduct  PricingTemplateFinishedProduct[]
+  Item                            Item[]
   BatchSize                       BatchSize[]
   BprBillOfMaterials              BprBillOfMaterials[]
   BprStaging                      BprStaging[]
-  PurchaseOrderItemDetail         PurchaseOrderItemDetail[]
 
   @@map("units_of_measurement")
 }
@@ -1124,9 +1097,10 @@ model ItemType {
 model Item {
   id                              String                            @id @default(uuid())
   name                            String
-  recordStatusId                  String                            @default("cd5f3f81-493b-4bc0-9637-a36f7157e150") @map("record_status_id")
+  recordStatusId                  String                            @map("record_status_id")
   referenceCode                   String                            @unique @map("reference_code")
   itemTypeId                      String                            @map("item_type_id")
+  inventoryUomId                  String                            @map("inventory_uom_id")
   procurementTypeId               String                            @map("procurement_type_id")
   inventoryTypeId                 String                            @map("inventory_type_id")
   createdAt                       DateTime                          @default(now()) @map("created_at")
@@ -1135,6 +1109,7 @@ model Item {
   procurementType                 ProcurementType                   @relation(fields: [procurementTypeId], references: [id])
   inventoryType                   InventoryType                     @relation(fields: [inventoryTypeId], references: [id])
   recordStatus                    RecordStatus                      @relation(fields: [recordStatusId], references: [id])
+  inventoryUom                    UnitOfMeasurement                 @relation(fields: [inventoryUomId], references: [id])
   lot                             Lot[]
   aliases                         Alias[]
   purchaseOrderItem               PurchaseOrderItem[]
@@ -1827,19 +1802,13 @@ model PoSupplierNote {
 }
 
 model PurchaseOrderItemDetail {
-  id                   String            @id @default(uuid())
-  poItemId             String            @map("po_item_id")
-  containerTypeId      String            @map("container_type_id")
-  weightPerContainer   Float             @map("weight_per_container")
-  weightUomId          String            @map("weight_uom_id")
-  quantityOfContainers Int               @map("quantity_of_containers")
-  expectedDateStart    DateTime?         @map("expected_date_start")
-  expectedDateEnd      DateTime?         @map("expected_date_end")
-  createdAt            DateTime          @default(now()) @map("created_at")
-  updatedAt            DateTime          @updatedAt @map("updated_at")
-  poItem               PurchaseOrderItem @relation(fields: [poItemId], references: [id])
-  containerType        ContainerType     @relation(fields: [containerTypeId], references: [id])
-  uom                  UnitOfMeasurement @relation(fields: [weightUomId], references: [id])
+  id                String            @id @default(uuid())
+  poItemId          String            @map("po_item_id")
+  expectedDateStart DateTime?         @map("expected_date_start")
+  expectedDateEnd   DateTime?         @map("expected_date_end")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  poItem            PurchaseOrderItem @relation(fields: [poItemId], references: [id])
 
   @@map("purchase_order_item_details")
 }
@@ -1848,6 +1817,7 @@ model PurchaseOrderItem {
   id                    String                    @id @default(uuid())
   purchaseOrderId       String                    @map("purchase_order_id")
   itemId                String                    @map("item_id")
+  lotId                 String?                   @unique @map("lot_id")
   quantity              Float
   pricePerUnit          Float                     @map("price_per_unit")
   uomId                 String                    @map("uom_id")
@@ -1858,6 +1828,7 @@ model PurchaseOrderItem {
   item                  Item                      @relation(fields: [itemId], references: [id])
   uom                   UnitOfMeasurement         @relation(fields: [uomId], references: [id])
   purchaseOrderStatus   PurchaseOrderStatus       @relation(fields: [purchaseOrderStatusId], references: [id])
+  lot                   Lot?                      @relation(fields: [lotId], references: [id])
   details               PurchaseOrderItemDetail[]
   qcRecords             QcRecord[]
 
