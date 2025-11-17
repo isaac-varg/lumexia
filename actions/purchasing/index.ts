@@ -23,6 +23,7 @@ import { getAllPoSupplierNoteTypes } from "./purchaseOrders/notes/supplier/getAl
 import { getActivity } from "./purchaseOrders/getActivity";
 import { getOnePurchaseOrder } from "./purchaseOrders/getOne";
 import { getAllPurchaseOrderItems } from "./purchaseOrders/items/getAll";
+import { getAllPurchaseOrders } from "./purchaseOrders/getAll";
 
 export const purchasingActions = {
   requests: {
@@ -40,6 +41,7 @@ export const purchasingActions = {
   },
   purchaseOrders: {
     getOne: getOnePurchaseOrder,
+    getAll: getAllPurchaseOrders,
     items: {
       getAll: getAllPurchaseOrderItems,
     },

@@ -8,7 +8,7 @@ const ReceivingDetails = async ({ searchParams }: { searchParams: { id: string }
 
   const purchaseOrder = await purchasingActions.purchaseOrders.getOne(searchParams.id);
   const poItems = await purchasingActions.purchaseOrders.items.getAll(searchParams.id);
-  const activity = await appActions.activity.getAll(searchParams.id);
+  //const activity = await appActions.activity.getAll(searchParams.id);
 
   if (!purchaseOrder) { return <Skeleton /> }
 

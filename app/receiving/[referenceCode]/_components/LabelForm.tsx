@@ -1,6 +1,7 @@
 import { PurchaseOrderItem } from "@/actions/purchasing/purchaseOrders/items/getAll"
 import { generateQR } from "@/actions/qr/generateQR";
 import { useAppForm } from "@/components/Form2";
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { LabelData, createLabelsPDF } from "@/utils/pdf/generators/itemLabels/createLabelsPDF";
 import { useMemo } from "react";
 
@@ -12,6 +13,7 @@ const LabelForm = ({ items, onComplete }: { items: PurchaseOrderItem[], onComple
       itemName: i.item.name,
       labelQuantity: 1,
       lot: i.lot,
+      poId: i.purchaseOrderId
     }))
   }, [items])
 
@@ -20,17 +22,24 @@ const LabelForm = ({ items, onComplete }: { items: PurchaseOrderItem[], onComple
       items: defaults,
     },
     onSubmit: async ({ value }) => {
-      const labels: LabelData[] = (await Promise.all(value.items.map(async (i) => {
+      const labels = (await Promise.all(value.items.map(async (i) => {
         if (!i.lot) return;
+
         const qr = await generateQR(i.lot.id)
+        await createActivityLog('Printed Labels', 'purchaseOrder', i.poId, { context: `Printed ${i.labelQuantity} labels for ${i.itemName}` })
+
         return {
           lot: i.lot,
           quantity: i.labelQuantity,
           qr: qr,
         }
-      }))).filter((i) => i !== undefined) as LabelData[];
 
-      createLabelsPDF(labels);
+
+      }))).filter((i) => i !== undefined)
+
+
+      createLabelsPDF(labels as any);
+
       onComplete();
     }
   })
