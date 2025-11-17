@@ -3,7 +3,6 @@ import React from 'react'
 import useDialog from '@/hooks/useDialog'
 import { LinkedPos } from '../_functions/getLinkedPos'
 import LinkedPoCard from './LinkedPoCard'
-import { Containers } from '../_functions/getContainerTypes'
 import { TbPlugConnected, TbPlus } from 'react-icons/tb'
 import { LinkedPoAmounts } from '../_functions/getLinkedPoAmounts'
 import { toFracitonalDigits } from '@/utils/data/toFractionalDigits'
@@ -12,11 +11,10 @@ import SectionTitle from '@/components/Text/SectionTitle'
 
 type LinkedPosPanelProps = {
   pos: LinkedPos[]
-  containerTypes: Containers[]
   linkedPosAmounts: LinkedPoAmounts
 }
 
-const LinkedPosPanel = ({ pos, containerTypes, linkedPosAmounts }: LinkedPosPanelProps) => {
+const LinkedPosPanel = ({ pos, linkedPosAmounts }: LinkedPosPanelProps) => {
 
   const { showDialog } = useDialog()
 
@@ -45,7 +43,7 @@ const LinkedPosPanel = ({ pos, containerTypes, linkedPosAmounts }: LinkedPosPane
 
       <Card.Root>
         <div className="grow grid grid-cols-2 gap-4">
-          {pos.map((po) => <LinkedPoCard key={po.id} po={po} containerTypes={containerTypes} />)}
+          {pos.map((po) => <LinkedPoCard key={po.id} po={po} />)}
         </div>
 
 

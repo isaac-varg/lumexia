@@ -69,10 +69,6 @@ const createPOItem = async (poId: string, itemId: string) => {
   await prisma.purchaseOrderItemDetail.create({
     data: {
       poItemId: response.id,
-      containerTypeId: containerTypes.drum,
-      weightPerContainer: 0,
-      weightUomId: uom.pounds,
-      quantityOfContainers: 0,
     }
   })
 

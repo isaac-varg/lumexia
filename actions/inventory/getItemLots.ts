@@ -5,11 +5,8 @@ export const getItemLots = async (itemId: string) => {
     where: { itemId }, // Simplified where clause
     include: {
       item: true,
-      containers: {
-        include: { containerType: true, lot: true, uom: true },
-      },
       uom: true,
-      transactions: { include: { transactionType: true, unitOfMeasurement: true, user: true} },
+      transactions: { include: { transactionType: true, unitOfMeasurement: true, user: true } },
     },
   });
 
@@ -28,6 +25,6 @@ export const getItemLots = async (itemId: string) => {
   });
 
   return lotsWithTotals;
-}; 
+};
 
 export type ItemLot = Awaited<ReturnType<typeof getItemLots>>[number]
