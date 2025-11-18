@@ -17,7 +17,7 @@ const PoDetails = ({ referenceCode, supplier, status, total, poCreatedAt }: {
       <SectionTitle size="small">Purchase Order</SectionTitle>
 
       <LabelDataPair label="PO #" data={referenceCode} />
-      <LabelDataPair label="PO Created On" data={DateTime.fromJSDate(poCreatedAt).toFormat(dateFormatWithTime)} />
+      <LabelDataPair label="Created On" data={DateTime.fromJSDate(poCreatedAt).toFormat(dateFormatWithTime)} />
       <LabelDataPair label="Supplier" data={supplier} />
       <LabelDataPair label="Status" data={''}> <Tag color="default" label={status.name} /></LabelDataPair>
       <LabelDataPair label="Total" data={`$ ${toFracitonalDigits.curreny(total)}`} />

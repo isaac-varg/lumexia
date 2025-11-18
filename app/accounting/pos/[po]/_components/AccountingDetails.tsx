@@ -41,9 +41,9 @@ const AccountingDetails = ({ po, title = 'Accounting' }: { po: PoWithAccounting,
 
         <DetailRow label="Paid" fieldName="paid" onDetailChange={handleChange} value={po.poAccountingDetail?.paid || false} />
 
-        <DetailRow label="Packing Slip Received " fieldName="packingSlipReceived" onDetailChange={handleChange} value={po.poAccountingDetail?.packingSlipReceived || false} />
+        <DetailRow label="Packing Slip" fieldName="packingSlipReceived" onDetailChange={handleChange} value={po.poAccountingDetail?.packingSlipReceived || false} />
 
-        <DetailRow label="Paperwork Handed Off" fieldName="paperworkGivenToAdmin" onDetailChange={handleChange} value={po.poAccountingDetail?.paperworkGivenToAdmin || false} />
+        <DetailRow label="Invoice" fieldName="paperworkGivenToAdmin" onDetailChange={handleChange} value={po.poAccountingDetail?.paperworkGivenToAdmin || false} />
       </div>
 
 

@@ -13,6 +13,8 @@ import AccountingNotes from "./_components/AccountingNotes"
 import { getAllAccountingNoteTypes } from "../_actions/getAllAccountingNoteTypes"
 import { getAccountingAuditLogsByPo } from "../_actions/getAccountingAuditLogsByPo"
 import AccountingAuditLogs from "./_components/AccountingAuditLogs"
+import { Tabs } from "@/components/Tabs2"
+import LabelCounter from "@/components/Tabs2/LabelCounter"
 
 
 
@@ -33,7 +35,7 @@ const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: s
     <PageWrapper pageTitle={`PO #${po.referenceCode} Accounting`}>
 
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-4 gap-6">
 
         <AccountingDetails po={po} />
 
@@ -43,16 +45,42 @@ const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: s
           name: po.status.name,
         }} total={po.total} poCreatedAt={po.createdAt} />
 
-        <AccountingFiles files={files} poId={po.id} fileTypes={fileTypes} />
-
         <PaymentMethodPanel paymentMethod={po.poAccountingDetail?.paymentMethod} accountingDetailId={po.poAccountingDetail?.id} allMethods={paymentMethods} poId={po.id} />
-
-        <AccountingNotes notes={po.poAccountingNotes} noteTypes={noteTypes} poId={po.id} />
-        <AccountingAuditLogs logs={logs} />
 
       </div>
 
 
+      <Tabs.Root defaultValue="notes">
+
+        <div className="flex justify-between items-center">
+          <Tabs.List>
+            <Tabs.Trigger size="large" value="notes">
+              <LabelCounter label="Notes" count={po.poAccountingNotes.length} />
+            </Tabs.Trigger>
+            <Tabs.Trigger size="large" value="files">
+              <LabelCounter label="Files" count={po.poAccountingFiles.length} />
+            </Tabs.Trigger>
+            <Tabs.Trigger size="large" value="activity">Activity</Tabs.Trigger>
+          </Tabs.List>
+
+        </div>
+        <div className="pt-4">
+          <Tabs.ContentContainer>
+            <Tabs.Content value="notes">
+              <AccountingNotes notes={po.poAccountingNotes} noteTypes={noteTypes} poId={po.id} />
+            </Tabs.Content>
+
+            <Tabs.Content value="files">
+              <AccountingFiles files={files} poId={po.id} fileTypes={fileTypes} />
+            </Tabs.Content>
+
+            <Tabs.Content value="activity">
+              <AccountingAuditLogs logs={logs} />
+            </Tabs.Content>
+
+          </Tabs.ContentContainer>
+        </div>
+      </Tabs.Root>
 
     </PageWrapper>
   )
