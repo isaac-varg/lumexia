@@ -40,8 +40,7 @@ const AccountingTable = ({ pos }: { pos: PoWithAccounting[] }) => {
           desc: true,
         }]}
 
-        onRowClick={(row) => console.log(row.original)}
-      //onRowClick={(row) => router.push(`/accounting/pos/${row.original.referenceCode}?id=${row.original.id}`)}
+        onRowClick={(row) => router.push(`/accounting/pos/${row.original.referenceCode}?id=${row.original.id}`)}
       />
 
     </Panels.Root>

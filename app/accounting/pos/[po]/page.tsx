@@ -18,44 +18,44 @@ import AccountingAuditLogs from "./_components/AccountingAuditLogs"
 
 const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: string } }) => {
 
-    const po = await getPoWithAccountingDetails(searchParams.id)
-    const files = await getAccountingFilesByPo(searchParams.id)
-    const fileTypes = await getAccountingFileTags();
-    const paymentMethods = await accountingActions.paymentMethods.getAll();
-    const statuses = await getAllPoAccountingStatuses();
-    const noteTypes = await getAllAccountingNoteTypes();
-    const logs = await getAccountingAuditLogsByPo(searchParams.id);
+  const po = await getPoWithAccountingDetails(searchParams.id)
+  const files = await getAccountingFilesByPo(searchParams.id)
+  const fileTypes = await getAccountingFileTags();
+  const paymentMethods = await accountingActions.paymentMethods.getAll();
+  const statuses = await getAllPoAccountingStatuses();
+  const noteTypes = await getAllAccountingNoteTypes();
+  const logs = await getAccountingAuditLogsByPo(searchParams.id);
 
 
-    if (!po) return false
+  if (!po) return false
 
-    return (
-        <PageWrapper pageTitle={`PO #${po.referenceCode} Accounting`}>
-
-
-            <div className="grid grid-cols-3 gap-6">
-
-                <AccountingDetails po={po} />
-
-                <AccountingStatus statuses={statuses} po={po} />
-
-                <PoDetails referenceCode={po.referenceCode} supplier={po.supplier.name} status={{
-                    name: po.status.name,
-                }} total={po.total} />
-
-                <AccountingFiles files={files} poId={po.id} fileTypes={fileTypes} />
-
-                <PaymentMethodPanel paymentMethod={po.poAccountingDetail?.paymentMethod} accountingDetailId={po.poAccountingDetail?.id} allMethods={paymentMethods} poId={po.id} />
-
-                <AccountingNotes notes={po.poAccountingNotes} noteTypes={noteTypes} poId={po.id} />
-                <AccountingAuditLogs logs={logs} />
-
-            </div>
+  return (
+    <PageWrapper pageTitle={`PO #${po.referenceCode} Accounting`}>
 
 
+      <div className="grid grid-cols-3 gap-6">
 
-        </PageWrapper>
-    )
+        <AccountingDetails po={po} />
+
+        <AccountingStatus statuses={statuses} po={po} />
+
+        <PoDetails referenceCode={po.referenceCode} supplier={po.supplier.name} status={{
+          name: po.status.name,
+        }} total={po.total} poCreatedAt={po.createdAt} />
+
+        <AccountingFiles files={files} poId={po.id} fileTypes={fileTypes} />
+
+        <PaymentMethodPanel paymentMethod={po.poAccountingDetail?.paymentMethod} accountingDetailId={po.poAccountingDetail?.id} allMethods={paymentMethods} poId={po.id} />
+
+        <AccountingNotes notes={po.poAccountingNotes} noteTypes={noteTypes} poId={po.id} />
+        <AccountingAuditLogs logs={logs} />
+
+      </div>
+
+
+
+    </PageWrapper>
+  )
 }
 
 export default PoAccountingDetailsPage 
