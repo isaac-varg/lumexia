@@ -1,3 +1,5 @@
+import sharp from 'sharp';
+import { pdfToImg } from "pdftoimg-js";
 import { NextRequest, NextResponse } from 'next/server';
 import { s3 } from '@/lib/s3';
 import { Buffer } from 'buffer';
@@ -15,6 +17,8 @@ export type FileResponseData = {
   etag: string
   versionId: string | null
   fileId: string
+  thumbnailObjectName: string | null
+  thumbnailBucketName: string | null
 }
 
 export async function POST(request: NextRequest) {
@@ -55,6 +59,32 @@ export async function POST(request: NextRequest) {
 
     const uploadInfo = await s3.putObject(bucketName, objectName, buffer, file.size, metaData);
 
+    let thumbnailObjectName: string | null = null;
+    let thumbnailBucketName: string | null = null;
+
+    // Generate thumbnail for images
+    if (file.type.startsWith('image/')) {
+      const thumbnailBuffer = await sharp(buffer).resize(128, 128, { fit: 'inside' }).toBuffer();
+      const thumbnailExtension = '.webp'; // Use webp for thumbnails for better compression
+      thumbnailObjectName = `${pathPrefix}/thumbnails/${uuidv4()}${thumbnailExtension}`;
+      await s3.putObject(bucketName, thumbnailObjectName, thumbnailBuffer, thumbnailBuffer.length, { 'Content-Type': 'image/webp' });
+      thumbnailBucketName = bucketName;
+    }
+
+    if (file.type === 'application/pdf') {
+
+      // make first page thumbnail and uplaod to s3 similar to image upload
+
+
+
+      //if (pngPages.length > 0) {
+      //  const thumbnailBuffer = pngPages[0].content || '';
+      //  const thumbnailExtension = '.png';
+      //  thumbnailObjectName = `${pathPrefix}/thumbnails/${uuidv4()}${thumbnailExtension}`;
+      //  await s3.putObject(bucketName, thumbnailObjectName, thumbnailBuffer, thumbnailBuffer.length, { 'Content-Type': 'image/png' });
+      //  thumbnailBucketName = bucketName;
+      //}
+    }
     // create the response rather than provide just upload info
     const responseData = {
       name: file.name,
@@ -64,6 +94,8 @@ export async function POST(request: NextRequest) {
       objectName: objectName,
       etag: uploadInfo.etag,
       versionId: uploadInfo.versionId,
+      thumbnailObjectName: thumbnailObjectName,
+      thumbnailBucketName: thumbnailBucketName,
     };
 
 
@@ -79,6 +111,8 @@ export async function POST(request: NextRequest) {
         size: responseData.size,
         mimeType: responseData.mimetype,
         uploadedById: userId,
+        thumbnailObjectName: responseData.thumbnailObjectName,
+        thumbnailBucketName: responseData.thumbnailBucketName,
       }
     });
 

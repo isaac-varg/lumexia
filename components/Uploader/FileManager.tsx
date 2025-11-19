@@ -18,6 +18,7 @@ export interface ManagerFileType {
 export interface ManagerFile {
     id: string
     url: string
+    thumbnailUrl?: string
     file: LumexiaFile
     fileType?: ManagerFileType
 }
@@ -63,6 +64,7 @@ const FileManager = <TFile extends ManagerFile, TFileTypes extends ManagerFileTy
                         shape="vertical"
                         label={file.file.name}
                         url={file.url}
+                        thumbnailUrl={file.thumbnailUrl}
                         mimeType={file.file.mimeType}
                         onEditClick={() => handleEdit(file)}
                         onDeleteClick={() => handleDelete(file)}

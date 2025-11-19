@@ -7,6 +7,21 @@ export const getFiles = async () => {
         include: {
             uploadedBy: true
         },
+        select: {
+            id: true,
+            name: true,
+            objectName: true,
+            bucketName: true,
+            thumbnailObjectName: true,
+            thumbnailBucketName: true,
+            mimeType: true,
+            uploadedBy: {
+                select: {
+                    name: true,
+                    image: true,
+                }
+            },
+        }
     });
 
     return files;
