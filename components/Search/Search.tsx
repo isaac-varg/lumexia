@@ -46,7 +46,7 @@ const Search = ({ data, keys, onClick, title = true }: SearchProps) => {
 
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 w-full">
       {title && <span className="text-xl font-poppins text-base-content">Search</span>}
 
       <label className="input input-bordered flex items-center gap-2">
