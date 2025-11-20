@@ -42,7 +42,7 @@ export const getPOItems = async (purchaseOrderId: string) => {
     const otherAliases = item.item.aliases.filter(a => a.aliasTypeId !== aliasTypes.supplier);
     const aliases = [
       ...otherAliases,
-      ...(matchingSupplierAlias?.alias ? [matchingSupplierAlias.alias] : [])
+      ...(matchingSupplierAlias?.alias ? [matchingSupplierAlias.alias] : []),
     ];
 
     // terrible naming, but 

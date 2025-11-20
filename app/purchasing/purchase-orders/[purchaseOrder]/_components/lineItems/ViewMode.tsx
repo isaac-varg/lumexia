@@ -70,7 +70,7 @@ const ViewMode = () => {
                     {hasAliases ? (
                       <td>
                         <div className="flex gap-1 items-center">
-                          {i.item.name}
+                          {i.alias ? i.alias : i.item.name}
                           <div className="tooltip tooltip-info z-50">
                             <div className="tooltip-content p-6 z-50">
                               <div className="flex flex-col gap-1">
@@ -78,12 +78,15 @@ const ViewMode = () => {
                                 <p>Aliases:</p>
 
                                 {i.allAliases.map(a => <div className="" key={a.id}>{`${a.name}`}</div>)}
+                                {i.alias && <div>{i.item.name}</div>}
                               </div>
                             </div>
                             <TbMessageDots className="size-6" />
                           </div>
                         </div></td>
-                    ) : <td>{i.item.name}</td>}
+                    ) : <td>
+                      {i.alias ? i.alias : i.item.name}
+                    </td>}
                     <td>{`$ ${toFracitonalDigits.weight(i.pricePerUnit)}`}</td>
                     <td>{toFracitonalDigits.weight(i.quantity)}</td>
                     <td>{i.uomAbbreviation}</td>
