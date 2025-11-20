@@ -8,7 +8,7 @@ const GeneralRequests = () => {
 
   return (
     <div className="flex flex-col gap-y-6 ">
-      <span className="text-xl font-poppins text-base-content">Can't Find An Item?</span>
+      <span className="text-xl font-poppins text-base-content">Can&apos;t Find An Item?</span>
 
       <div className="flex gap-4 items-center">
 
@@ -22,7 +22,7 @@ const GeneralRequests = () => {
       </div>
 
 
-      <Text.Normal>Can't find the item you are looking for in the system? Use the button below to request an item by providing an image, link and description. Purchasing will handle sourcing and adding it to Lumexia.</Text.Normal>
+      <Text.Normal>Can&apos;t find the item you are looking for in the system? Use the button below to request an item by providing an image, link and description. Purchasing will handle sourcing and adding it to Lumexia.</Text.Normal>
     </div>
   )
 }
