@@ -2,6 +2,6 @@
 
 
 export const fractionalDigits = {
-  currency: 3,
+  currency: 6,
   weight: 4,
 }
