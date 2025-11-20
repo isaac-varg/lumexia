@@ -11,6 +11,7 @@ const classes = {
     default: 'min-w-40',
   },
   size: {
+    sm: 'btn-sm',
     xl: 'btn-xl',
     large: 'btn-lg',
   },

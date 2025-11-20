@@ -53,16 +53,15 @@ const AccountingFiles = ({ files, poId, fileTypes, span = 2 }: { files: Accounti
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <SectionTitle>Upload</SectionTitle>
         <Card.Root>
+          <SectionTitle size="small">Upload</SectionTitle>
           <Uploader pathPrefix="/accounting/pos" onComplete={handleComplete} />
         </Card.Root>
       </div>
 
       <div className="flex flex-col gap-2">
-        <SectionTitle>Files</SectionTitle>
         <Card.Root>
-
+          <SectionTitle size="small">Files</SectionTitle>
           <div className="grid grid-cols-2 gap-2">
 
             {files.map(file => {
