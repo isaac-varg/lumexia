@@ -47,7 +47,7 @@ const PurchaseOrders = () => {
             id: 'referenceCode',
             desc: true,
           }]}
-          tableStateName="accountActivity"
+          tableStateName="accountingActivity"
         />
 
       </Card.Root>
