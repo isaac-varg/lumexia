@@ -1,18 +1,16 @@
 'use client'
-import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
 import { AccountingFile } from "../../_actions/getAccountingFilesByPo"
 import Uploader from "@/components/Uploader/Uploader"
 import { FileResponseData } from "@/app/api/upload/route"
 import { createPoAccountingFile } from "../../_actions/createPoAccountingFile"
 import { useRouter } from "next/navigation"
-import FileButton from "@/components/Uploader/FileButton"
-import useDialog from "@/hooks/useDialog"
 import { AccountingFileTypes } from "../../_actions/getAccountingFileTags"
 import { deleteAccountingFile } from "../../_actions/deleteAccountingFile"
 import { createAccountingAuditLog } from "../../_actions/createAccountingAuditLog"
 import { getUserId } from "@/actions/users/getUserId"
 import Card from "@/components/Card"
+import FileButton2 from "@/components/Uploader/FileButton2"
 
 const AccountingFiles = ({ files, poId, fileTypes, span = 2 }: { files: AccountingFile[], poId: string, fileTypes: AccountingFileTypes[], span?: 1 | 2 | 3 }) => {
 
@@ -37,9 +35,6 @@ const AccountingFiles = ({ files, poId, fileTypes, span = 2 }: { files: Accounti
     router.refresh();
   }
 
-  const handleEdit = (file: AccountingFile) => {
-  }
-
   const handleDelete = async (file: AccountingFile) => {
 
     const userId = await getUserId()
@@ -56,23 +51,30 @@ const AccountingFiles = ({ files, poId, fileTypes, span = 2 }: { files: Accounti
   }
 
   return (
-    <Card.Root>
-      <Panels.Root span={span}>
-        <SectionTitle size="small">Files</SectionTitle>
-
-
-
-        <div className="grid grid-cols-3 gap-4">
-
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <SectionTitle>Upload</SectionTitle>
+        <Card.Root>
           <Uploader pathPrefix="/accounting/pos" onComplete={handleComplete} />
+        </Card.Root>
+      </div>
 
+      <div className="flex flex-col gap-2">
+        <SectionTitle>Files</SectionTitle>
+        <Card.Root>
 
-          {files.map(file => <FileButton key={file.id} shape="vertical" label={file.file.name} url={file.url} mimeType={file.file.mimeType} onEditClick={() => handleEdit(file)} onDeleteClick={() => handleDelete(file)} fileTag={{ label: file.fileType.name, bgColor: file.fileType.bgColor, textColor: file.fileType.textColor }} uploadedByName={file.file.uploadedBy.name || ''} uploadedByImage={file.file.uploadedBy.image || ''} />)}
-        </div>
+          <div className="grid grid-cols-2 gap-2">
 
-      </Panels.Root>
+            {files.map(file => {
+              return (
+                <FileButton2 key={file.id} file={file} onDeleteClick={() => handleDelete(file)} />
+              )
+            })}
 
-    </Card.Root>
+          </div>
+        </Card.Root>
+      </div>
+    </div>
   )
 }
 

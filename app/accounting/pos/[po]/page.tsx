@@ -11,10 +11,11 @@ import { accountingActions } from "@/actions/accounting"
 import { getAllPoAccountingStatuses } from "../_actions/getAllAccountingStatuses"
 import AccountingNotes from "./_components/AccountingNotes"
 import { getAllAccountingNoteTypes } from "../_actions/getAllAccountingNoteTypes"
-import { getAccountingAuditLogsByPo } from "../_actions/getAccountingAuditLogsByPo"
-import AccountingAuditLogs from "./_components/AccountingAuditLogs"
 import { Tabs } from "@/components/Tabs2"
 import LabelCounter from "@/components/Tabs2/LabelCounter"
+import Activity from "./_components/Activity"
+import { purchasingActions } from "@/actions/purchasing"
+import { getAccountingAuditLogsByPo } from "../_actions/getAccountingAuditLogsByPo"
 
 
 
@@ -26,7 +27,9 @@ const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: s
   const paymentMethods = await accountingActions.paymentMethods.getAll();
   const statuses = await getAllPoAccountingStatuses();
   const noteTypes = await getAllAccountingNoteTypes();
-  const logs = await getAccountingAuditLogsByPo(searchParams.id);
+  const activity = await getAccountingAuditLogsByPo(searchParams.id);
+  const poActivity = await purchasingActions.purchaseOrders.getActivity(searchParams.id);
+
 
 
   if (!po) return false
@@ -35,25 +38,13 @@ const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: s
     <PageWrapper pageTitle={`PO #${po.referenceCode} Accounting`}>
 
 
-      <div className="grid grid-cols-4 gap-6">
-
-        <AccountingDetails po={po} />
-
-        <AccountingStatus statuses={statuses} po={po} />
-
-        <PoDetails referenceCode={po.referenceCode} supplier={po.supplier.name} status={{
-          name: po.status.name,
-        }} total={po.total} poCreatedAt={po.createdAt} />
-
-        <PaymentMethodPanel paymentMethod={po.poAccountingDetail?.paymentMethod} accountingDetailId={po.poAccountingDetail?.id} allMethods={paymentMethods} poId={po.id} />
-
-      </div>
 
 
-      <Tabs.Root defaultValue="notes">
+      <Tabs.Root defaultValue="details">
 
         <div className="flex justify-between items-center">
           <Tabs.List>
+            <Tabs.Trigger size="large" value="details">Details</Tabs.Trigger>
             <Tabs.Trigger size="large" value="notes">
               <LabelCounter label="Notes" count={po.poAccountingNotes.length} />
             </Tabs.Trigger>
@@ -66,6 +57,22 @@ const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: s
         </div>
         <div className="pt-4">
           <Tabs.ContentContainer>
+            <Tabs.Content value="details">
+              <div className="grid grid-cols-2 gap-6">
+
+                <AccountingDetails po={po} />
+                <PoDetails referenceCode={po.referenceCode} supplier={po.supplier.name} status={{
+                  name: po.status.name,
+                }} total={po.total} poCreatedAt={po.createdAt} poId={po.id} />
+
+                <AccountingStatus statuses={statuses} po={po} />
+
+
+                <PaymentMethodPanel paymentMethod={po.poAccountingDetail?.paymentMethod} accountingDetailId={po.poAccountingDetail?.id} allMethods={paymentMethods} poId={po.id} />
+
+              </div>
+
+            </Tabs.Content>
             <Tabs.Content value="notes">
               <AccountingNotes notes={po.poAccountingNotes} noteTypes={noteTypes} poId={po.id} />
             </Tabs.Content>
@@ -75,7 +82,7 @@ const PoAccountingDetailsPage = async ({ searchParams }: { searchParams: { id: s
             </Tabs.Content>
 
             <Tabs.Content value="activity">
-              <AccountingAuditLogs logs={logs} />
+              <Activity activity={activity} poActivity={poActivity} />
             </Tabs.Content>
 
           </Tabs.ContentContainer>

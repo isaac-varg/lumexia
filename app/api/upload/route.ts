@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import { pdfToImg } from "pdftoimg-js";
 import { NextRequest, NextResponse } from 'next/server';
 import { s3 } from '@/lib/s3';
 import { Buffer } from 'buffer';
@@ -7,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { getUserId } from '@/actions/users/getUserId';
 import prisma from '@/lib/prisma';
+import { fromBuffer } from "pdf2pic"
 
 export type FileResponseData = {
   name: string
@@ -72,18 +72,19 @@ export async function POST(request: NextRequest) {
     }
 
     if (file.type === 'application/pdf') {
+      const options = {
+        density: 100,
+        saveFilename: "untitled",
+        width: 600,
+        height: 800
+      };
+      const thumbnail = await fromBuffer(buffer, options).bulk(1, { responseType: 'buffer' });
 
-      // make first page thumbnail and uplaod to s3 similar to image upload
-
-
-
-      //if (pngPages.length > 0) {
-      //  const thumbnailBuffer = pngPages[0].content || '';
-      //  const thumbnailExtension = '.png';
-      //  thumbnailObjectName = `${pathPrefix}/thumbnails/${uuidv4()}${thumbnailExtension}`;
-      //  await s3.putObject(bucketName, thumbnailObjectName, thumbnailBuffer, thumbnailBuffer.length, { 'Content-Type': 'image/png' });
-      //  thumbnailBucketName = bucketName;
-      //}
+      if (!thumbnail || !thumbnail[0] || !thumbnail[0].buffer) return
+      const thumbnailExtension = '.webp'; // Use webp for thumbnails for better compression
+      thumbnailObjectName = `${pathPrefix}/thumbnails/${uuidv4()}${thumbnailExtension}`;
+      await s3.putObject(bucketName, thumbnailObjectName, thumbnail[0].buffer, thumbnail[0].buffer.length, { 'Content-Type': 'image/webp' });
+      thumbnailBucketName = bucketName;
     }
     // create the response rather than provide just upload info
     const responseData = {
