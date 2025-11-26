@@ -2,8 +2,11 @@ model UnitOfMeasurement {
     id                           String                        @id @default(uuid())
     name                         String
     abbreviation                 String
+    isStandardUom                Boolean                       @default(true)  @map("is_standard_uom")
     uomA                         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomA")
     uomB                         UnitOfMeasurementConversion[] @relation("UnitOfMeasurementConversionUomB")
+    discreteUomA                 DiscreteUnitOfMeasurementConversion[] @relation("DiscreteUnitOfMeasurementConversionUomA")
+    discreteUomB                 DiscreteUnitOfMeasurementConversion[] @relation("DiscreteUnitOfMeasurementConversionUomB")
     createdAt                    DateTime                      @default(now()) @map("created_at")
     updatedAt                    DateTime                      @updatedAt @map("updated_at")
     lots                         Lot[]

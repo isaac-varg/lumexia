@@ -17,6 +17,7 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
               config: true
             }
           },
+          inventoryUom: true
         },
       },
       uom: true,

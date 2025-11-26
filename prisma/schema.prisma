@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Tue Nov 18 2025 10:58:47 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Nov 26 2025 13:03:33 GMT-0800 (Pacific Standard Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -802,6 +802,24 @@ model DiscrepancyAudit {
   @@map("discrepancy_audits")
 }
 
+model DiscreteUnitOfMeasurementConversion {
+  id               String            @id @default(uuid())
+  itemId           String            @map("item_id")
+  supplierId       String            @map("supplier_id")
+  uomAId           String            @map("uom_a_id")
+  uomBId           String            @map("uom_b_id")
+  conversionFactor Float             @map("conversion_factor")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  uomA             UnitOfMeasurement @relation("DiscreteUnitOfMeasurementConversionUomA", fields: [uomAId], references: [id])
+  uomB             UnitOfMeasurement @relation("DiscreteUnitOfMeasurementConversionUomB", fields: [uomBId], references: [id])
+  supplier         Supplier          @relation(fields: [supplierId], references: [id])
+  item             Item              @relation(fields: [itemId], references: [id])
+
+  @@unique([itemId, supplierId], name: "item_supplier_unique")
+  @@map("discrete_unit_of_measurement_conversions")
+}
+
 model GenericUnitConversionFactor {
   id               String            @id @default(uuid())
   itemId           String            @map("item_id")
@@ -952,13 +970,16 @@ model UnitOfMeasurementConversion {
 }
 
 model UnitOfMeasurement {
-  id                              String                            @id @default(uuid())
+  id                              String                                @id @default(uuid())
   name                            String
   abbreviation                    String
-  uomA                            UnitOfMeasurementConversion[]     @relation("UnitOfMeasurementConversionUomA")
-  uomB                            UnitOfMeasurementConversion[]     @relation("UnitOfMeasurementConversionUomB")
-  createdAt                       DateTime                          @default(now()) @map("created_at")
-  updatedAt                       DateTime                          @updatedAt @map("updated_at")
+  isStandardUom                   Boolean                               @default(true) @map("is_standard_uom")
+  uomA                            UnitOfMeasurementConversion[]         @relation("UnitOfMeasurementConversionUomA")
+  uomB                            UnitOfMeasurementConversion[]         @relation("UnitOfMeasurementConversionUomB")
+  discreteUomA                    DiscreteUnitOfMeasurementConversion[] @relation("DiscreteUnitOfMeasurementConversionUomA")
+  discreteUomB                    DiscreteUnitOfMeasurementConversion[] @relation("DiscreteUnitOfMeasurementConversionUomB")
+  createdAt                       DateTime                              @default(now()) @map("created_at")
+  updatedAt                       DateTime                              @updatedAt @map("updated_at")
   lots                            Lot[]
   transactions                    Transaction[]
   purchaseOrderItem               PurchaseOrderItem[]
@@ -1097,47 +1118,48 @@ model ItemType {
 }
 
 model Item {
-  id                              String                            @id @default(uuid())
-  name                            String
-  recordStatusId                  String                            @map("record_status_id")
-  referenceCode                   String                            @unique @map("reference_code")
-  itemTypeId                      String                            @map("item_type_id")
-  inventoryUomId                  String                            @map("inventory_uom_id")
-  procurementTypeId               String                            @map("procurement_type_id")
-  inventoryTypeId                 String                            @map("inventory_type_id")
-  createdAt                       DateTime                          @default(now()) @map("created_at")
-  updatedAt                       DateTime                          @updatedAt @map("updated_at")
-  itemType                        ItemType                          @relation(fields: [itemTypeId], references: [id])
-  procurementType                 ProcurementType                   @relation(fields: [procurementTypeId], references: [id])
-  inventoryType                   InventoryType                     @relation(fields: [inventoryTypeId], references: [id])
-  recordStatus                    RecordStatus                      @relation(fields: [recordStatusId], references: [id])
-  inventoryUom                    UnitOfMeasurement                 @relation(fields: [inventoryUomId], references: [id])
-  lot                             Lot[]
-  aliases                         Alias[]
-  purchaseOrderItem               PurchaseOrderItem[]
-  itemPricingData                 ItemPricingData[]
-  itemCostDeterminations          ItemCostDetermination[]
-  requests                        PurchasingRequest[]
-  audits                          InventoryAudit[]
-  auditRequests                   AuditRequest[]
-  consumerContainers              ConsumerContainer[]
-  pricingExaminations             PricingExamination[]
-  consumerContainerArchives       ConsumerContainerArchive[]
-  qcItemParameters                QcItemParameter[]
-  genericUnitConversionFactors    GenericUnitConversionFactor[]
-  discrepancyAuditItems           DiscrepancyAuditItem[]
-  BomPricingDataArchive           BomPricingDataArchive[]
-  FinishedProductArchive          FinishedProductArchive[]
-  FinishedProductAuxiliary        FinishedProductAuxiliary[]
-  FinishedProductAuxiliaryArchive FinishedProductAuxiliaryArchive[]
-  FinishedProduct                 FinishedProduct[]
-  ItemConsumerContainer           ItemConsumerContainer[]
-  PricingQueue                    PricingQueue[]
-  PricingTemplateAuxiliary        PricingTemplateAuxiliary[]
-  ItemFile                        ItemFile[]
-  ItemNote                        ItemNote[]
-  BillOfMaterial                  BillOfMaterial[]
-  MasterBatchProductionRecord     MasterBatchProductionRecord[]
+  id                                   String                                @id @default(uuid())
+  name                                 String
+  recordStatusId                       String                                @map("record_status_id")
+  referenceCode                        String                                @unique @map("reference_code")
+  itemTypeId                           String                                @map("item_type_id")
+  inventoryUomId                       String                                @map("inventory_uom_id")
+  procurementTypeId                    String                                @map("procurement_type_id")
+  inventoryTypeId                      String                                @map("inventory_type_id")
+  createdAt                            DateTime                              @default(now()) @map("created_at")
+  updatedAt                            DateTime                              @updatedAt @map("updated_at")
+  itemType                             ItemType                              @relation(fields: [itemTypeId], references: [id])
+  procurementType                      ProcurementType                       @relation(fields: [procurementTypeId], references: [id])
+  inventoryType                        InventoryType                         @relation(fields: [inventoryTypeId], references: [id])
+  recordStatus                         RecordStatus                          @relation(fields: [recordStatusId], references: [id])
+  inventoryUom                         UnitOfMeasurement                     @relation(fields: [inventoryUomId], references: [id])
+  lot                                  Lot[]
+  aliases                              Alias[]
+  purchaseOrderItem                    PurchaseOrderItem[]
+  itemPricingData                      ItemPricingData[]
+  itemCostDeterminations               ItemCostDetermination[]
+  requests                             PurchasingRequest[]
+  audits                               InventoryAudit[]
+  auditRequests                        AuditRequest[]
+  consumerContainers                   ConsumerContainer[]
+  pricingExaminations                  PricingExamination[]
+  consumerContainerArchives            ConsumerContainerArchive[]
+  qcItemParameters                     QcItemParameter[]
+  genericUnitConversionFactors         GenericUnitConversionFactor[]
+  discrepancyAuditItems                DiscrepancyAuditItem[]
+  discreteUnitOfMeasurementConversions DiscreteUnitOfMeasurementConversion[]
+  BomPricingDataArchive                BomPricingDataArchive[]
+  FinishedProductArchive               FinishedProductArchive[]
+  FinishedProductAuxiliary             FinishedProductAuxiliary[]
+  FinishedProductAuxiliaryArchive      FinishedProductAuxiliaryArchive[]
+  FinishedProduct                      FinishedProduct[]
+  ItemConsumerContainer                ItemConsumerContainer[]
+  PricingQueue                         PricingQueue[]
+  PricingTemplateAuxiliary             PricingTemplateAuxiliary[]
+  ItemFile                             ItemFile[]
+  ItemNote                             ItemNote[]
+  BillOfMaterial                       BillOfMaterial[]
+  MasterBatchProductionRecord          MasterBatchProductionRecord[]
 
   @@map("items")
 }
@@ -2111,22 +2133,23 @@ model SupplierPaymentMethod {
 }
 
 model Supplier {
-  id                           String                         @id @default(uuid())
-  name                         String
-  addressStreet1               String                         @map("address_street1")
-  addressStreet2               String?                        @map("address_street2")
-  addressCity                  String                         @map("address_city")
-  addressState                 String                         @map("address_state")
-  addressZip                   String                         @map("address_zip")
-  phone                        String
-  purchaseOrders               PurchaseOrder[]
-  supplierAlias                SupplierAlias[]
-  supplierNotes                SupplierNote[]
-  SupplierPaymentMethod        SupplierPaymentMethod[]
-  genericUnitConversionFactors GenericUnitConversionFactor[]
-  poSupplierNotes              PoSupplierNote[]
-  PurchasingRequestSupplierTag PurchasingRequestSupplierTag[]
-  SupplierContact              SupplierContact[]
+  id                                   String                                @id @default(uuid())
+  name                                 String
+  addressStreet1                       String                                @map("address_street1")
+  addressStreet2                       String?                               @map("address_street2")
+  addressCity                          String                                @map("address_city")
+  addressState                         String                                @map("address_state")
+  addressZip                           String                                @map("address_zip")
+  phone                                String
+  purchaseOrders                       PurchaseOrder[]
+  supplierAlias                        SupplierAlias[]
+  supplierNotes                        SupplierNote[]
+  SupplierPaymentMethod                SupplierPaymentMethod[]
+  genericUnitConversionFactors         GenericUnitConversionFactor[]
+  poSupplierNotes                      PoSupplierNote[]
+  discreteUnitOfMeasurementConversions DiscreteUnitOfMeasurementConversion[]
+  PurchasingRequestSupplierTag         PurchasingRequestSupplierTag[]
+  SupplierContact                      SupplierContact[]
 
   @@map("suppliers")
 }

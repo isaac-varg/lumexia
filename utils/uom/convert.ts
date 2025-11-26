@@ -1,71 +1,88 @@
 'use server'
 
-import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma";
+import { UomConversionError } from "./conversionError";
 
 export const convertUom = async (
   inputUomId: string,
   quantity: number,
-  outputUomId?: string,
+  outputUom?: {
+    id: string,
+    isStandard: boolean
+  },
   itemId?: string,
   supplierId?: string,
 ): Promise<number> => {
 
-  if (!outputUomId && !itemId) {
-    throw new Error("Either an output uom id or item id must be provided");
-  }
-
-  const isGenericUnit = inputUomId === uom.units;
-
-  if (isGenericUnit) {
-    if (!itemId || !supplierId) {
-      // Not enough information to convert a generic unit, return original quantity
-      console.error('Missing data for generic unit conversion: itemId or supplierId')
-      return quantity;
-    }
-
-    const genericConversion = await prisma.genericUnitConversionFactor.findUnique({
-      where: {
-        item_supplier_unique: {
-          itemId,
-          supplierId,
-        },
-      },
-    });
-
-    if (!genericConversion) {
-      // No specific conversion factor for this item/supplier, return original quantity
-      return quantity;
-    }
-
-    // The target UOM is defined by the generic conversion record
-    const targetUomId = genericConversion.convertToUomId;
-    if (inputUomId === targetUomId) {
-      return quantity;
-    }
-    return quantity * genericConversion.conversionFactor;
+  // ensures there is a way to determine the targetUomId
+  if (!outputUom && !itemId) {
+    throw new UomConversionError('MISSING_OUTPUT_UOM', "A outputUomId or itemId is required.",)
   }
 
   let targetUomId: string;
 
-  if (outputUomId) {
-    targetUomId = outputUomId;
+
+  // determines targetUomId
+  if (outputUom) {
+
+    targetUomId = outputUom.id;
+
   } else {
+
     const item = await prisma.item.findUnique({
       where: { id: itemId },
       select: { inventoryUomId: true },
     });
+
     if (!item) {
-      throw new Error("Item not found to determine inventory UoM.");
+      throw new UomConversionError("ITEM_NOT_FOUND",
+        "Item was not found.",
+        { attemptedItemId: itemId },
+        "An item was not found so the inventoryUomId was not able to be determined; This is circumvented by providing either a valid itemId or outputUomId to bypass this query entirely.")
     }
+
     targetUomId = item.inventoryUomId;
   }
 
+
+  // already matches target, no conversion necessary
   if (inputUomId === targetUomId) {
     return quantity;
   }
 
+  // is non-standard unit of uom
+  // i.e., requires discrete conversion
+  if (outputUom && !outputUom.isStandard)
+    if (itemId && supplierId) {
+      const discreteConversion = await prisma.discreteUnitOfMeasurementConversion.findUnique({
+        where: {
+          item_supplier_unique: {
+            itemId,
+            supplierId,
+          }
+        },
+      });
+
+      if (!discreteConversion) {
+        throw new UomConversionError("DISCRETE_CONVERSION_NOT_FOUND", `A discrete conversion factor was not found for the supplier and item combination.`, {
+          itemId,
+          supplierId,
+        })
+      }
+
+      if (discreteConversion) {
+        if (discreteConversion.uomAId === inputUomId) {
+          // Direct conversion A -> B
+          return quantity * discreteConversion.conversionFactor;
+        } else {
+          // Inverse conversion B -> A
+          return quantity / discreteConversion.conversionFactor;
+        }
+      }
+    }
+
   // Find standard conversion
+  // all other scenarios are false;
   const conversion = await prisma.unitOfMeasurementConversion.findFirst({
     where: {
       OR: [
@@ -76,7 +93,13 @@ export const convertUom = async (
   });
 
   if (!conversion) {
-    throw new Error(`No conversion factor found between UOM ${inputUomId} and ${targetUomId}`);
+    throw new UomConversionError('STANDARD_CONVERSION_NOT_FOUND',
+      `No conversion factor found between UOM ${inputUomId} and ${targetUomId}`,
+      {
+        inputUomId,
+        targetUomId,
+      },
+    )
   }
 
   if (conversion.uomAId === inputUomId) {

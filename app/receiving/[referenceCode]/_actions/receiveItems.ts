@@ -50,7 +50,7 @@ const handleLot = async (item: PurchaseOrderItem, quantityRecieved: number) => {
   const lotNumber = generateLotNumber(item.item.referenceCode);
   const isUomMatching = await uomUtils.isUomMatching(item.uomId, item.item.inventoryUomId);
 
-  const quantity = isUomMatching ? quantityRecieved : await uomUtils.convert(item.uomId, quantityRecieved, item.item.inventoryUomId, item.itemId, item.purchaseOrders.supplierId)
+  const quantity = isUomMatching ? quantityRecieved : await uomUtils.convert(item.uomId, quantityRecieved, { id: item.item.inventoryUomId, isStandard: item.item.inventoryUom.isStandardUom }, item.itemId, item.purchaseOrders.supplierId)
 
 
   const lot = await prisma.lot.create({
