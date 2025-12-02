@@ -9,6 +9,7 @@ import { updateConnectedRequests } from "./updateConnectedRequests"
 import { accountingActions } from "@/actions/accounting"
 import { Lot, UnitOfMeasurement } from "@prisma/client"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
+import { UomConversionError } from "@/utils/uom/conversionError"
 
 export const receiveItems = async (items: PurchaseOrderItem[], isFullyReceived: boolean = false, partialAmounts?: Map<string, number>,) => {
 
@@ -19,6 +20,10 @@ export const receiveItems = async (items: PurchaseOrderItem[], isFullyReceived: 
     const quantity = isPartial ? getPartialQuantity(item, partialAmounts) : item.quantity;
     const lot = await handleLot(item, quantity);
 
+    if (lot instanceof UomConversionError) {
+      return { success: false, error: { name: lot.name, message: lot.message }, item }
+    }
+
     if (isPartial) {
       await handlePartialSplit(item, quantity);
     }
@@ -28,6 +33,8 @@ export const receiveItems = async (items: PurchaseOrderItem[], isFullyReceived: 
     await updateConnectedRequests(item.purchaseOrderId, item.itemId, isPartial);
     await createPricingQueue(item);
     await createActivityLogs(item, lot, isPartial)
+
+    return { success: true, item }
   }))
 
   return responses;
@@ -45,12 +52,27 @@ const getPartialQuantity = (item: PurchaseOrderItem, partialAmounts?: Map<string
   return partialQuantity;
 }
 
-const handleLot = async (item: PurchaseOrderItem, quantityRecieved: number) => {
+export const handleLot = async (item: PurchaseOrderItem, quantityRecieved: number): Promise<(Lot & { uom: UnitOfMeasurement }) | UomConversionError> => {
 
   const lotNumber = generateLotNumber(item.item.referenceCode);
   const isUomMatching = await uomUtils.isUomMatching(item.uomId, item.item.inventoryUomId);
 
-  const quantity = isUomMatching ? quantityRecieved : await uomUtils.convert(item.uomId, quantityRecieved, { id: item.item.inventoryUomId, isStandard: item.item.inventoryUom.isStandardUom }, item.itemId, item.purchaseOrders.supplierId)
+  let quantity: number = 0;
+
+  try {
+    const quantityData = isUomMatching ?
+      quantityRecieved :
+      await uomUtils.convert({ id: item.uomId, isStandard: item.uom.isStandardUom }, quantityRecieved, { id: item.item.inventoryUomId, isStandard: item.item.inventoryUom.isStandardUom }, item.itemId, item.purchaseOrders.supplierId)
+    quantity = quantityData;
+  } catch (error) {
+    if (error instanceof UomConversionError) {
+      return error;
+    }
+
+    return error as UomConversionError;
+
+  }
+
 
 
   const lot = await prisma.lot.create({

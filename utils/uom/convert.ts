@@ -4,7 +4,10 @@ import prisma from "@/lib/prisma";
 import { UomConversionError } from "./conversionError";
 
 export const convertUom = async (
-  inputUomId: string,
+  inputUom: {
+    id: string,
+    isStandard: boolean,
+  },
   quantity: number,
   outputUom?: {
     id: string,
@@ -46,13 +49,13 @@ export const convertUom = async (
 
 
   // already matches target, no conversion necessary
-  if (inputUomId === targetUomId) {
+  if (inputUom.id === targetUomId) {
     return quantity;
   }
 
   // is non-standard unit of uom
   // i.e., requires discrete conversion
-  if (outputUom && !outputUom.isStandard)
+  if (inputUom && !inputUom.isStandard)
     if (itemId && supplierId) {
       const discreteConversion = await prisma.discreteUnitOfMeasurementConversion.findUnique({
         where: {
@@ -71,7 +74,7 @@ export const convertUom = async (
       }
 
       if (discreteConversion) {
-        if (discreteConversion.uomAId === inputUomId) {
+        if (discreteConversion.uomAId === inputUom.id) {
           // Direct conversion A -> B
           return quantity * discreteConversion.conversionFactor;
         } else {
@@ -86,23 +89,23 @@ export const convertUom = async (
   const conversion = await prisma.unitOfMeasurementConversion.findFirst({
     where: {
       OR: [
-        { uomAId: inputUomId, uomBId: targetUomId },
-        { uomAId: targetUomId, uomBId: inputUomId },
+        { uomAId: inputUom.id, uomBId: targetUomId },
+        { uomAId: targetUomId, uomBId: inputUom.id },
       ],
     },
   });
 
   if (!conversion) {
     throw new UomConversionError('STANDARD_CONVERSION_NOT_FOUND',
-      `No conversion factor found between UOM ${inputUomId} and ${targetUomId}`,
+      `No conversion factor found between the item inventory UOM and the UOM the item was purchased in. Please either add a discrete UOM conversion or standard conversion for SI units of measurement.`,
       {
-        inputUomId,
+        inputUomId: inputUom.id,
         targetUomId,
       },
     )
   }
 
-  if (conversion.uomAId === inputUomId) {
+  if (conversion.uomAId === inputUom.id) {
     // Direct conversion: A -> B
     return quantity * conversion.conversionFactor;
   } else {
