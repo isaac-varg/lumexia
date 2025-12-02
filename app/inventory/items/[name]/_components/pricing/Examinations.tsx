@@ -6,6 +6,7 @@ import { Filter } from "@/types/filter"
 import { toFacetFilter } from "@/utils/data/toFacetFilter"
 import { useRouter } from "next/navigation"
 import { examinationColumns } from "./ExaminationsColumns"
+import { getSlug } from "@/utils/general/getSlug"
 
 const Examinations = () => {
 
@@ -24,8 +25,9 @@ const Examinations = () => {
   const handleNew = () => {
 
     if (!item) return;
+    const slugName = getSlug(item.name);
 
-    router.push(`/accounting/pricing/${item.name}/new?id=${item.id}`)
+    router.push(`/accounting/pricing/${slugName}/new?id=${item.id}`)
   }
 
   return (
