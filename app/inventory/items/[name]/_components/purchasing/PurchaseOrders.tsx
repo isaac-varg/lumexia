@@ -2,7 +2,6 @@ import SectionTitle from "@/components/Text/SectionTitle"
 import { useItemSelection } from "@/store/itemSlice"
 import { Filter } from "@/types/filter"
 import { RowSelectionHandlerMethod, rowSelectionHandler } from "@/utils/auxiliary/rowSelectionHandler"
-import { groupByProperty } from "@/utils/data/groupByProperty"
 import { toFacetFilter } from "@/utils/data/toFacetFilter"
 import { useRouter } from "next/navigation"
 import { purchaseOrderColumns } from "./PurchaseOrderColumns"
@@ -48,7 +47,7 @@ const PurchaseOrders = () => {
             id: 'referenceCode',
             desc: true,
           }]}
-          tableStateName="itemDetailsPurchasesTab"
+          tableStateName="accountingActivity"
         />
 
       </Card.Root>

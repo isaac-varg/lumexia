@@ -63,7 +63,10 @@ const StateSetter = ({
       getOptions();
     }
 
-    setActiveTab('purchasing', 'items')
+    if (serverPurchaseOrder.id !== purchaseOrder?.id) {
+
+      setActiveTab('purchasing', 'items')
+    }
 
   }, [serverPurchaseOrder, getOptions, getPurchasableItems, purchasableItems.length, setPurchaseOrder])
 

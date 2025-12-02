@@ -1,30 +1,46 @@
 'use client'
-import { Panels } from "@/components/Panels";
-import Text from "@/components/Text";
+
 import { useState } from "react";
-import NotesAddMode from "./NotesAddMode";
 import { AccountingNote } from "../../_actions/getAllAccountingNotes";
 import { PoAccountingNoteType } from "@prisma/client";
-import NotesViewMode from "./NotesViewMode";
-import CreateNoteTypeForm from "./CreateNoteTypeForm";
+import { NoteTypeInputs } from "@/components/Notes/CreateNoteTypeForm";
+import { NoteInputs } from "@/components/Notes/NotesAddMode";
+import { useRouter } from "next/navigation";
+import { getUserId } from "@/actions/users/getUserId";
+import Card from "@/components/Card";
+import NotesManager from "@/components/Notes/NotesManager";
+import { createAccountingNoteType } from "../../_actions/createAccountingNoteType";
+import { createAccountingNote } from "../../_actions/createAccountingNote";
 
 const AccountingNotes = ({ notes, noteTypes, poId }: { notes: AccountingNote[], noteTypes: PoAccountingNoteType[], poId: string }) => {
 
-  const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
+
+  const router = useRouter()
+  const handleNoteTypeAdd = async (data: NoteTypeInputs) => {
+    await createAccountingNoteType(data);
+    router.refresh()
+  }
+
+  const handleNoteAdd = async (data: NoteInputs) => {
+    const userId = await getUserId()
+    await createAccountingNote({
+      ...data,
+      purchaseOrderId: poId,
+      userId,
+    })
+    router.refresh()
+  }
+
 
   return (
-    <Panels.Root span={3}>
-      <div className="flex justify-between items-center">
-
-        <Text.SectionTitle size="small">Notes</Text.SectionTitle>
-        {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn btn-neutral btn-soft">Add Note</button>}
-      </div>
-
-      {mode === 'view' && <NotesViewMode notes={notes} />}
-      {mode === 'addNote' && <NotesAddMode poId={poId} noteTypes={noteTypes} setMode={setMode} />}
-      {mode === 'addType' && <CreateNoteTypeForm setMode={setMode} />}
-
-    </Panels.Root>
+    <Card.Root>
+      <NotesManager<AccountingNote, PoAccountingNoteType>
+        notes={notes}
+        noteTypes={noteTypes}
+        onNoteAdd={handleNoteAdd}
+        onNoteTypeAdd={handleNoteTypeAdd}
+      />
+    </Card.Root>
   )
 }
 

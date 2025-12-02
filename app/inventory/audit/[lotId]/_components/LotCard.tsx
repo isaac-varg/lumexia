@@ -8,40 +8,36 @@ import LabelDataPair from "@/components/Text/LabelDataPair";
 import AdjustStockDialog from "./AdjustStockDialog";
 
 const LotCard = ({
-	lot,
+  lot,
 }: {
-	lot: LotWithData;
+  lot: LotWithData;
 }) => {
-	const { showDialog } = useDialog();
-	const handleDeplete = () => {
-		showDialog(`confirmDepletion${lot.id}`);
-	};
+  const { showDialog } = useDialog();
+  const handleDeplete = () => {
+    showDialog(`confirmDepletion${lot.id}`);
+  };
 
-	const handleAdjustment = () => {
-		showDialog(`adjustStock${lot.id}`);
-	};
+  const handleAdjustment = () => {
+    showDialog(`adjustStock${lot.id}`);
+  };
 
-	return (
-		<>
-			<ConfirmDepletion lot={lot} />
-			<AdjustStockDialog lot={lot} />
-			<Card.Root >
-				<div className="flex flex-col gap-y-6">
-					<Card.Title>{lot.lotNumber}</Card.Title>
+  return (
+    <>
+      <ConfirmDepletion lot={lot} />
+      <AdjustStockDialog lot={lot} />
+      <Card.Root >
+        <div className="flex flex-col gap-y-6">
+          <Card.Title>{lot.lotNumber}</Card.Title>
 
-					<LabelDataPair label="On Hand (lb)" data={lot.totalQuantityOnHand} />
-					<LabelDataPair
-						label="Containers Count"
-						data={lot.containers.length}
-					/>
-					<ActionButton color="secondarySoft" onClick={handleAdjustment}>Adjust</ActionButton>
-					<ActionButton color="warning" onClick={handleDeplete}>
-						Deplete
-					</ActionButton>
-				</div>
-			</Card.Root>
-		</>
-	);
+          <LabelDataPair label="On Hand (lb)" data={lot.totalQuantityOnHand} />
+          <ActionButton color="secondarySoft" onClick={handleAdjustment}>Adjust</ActionButton>
+          <ActionButton color="warning" onClick={handleDeplete}>
+            Deplete
+          </ActionButton>
+        </div>
+      </Card.Root>
+    </>
+  );
 };
 
 export default LotCard;

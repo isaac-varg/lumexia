@@ -39,6 +39,7 @@ type State = {
   lotTransactions: StateData,
   poActivity: StateData,
   qcParameters: StateData,
+  accountingActivity: StateData,
 }
 
 
@@ -79,6 +80,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
   lotTransactions: { pageSize: 10, pageIndex: 0 },
   poActivity: { pageSize: 20, pageIndex: 0 },
   qcParameters: { pageSize: 20, pageIndex: 0 },
+  accountingActivity: { pageSize: 50, pageIndex: 0 },
 
 
   setPagination: (filterName, value) =>

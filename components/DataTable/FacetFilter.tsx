@@ -7,11 +7,12 @@ import { RxCheck, RxPlus } from "react-icons/rx";
 import { FacetOptions } from "@/types/facetOption";
 import { sortByProperty } from "@/utils/data/sortByProperty";
 import { TableStateName, useTableFacets } from "@/store/tableFacetsSlice";
+import { TableFilterOption } from "@/utils/data/toTableFilter";
 
 interface DataTableFacetedFilter<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
-  options: FacetOptions[];
+  options: FacetOptions[] | TableFilterOption[];
   tableStateName: TableStateName;
 }
 

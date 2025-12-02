@@ -1,8 +1,15 @@
 import React from 'react';
 
-const PageTitle: React.FC<{ title?: string, children?: React.ReactNode }> = ({ title, children }) => {
+const classes = {
+  color: {
+    default: 'text-base-content',
+    soft: 'text-base-content/50',
+  }
+}
+
+const PageTitle: React.FC<{ title?: string, children?: React.ReactNode, color?: keyof typeof classes.color }> = ({ title, children, color = 'default' }) => {
   return (
-    <h1 className="text-4xl font-poppins font-semibold text-base-content">{title || children}</h1>
+    <h1 className={`text-4xl font-poppins font-semibold ${classes.color[color]}`}>{title || children}</h1>
   );
 };
 

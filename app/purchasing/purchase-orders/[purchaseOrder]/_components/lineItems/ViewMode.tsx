@@ -1,11 +1,12 @@
 import Card from "@/components/Card"
-import Table from "@/components/Table"
 import SectionTitle from "@/components/Text/SectionTitle"
 import useDialog from "@/hooks/useDialog"
 import { usePurchasingActions, usePurchasingSelection } from "@/store/purchasingSlice"
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+import { getSlug } from "@/utils/general/getSlug"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { TbKeyboard, TbQuestionMark } from "react-icons/tb"
+import { TbKeyboard, TbMessageDots, TbQuestionMark } from "react-icons/tb"
 
 const ViewMode = () => {
 
@@ -13,6 +14,7 @@ const ViewMode = () => {
   const { setLineItemsMode } = usePurchasingActions()
   const [total, setTotal] = useState(0)
   const { showDialog } = useDialog();
+  const router = useRouter();
 
   useEffect(() => {
 
@@ -38,7 +40,7 @@ const ViewMode = () => {
       </div>
 
       <Card.Root>
-        <div className="overflow-x-auto">
+        <div>
           <table className="table table-zebra">
             <thead>
               <tr>
@@ -54,13 +56,37 @@ const ViewMode = () => {
             <tbody>
 
               {orderItems.map(i => {
+
+                const formattedName = getSlug(i.item.name);
+                const path = `/inventory/items/${formattedName}?id=${i.item.id}`
+                const hasAliases = i.allAliases.length > 0;
                 return (
                   <tr
                     key={i.id}
-                    onClick={() => console.log(i)}
+                    className="hover:bg-accent/30 hover:cursor-pointer"
+                    onClick={() => router.push(path)}
                   >
                     <td>{i.item.referenceCode}</td>
-                    <td>{i.item.name}</td>
+                    {hasAliases ? (
+                      <td>
+                        <div className="flex gap-1 items-center">
+                          {i.alias ? i.alias : i.item.name}
+                          <div className="tooltip tooltip-info z-50">
+                            <div className="tooltip-content p-6 z-50">
+                              <div className="flex flex-col gap-1">
+
+                                <p>Aliases:</p>
+
+                                {i.allAliases.map(a => <div className="" key={a.id}>{`${a.name}`}</div>)}
+                                {i.alias && <div>{i.item.name}</div>}
+                              </div>
+                            </div>
+                            <TbMessageDots className="size-6" />
+                          </div>
+                        </div></td>
+                    ) : <td>
+                      {i.alias ? i.alias : i.item.name}
+                    </td>}
                     <td>{`$ ${toFracitonalDigits.weight(i.pricePerUnit)}`}</td>
                     <td>{toFracitonalDigits.weight(i.quantity)}</td>
                     <td>{i.uomAbbreviation}</td>

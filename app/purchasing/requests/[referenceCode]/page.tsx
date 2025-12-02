@@ -13,8 +13,6 @@ import InventoryPanel from './_components/InventoryPanel';
 import { getLinkedPosAmount } from './_functions/getLinkedPoAmounts';
 import { getLinkedBprsAmounts } from './_functions/getLinkedBprAmounts';
 import { getRequestStatuses } from './_functions/getRequestStatuses';
-import { getContainerTypes } from './_functions/getContainerTypes';
-import PageBreadcrumbs from '@/components/App/PageBreadcrumbs';
 import NewPurchaseOrderDialog from './_components/NewPurchaseOrderDialog';
 import { getSuppliers } from './_functions/getSuppliers';
 import RequestDetailsPageTitle from './_components/PageTitle';
@@ -43,7 +41,6 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
   const linkedBprAmounts = await getLinkedBprsAmounts(linkedBprs.map((bpr) => bpr.bprId), request.itemId)
   const requestStatuses = await getRequestStatuses();
   const requestPriorities = await getRequestPriorities();
-  const containerTypes = await getContainerTypes();
   const suppliers = await getSuppliers();
   const noteTypes = await getNoteTypes()
   const requestNotes = await getRequestNotes(request.id)
@@ -87,7 +84,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
 
         <LinkedBatchesPanel bprs={linkedBprs} linkedBprAmounts={linkedBprAmounts} />
 
-        <LinkedPosPanel pos={linkedPos} containerTypes={containerTypes} linkedPosAmounts={linkedPoAmounts} />
+        <LinkedPosPanel pos={linkedPos} linkedPosAmounts={linkedPoAmounts} />
 
         <InventoryPanel notes={requestNotes} noteTypes={noteTypes} requestId={searchParams.id} itemId={request.itemId} />
 

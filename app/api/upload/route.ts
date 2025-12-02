@@ -1,3 +1,4 @@
+import sharp from 'sharp';
 import { NextRequest, NextResponse } from 'next/server';
 import { s3 } from '@/lib/s3';
 import { Buffer } from 'buffer';
@@ -5,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { getUserId } from '@/actions/users/getUserId';
 import prisma from '@/lib/prisma';
+import { fromBuffer } from "pdf2pic"
 
 export type FileResponseData = {
   name: string
@@ -15,6 +17,8 @@ export type FileResponseData = {
   etag: string
   versionId: string | null
   fileId: string
+  thumbnailObjectName: string | null
+  thumbnailBucketName: string | null
 }
 
 export async function POST(request: NextRequest) {
@@ -55,6 +59,33 @@ export async function POST(request: NextRequest) {
 
     const uploadInfo = await s3.putObject(bucketName, objectName, buffer, file.size, metaData);
 
+    let thumbnailObjectName: string | null = null;
+    let thumbnailBucketName: string | null = null;
+
+    // Generate thumbnail for images
+    if (file.type.startsWith('image/')) {
+      const thumbnailBuffer = await sharp(buffer).resize(128, 128, { fit: 'inside' }).toBuffer();
+      const thumbnailExtension = '.webp'; // Use webp for thumbnails for better compression
+      thumbnailObjectName = `${pathPrefix}/thumbnails/${uuidv4()}${thumbnailExtension}`;
+      await s3.putObject(bucketName, thumbnailObjectName, thumbnailBuffer, thumbnailBuffer.length, { 'Content-Type': 'image/webp' });
+      thumbnailBucketName = bucketName;
+    }
+
+    if (file.type === 'application/pdf') {
+      const options = {
+        density: 100,
+        saveFilename: "untitled",
+        width: 600,
+        height: 800
+      };
+      const thumbnail = await fromBuffer(buffer, options).bulk(1, { responseType: 'buffer' });
+
+      if (!thumbnail || !thumbnail[0] || !thumbnail[0].buffer) return
+      const thumbnailExtension = '.webp'; // Use webp for thumbnails for better compression
+      thumbnailObjectName = `${pathPrefix}/thumbnails/${uuidv4()}${thumbnailExtension}`;
+      await s3.putObject(bucketName, thumbnailObjectName, thumbnail[0].buffer, thumbnail[0].buffer.length, { 'Content-Type': 'image/webp' });
+      thumbnailBucketName = bucketName;
+    }
     // create the response rather than provide just upload info
     const responseData = {
       name: file.name,
@@ -64,6 +95,8 @@ export async function POST(request: NextRequest) {
       objectName: objectName,
       etag: uploadInfo.etag,
       versionId: uploadInfo.versionId,
+      thumbnailObjectName: thumbnailObjectName,
+      thumbnailBucketName: thumbnailBucketName,
     };
 
 
@@ -79,6 +112,8 @@ export async function POST(request: NextRequest) {
         size: responseData.size,
         mimeType: responseData.mimetype,
         uploadedById: userId,
+        thumbnailObjectName: responseData.thumbnailObjectName,
+        thumbnailBucketName: responseData.thumbnailBucketName,
       }
     });
 

@@ -1,0 +1,50 @@
+import { createColumnHelper } from "@tanstack/react-table";
+import UserIcon from "@/components/UI/UserIcon";
+import { DateTime } from "luxon";
+import { dateFormatString } from "@/configs/data/dateFormatString";
+import { AccountingLog } from "../../_actions/getAccountingAuditLogsByPo";
+import { FilterFunction } from "@/components/DataTable/FilterFunction";
+
+
+type AccountingLogCombined = AccountingLog & { activityFrom: string }
+const columnHelper = createColumnHelper<AccountingLogCombined>();
+
+
+
+export const activityColumns = [
+  columnHelper.accessor('user.id', {
+    id: 'user',
+    header: 'User',
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    cell: (row) => {
+      return (
+        <div className="flex gap-x-2">
+          <UserIcon image={row.row.original.user.image || ''} name={row.row.original.user.name || ''} />
+          <p className="">{row.row.original.user.name}</p>
+
+        </div>
+      )
+    }
+  }),
+  columnHelper.accessor('activityFrom', {
+    header: "Type",
+    filterFn: FilterFunction,
+  }),
+  columnHelper.accessor('action', {
+    id: 'action',
+    header: 'Action',
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  }),
+  columnHelper.accessor('createdAt', {
+    header: 'Timestamp',
+    cell: (row) => DateTime.fromJSDate(row.row.original.createdAt).toFormat(dateFormatString),
+  }),
+  columnHelper.accessor('context', {
+    header: 'Details',
+  })
+
+]

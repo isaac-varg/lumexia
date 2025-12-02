@@ -1,21 +1,23 @@
 model File {
-    id                  String               @id @default(uuid())
-    name                String
-    objectName          String               @unique @map("object_name")
-    bucketName          String               @map("bucket_name")
-    etag                String
-    versionId           String?              @map("version_id")
-    size                Int
-    mimeType            String               @map("mime_type")
-    uploadedById        String               @map("uploaded_by_id")
-    createdAt           DateTime             @default(now()) @map("created_at")
-    updatedAt           DateTime             @updatedAt @map("updated_at")
-    uploadedBy          User                 @relation(fields: [uploadedById], references: [id])
-    poAccountingFiles   PoAccountingFile[]
-    generalRequestFiles GeneralRequestFile[]
-    itemFiles ItemFile[]
-    bprStagingFiles BprStagingFile[]
-    qcRecordFiles QcRecordFile[]
+    id                     String               @id @default(uuid())
+    name                   String
+    objectName             String               @unique @map("object_name")
+    bucketName             String               @map("bucket_name")
+    thumbnailObjectName    String?              @unique @map("thumbnail_object_name")
+    thumbnailBucketName    String?              @map("thumbnail_bucket_name")
+    etag                   String
+    versionId              String?              @map("version_id")
+    size                   Int
+    mimeType               String               @map("mime_type")
+    uploadedById           String               @map("uploaded_by_id")
+    createdAt              DateTime             @default(now()) @map("created_at")
+    updatedAt              DateTime             @updatedAt @map("updated_at")
+    uploadedBy             User                 @relation(fields: [uploadedById], references: [id])
+    poAccountingFiles      PoAccountingFile[]
+    generalRequestFiles    GeneralRequestFile[]
+    itemFiles              ItemFile[]
+    bprStagingFiles        BprStagingFile[]
+    qcRecordFiles          QcRecordFile[]
 
     @@map("files")
 }

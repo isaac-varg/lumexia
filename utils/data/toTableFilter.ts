@@ -15,8 +15,8 @@ export interface TableFilterOption {
  */
 export const toTableFilter = <T>(
   items: T[],
-  getValue: (item: T) => OptionValue,
-  getLabel: (item: T) => string
+  getValue: (item: T) => OptionValue | undefined,
+  getLabel: (item: T) => string | undefined
 ): TableFilterOption[] => {
   const map = new Map<OptionValue, TableFilterOption>();
 
@@ -24,7 +24,7 @@ export const toTableFilter = <T>(
     const value = getValue(item);
     const label = getLabel(item);
 
-    if (!map.has(value)) {
+    if (value !== undefined && label !== undefined && !map.has(value)) {
       map.set(value, { value, label });
     }
   });

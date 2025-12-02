@@ -20,3 +20,5 @@ export const getActivity = async (purchaseOrderId: string) => {
 }
 
 export type PurchaseOrderActivity = Awaited<ReturnType<typeof getActivity>>
+
+export type TPurchaseOrderActivity = Awaited<ReturnType<typeof getActivity>>[number]

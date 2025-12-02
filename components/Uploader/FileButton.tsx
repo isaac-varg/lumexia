@@ -18,6 +18,7 @@ type FileButtonProps = {
     fileTag?: FileTag
     uploadedByName?: string
     uploadedByImage?: string
+    thumbnailUrl?: string
     // styling stuff
     size?: keyof typeof classes.size
     color?: keyof typeof classes.color
@@ -47,9 +48,10 @@ const classes = {
 
 
 
-const FileButton = ({ label, url, mimeType, size = 'default', color = 'default', shape = 'default', fileTag, onEditClick, onDeleteClick, uploadedByName, uploadedByImage, }: FileButtonProps) => {
+const FileButton = ({ label, url, mimeType, size = 'default', color = 'default', shape = 'default', fileTag, onEditClick, onDeleteClick, uploadedByName, uploadedByImage, thumbnailUrl }: FileButtonProps) => {
 
     const isPdf = mimeType === 'application/pdf'
+    const imageUrl = thumbnailUrl || url
 
 
     return (
@@ -62,7 +64,7 @@ const FileButton = ({ label, url, mimeType, size = 'default', color = 'default',
                             {isPdf && (<div className="flex items-center justify-center rounded-full w-16 h-16 bg-neutral-400 p-6">
                                 <span className="text-5xl text-white"><TbFileTypePdf /></span>
                             </div>)}
-                            {!isPdf && <Image className="w-16 h-16 rounded-full object-cover" src={url} alt={label} width={64} height={64} />}
+                            {!isPdf && <Image className="w-16 h-16 rounded-full object-cover" src={imageUrl} alt={label} width={64} height={64} />}
                             <p className={`${classes.textBase}`}>{label}</p>
 
 

@@ -2,15 +2,15 @@
 import { PurchaseOrderItem } from "@/actions/purchasing/purchaseOrders/items/getAll"
 import DataTable from "@/components/DataTable"
 import { Fragment, useCallback, useMemo, useState } from "react"
-import { itemColumns } from "./ItemColumns"
+import { getItemColumns } from "./ItemColumns"
 import SectionTitle from "@/components/Text/SectionTitle"
 import Card from "@/components/Card"
 import { useAppForm } from "@/components/Form2"
 import { receiveItems } from "../_actions/receiveItems"
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses"
 import { useRouter } from "next/navigation"
-import { TbQrcode } from "react-icons/tb"
-import LabelForm from "./LabelForm"
+import Alert from "@/components/Alert"
+import useDialog from "@/hooks/useDialog"
 
 type Props = {
   items: PurchaseOrderItem[]
@@ -20,6 +20,8 @@ const ItemTable = ({ items }: Props) => {
   const [selectedItems, setSelectedItems] = useState<PurchaseOrderItem[]>([])
   const [isPartial, setIsPartial] = useState<boolean>(false);
   const router = useRouter()
+  const { showDialog, resetDialogContext } = useDialog()
+  const [error, setError] = useState<string>('')
   const receivableItems = useMemo(() => {
     return items.filter(i => (i.purchaseOrderStatusId === purchaseOrderStatuses.confirmedAwaitingDelivery || i.purchaseOrderStatusId === purchaseOrderStatuses.partiallyReceived))
   }, [items])
@@ -34,12 +36,31 @@ const ItemTable = ({ items }: Props) => {
   }, [isPartial, selectedItems])
 
   const handleReceiveSelected = async () => {
+    let responses;
     if (selectedItems.length === receivableItems.length) {
-      await receiveItems(selectedItems, true);
-      router.refresh()
-      return;
+      responses = await receiveItems(selectedItems, true);
+    } else {
+      responses = await receiveItems(selectedItems);
     }
-    await receiveItems(selectedItems);
+
+    responses.forEach(res => {
+      if (res.success === false) {
+        if (!res.error) {
+          console.log('Unknown error');
+          return;
+        }
+
+        const errorString = `
+${res.item.item.name}:  
+${res.error.message}
+`
+
+        setError(errorString);
+        showDialog('conversionError');
+      }
+
+    });
+
     router.refresh()
 
   }
@@ -56,6 +77,14 @@ const ItemTable = ({ items }: Props) => {
     setIsPartial(false)
   }
 
+  const handleConversionErrorClick = (item: PurchaseOrderItem) => {
+    router.push(`/inventory/discrete-conversion?itemId=${item.item.id}&supplierId=${item.purchaseOrders.supplierId}&purchasedUomId=${item.uomId}`)
+  };
+
+  const itemColumns = useMemo(() => getItemColumns({
+    onConversionErrorClick: handleConversionErrorClick
+  }), [handleConversionErrorClick]);
+
   const form = useAppForm({
     defaultValues: {
       partials: formPartialValues,
@@ -64,7 +93,20 @@ const ItemTable = ({ items }: Props) => {
       const values = value.partials;
 
       const partialQuantities = new Map(values.map(v => [v.purchaseOrderItemId, v.quantity]))
-      await receiveItems(selectedItems, false, partialQuantities);
+      const responses = await receiveItems(selectedItems, false, partialQuantities);
+      responses.forEach(res => {
+        if (res.success === false) {
+          if (!res.error) {
+            console.log('Unknown error');
+            return;
+          }
+          const errorString = `${res.error.message}: ${res.item.item.name}`
+
+          setError(errorString);
+          showDialog('conversionError');
+
+        }
+      });
       setIsPartial(false)
       router.refresh()
 
@@ -73,6 +115,20 @@ const ItemTable = ({ items }: Props) => {
 
   return (
     <div className="flex flex-col gap-4">
+
+      <Alert.Root identifier={`conversionError`}>
+
+        <Alert.Content
+          title="Error Receiving"
+          actionLabel="Ok"
+          actionColor="error"
+          action={() => console.log('cleared')}
+          cancelAction={() => { }}
+        >
+          {error}
+        </Alert.Content>
+      </Alert.Root>
+
 
       <div className="flex justify-between">
         <SectionTitle>Receivables</SectionTitle>

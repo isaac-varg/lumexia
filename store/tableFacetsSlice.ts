@@ -35,6 +35,7 @@ type State = {
   lotTransactions: FilterArray
   poActivity: FilterArray
   qcParameters: FilterArray
+  accountingActivity: FilterArray
 };
 
 export type TableStateName = keyof State;
@@ -79,6 +80,7 @@ export const useTableFacets = create<State & Actions>((set) => ({
   lotTransactions: [],
   poActivity: [],
   qcParameters: [],
+  accountingActivity: [],
 
   setFilter: (tableState, value) =>
     set((state) => ({

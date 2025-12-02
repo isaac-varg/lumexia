@@ -4,6 +4,9 @@ import AccountingNotes from "@/app/accounting/pos/[po]/_components/AccountingNot
 import AccountingStatus from "@/app/accounting/pos/[po]/_components/AccountingStatus"
 import PaymentMethodPanel from "@/app/accounting/pos/[po]/_components/PaymentMethodPanel"
 import Card from "@/components/Card"
+import { Tabs } from "@/components/Tabs2"
+import LabelCounter from "@/components/Tabs2/LabelCounter"
+import SectionTitle from "@/components/Text/SectionTitle"
 import { usePurchasingSelection } from "@/store/purchasingSlice"
 
 
@@ -14,23 +17,47 @@ const AccountingPanel = () => {
 
   if (!accounting) return false;
   return (
-    <Card.Root span={2}>
-      <Card.Title>Accounting</Card.Title>
+    <div className="flex flex-col gap-4 w-full">
+      <SectionTitle>Accounting</SectionTitle>
 
 
-      <div className="grid grid-cols-3 gap-4">
-        <AccountingDetails po={accounting} title="Process" />
-        <AccountingStatus po={accounting} statuses={options.accountingStatuses} />
-        <PaymentMethodPanel poId={accounting.id} paymentMethod={accounting.poAccountingDetail?.paymentMethod} allMethods={options.paymentMethods} accountingDetailId={accounting.poAccountingDetail?.id} />
+      <Tabs.Root defaultValue="details">
+        <div className="flex justify-between items-center">
+          <Tabs.List>
+            <Tabs.Trigger size="sm" value="details">Details</Tabs.Trigger>
+            <Tabs.Trigger size="sm" value="notes">
+              <LabelCounter size="sm" label="Notes" count={accounting.poAccountingNotes.length} />
+            </Tabs.Trigger>
+            <Tabs.Trigger size="sm" value="files">
+              <LabelCounter size="sm" label="Files" count={accounting.poAccountingFiles.length} />
+            </Tabs.Trigger>
+          </Tabs.List>
+        </div>
 
+        <div className="pt-4">
+          <Tabs.ContentContainer>
+            <Tabs.Content value="details">
+              <div className="grid grid-cols-3 gap-6">
+                <AccountingDetails po={accounting} title="Process" />
+                <AccountingStatus po={accounting} statuses={options.accountingStatuses} />
+                <PaymentMethodPanel poId={accounting.id} paymentMethod={accounting.poAccountingDetail?.paymentMethod} allMethods={options.paymentMethods} accountingDetailId={accounting.poAccountingDetail?.id} />
 
-        <AccountingFiles span={3} files={files} poId={accounting.id} fileTypes={options.fileTypes} />
-        <AccountingNotes poId={accounting.id} noteTypes={options.accountingNoteTypes} notes={accounting.poAccountingNotes} />
+              </div>
+            </Tabs.Content>
 
-      </div>
+            <Tabs.Content value="notes">
+              <AccountingNotes notes={accounting.poAccountingNotes} noteTypes={options.accountingNoteTypes} poId={accounting.id} />
+            </Tabs.Content>
 
+            <Tabs.Content value="files">
+              <AccountingFiles files={files} poId={accounting.id} fileTypes={options.fileTypes} />
+            </Tabs.Content>
 
-    </Card.Root>
+          </Tabs.ContentContainer>
+
+        </div>
+      </Tabs.Root>
+    </div>
   )
 }
 

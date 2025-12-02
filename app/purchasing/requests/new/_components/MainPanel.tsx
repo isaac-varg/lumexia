@@ -51,7 +51,7 @@ const MainPanel = ({ items, incomingItemId }: MainPanelProps) => {
   return (
     <div>
 
-      <ul className="steps w-full ">
+      <ul className="steps w-full pb-8 ">
         <StepLabel indicator="1" step={0} currentStep={step} label="Select Item" />
         <StepLabel indicator="2" step={1} currentStep={step} label="Existing Requests Validation" />
         <StepLabel indicator="3" step={2} currentStep={step} label="Notes" />

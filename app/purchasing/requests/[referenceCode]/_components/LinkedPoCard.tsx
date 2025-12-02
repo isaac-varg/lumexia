@@ -4,13 +4,11 @@ import { LinkedPos } from '../_functions/getLinkedPos'
 import { deleteLinkedPo } from '../_functions/deleteLinkedPos'
 import LinkedPoDialog from './LinkedPoDialog'
 import useDialog from '@/hooks/useDialog'
-import { Containers } from '../_functions/getContainerTypes'
-import { DateTime } from 'luxon'
 import Dropdown from '@/components/Dropdown'
 import { DatepickerRange } from '@/components/Dropdown/DateSelector'
 import { updatePoItemDetails } from '../_functions/updatePoItemDetails'
 
-const LinkedPoCard = ({ po, containerTypes }: { po: LinkedPos, containerTypes: Containers[] }) => {
+const LinkedPoCard = ({ po }: { po: LinkedPos, }) => {
 
   const { showDialog } = useDialog()
 
@@ -43,7 +41,7 @@ const LinkedPoCard = ({ po, containerTypes }: { po: LinkedPos, containerTypes: C
 
   return (
     <div className='card bg-accent/50 hover:cursor-pointer hover:bg-accent/35' onClick={handleClick}>
-      <LinkedPoDialog purchaseOrder={po} containerTypes={containerTypes} />
+      <LinkedPoDialog purchaseOrder={po} />
       <div className='card-body'>
         <div className='flex justify-between'>
           <div className='card-title'>PO# {po.po.referenceCode} - {po.po.supplier.name} </div>

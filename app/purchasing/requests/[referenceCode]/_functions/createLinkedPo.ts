@@ -18,10 +18,6 @@ export const createLinkedPo = async (data: {
   const itemDetails = await prisma.purchaseOrderItemDetail.create({
     data: {
       poItemId,
-      quantityOfContainers: 0,
-      weightUomId: uom.pounds,
-      containerTypeId: containerTypes.drum,
-      weightPerContainer: 0,
     }
   });
 

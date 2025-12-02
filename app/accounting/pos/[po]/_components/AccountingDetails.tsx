@@ -41,9 +41,9 @@ const AccountingDetails = ({ po, title = 'Accounting' }: { po: PoWithAccounting,
 
         <DetailRow label="Paid" fieldName="paid" onDetailChange={handleChange} value={po.poAccountingDetail?.paid || false} />
 
-        <DetailRow label="Packing Slip Received " fieldName="packingSlipReceived" onDetailChange={handleChange} value={po.poAccountingDetail?.packingSlipReceived || false} />
+        <DetailRow label="Packing Slip" fieldName="packingSlipReceived" onDetailChange={handleChange} value={po.poAccountingDetail?.packingSlipReceived || false} />
 
-        <DetailRow label="Paperwork Handed Off" fieldName="paperworkGivenToAdmin" onDetailChange={handleChange} value={po.poAccountingDetail?.paperworkGivenToAdmin || false} />
+        <DetailRow label="Invoice" fieldName="paperworkGivenToAdmin" onDetailChange={handleChange} value={po.poAccountingDetail?.paperworkGivenToAdmin || false} />
       </div>
 
 
@@ -53,8 +53,8 @@ const AccountingDetails = ({ po, title = 'Accounting' }: { po: PoWithAccounting,
 
 const DetailRow = ({ label, value, fieldName, onDetailChange }: { label: string, value: boolean, fieldName: string, onDetailChange: (fieldName: string, value: boolean) => void }) => {
 
-  const buttonBase = 'flex p-4 w-20 items-center justify-center rounded-xl font-poppins text-md font-semibold';
-  const unseletedButton = 'bg-neutral-200 hover:bg-neutral-300 hover:cursor-pointer'
+  const buttonBase = 'btn min-w-20 btn-lg';
+  const unseletedButton = 'btn-outline hover:cursor-pointer'
 
 
   return (
@@ -66,14 +66,14 @@ const DetailRow = ({ label, value, fieldName, onDetailChange }: { label: string,
 
       <div className="grid grid-cols-2 gap-4">
         <div
-          className={`${buttonBase} ${value ? 'bg-green-200 hover:cursor-not-allowed ' : unseletedButton}`}
+          className={`${buttonBase} ${value ? 'btn-success hover:cursor-not-allowed ' : unseletedButton}`}
           onClick={() => onDetailChange(fieldName, true)}
         >
           Yes
         </div>
 
         <div
-          className={`${buttonBase} ${!value ? 'bg-rose-300 hover:cursor-not-allowed' : unseletedButton}`}
+          className={`${buttonBase} ${!value ? 'btn-error hover:cursor-not-allowed ' : unseletedButton}`}
 
           onClick={() => onDetailChange(fieldName, false)}
         >
