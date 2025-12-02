@@ -29,7 +29,7 @@ export const receiveItems = async (items: PurchaseOrderItem[], isFullyReceived: 
     }
 
     await handleLotOrigin(lot.id, item.purchaseOrderId);
-    await updatePo(item.purchaseOrderId, item.id, isPartial, isFullyReceived, lot.id);
+    await updatePo(item.purchaseOrderId, item.id, isPartial, isFullyReceived, lot.id, item.purchaseOrders.statusId);
     await updateConnectedRequests(item.purchaseOrderId, item.itemId, isPartial);
     await createPricingQueue(item);
     await createActivityLogs(item, lot, isPartial)
@@ -100,13 +100,15 @@ const handleLotOrigin = async (lotId: string, purchaseOrderId: string) => {
   });
 }
 
-const updatePo = async (purchaseOrderId: string, purchaseOrderItemId: string, isPartial: boolean, isFullyReceived: boolean, lotId: string) => {
+const updatePo = async (purchaseOrderId: string, purchaseOrderItemId: string, isPartial: boolean, isFullyReceived: boolean, lotId: string, currentPoStatusId: string) => {
   // ispartial has to do with the line items
   // is fully receieved has to do with the entire po
 
   const statusId = (isFullyReceived && !isPartial)
     ? purchaseOrderStatuses.received
     : purchaseOrderStatuses.partiallyReceived;
+
+
 
   await prisma.purchaseOrder.update({
     where: {
@@ -116,6 +118,12 @@ const updatePo = async (purchaseOrderId: string, purchaseOrderItemId: string, is
       statusId
     }
   })
+
+
+  if (currentPoStatusId !== statusId) {
+    const statusName = statusId === purchaseOrderStatuses.received ? 'Receieved' : 'Partially Receieved'
+    await createActivityLog('Update PO Status', 'purchaseOrder', purchaseOrderId, { context: `Status changed to ${statusName}` }, true)
+  }
 
   return await prisma.purchaseOrderItem.update({
     where: {
