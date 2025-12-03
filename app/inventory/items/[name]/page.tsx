@@ -20,7 +20,23 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
 
   // all the data fetching
   const item = await inventoryActions.items.getOne(searchParams.id)
-  const [aliases, notes, activity, inventory, audits, purchaseOrders, examinations, pricingData, usage, activeMbpr, bprs, files, qcItemParameters, qcRecords,] = await Promise.all([
+  const [
+    aliases,
+    notes,
+    activity,
+    inventory,
+    audits,
+    purchaseOrders,
+    examinations,
+    pricingData,
+    usage,
+    activeMbpr,
+    bprs,
+    files,
+    qcItemParameters,
+    qcRecords,
+    discreteConversions,
+  ] = await Promise.all([
     await inventoryActions.aliases.getByItem(item.id),
     await inventoryActions.items.notes.getAllByItem(item.id),
     await getItemActivity(item.id),
@@ -35,6 +51,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
     await getAllItemFiles(item.id),
     await qualityActions.qc.itemParameters.getByItem(item.id),
     await qualityActions.qc.records.getAllByItem(item.id),
+    await inventoryActions.items.discreteConversions.getAll(item.id)
   ])
 
 
@@ -57,6 +74,7 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
         files={files}
         qcItemParameters={qcItemParameters}
         qcRecords={qcRecords}
+        discreteConversions={discreteConversions}
       />
 
       <TitleRow />

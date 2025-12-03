@@ -52,7 +52,7 @@ const getPartialQuantity = (item: PurchaseOrderItem, partialAmounts?: Map<string
   return partialQuantity;
 }
 
-export const handleLot = async (item: PurchaseOrderItem, quantityRecieved: number): Promise<(Lot & { uom: UnitOfMeasurement }) | UomConversionError> => {
+export const handleLot = async (item: PurchaseOrderItem, quantityRecieved: number,): Promise<(Lot & { uom: UnitOfMeasurement }) | UomConversionError> => {
 
   const lotNumber = generateLotNumber(item.item.referenceCode);
   const isUomMatching = await uomUtils.isUomMatching(item.uomId, item.item.inventoryUomId);

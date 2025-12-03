@@ -3,6 +3,7 @@
 import { handleLot } from "@/app/receiving/[referenceCode]/_actions/receiveItems";
 import prisma from "@/lib/prisma"
 import { UomConversionError } from "@/utils/uom/conversionError";
+import { validateConversion } from "@/utils/uom/validateConversion";
 
 export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
 
@@ -35,9 +36,14 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
 
 
   const withConversionErrors = await Promise.all(items.map(async (item) => {
-    const response = await handleLot(item as PurchaseOrderItem, 1);
+    const conversionValidation = await validateConversion(
+      { isStandard: item.uom.isStandardUom, id: item.uom.id },
+      { isStandard: item.item.inventoryUom.isStandardUom, id: item.item.inventoryUom.id },
+      item.purchaseOrders.supplierId,
+      item.item.id,
+    )
 
-    if (response instanceof UomConversionError) {
+    if (!conversionValidation.isSuccessful && conversionValidation.error instanceof UomConversionError) {
       return {
         hasConversionError: true,
         ...item

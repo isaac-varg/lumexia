@@ -17,6 +17,7 @@ import { ItemBpr } from "../../_actions/production/getBprs";
 import { ItemFile } from "../../_actions/files/getAllItemFiles";
 import { QcItemParameter } from "@/actions/quality/qc/parameters/getAllByItem";
 import { QcRecordExpanded } from "@/actions/quality/qc/records/getAllByItem";
+import { DiscreteConversion } from "@/actions/inventory/items/discreteConversions/getAll";
 
 type StateSetterProps = {
   activity: ItemActivity[],
@@ -34,6 +35,7 @@ type StateSetterProps = {
   files: ItemFile[],
   qcItemParameters: QcItemParameter[]
   qcRecords: QcRecordExpanded[]
+  discreteConversions: DiscreteConversion[]
 }
 
 
@@ -53,6 +55,7 @@ const StateSetter = ({
   files,
   qcItemParameters,
   qcRecords,
+  discreteConversions,
 }: StateSetterProps) => {
 
   // state actions
@@ -80,7 +83,7 @@ const StateSetter = ({
     setPurchasingFilterMode,
     setQualityTemplateViewMode,
     setSelectedLot,
-
+    setDiscreteConversions,
   } = useItemActions();
 
   // current state
@@ -128,8 +131,9 @@ const StateSetter = ({
     setFiles(files);
     setQcItemParameters(qcItemParameters)
     setQcRecords(qcRecords)
+    setDiscreteConversions(discreteConversions)
 
-  }, [item, options, getOptions, setActivity, activity, setAliases, aliases, setAudits, audits, setExaminations, examinations, setInventory, inventory, setNotes, notes, setPricingData, pricingData, setPurchaseOrders, purchaseOrders, setUsage, usage, setBprs, bprs, setActiveMbpr, activeMbpr, setFiles, files, qcItemParameters, setQcItemParameters, qcRecords, setQcRecords]);
+  }, [item, options, getOptions, setActivity, activity, setAliases, aliases, setAudits, audits, setExaminations, examinations, setInventory, inventory, setNotes, notes, setPricingData, pricingData, setPurchaseOrders, purchaseOrders, setUsage, usage, setBprs, bprs, setActiveMbpr, activeMbpr, setFiles, files, qcItemParameters, setQcItemParameters, qcRecords, setQcRecords, discreteConversions, setDiscreteConversions,]);
 
   useEffect(() => {
     getFilteredPurchaseOrders();

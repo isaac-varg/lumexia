@@ -3,16 +3,15 @@
 import prisma from "@/lib/prisma";
 import { UomConversionError } from "./conversionError";
 
+export type ConversionIO = {
+  id: string,
+  isStandard: boolean
+}
+
 export const convertUom = async (
-  inputUom: {
-    id: string,
-    isStandard: boolean,
-  },
+  inputUom: ConversionIO,
   quantity: number,
-  outputUom?: {
-    id: string,
-    isStandard: boolean
-  },
+  outputUom?: ConversionIO,
   itemId?: string,
   supplierId?: string,
 ): Promise<number> => {

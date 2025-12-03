@@ -8,6 +8,7 @@ import { Inventory } from "@/actions/inventory/getInventory";
 import { SingleItem } from "@/actions/inventory/getOneItem"
 import inventoryTypeActions from "@/actions/inventory/inventoryTypeActions";
 import itemTypeActions from "@/actions/inventory/itemTypeActions";
+import { DiscreteConversion } from "@/actions/inventory/items/discreteConversions/getAll";
 import { ItemNote } from "@/actions/inventory/items/notes/getAllByItem";
 import { ItemNoteType } from "@/actions/inventory/items/notes/types/getAllItemNoteTypes";
 import { LotNote, getAllLotNotesByLot } from "@/actions/inventory/lots/notes/getAllByLot";
@@ -79,6 +80,7 @@ type State = {
   qualityTemplateViewMode: 'view' | 'add';
   qcItemParameters: QcItemParameter[];
   qcRecords: QcRecordExpanded[];
+  discreteConversions: DiscreteConversion[],
 }
 
 type Actions = {
@@ -108,6 +110,7 @@ type Actions = {
     setQualityTemplateViewMode: (mode: 'view' | 'add') => void;
     setQcItemParameters: (qcItemParameters: QcItemParameter[]) => void;
     setQcRecords: (qcRecords: QcRecordExpanded[]) => void;
+    setDiscreteConversions: (conversions: DiscreteConversion[]) => void;
   }
 }
 
@@ -150,6 +153,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
   qualityTemplateViewMode: "view" as 'view', //lol,
   qcItemParameters: [],
   qcRecords: [],
+  discreteConversions: [],
 
   actions: {
 
@@ -293,6 +297,7 @@ export const useItemSelection = create<State & Actions>((set, get) => ({
     setQualityTemplateViewMode: (mode) => set(() => ({ qualityTemplateViewMode: mode })),
     setQcItemParameters: (qcItemParameters) => set(() => ({ qcItemParameters, })),
     setQcRecords: (qcRecords) => set(() => ({ qcRecords, })),
+    setDiscreteConversions: (conversions) => set(() => ({ discreteConversions: conversions })),
 
   },
 
