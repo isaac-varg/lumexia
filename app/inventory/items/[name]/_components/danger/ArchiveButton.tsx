@@ -5,6 +5,8 @@ import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 import { useRouter } from "next/navigation"
 import Alert from "@/components/Alert"
 import useDialog from "@/hooks/useDialog"
+import SectionTitle from "@/components/Text/SectionTitle"
+import Card from "@/components/Card"
 
 const ArchiveButton = () => {
 
@@ -21,8 +23,19 @@ const ArchiveButton = () => {
     resetDialogContext()
   }
   return (
-    <div className="flex justify-end">
-      <button onClick={() => showDialog('archiveItem')} className="btn btn-error btn-outline">Archive Item</button>
+    <div className="flex flex-col gap-4">
+      <SectionTitle>Archive Item</SectionTitle>
+
+      <Card.Root>
+        <div className="justify-between h-full flex flex-col">
+          <div className="font-poppins text-xl font-medium text-base-content">
+            This will effectively delete this item. Use with extreme caution.
+          </div>
+
+          <button onClick={() => showDialog('archiveItem')} className="btn btn-error btn-outline">Archive Item</button>
+
+        </div>
+      </Card.Root>
       <Alert.Root identifier="archiveItem">
         <Alert.Content
           title="Archive Item"

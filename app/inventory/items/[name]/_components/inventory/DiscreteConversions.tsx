@@ -13,8 +13,8 @@ const DiscreteConversions = () => {
   const [selected, setSelected] = useState<DiscreteConversion | null>(null);
 
   return (
-    <div>
-      <div className="flex flex-col gap-y-6">
+    <div className="h-full">
+      <div className="flex flex-col gap-y-6 h-full">
         <div className="flex justify-between items-center">
           <SectionTitle>{'Discrete Conversions'}</SectionTitle>
 

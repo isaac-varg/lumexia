@@ -7,7 +7,7 @@ import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
 const { produced } = procurementTypes;
 
 // define the tabs
-export type ItemTab = 'basics' | 'inventory' | 'purchasing' | 'pricing' | 'production' | 'quality' | 'files';
+export type ItemTab = 'basics' | 'inventory' | 'purchasing' | 'pricing' | 'production' | 'quality' | 'files' | 'danger';
 
 const TabSelector = () => {
 

@@ -15,6 +15,7 @@ import { getBprs } from "./_actions/production/getBprs";
 import { getAllItemFiles } from "./_actions/files/getAllItemFiles";
 import { qualityActions } from "@/actions/quality";
 import ArchiveButton from "./_components/shared/ArchiveButton";
+import DangerZoneButton from "./_components/shared/DangerZoneButton";
 
 const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) => {
 
@@ -83,8 +84,8 @@ const ItemDetails = async ({ searchParams }: { searchParams: { id: string } }) =
 
       <TabsContainer />
 
+      <DangerZoneButton />
 
-      <ArchiveButton />
     </div>
   )
 }

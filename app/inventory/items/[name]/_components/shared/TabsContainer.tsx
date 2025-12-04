@@ -9,6 +9,7 @@ import Production from "../production/Production";
 import Files from "../files/Files";
 import Quality from "../quality/Quality";
 import { useTabSelection } from "@/store/tabSlice";
+import Danger from "../danger/Danger";
 
 
 const TabsContainer = () => {
@@ -33,6 +34,7 @@ const TabsContainer = () => {
         {currentTab === 'production' && <Production />}
         {currentTab === 'quality' && <Quality />}
         {currentTab === 'files' && <Files />}
+        {currentTab === 'danger' && <Danger />}
       </motion.div>
     </AnimatePresence>
   )

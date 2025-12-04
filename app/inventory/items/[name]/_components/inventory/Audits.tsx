@@ -13,8 +13,8 @@ const Audits = () => {
   if (!audits) return;
 
   return (
-    <div >
-      <div className="flex flex-col gap-y-6">
+    <div className="h-full">
+      <div className="flex flex-col gap-y-6 h-full">
         <SectionTitle>{'Audits'}</SectionTitle>
 
         <Card.Root>
