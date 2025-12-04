@@ -1,15 +1,18 @@
-import { useMemo } from "react";
+import { SetStateAction, useMemo, useState } from "react";
 import { usePurchasingRequestActions, usePurchasingRequestSelection } from "@/store/purchasingRequestSlice"
 import StatusButton from "./StatusButton";
 import RequestCard from "../shared/RequestCard";
 import { groupByProperty } from "@/utils/data/groupByProperty";
 import { RequestForDashboard } from "../../_functions/getRequests";
 import StatusGroup from "./StatusGroup";
+import SearcherUnmanaged from "@/components/Search/SearcherUnmanaged";
 
 const StatusTab = () => {
   const { requests, selectedStatus, options } = usePurchasingRequestSelection()
   const { setSelectedStatus } = usePurchasingRequestActions()
   const statuses = new Map(options.statuses.map(s => [s.id, s.name]));
+  const [searchInput, setSearchInput] = useState<string>('')
+  const [searchResults, setSearchResults] = useState<RequestForDashboard[]>([])
 
   const presentStatusIds = useMemo(() => new Set(requests.map(r => r.statusId)), [requests]);
 
@@ -20,17 +23,36 @@ const StatusTab = () => {
 
   const filteredRequests = useMemo(() => {
     if (!selectedStatus) {
-      const grouped = groupByProperty(requests, 'statusId');
-      return new Map(Object.entries(grouped));
+      return requests;
     }
     return requests.filter(b => b.statusId === selectedStatus?.id)
   },
     [requests, selectedStatus]
   );
 
+  const displayRequests = useMemo(() => {
+    const source = searchInput.trim() ? searchResults : filteredRequests;
+    if (selectedStatus) {
+      return source;
+    }
+    const grouped = groupByProperty(source, 'statusId');
+    return new Map(Object.entries(grouped));
+  }, [filteredRequests, searchResults, searchInput, selectedStatus])
+
 
   return (
     <div className="flex flex-col gap-y-6">
+
+      <div className="">
+
+        <SearcherUnmanaged
+          data={filteredRequests}
+          keys={['requestedItemName', 'suppliers.name']}
+          input={searchInput}
+          setInput={setSearchInput}
+          onQueryComplete={setSearchResults}
+        />
+      </div>
 
       <div className="grid grid-cols-3 gap-4">
         <button
@@ -45,17 +67,15 @@ const StatusTab = () => {
         {presentStatuses.map(status => <StatusButton key={status.id} status={status} />)}
       </div>
 
-      {selectedStatus && Array.isArray(filteredRequests) && (
+      {selectedStatus && Array.isArray(displayRequests) && (
         <div className="grid grid-cols-3 gap-6">
-          {filteredRequests.map((r: RequestForDashboard) => <RequestCard key={r.id} request={r} />)}
+          {displayRequests.map((r: RequestForDashboard) => <RequestCard key={r.id} request={r} />)}
         </div>
       )}
 
-      {(!selectedStatus && (filteredRequests instanceof Map)) && (
+      {(!selectedStatus && (displayRequests instanceof Map)) && (
         <div className="flex flex-col gap-4">
-          {Array.from(filteredRequests.entries()).map(([r, selection]) => {
-            console.log('fr', filteredRequests)
-            console.log(selection);
+          {Array.from(displayRequests.entries()).map(([r, selection]) => {
             return (
               <StatusGroup key={r} requests={selection} statusName={statuses.get(r) || ''} />
             )

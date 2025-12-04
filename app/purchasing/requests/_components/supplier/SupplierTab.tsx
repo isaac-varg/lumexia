@@ -1,13 +1,17 @@
 import { usePurchasingRequestActions, usePurchasingRequestSelection } from "@/store/purchasingRequestSlice"
 import SupplierButton from "./SupplierButton"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import RequestCard from "../shared/RequestCard"
 import SupplierGroup from "./SupplierGroup"
+import SearcherUnmanaged from "@/components/Search/SearcherUnmanaged"
+import { RequestForDashboard } from "../../_functions/getRequests"
 
 const SupplierTab = () => {
 
   const { requests, suppliersGrouped, selectedSupplierId, options } = usePurchasingRequestSelection()
   const { setSelectedSupplierId } = usePurchasingRequestActions();
+  const [searchInput, setSearchInput] = useState<string>('')
+  const [searchResults, setSearchResults] = useState<RequestForDashboard[]>([])
 
 
   const filteredRequests = useMemo(() => {
@@ -15,30 +19,64 @@ const SupplierTab = () => {
       return requests
     }
 
-    return suppliersGrouped.get(selectedSupplierId);
+    return suppliersGrouped.get(selectedSupplierId) || [];
   },
-    [suppliersGrouped, selectedSupplierId]
+    [suppliersGrouped, selectedSupplierId, requests]
   );
 
+  const displayRequests = useMemo(() => {
+    const source = searchInput.trim() ? searchResults : filteredRequests;
+    if (selectedSupplierId) {
+      return source;
+    }
+
+    const grouped = new Map<string, RequestForDashboard[]>();
+    source.forEach(r => {
+      if (r.suppliers && r.suppliers.length > 0) {
+        r.suppliers.forEach(s => {
+          if (!grouped.has(s.id)) {
+            grouped.set(s.id, []);
+          }
+          grouped.get(s.id)?.push(r);
+        });
+      } else {
+        if (!grouped.has('untagged')) {
+          grouped.set('untagged', []);
+        }
+        grouped.get('untagged')?.push(r);
+      }
+    });
+    return grouped;
+  }, [filteredRequests, searchResults, searchInput, selectedSupplierId])
+
+
   const sortedSupplierIds = useMemo(() => {
-    return Array.from(suppliersGrouped.keys()).sort((a, b) => {
+    const source = (displayRequests instanceof Map) ? displayRequests : suppliersGrouped
+    return Array.from(source.keys()).sort((a, b) => {
       if (a === 'untagged') return -1;
       if (b === 'untagged') return 1;
 
-      const groupA = suppliersGrouped.get(a);
+      const groupA = source.get(a);
       const supplierA = groupA?.[0]?.suppliers.find(s => s.id === a);
       const nameA = supplierA?.name || '';
 
-      const groupB = suppliersGrouped.get(b);
+      const groupB = source.get(b);
       const supplierB = groupB?.[0]?.suppliers.find(s => s.id === b);
       const nameB = supplierB?.name || '';
 
       return nameA.localeCompare(nameB);
     });
-  }, [suppliersGrouped]);
+  }, [suppliersGrouped, displayRequests]);
 
   return (
     <div className="flex flex-col gap-6">
+      <SearcherUnmanaged
+        data={filteredRequests}
+        keys={['requestedItemName', 'suppliers.name']}
+        input={searchInput}
+        setInput={setSearchInput}
+        onQueryComplete={setSearchResults}
+      />
       <div className="grid grid-cols-3 gap-4">
         <button
           className={`btn-lg btn ${!selectedSupplierId ? 'btn-secondary' : 'btn-soft'} flex w-full  justify-between`}
@@ -53,18 +91,18 @@ const SupplierTab = () => {
 
       </div>
 
-      {selectedSupplierId && filteredRequests && filteredRequests.length !== 0 && (
+      {selectedSupplierId && Array.isArray(displayRequests) && displayRequests.length !== 0 && (
         <div className="grid grid-cols-3 gap-6">
-          {filteredRequests.map(r => <RequestCard key={r.id} request={r} />)}
+          {displayRequests.map(r => <RequestCard key={r.id} request={r} />)}
         </div>
       )}
 
-      {!selectedSupplierId && (
+      {!selectedSupplierId && (displayRequests instanceof Map) && (
         <div className="flex flex-col gap-4">
           {sortedSupplierIds.map(supplierId => {
-            const selection = suppliersGrouped.get(supplierId) || [];
+            const selection = displayRequests.get(supplierId) || [];
             const supplierName = supplierId === 'untagged' ? 'Untagged' : options.suppliers.get(supplierId) || '';
-
+            if (selection.length === 0) return
             return (
               <SupplierGroup key={supplierId} requests={selection} supplierName={supplierName} />
             )
