@@ -17,7 +17,10 @@ import { getOneAuditRequest } from "./getOneAuditRequest";
 import { getOneItem } from "./getOneItem";
 import { getPurchasedItems } from "./getPurchasedItems";
 import { getAllInventoryByBom } from "./inventory/getAllByBom";
+import { createDiscreteConversion } from "./items/discreteConversions/create";
+import { deleteDiscreteConversion } from "./items/discreteConversions/delete";
 import { getAllDiscreteConversions } from "./items/discreteConversions/getAll";
+import { updateDiscreteConversion } from "./items/discreteConversions/update";
 import { createItemNote } from "./items/notes/createNote";
 import { getAllItemNotesByItem } from "./items/notes/getAllByItem";
 import { createItemNoteType } from "./items/notes/types/createItemNoteType";
@@ -48,6 +51,9 @@ export const inventoryActions = {
   items: {
     discreteConversions: {
       getAll: getAllDiscreteConversions,
+      delete: deleteDiscreteConversion,
+      update: updateDiscreteConversion,
+      create: createDiscreteConversion,
     },
     notes: {
       getAllByItem: getAllItemNotesByItem,

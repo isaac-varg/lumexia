@@ -13,8 +13,7 @@ const Audits = () => {
   if (!audits) return;
 
   return (
-    <div className="col-span-3">
-
+    <div >
       <div className="flex flex-col gap-y-6">
         <SectionTitle>{'Audits'}</SectionTitle>
 
