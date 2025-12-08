@@ -1,7 +1,6 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { ExBprStaging } from "@/types/bprStaging";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
@@ -24,25 +23,44 @@ export const handleCompletedBprCascade = async (bprId: string) => {
     }
 
     const stagings = await getStagings(bprId);
-    const userId = await getUserId();
 
     if (stagings instanceof BprConsumptionError) {
       throw stagings;
     }
 
-    await prisma.$transaction(async (tx) => {
-      await Promise.all(stagings.map(async (staging) => processStaging(staging, userId, tx)));
+    let userId: string;
+    try {
+      userId = await getUserId();
+    } catch (error) {
+      throw new BprConsumptionError('GET_USER_ID_FAILED', 'Could not get user id.', { error });
+    }
 
-      await tx.batchProductionRecord.update({
-        where: { id: bprId },
-        data: { bprStatusId: bprStatuses.awaitingQc },
+    try {
+      await prisma.$transaction(async (tx) => {
+        await Promise.all(stagings.map(async (staging) => processStaging(staging, userId, tx)));
+
+        await tx.batchProductionRecord.update({
+          where: { id: bprId },
+          data: { bprStatusId: bprStatuses.awaitingQc },
+        });
       });
-    });
+    } catch (error) {
+      throw new BprConsumptionError('TRANSACTION_FAILED', 'Failed to execute BPR consumption transaction.', { bprId, error });
+    }
+
 
     await createActivityLog('cascadeBprCompletion', 'bpr', bprId, { context: `BPR #${bpr.referenceCode} completion cascade executed.` });
 
   } catch (error) {
-    console.error("Failed to execute BPR completion cascade:", error);
+    if (error instanceof BprConsumptionError) {
+      console.error(`BprConsumptionError in handleCompletedBprCascade for BPR ${bprId}:`, {
+        name: error.name,
+        message: error.message,
+        data: error.data
+      });
+    } else {
+      console.error("Failed to execute BPR completion cascade:", error);
+    }
     throw new Error("Failed to execute BPR completion cascade.");
   }
 }
@@ -61,7 +79,7 @@ const getStagings = async (bprId: string): Promise<BprStaging[] | BprConsumption
     if (error instanceof BprConsumptionError) {
       return error;
     }
-    return error as BprConsumptionError;
+    return new BprConsumptionError('GET_STAGINGS_FAILED', `Failed to get stagings for BPR ${bprId}.`, { bprId, error });
   }
 
 }
