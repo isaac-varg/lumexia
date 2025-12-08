@@ -10,9 +10,9 @@ import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import { getUserId } from "@/actions/users/getUserId";
 import { Prisma } from "@prisma/client";
 import bprActions from "@/actions/production/bprActions";
-import { BprConsumptionError } from "./BprConsumptionError";
 import { productionActions } from "@/actions/production";
 import { BprStaging } from "@/actions/production/bprs/stagings/getAll";
+import { BprConsumptionError } from "@/utils/errors/BprConsumptionError";
 
 export const handleCompletedBprCascade = async (bprId: string) => {
 
