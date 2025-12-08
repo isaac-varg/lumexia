@@ -10,19 +10,28 @@ import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import { getUserId } from "@/actions/users/getUserId";
 import { Prisma } from "@prisma/client";
 import bprActions from "@/actions/production/bprActions";
+import { BprConsumptionError } from "./BprConsumptionError";
+import { productionActions } from "@/actions/production";
+import { BprStaging } from "@/actions/production/bprs/stagings/getAll";
 
 export const handleCompletedBprCascade = async (bprId: string) => {
+
   try {
     const bpr = await bprActions.getOne(bprId);
+
     if (!bpr) {
-      throw new Error(`BPR with id ${bprId} not found.`);
+      throw new BprConsumptionError('BPR_NOT_FOUND', `BPR with id ${bprId} not found.`, { bprId, });
     }
 
     const stagings = await getStagings(bprId);
     const userId = await getUserId();
 
+    if (stagings instanceof BprConsumptionError) {
+      throw stagings;
+    }
+
     await prisma.$transaction(async (tx) => {
-      await Promise.all(stagings.map((staging) => processStaging(staging, userId, tx)));
+      await Promise.all(stagings.map(async (staging) => processStaging(staging, userId, tx)));
 
       await tx.batchProductionRecord.update({
         where: { id: bprId },
@@ -39,30 +48,25 @@ export const handleCompletedBprCascade = async (bprId: string) => {
 }
 
 
-const getStagings = async (bprId: string): Promise<ExBprStaging[]> => {
-  const stagings = await prisma.bprStaging.findMany({
-    where: {
-      bprBom: {
-        bprId,
-      }
-    },
-    include: {
-      bprBom: {
-        include: {
-          bpr: true
-        }
-      },
-      lot: true,
-      pulledByUser: true,
-      uom: true,
-      status: true,
-    }
-  })
+const getStagings = async (bprId: string): Promise<BprStaging[] | BprConsumptionError> => {
 
-  return stagings as unknown as ExBprStaging[];
+  try {
+    const stagings = await productionActions.bprs.stagings.getAll(bprId);
+
+    if (stagings.length === 0) {
+      throw new BprConsumptionError('NO_STAGINGS_FOUND', 'There are no stagings assocaited with this BPR ID.', { bprId, })
+    }
+    return stagings;
+  } catch (error) {
+    if (error instanceof BprConsumptionError) {
+      return error;
+    }
+    return error as BprConsumptionError;
+  }
+
 }
 
-const processStaging = async (staging: ExBprStaging, userId: string, tx: Prisma.TransactionClient) => {
+const processStaging = async (staging: BprStaging, userId: string, tx: Prisma.TransactionClient) => {
   await createTransaction(staging, userId, tx)
   await tx.bprBillOfMaterials.update({
     where: { id: staging.bprBomId },
@@ -74,7 +78,7 @@ const processStaging = async (staging: ExBprStaging, userId: string, tx: Prisma.
   })
 }
 
-const createTransaction = async (staging: ExBprStaging, userId: string, tx: Prisma.TransactionClient) => {
+const createTransaction = async (staging: BprStaging, userId: string, tx: Prisma.TransactionClient) => {
 
   const transactionPayload = {
     lotId: staging.lotId,
