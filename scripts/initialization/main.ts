@@ -10,18 +10,34 @@ const prismaClient = prisma as any;
 const generatedRecords: { [key: string]: any } = {};
 
 const processFileData = async (fileName: string, data: any, isDependency: boolean) => {
-  let { modelName, seed, staticRecordName, staticRecordKeyName, dependencies } = data;
+  let { modelName, seed, staticRecordName, staticRecordKeyName, dependencies, dependencyIterator } = data;
 
   // If it's a dependency, resolve the seed data by injecting other generated records
   if (isDependency) {
-    const dependencyData = dependencies.reduce((acc: any, depName: string) => {
+    const dependencyData = (dependencies || []).reduce((acc: any, depName: string) => {
       if (!generatedRecords[depName]) {
         throw new Error(`💔 Unresolved dependency: ${depName} is required by ${fileName} but was not found.`);
       }
       acc[depName] = generatedRecords[depName];
       return acc;
     }, {});
-    seed = seed(dependencyData);
+    if (dependencyIterator) {
+      if (!generatedRecords[dependencyIterator]) {
+        throw new Error(`💔 Unresolved dependencyIterator: ${dependencyIterator} is required by ${fileName} but was not found.`);
+      }
+      const recordsToIterate = generatedRecords[dependencyIterator];
+      const accumulatedSeeds: any[] = [];
+      for (const key of Object.keys(recordsToIterate)) {
+        const id = recordsToIterate[key];
+        const result = seed({ key, id }, dependencyData);
+        if (result) {
+          accumulatedSeeds.push(...result);
+        }
+      }
+      seed = accumulatedSeeds;
+    } else {
+      seed = seed(dependencyData);
+    }
   }
 
   // Ensure model exists on the prisma client/postgresql database

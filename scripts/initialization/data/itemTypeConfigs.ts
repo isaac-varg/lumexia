@@ -3,13 +3,12 @@ export const data = {
   staticRecordName: null,
   staticRecordKeyName: null,
   dependency: true,
-  dependencies: ['itemTypes'],
-  seed: (dependencies: any) => {
-    const { itemTypes } = dependencies;
+  dependencyIterator: 'itemTypes',
+  seed: (itemType: any) => {
     return [
       {
         isPricingExaminationTriggerEnabled: false,
-        itemTypeId: itemTypes.id,
+        itemTypeId: itemType.id,
       }
     ]
   },
