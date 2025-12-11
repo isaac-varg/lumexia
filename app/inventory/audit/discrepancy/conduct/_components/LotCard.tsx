@@ -23,8 +23,14 @@ const LotCard = ({ lot }: { lot: DiscrepancyItem['lots'][number] }) => {
     }
 
     const handleSaveAdjustment = async () => {
+        if(isAdjustmentLoading) return;
         setIsAdjust(false)
         adjustLotQuantity(lot.id, parseFloat(newQuantity), lot.totalQuantityOnHand)
+    }
+
+    const handleDeplete = async () => {
+        if(isAdjustmentLoading) return;
+        adjustLotQuantity(lot.id, 0, lot.totalQuantityOnHand);
     }
 
 
@@ -41,15 +47,25 @@ const LotCard = ({ lot }: { lot: DiscrepancyItem['lots'][number] }) => {
             </h1>
 
 
-            {!isAdjust ? (isAdjustmentLoading ? <button className="btn skeleton">Loading. . . </button> : < button className="btn bg-blue-400 hover:bg-blue-400/80" onClick={() => setIsAdjust(true)}>
-                Adjust
-            </button>) : (
+            {!isAdjust ? (
+                isAdjustmentLoading ? (
+                    <button className="btn skeleton">Loading. . . </button>
+                ) : (
+                    <div className="flex flex-col gap-y-2">
+                        <button className="btn bg-blue-400 hover:bg-blue-400/80" onClick={() => setIsAdjust(true)}>
+                            Adjust
+                        </button>
+                        <button className="btn bg-red-400 hover:bg-red-400/80" onClick={handleDeplete}>
+                            Deplete
+                        </button>
+                    </div>
+                )
+            ) : (
                 <div className="grid grid-cols-4 gap-2">
                     <input className="bg-blue-200 rounded-xl px-4 focus:outline-none py-3 col-span-3" value={newQuantity} onChange={(e) => handleAdjustment(e.target.value)} />
                     <button className="btn bg-blue-400 hover:bg-blue-400/80" onClick={() => handleSaveAdjustment()}>
                         <TbDeviceFloppy />
                     </button>
-
                 </div>
             )
             }
