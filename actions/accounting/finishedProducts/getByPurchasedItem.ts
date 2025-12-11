@@ -3,12 +3,15 @@
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
 import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost";
 import prisma from "@/lib/prisma"
-import { ItemPricingData } from "../pricing/getItemPricingData";
-import { LastItemPrice } from "../pricing/getLastItemPrice";
 import { getProductFillCost } from "@/app/accounting/pricing/_calculations/getProductFillCost";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
+import { accountingActions } from "..";
 
-export const getFinishedProductsByPurchasedItem = async (itemId: string, itemPricingData: ItemPricingData, lastPrice: LastItemPrice) => {
+export const getFinishedProductsByPurchasedItem = async (itemId: string,) => {
+
+  const itemPricingData = await accountingActions.pricing.item.getItemPricingData(itemId);
+  const lastPrice = await accountingActions.pricing.item.getLastItemPrice(itemId)
+
 
   const fp = await prisma.finishedProduct.findMany({
     where: {

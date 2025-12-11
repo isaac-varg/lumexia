@@ -1,6 +1,6 @@
 'use client'
 
-import { usePricingPurchasedActions, usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
+import { usePricingPurchasedActions, usePricingPurchasedSelection } from "@/store/pricingPurchasedSliceback"
 import DeleteFinishedProductAlert from "../shared/DeleteFinishedProductAlert"
 import { TbCopy, TbEdit, TbTrash } from "react-icons/tb"
 import useDialog from "@/hooks/useDialog"

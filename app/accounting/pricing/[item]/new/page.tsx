@@ -1,32 +1,56 @@
-import React from 'react'
-import { getItem } from './_functions/getItem'
-import PurchasedMain from './_components/purchased/PurchasedMain'
-import ProducedMain from './_components/produced/ProducedMain'
-import { accountingActions } from '@/actions/accounting'
-import { procurementTypes } from '@/configs/staticRecords/procurementTypes'
+import { inventoryActions } from "@/actions/inventory"
+import StateSetter from "./_components/state/StateSetter"
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
+import { accountingActions } from "@/actions/accounting"
+import Purchased from "./_components/purchased/Purchased"
+import PageTitle from "@/components/Text/PageTitle"
 
-interface NewPricingEntryProps {
+type Props = {
   searchParams: {
     id: string
   }
 }
 
-const NewPricingEntry = async ({ searchParams }: NewPricingEntryProps) => {
+const NewPricingExaminationPage = async ({ searchParams }: Props) => {
 
-  const item = await getItem(searchParams.id)
-  const noteTypes = await accountingActions.examinations.notes.getAllNoteTypes();
+  // start
+  const item = await inventoryActions.items.getOne(searchParams.id);
 
-  if (item.procurementType.id !== procurementTypes.produced) {
-    return (
-      <PurchasedMain item={item} noteTypes={noteTypes} />
-    )
-  }
+  // determine what type of pricing this is
+  const isPurchased = item.procurementTypeId === procurementTypes.purchased;
 
-  return (
-    <div>
-      <ProducedMain item={item} noteTypes={noteTypes} />
+  const [
+    purchasedItemPricingData,
+    purchasedItemLastPrice,
+    finishedProducts,
+  ] = await Promise.all([
+    isPurchased
+      ? accountingActions.pricing.item.getItemPricingData(item.id)
+      : Promise.resolve(null),
+    isPurchased
+      ? await accountingActions.pricing.item.getLastItemPrice(item.id)
+      : Promise.resolve(null),
+    isPurchased
+      ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
+      : Promise.resolve(null),
+
+
+  ]); return (
+    <div className="flex flex-col gap-6">
+      <PageTitle>{`Pricing Determination - ${item.name}`}</PageTitle>
+
+      <StateSetter
+        item={item}
+        purchasedItemPricingData={purchasedItemPricingData}
+        purchasedItemLastPrice={purchasedItemLastPrice}
+        finishedProducts={finishedProducts}
+      />
+
+      {isPurchased && <Purchased />}
+      {!isPurchased && <div>produced</div>}
+
     </div>
   )
 }
 
-export default NewPricingEntry 
+export default NewPricingExaminationPage
