@@ -1,0 +1,2816 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table bom_pricing_data_archives {
+  id String [pk]
+  examinationId String [not null]
+  producedPricingDataArchiveId String [not null]
+  bomId String [not null]
+  itemId String [not null]
+  totalMaterialCost Float [not null]
+  materialPrice Float [not null]
+  materialPriceOrigin String [not null]
+  upcomingPriceUsed Boolean [not null]
+  upcomingPriceUomId String [not null]
+  arrivalCost Float [not null]
+  unforeseenDifficultiesCost Float [not null]
+  productionUsageCost Float [not null]
+  overallItemCostPerLb Float [not null]
+  overallItemCostPerBatch Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  producedPricingDataArchive produced_pricing_data_archives [not null]
+  examination pricing_examinations [not null]
+  bom bill_of_materials [not null]
+  item items [not null]
+  upcomingPriceUom units_of_measurement [not null]
+}
+
+Table consumer_containers_archives {
+  id String [pk]
+  examinationId String [not null]
+  currentConsumerContaineId String [not null]
+  containerItemId String [not null]
+  containerCost Float [not null]
+  fillLaborCost Float [not null]
+  shippingCost Float [not null]
+  freeShippingCost Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  containerItem items [not null]
+  filledConsumerContainer item_consumer_containers [not null]
+  examination pricing_examinations [not null]
+  currentConsumerContainer consumer_containers [not null]
+  ItemConsumerContainerArchive item_consumer_container_archives [not null]
+}
+
+Table consumer_containers {
+  id String [pk]
+  containerItemId String [not null]
+  containerCost Float [not null]
+  fillLaborCost Float [not null]
+  freeShippingCost Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  containerItem items [not null]
+  filledConsumerContainer item_consumer_containers [not null]
+  archives consumer_containers_archives [not null]
+}
+
+Table finished_product_archives {
+  id String [pk]
+  pricingExaminationId String [not null]
+  currentFinishedProductId String [not null]
+  name String [not null]
+  filledWithItemId String [not null]
+  fillQuantity Float [not null]
+  declaredQuantity Float [not null]
+  freeShippingCost Float [not null]
+  fillUomId String [not null]
+  difficultyAdjustmentCost Float [not null]
+  finishedProductTotalCost Float [not null]
+  auxiliariesTotalCost Float [not null]
+  productFillCost Float [not null]
+  consumerPrice Float [not null]
+  markup Float [not null]
+  profit Float [not null]
+  profitPercentage Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  filledWithItem items [not null]
+  fillUom units_of_measurement [not null]
+  pricingExamination pricing_examinations [not null]
+  currentFinishedProduct finished_products [not null]
+  auxiliaries finished_product_auxiliaries [not null]
+}
+
+Table finished_product_auxiliaries {
+  id String [pk]
+  apartOfFinishedProductId String [not null]
+  auxiliaryItemId String [not null]
+  quantity Int [not null]
+  difficultyAdjustmentCost Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  apartOfFinishedProduct finished_products [not null]
+  auxiliaryItem items [not null]
+  FinishedProductArchive finished_product_archives
+  finishedProductArchiveId String
+}
+
+Table finished_product_auxiliary_archives {
+  id String [pk]
+  apartOfFinishedProductId String [not null]
+  auxiliaryItemId String [not null]
+  quantity Int [not null]
+  difficultyAdjustmentCost Float [not null]
+  ipdArrivalCost Float [not null]
+  ipdProductionUsageCost Float [not null]
+  ipdAuxiliaryUsageCost Float [not null]
+  ipdUnforeseenDifficultiesCost Float [not null]
+  ipdUpcomingPrice Float [not null]
+  ipdUpcomingPriceUomId String [not null]
+  ipdIsUpcomingPriceActive Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  apartOfFinishedProduct finished_products [not null]
+  auxiliaryItem items [not null]
+  ipdUpcomingPriceUom units_of_measurement [not null]
+}
+
+Table finished_products {
+  id String [pk]
+  recordStatusId String [not null]
+  name String [not null]
+  filledWithItemId String [not null]
+  fillQuantity Float [not null]
+  declaredQuantity Float [not null]
+  freeShippingCost Float [not null]
+  fillUomId String [not null]
+  difficultyAdjustmentCost Float [not null]
+  finishedProductTotalCost Float [not null]
+  auxiliariesTotalCost Float [not null]
+  productFillCost Float [not null]
+  consumerPrice Float [not null]
+  markup Float [not null]
+  profit Float [not null]
+  profitPercentage Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  filledWithItem items [not null]
+  fillUom units_of_measurement [not null]
+  recordStatus record_statuses [not null]
+  auxiliaries finished_product_auxiliaries [not null]
+  FinishedProductArchive finished_product_archives [not null]
+  FinishedProductAuxiliaryArchive finished_product_auxiliary_archives [not null]
+}
+
+Table item_consumer_container_archives {
+  id String [pk]
+  examinationId String [not null]
+  currentItemConsumerContainerId String [not null]
+  consumerContainerArchiveId String [not null]
+  fillQuantity Float [not null]
+  declaredQuantity Float [not null]
+  difficultiesCost Float [not null]
+  uomId String [not null]
+  consumerPrice Float [not null, default: 0]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  consumerContainerArchive consumer_containers_archives [not null]
+  uom units_of_measurement [not null]
+  examination pricing_examinations [not null]
+  currentItemConsumerContainer item_consumer_containers [not null]
+}
+
+Table item_consumer_containers {
+  id String [pk]
+  itemId String [not null]
+  recordStatusId String [not null, default: 'd7b0a804-52c6-4586-b4f4-0fe49895f794']
+  consumerContainerId String [not null]
+  fillQuantity Float [not null]
+  declaredQuantity Float [not null]
+  difficultiesCost Float [not null]
+  uomId String [not null]
+  consumerPrice Float [not null, default: 0]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  consumerContainer consumer_containers [not null]
+  uom units_of_measurement [not null]
+  recordStatus record_statuses [not null]
+  archives item_consumer_container_archives [not null]
+  ConsumerContainerArchive consumer_containers_archives
+  consumerContainerArchiveId String
+}
+
+Table item_cost_determinations {
+  id String [pk]
+  itemId String [not null]
+  itemPricingDataId String [not null]
+  itemCost Float [not null]
+  upcomingCostUsed Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  itemPricingData item_pricing_data [not null]
+}
+
+Table item_pricing_data {
+  id String [pk]
+  itemId String [not null]
+  arrivalCost Float [not null]
+  productionUsageCost Float [not null]
+  auxiliaryUsageCost Float [not null, default: 0]
+  unforeseenDifficultiesCost Float [not null]
+  isUpcomingPriceActive Boolean [not null]
+  upcomingPrice Float [not null]
+  upcomingPriceUomId String [not null]
+  overallItemCost Float [not null, default: 0]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  upcomingPriceUom units_of_measurement [not null]
+  ItemPricingDataArchives item_pricing_data_archives [not null]
+  ItemCostDetermination item_cost_determinations [not null]
+}
+
+Table item_pricing_data_archives {
+  id String [pk]
+  examinationId String [not null]
+  currentItemPricingDataId String [not null]
+  arrivalCost Float [not null]
+  productionUsageCost Float [not null]
+  auxiliaryUsageCost Float [not null]
+  unforeseenDifficultiesCost Float [not null]
+  isUpcomingPriceActive Boolean [not null]
+  upcomingPrice Float [not null]
+  upcomingPriceUomId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  overallItemCost Float [not null, default: 0]
+  upcomingPriceUom units_of_measurement [not null]
+  examination pricing_examinations [not null]
+  currentItemPricingData item_pricing_data
+}
+
+Table payment_methods {
+  id String [pk]
+  methodName String [not null]
+  associatedName String [not null]
+  paymentType String [not null]
+  identifier String [not null]
+  accountEndingIn String
+  expiry String
+  limit Float [not null]
+  bgColorA String [not null]
+  bgColorB String [not null]
+  circleColorA String
+  circleColorB String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  supplierPaymentMethods supplier_payment_methods [not null]
+  purchaseOrders purchase_orders [not null]
+  poAccountingDetails po_accounting_details [not null]
+}
+
+Table po_accounting_audit_logs {
+  id String [pk]
+  poId String [not null]
+  userId String [not null]
+  action String [not null]
+  context String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user users [not null]
+  po purchase_orders [not null]
+}
+
+Table po_accounting_details {
+  id String [pk]
+  statusId String [not null]
+  purchaseOrderId String [unique, not null]
+  paid Boolean
+  paymentMethodId String
+  packingSlipReceived Boolean
+  paperworkGivenToAdmin Boolean
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  status po_accounting_statuses [not null]
+  purchaseOrder purchase_orders [not null]
+  paymentMethod payment_methods
+}
+
+Table po_accounting_file_types {
+  id String [pk]
+  name String [not null]
+  abbreviation String
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  poAccountingFiles po_accounting_files [not null]
+}
+
+Table po_accounting_files {
+  id String [pk]
+  fileTypeId String [not null]
+  fileId String [not null]
+  purchaseOrderId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  fileType po_accounting_file_types [not null]
+  file files [not null]
+  purchaseOrder purchase_orders [not null]
+}
+
+Table po_accounting_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  poAccountingNotes po_accounting_notes [not null]
+}
+
+Table po_accounting_notes {
+  id String [pk]
+  purchaseOrderId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchaseOrder purchase_orders [not null]
+  user users [not null]
+  noteType po_accounting_note_types [not null]
+}
+
+Table po_accounting_statuses {
+  id String [pk]
+  name String [not null]
+  description String
+  sequence Int [unique, not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  poAccountingDetails po_accounting_details [not null]
+}
+
+Table pricing_examination_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  examinationNotes pricing_examination_notes [not null]
+}
+
+Table pricing_examination_notes {
+  id String [pk]
+  pricingExaminationId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  pricingExamination pricing_examinations [not null]
+  user users [not null]
+  noteType pricing_examination_note_types [not null]
+}
+
+Table pricing_examination_validations {
+  id String [pk]
+  examinationId String [not null]
+  allContainersReviewed Boolean [not null]
+  allContainersExceedProfitThreshold Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  examination pricing_examinations [not null]
+}
+
+Table pricing_examinations {
+  id String [pk]
+  approved Boolean [not null, default: false]
+  rejected Boolean [not null, default: false]
+  examinedItemId String [not null]
+  userId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  examinedItem items [not null]
+  user users [not null]
+  itemPricingDataArchive item_pricing_data_archives [not null]
+  consumerContainerArchive consumer_containers_archives [not null]
+  filledConsumerContainerArchives item_consumer_container_archives [not null]
+  validation pricing_examination_validations [not null]
+  producedPricingDataArchives produced_pricing_data_archives [not null]
+  BomPricingDataArchive bom_pricing_data_archives [not null]
+  FinishedProductArchive finished_product_archives [not null]
+  PricingExaminationNote pricing_examination_notes [not null]
+}
+
+Table pricing_queue {
+  id String [pk]
+  itemId String [not null]
+  isCompleted Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+}
+
+Table pricing_template_auxiliary {
+  id String [pk]
+  apartOfPricingTemplateFinishedProductId String [not null]
+  auxiliaryItemId String [not null]
+  quantity Int [not null]
+  difficultyAdjustmentCost Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  apartOfPricingTemplateFinishedProduct pricing_template_finished_products [not null]
+  auxiliaryItem items [not null]
+}
+
+Table pricing_template_finished_products {
+  id String [pk]
+  apartOfPricingTemplateId String [not null]
+  name String [not null]
+  fillQuantity Float [not null]
+  declaredQuantity Float [not null]
+  freeShippingCost Float [not null]
+  fillUomId String [not null]
+  difficultyAdjustmentCost Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  apartOfPricingTemplate pricing_template [not null]
+  fillUom units_of_measurement [not null]
+  auxiliaries pricing_template_auxiliary [not null]
+}
+
+Table pricing_template {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  forItemTypeId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  forItemType item_types
+  finishedProducts pricing_template_finished_products [not null]
+}
+
+Table produced_pricing_data_archives {
+  id String [pk]
+  examinationId String [not null]
+  mbprId String [not null]
+  mbprVersionLabel String [not null]
+  batchSizeId String [not null]
+  batchSizeQuantity Float [not null]
+  compoundingVesselId String [not null]
+  compoundingVesselEquipmentName String [not null]
+  compoundingTankTime Float [not null]
+  bomCount Int [not null]
+  totalBomCostPerBatch Float [not null]
+  totalBomCostPerLb Float [not null]
+  totalCostPerBatch Float [not null]
+  totalCostPerLb Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  examination pricing_examinations [not null]
+  mbpr master_batch_production_records [not null]
+  batchSize batch_sizes [not null]
+  compoundingVessel compounding_vessels [not null]
+  bomPricingDataArchives bom_pricing_data_archives [not null]
+}
+
+Table app_config_groups {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  configs configs [not null]
+}
+
+Table configs {
+  id String [pk]
+  key String [not null]
+  value String [not null]
+  dataType String [not null]
+  description String [not null]
+  configGroupId String [not null, default: 'f8b6d7ef-672c-4751-9f08-21c7c3790136']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  configGroup app_config_groups [not null]
+}
+
+Table files {
+  id String [pk]
+  name String [not null]
+  objectName String [unique, not null]
+  bucketName String [not null]
+  thumbnailObjectName String [unique]
+  thumbnailBucketName String
+  etag String [not null]
+  versionId String
+  size Int [not null]
+  mimeType String [not null]
+  uploadedById String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  uploadedBy users [not null]
+  poAccountingFiles po_accounting_files [not null]
+  generalRequestFiles general_request_files [not null]
+  itemFiles item_files [not null]
+  bprStagingFiles bpr_staging_files [not null]
+  qcRecordFiles qc_record_files [not null]
+}
+
+Table record_statuses {
+  id String [pk]
+  name String [not null]
+  bgColor String [not null, default: '#000000']
+  textColor String [not null, default: '#ffffff']
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemConsumerContainers item_consumer_containers [not null]
+  purchaseOrders purchase_orders [not null]
+  items items [not null]
+  FinishedProduct finished_products [not null]
+  BatchSize batch_sizes [not null]
+  MasterBatchProductionRecord master_batch_production_records [not null]
+}
+
+Table activity_logs {
+  id String [pk]
+  userId String [not null]
+  action String [not null]
+  entityType String
+  entityId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  details Json [not null]
+  user users [not null]
+}
+
+Table equipment {
+  id String [pk]
+  name String [not null]
+  identifier String [not null]
+  equipmentTypeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  equipmentType equipment_types [not null]
+  compoundingVessel compounding_vessels [not null]
+  StepEquipment step_equipment [not null]
+}
+
+Table equipment_types {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  equipment equipment [not null]
+}
+
+Table audit_request_note_types {
+  id String [pk]
+  name String [not null]
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  auditRequestNotes audit_request_notes [not null]
+}
+
+Table audit_request_notes {
+  id String [pk]
+  requestId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  request audit_requests [not null]
+  user users [not null]
+  noteType audit_request_note_types [not null]
+}
+
+Table audit_request_statuses {
+  id String [pk]
+  name String [not null]
+  description String
+  sequence Int [unique, not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  requests audit_requests [not null]
+}
+
+Table audit_requests {
+  id String [pk]
+  requestById String [not null]
+  inventoryAuditId String
+  statusId String [not null]
+  itemId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  requestedBy users [not null]
+  item items [not null]
+  inventoryAudit inventory_audits
+  status audit_request_statuses [not null]
+  notes audit_request_notes [not null]
+}
+
+Table discrepancy_audit_item_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  notes discrepancy_audit_item_notes [not null]
+}
+
+Table discrepancy_audit_item_notes {
+  id String [pk]
+  auditItemId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  auditItem discrepancy_audit_items [not null]
+  user users [not null]
+  noteType discrepancy_audit_item_note_types [not null]
+}
+
+Table discrepancy_audit_item_statuses {
+  id String [pk]
+  name String [not null]
+  description String
+  sequence Int [unique, not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  items discrepancy_audit_items [not null]
+}
+
+Table discrepancy_audit_item_transactions {
+  id String [pk]
+  auditItemId String [not null]
+  transactionId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  auditItem discrepancy_audit_items [not null]
+  transaction transactions [not null]
+}
+
+Table discrepancy_audit_items {
+  id String [pk]
+  itemId String [not null]
+  statusId String [not null]
+  discrepancyAuditId String [not null]
+  startingTotalQuantity Float [not null]
+  endingTotalQuantity Float
+  quantitiesUomId String [not null]
+  startingLotsCount Int [not null]
+  endingLotsCount Int
+  startingDepletedLotsCount Int [not null]
+  endingDepletedLotsCount Int
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  status discrepancy_audit_item_statuses [not null]
+  discrepancyAudit discrepancy_audits [not null]
+  quantitiesUom units_of_measurement [not null]
+  notes discrepancy_audit_item_notes [not null]
+  discrepancyAuditItemTransaction discrepancy_audit_item_transactions [not null]
+}
+
+Table discrepancy_audit_statuses {
+  id String [pk]
+  name String [not null]
+  description String
+  sequence Int [unique, not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  discrepancyAudits discrepancy_audits [not null]
+}
+
+Table discrepancy_audits {
+  id String [pk]
+  completedOn String
+  itemTypeId String
+  statusId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemType item_types
+  status discrepancy_audit_statuses [not null]
+  items discrepancy_audit_items [not null]
+}
+
+Table discrete_unit_of_measurement_conversions {
+  id String [pk]
+  itemId String [not null]
+  supplierId String [not null]
+  uomAId String [not null]
+  uomBId String [not null]
+  conversionFactor Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  uomA units_of_measurement [not null]
+  uomB units_of_measurement [not null]
+  supplier suppliers [not null]
+  item items [not null]
+
+  indexes {
+    (itemId, supplierId) [unique]
+  }
+}
+
+Table generic_unit_conversion_factors {
+  id String [pk]
+  itemId String [not null]
+  supplierId String [not null]
+  convertToUomId String [not null]
+  conversionFactor Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  supplier suppliers [not null]
+  convertToUom units_of_measurement [not null]
+
+  indexes {
+    (itemId, supplierId) [unique]
+  }
+}
+
+Table inventory_audit_transactions {
+  id String [pk]
+  transactionId String [unique, not null]
+  inventoryAuditId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  transaction transactions [not null]
+  inventoryAudit inventory_audits [not null]
+}
+
+Table inventory_audits {
+  id String [pk]
+  itemId String [not null]
+  conductedById String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  user users [not null]
+  requests audit_requests [not null]
+  transactions inventory_audit_transactions [not null]
+}
+
+Table lot_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  notes lot_notes [not null]
+}
+
+Table lot_notes {
+  id String [pk]
+  lotId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  lot lots [not null]
+  user users [not null]
+  noteType lot_note_types [not null]
+}
+
+Table lot_origins {
+  id String [pk]
+  lotId String [unique, not null]
+  purchaseOrderId String
+  bprId String [unique]
+  originType String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchaseOrder purchase_orders
+  bpr batch_production_records
+  lot lots [not null]
+}
+
+Table lots {
+  id String [pk]
+  itemId String [not null]
+  lotNumber String [not null]
+  initialQuantity Float [not null]
+  uomId String [not null]
+  item items [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  transactions transactions [not null]
+  lotOrigin lot_origins
+  uom units_of_measurement [not null]
+  qcRecords qc_records [not null]
+  notes lot_notes [not null]
+  purchaseOrderItem purchase_order_items
+  BprStaging bpr_stagings [not null]
+}
+
+Table transaction_types {
+  id String [pk]
+  name String [not null]
+  deduction Boolean [not null]
+  transactions transactions [not null]
+}
+
+Table transactions {
+  id String [pk]
+  lotId String [not null]
+  transactionTypeId String [not null]
+  userId String [not null]
+  uomId String [not null]
+  amount Float [not null]
+  systemNote String [not null]
+  userNote String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  transactionType transaction_types [not null]
+  user users [not null]
+  unitOfMeasurement units_of_measurement [not null]
+  lot lots [not null]
+  audit inventory_audit_transactions
+  discrepancyAuditItemTransaction discrepancy_audit_item_transactions
+  bprStagingConsumption bpr_staging_consumptions
+}
+
+Table unit_of_measurement_conversions {
+  id String [pk]
+  uomAId String [not null]
+  uomBId String [not null]
+  conversionFactor Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  uomA units_of_measurement [not null]
+  uomB units_of_measurement [not null]
+}
+
+Table units_of_measurement {
+  id String [pk]
+  name String [not null]
+  abbreviation String [not null]
+  isStandardUom Boolean [not null, default: true]
+  uomA unit_of_measurement_conversions [not null]
+  uomB unit_of_measurement_conversions [not null]
+  discreteUomA discrete_unit_of_measurement_conversions [not null]
+  discreteUomB discrete_unit_of_measurement_conversions [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  lots lots [not null]
+  transactions transactions [not null]
+  purchaseOrderItem purchase_order_items [not null]
+  genericUnitConversionFactors generic_unit_conversion_factors [not null]
+  discrepancyAuditItems discrepancy_audit_items [not null]
+  BomPricingDataArchive bom_pricing_data_archives [not null]
+  FinishedProductArchive finished_product_archives [not null]
+  FinishedProductAuxiliaryArchive finished_product_auxiliary_archives [not null]
+  FinishedProduct finished_products [not null]
+  ItemConsumerContainerArchive item_consumer_container_archives [not null]
+  ItemConsumerContainer item_consumer_containers [not null]
+  ItemPricingData item_pricing_data [not null]
+  ItemPricingDataArchive item_pricing_data_archives [not null]
+  PricingTemplateFinishedProduct pricing_template_finished_products [not null]
+  Item items [not null]
+  BatchSize batch_sizes [not null]
+  BprBillOfMaterials bpr_bills_of_materials [not null]
+  BprStaging bpr_stagings [not null]
+}
+
+Table alias_types {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Alias aliases [not null]
+}
+
+Table aliases {
+  id String [pk]
+  name String [not null]
+  aliasTypeId String [not null]
+  itemId String [not null]
+  aliasType alias_types [not null]
+  item items [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  supplierAlias supplier_aliases [not null]
+}
+
+Table inventory_types {
+  id String [pk]
+  name String [not null]
+  isTracked Boolean [not null, default: false]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  items items [not null]
+}
+
+Table item_file_types {
+  id String [pk]
+  name String [not null]
+  abbreviaton String
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemFiles item_files [not null]
+}
+
+Table item_files {
+  id String [pk]
+  fileTypeId String [not null]
+  fileId String [not null]
+  itemId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  fileType item_file_types [not null]
+  file files [not null]
+  item items [not null]
+}
+
+Table item_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemNotes item_notes [not null]
+}
+
+Table item_notes {
+  id String [pk]
+  itemId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  user users [not null]
+  noteType item_note_types [not null]
+}
+
+Table item_type_configs {
+  id String [pk]
+  isPricingExaminationTriggerEnabled Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemType item_types [not null]
+  itemTypeId String [unique, not null]
+}
+
+Table item_types {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  items items [not null]
+  pricingTemplates pricing_template [not null]
+  discrepancyAudits discrepancy_audits [not null]
+  config item_type_configs
+}
+
+Table items {
+  id String [pk]
+  name String [not null]
+  recordStatusId String [not null]
+  referenceCode String [unique, not null]
+  itemTypeId String [not null]
+  inventoryUomId String [not null]
+  procurementTypeId String [not null]
+  inventoryTypeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemType item_types [not null]
+  procurementType procurement_types [not null]
+  inventoryType inventory_types [not null]
+  recordStatus record_statuses [not null]
+  inventoryUom units_of_measurement [not null]
+  lot lots [not null]
+  aliases aliases [not null]
+  purchaseOrderItem purchase_order_items [not null]
+  itemPricingData item_pricing_data [not null]
+  itemCostDeterminations item_cost_determinations [not null]
+  requests purchasing_requests [not null]
+  audits inventory_audits [not null]
+  auditRequests audit_requests [not null]
+  consumerContainers consumer_containers [not null]
+  pricingExaminations pricing_examinations [not null]
+  consumerContainerArchives consumer_containers_archives [not null]
+  qcItemParameters qc_item_parameters [not null]
+  genericUnitConversionFactors generic_unit_conversion_factors [not null]
+  discrepancyAuditItems discrepancy_audit_items [not null]
+  discreteUnitOfMeasurementConversions discrete_unit_of_measurement_conversions [not null]
+  BomPricingDataArchive bom_pricing_data_archives [not null]
+  FinishedProductArchive finished_product_archives [not null]
+  FinishedProductAuxiliary finished_product_auxiliaries [not null]
+  FinishedProductAuxiliaryArchive finished_product_auxiliary_archives [not null]
+  FinishedProduct finished_products [not null]
+  ItemConsumerContainer item_consumer_containers [not null]
+  PricingQueue pricing_queue [not null]
+  PricingTemplateAuxiliary pricing_template_auxiliary [not null]
+  ItemFile item_files [not null]
+  ItemNote item_notes [not null]
+  BillOfMaterial bill_of_materials [not null]
+  MasterBatchProductionRecord master_batch_production_records [not null]
+}
+
+Table procurement_types {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  items items [not null]
+}
+
+Table notion_bprs {
+  id String [pk]
+  lumexiaBprId String [not null]
+  notionPageId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bpr batch_production_records [not null]
+  PurchasingRequest purchasing_requests
+  purchasingRequestId String
+}
+
+Table notion_purchase_orders {
+  id String [pk]
+  notionPageId String [not null]
+  lumexiaPoId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  lumexiaPo purchase_orders [not null]
+}
+
+Table notion_purchasing_requests {
+  id String [pk]
+  notionPageId String [not null]
+  lumexiaPurchasingRequestId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  lumexiaPurchasingRequest purchasing_requests [not null]
+}
+
+Table batch_production_records {
+  id String [pk]
+  mbprId String [not null]
+  bprStatusId String [not null]
+  batchSizeId String [not null]
+  scheduledForStart DateTime
+  scheduledForEnd DateTime
+  completedAt DateTime
+  releasedAt DateTime
+  referenceCode Int [increment, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  mbpr master_batch_production_records [not null]
+  status bpr_statuses [not null]
+  batchSize batch_sizes [not null]
+  bprBatchSteps bpr_batch_steps [not null]
+  lotOrigin lot_origins
+  qcRecords qc_records [not null]
+  timerEntries bpr_timer_entries [not null]
+  NotionBpr notion_bprs [not null]
+  BprBillOfMaterials bpr_bills_of_materials [not null]
+  BprNote bpr_notes [not null]
+  RequestBpr request_bprs [not null]
+  MicroSubmission micro_submissions [not null]
+}
+
+Table batch_size_compounding_vessels {
+  id String [pk]
+  tankTime Float [not null]
+  compoundingVesselId String [not null]
+  batchSizeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  compoundingVessel compounding_vessels [not null]
+  batchSize batch_sizes [not null]
+}
+
+Table batch_sizes {
+  id String [pk]
+  mbprId String [not null]
+  quantity Float [not null]
+  uomId String [not null]
+  recordStatusId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  mbpr master_batch_production_records [not null]
+  uom units_of_measurement [not null]
+  recordStatus record_statuses [not null]
+  batchSizeCompoundingVessels batch_size_compounding_vessels [not null]
+  producedPricingDataArchives produced_pricing_data_archives [not null]
+  BatchProductionRecord batch_production_records [not null]
+}
+
+Table batch_steps {
+  id String [pk]
+  mbprId String [not null]
+  sequence Int [not null]
+  phase String [not null]
+  label String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  mbpr master_batch_production_records [not null]
+  BillOfMaterial bill_of_materials [not null]
+  BprBatchStep bpr_batch_steps [not null]
+  StepActionable step_actionables [not null]
+  StepAddendum step_addendums [not null]
+  StepEquipment step_equipment [not null]
+  StepInstruction step_instructions [not null]
+}
+
+Table bill_of_materials {
+  id String [pk]
+  itemId String [not null]
+  mbprId String [not null]
+  stepId String [not null]
+  identifier String [not null]
+  concentration Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  mbpr master_batch_production_records [not null]
+  step batch_steps [not null]
+  BomPricingDataArchive bom_pricing_data_archives [not null]
+  BprBillOfMaterials bpr_bills_of_materials [not null]
+}
+
+Table bpr_batch_steps {
+  id String [pk]
+  batchStepId String [not null]
+  bprId String [not null]
+  completedAt DateTime
+  statusId String [not null]
+  isComplete Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  batchStep batch_steps [not null]
+  bpr batch_production_records [not null]
+  bprStepActionables bpr_step_actionables [not null]
+  status bpr_batch_step_statuses [not null]
+}
+
+Table bpr_batch_step_statuses {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  BprBatchStep bpr_batch_steps [not null]
+}
+
+Table bpr_bills_of_materials {
+  id String [pk]
+  bprId String [not null]
+  bomId String [not null]
+  quantity Float [not null]
+  uomId String [not null]
+  statusId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bpr batch_production_records [not null]
+  bom bill_of_materials [not null]
+  uom units_of_measurement [not null]
+  status bpr_staging_statuses [not null]
+  BprStaging bpr_stagings [not null]
+}
+
+Table bpr_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bprNotes bpr_notes [not null]
+}
+
+Table bpr_notes {
+  id String [pk]
+  bprId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bpr batch_production_records [not null]
+  user users [not null]
+  noteType bpr_note_types [not null]
+}
+
+Table bpr_stagings {
+  id String [pk]
+  bprBomId String [not null]
+  lotId String [not null]
+  pulledByUserId String [not null]
+  quantity Float [not null]
+  uomId String [not null]
+  bprStagingStatusId String [not null]
+  isPrimaryVerified Boolean [not null, default: false]
+  isSecondaryVerified Boolean [not null, default: false]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bprBom bpr_bills_of_materials [not null]
+  lot lots [not null]
+  pulledByUser users [not null]
+  uom units_of_measurement [not null]
+  status bpr_staging_statuses [not null]
+  consumption bpr_staging_consumptions
+  files bpr_staging_files [not null]
+  BprStagingVerification bpr_staging_verifications [not null]
+}
+
+Table bpr_staging_consumptions {
+  id String [pk]
+  bprStagingId String [unique, not null]
+  transactionId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bprStaging bpr_stagings [not null]
+  transaction transactions [not null]
+}
+
+Table bpr_staging_files {
+  id String [pk]
+  fileId String [not null]
+  bprStagingId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  file files [not null]
+  staging bpr_stagings [not null]
+}
+
+Table bpr_staging_statuses {
+  id String [pk]
+  name String [not null]
+  sequence Int [not null, default: 0]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  BprBillOfMaterials bpr_bills_of_materials [not null]
+  BprStaging bpr_stagings [not null]
+}
+
+Table bpr_staging_verifications {
+  id String [pk]
+  userId String [not null]
+  bprStagingId String [not null]
+  type String [not null, default: 'primary']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user users [not null]
+  bprStaging bpr_stagings [not null]
+}
+
+Table bpr_statuses {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  textColor String [not null, default: '#000000']
+  bgColor String [not null, default: '#077202']
+  sequence Int [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  BatchProductionRecord batch_production_records [not null]
+}
+
+Table bpr_step_actionables {
+  id String [pk]
+  bprBatchStepId String [not null]
+  batchStepActionableId String [not null]
+  statusId String [not null]
+  isCompounded Boolean [not null]
+  isVerified Boolean [not null]
+  isSecondarilyVerified Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  bprBatchStep bpr_batch_steps [not null]
+  stepActionable step_actionables [not null]
+  status bpr_step_actionable_statuses [not null]
+  completion bpr_step_action_completions [not null]
+  BprStepActionableVerification bpr_step_actionable_verifications [not null]
+}
+
+Table bpr_step_action_completions {
+  id String [pk]
+  completedByUserId String [not null]
+  bprStepActionableId String [not null]
+  value String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  completedByUser users [not null]
+  bprStepActionable bpr_step_actionables [not null]
+}
+
+Table bpr_step_actionable_statuses {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  BprStepActionable bpr_step_actionables [not null]
+}
+
+Table bpr_step_actionable_verifications {
+  id String [pk]
+  completedByUserId String [not null]
+  bprStepActionableId String [not null]
+  type String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  completedByUser users [not null]
+  bprStepActionable bpr_step_actionables [not null]
+}
+
+Table bpr_timer_entries {
+  id String [pk]
+  bprId String [not null]
+  timerTypeId String [not null]
+  startTime DateTime [default: `now()`, not null]
+  endTime DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  timerType bpr_timer_types [not null]
+  bpr batch_production_records [not null]
+}
+
+Table bpr_timer_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  timerEntries bpr_timer_entries [not null]
+}
+
+Table compounding_vessels {
+  id String [pk]
+  equipmentId String [not null]
+  capacityMinimum Float [not null]
+  capacityMaximum Float [not null]
+  operationalCost Float [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  equipment equipment [not null]
+  BatchSizeCompoundingVessels batch_size_compounding_vessels [not null]
+  ProducedPricingDataArchive produced_pricing_data_archives [not null]
+}
+
+Table master_batch_production_records {
+  id String [pk]
+  producesItemId String [not null]
+  recordStatusId String [not null]
+  versionLabel String
+  estimatedTotalTime Float
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  producesItem items [not null]
+  recordStatus record_statuses [not null]
+  producedPricingDataArchives produced_pricing_data_archives [not null]
+  BatchProductionRecord batch_production_records [not null]
+  BatchSize batch_sizes [not null]
+  BatchStep batch_steps [not null]
+  BillOfMaterial bill_of_materials [not null]
+}
+
+Table step_actionables {
+  id String [pk]
+  stepId String [not null]
+  actionableTypeId String [not null]
+  required Boolean [not null]
+  verificationRequired Boolean [not null]
+  secondaryVerificationRequired Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  step batch_steps [not null]
+  actionableType step_actionable_types [not null]
+  BprStepActionable bpr_step_actionables [not null]
+}
+
+Table step_actionable_types {
+  id String [pk]
+  name String [not null]
+  userRoleId String [not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  description String
+  dataType String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  userRole user_roles [not null]
+  StepActionable step_actionables [not null]
+}
+
+Table step_addendums {
+  id String [pk]
+  stepId String [not null]
+  addendumTypeId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  step batch_steps [not null]
+  addendumType step_addendum_types [not null]
+}
+
+Table step_addendum_types {
+  id String [pk]
+  name String [not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  description String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  StepAddendum step_addendums [not null]
+}
+
+Table step_equipment {
+  id String [pk]
+  stepId String [not null]
+  equipmentId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  step batch_steps [not null]
+  equipment equipment [not null]
+}
+
+Table step_instructions {
+  id String [pk]
+  stepId String [not null]
+  instructionContent String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  step batch_steps [not null]
+}
+
+Table general_request_files {
+  id String [pk]
+  fileId String [not null]
+  generalRequestId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  file files [not null]
+  generalRequest general_requests [not null]
+}
+
+Table general_request_links {
+  id String [pk]
+  generalRequestId String [not null]
+  purchasingRequestId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  generalRequest general_requests [not null]
+  purchasingRequest purchasing_requests [not null]
+}
+
+Table general_request_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  requestNotes general_request_notes [not null]
+}
+
+Table general_request_notes {
+  id String [pk]
+  requestId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  request general_requests [not null]
+  user users [not null]
+  noteType general_request_note_types [not null]
+}
+
+Table general_request_statuses {
+  id String [pk]
+  name String [not null]
+  bgColor String [not null, default: '#c4b5fd']
+  textColor String [not null, default: '#FFFFFF']
+  description String [not null]
+  sequence Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  generalRequests general_requests [not null]
+}
+
+Table general_requests {
+  id String [pk]
+  referenceCode Int [increment, not null]
+  title String [not null]
+  statusId String [not null]
+  userId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  status general_request_statuses [not null]
+  user users [not null]
+  notes general_request_notes [not null]
+  purchasingRequestLink general_request_links [not null]
+  GeneralRequestFile general_request_files [not null]
+}
+
+Table po_public_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  poPublicNotes po_public_notes [not null]
+}
+
+Table po_public_notes {
+  id String [pk]
+  purchaseOrderId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchaseOrder purchase_orders [not null]
+  user users [not null]
+  noteType po_public_note_types [not null]
+}
+
+Table po_supplier_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  poSupplierNotes po_supplier_notes [not null]
+}
+
+Table po_supplier_notes {
+  id String [pk]
+  supplierId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  supplier suppliers [not null]
+  user users [not null]
+  noteType po_supplier_note_types [not null]
+}
+
+Table purchase_order_item_details {
+  id String [pk]
+  poItemId String [not null]
+  expectedDateStart DateTime
+  expectedDateEnd DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  poItem purchase_order_items [not null]
+}
+
+Table purchase_order_items {
+  id String [pk]
+  purchaseOrderId String [not null]
+  itemId String [not null]
+  lotId String [unique]
+  quantity Float [not null]
+  pricePerUnit Float [not null]
+  uomId String [not null]
+  purchaseOrderStatusId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchaseOrders purchase_orders [not null]
+  item items [not null]
+  uom units_of_measurement [not null]
+  purchaseOrderStatus purchase_order_status [not null]
+  lot lots
+  details purchase_order_item_details [not null]
+  qcRecords qc_records [not null]
+}
+
+Table purchase_order_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  notes purchase_order_notes [not null]
+}
+
+Table purchase_order_notes {
+  id String [pk]
+  purchaseOrderId String [not null]
+  noteTypeId String [not null, default: '61dc5d6a-dbce-4372-95aa-17b463ec4d2b']
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user users [not null]
+  purchaseOrder purchase_orders [not null]
+  noteType purchase_order_note_types [not null]
+}
+
+Table purchase_order_status {
+  id String [pk]
+  sequence Int [unique, not null]
+  name String [unique, not null]
+  bgColor String [not null, default: '#333333']
+  textColor String [not null, default: '#ffffff']
+  purchaseOrders purchase_orders [not null]
+  purchaseOrderItem purchase_order_items [not null]
+}
+
+Table purchase_orders {
+  id String [pk]
+  referenceCode Int [increment, not null]
+  submittingUserId String [not null]
+  supplierId String [not null]
+  statusId String [not null]
+  paymentMethodId String
+  recordStatusId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  supplier suppliers [not null]
+  user users [not null]
+  recordStatus record_statuses [not null]
+  paymentMethod payment_methods
+  status purchase_order_status [not null]
+  purchaseOrderItems purchase_order_items [not null]
+  purchaseOrderNotes purchase_order_notes [not null]
+  lotOrigins lot_origins [not null]
+  poAccountingDetail po_accounting_details
+  poAccountingNotes po_accounting_notes [not null]
+  poAccountingFiles po_accounting_files [not null]
+  poAccountingAuditLogs po_accounting_audit_logs [not null]
+  poPublicNotes po_public_notes [not null]
+  NotionPurchaseOrder notion_purchase_orders [not null]
+  RequestPurchaseOrder request_purchase_orders [not null]
+}
+
+Table purchasing_request_supplier_tags {
+  id String [pk]
+  purchasingRequestId String [not null]
+  supplierId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchasingRequest purchasing_requests [not null]
+  supplier suppliers [not null]
+
+  indexes {
+    (purchasingRequestId, supplierId) [unique]
+  }
+}
+
+Table purchasing_requests {
+  id String [pk]
+  requestingUserId String [not null]
+  statusId String [not null]
+  expectedDateStart DateTime
+  expectedDateEnd DateTime
+  priorityId String [not null]
+  referenceCode Int [increment, not null]
+  itemId String [not null]
+  title String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  status request_statuses [not null]
+  requestingUser users [not null]
+  item items [not null]
+  requestInventorySnapshots request_inventory_snapshots [not null]
+  priority request_priorities [not null]
+  bprs request_bprs [not null]
+  pos request_purchase_orders [not null]
+  notionRequests notion_purchasing_requests [not null]
+  notionBprs notion_bprs [not null]
+  generalRequestLink general_request_links [not null]
+  supplierTags purchasing_request_supplier_tags [not null]
+  RequestNote request_notes [not null]
+}
+
+Table request_bprs {
+  id String [pk]
+  requestId String [not null]
+  bprId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  request purchasing_requests [not null]
+  bpr batch_production_records [not null]
+}
+
+Table request_inventory_snapshots {
+  id String [pk]
+  requestId String [not null]
+  objectName String [not null]
+  onHandQuantity Float [not null]
+  warningShown Boolean [not null]
+  warningOverridden Boolean [not null]
+  allocatedQuantity Float [not null]
+  availableQuantity Float [not null]
+  allocatedBprIds String[] [not null]
+  pendingPoIds String[] [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  request purchasing_requests [not null]
+}
+
+Table request_note_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  requestNotes request_notes [not null]
+}
+
+Table request_notes {
+  id String [pk]
+  requestId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  request purchasing_requests [not null]
+  user users [not null]
+  noteType request_note_types [not null]
+}
+
+Table request_priorities {
+  id String [pk]
+  name String [not null]
+  bgColor String [not null, default: '#c4b5fd']
+  textColor String [not null, default: '#FFFFFF']
+  description String [not null]
+  sequence Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchasingRequests purchasing_requests [not null]
+}
+
+Table request_purchase_orders {
+  id String [pk]
+  requestId String [not null]
+  poId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  request purchasing_requests [not null]
+  po purchase_orders [not null]
+}
+
+Table request_statuses {
+  id String [pk]
+  name String [not null]
+  bgColor String [not null, default: '#c4b5fd']
+  textColor String [not null, default: '#FFFFFF']
+  description String [not null]
+  sequence Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  requests purchasing_requests [not null]
+}
+
+Table supplier_aliases {
+  id String [pk]
+  aliasId String [not null]
+  supplierId String [not null]
+  supplier suppliers [not null]
+  alias aliases [not null]
+}
+
+Table supplier_contact_notes {
+  id String [pk]
+  supplierContactId String [not null]
+  content String [not null]
+  supplierContact supplier_contacts [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table supplier_contacts {
+  id String [pk]
+  supplierId String [not null]
+  firstName String [not null]
+  lastName String
+  email String
+  phone String
+  type String
+  supplier suppliers [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  supplierContactNotes supplier_contact_notes [not null]
+}
+
+Table supplier_notes {
+  id String [pk]
+  supplierId String [not null]
+  content String [not null]
+  supplier suppliers [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table supplier_payment_methods {
+  id String [pk]
+  supplierId String [not null]
+  paymentMethodId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  supplier suppliers [not null]
+  paymentMethod payment_methods [not null]
+}
+
+Table suppliers {
+  id String [pk]
+  name String [not null]
+  addressStreet1 String [not null]
+  addressStreet2 String
+  addressCity String [not null]
+  addressState String [not null]
+  addressZip String [not null]
+  phone String [not null]
+  purchaseOrders purchase_orders [not null]
+  supplierAlias supplier_aliases [not null]
+  supplierNotes supplier_notes [not null]
+  SupplierPaymentMethod supplier_payment_methods [not null]
+  genericUnitConversionFactors generic_unit_conversion_factors [not null]
+  poSupplierNotes po_supplier_notes [not null]
+  discreteUnitOfMeasurementConversions discrete_unit_of_measurement_conversions [not null]
+  PurchasingRequestSupplierTag purchasing_request_supplier_tags [not null]
+  SupplierContact supplier_contacts [not null]
+}
+
+Table micro_submissions {
+  id String [pk]
+  bprId String [not null]
+  submissionNumber Int [increment, not null]
+  bpr batch_production_records [not null]
+}
+
+Table qc_audit_logs {
+  id String [pk]
+  qcRecordId String [not null]
+  editedById String [not null]
+  action String [not null]
+  editedTableName String [not null]
+  recordId String [not null]
+  fieldName String [not null]
+  oldValue String [not null]
+  newValue String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qcRecord qc_records [not null]
+  editedBy users [not null]
+}
+
+Table qc_data_types {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  parameterInputDefinitions qc_parameter_input_definitions [not null]
+  parameters qc_parameters [not null]
+}
+
+Table qc_examination_types {
+  id String [pk]
+  name String [not null]
+  abbreviation String [not null]
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qcRecords qc_records [not null]
+  qcParameterGroups qc_parameter_groups [not null]
+}
+
+Table qc_group_parameters {
+  id String [pk]
+  groupId String [not null]
+  parameterId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  group qc_parameter_groups [not null]
+  parameter qc_parameters [not null]
+}
+
+Table qc_item_parameters {
+  id String [pk]
+  itemId String [not null]
+  parameterId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  item items [not null]
+  parameter qc_parameters [not null]
+  specifications qc_item_specifications [not null]
+  results qc_parameter_results [not null]
+
+  indexes {
+    (itemId, parameterId) [unique]
+  }
+}
+
+Table qc_item_specification_inputs {
+  id String [pk]
+  parameterInputDefinitionId String [not null]
+  itemSpecificationId String [not null]
+  value String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  parameterInputDefinition qc_parameter_input_definitions [not null]
+  itemSpecification qc_item_specifications [not null]
+}
+
+Table qc_item_specifications {
+  id String [pk]
+  itemParameterId String [not null]
+  valueA String [not null]
+  valueB String
+  specificationType String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  itemParameter qc_item_parameters [not null]
+  itemSpecificationInputs qc_item_specification_inputs [not null]
+}
+
+Table qc_parameter_groups {
+  id String [pk]
+  name String [not null]
+  abbreviation String [not null]
+  examinationTypeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  examinationType qc_examination_types [not null]
+  parameters qc_group_parameters [not null]
+}
+
+Table qc_parameter_input_definitions {
+  id String [pk]
+  parameterId String [not null]
+  name String [not null]
+  label String [not null]
+  dataTypeId String [not null]
+  required Boolean [not null]
+  unit String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  parameter qc_parameters [not null]
+  dataType qc_data_types [not null]
+  itemSpecificationInputs qc_item_specification_inputs [not null]
+  parameterInputDefinitonResults qc_parameter_input_results [not null]
+}
+
+Table qc_parameter_input_results {
+  id String [pk]
+  qcResultId String [not null]
+  parameterInputDefinitionId String [not null]
+  value String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  result qc_parameter_results [not null]
+  parameterInputDefinition qc_parameter_input_definitions [not null]
+}
+
+Table qc_parameter_results {
+  id String [pk]
+  qcRecordId String [not null]
+  qcItemParameterId String [not null]
+  value String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qcRecord qc_records [not null]
+  qcItemParameter qc_item_parameters [not null]
+  parameterInputResults qc_parameter_input_results [not null]
+  QcParameter qc_parameters
+  qcParameterId String
+
+  indexes {
+    (qcRecordId, qcItemParameterId) [unique]
+  }
+}
+
+Table qc_parameters {
+  id String [pk]
+  name String [not null]
+  uom String [not null]
+  dataTypeId String [not null]
+  description String
+  isWetParameter Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  dataType qc_data_types [not null]
+  qcItemParameters qc_item_parameters [not null]
+  qcParameterResults qc_parameter_results [not null]
+  qcTemplateParameters qc_template_parameters [not null]
+  qcGroupParameters qc_group_parameters [not null]
+  inputDefinitions qc_parameter_input_definitions [not null]
+}
+
+Table qc_record_file_types {
+  id String [pk]
+  name String [not null]
+  abbreviation String
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qcRecordFiles qc_record_files [not null]
+}
+
+Table qc_record_files {
+  id String [pk]
+  fileTypeId String [not null]
+  fileId String [not null]
+  qcRecordId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  fileType qc_record_file_types [not null]
+  file files [not null]
+  qcRecord qc_records [not null]
+}
+
+Table qc_record_note_types {
+  id String [pk]
+  name String [not null]
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qcRecordNotes qc_record_notes [not null]
+}
+
+Table qc_record_notes {
+  id String [pk]
+  recordId String [not null]
+  noteTypeId String [not null]
+  userId String [not null]
+  content String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  record qc_records [not null]
+  user users [not null]
+  noteType qc_record_note_types [not null]
+}
+
+Table qc_record_statuses {
+  id String [pk]
+  name String [not null]
+  sequence Int [unique, not null]
+  description String
+  bgColor String [not null]
+  textColor String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qcRecords qc_records [not null]
+}
+
+Table qc_records {
+  id String [pk]
+  referenceCode Int [increment, not null]
+  conductedById String [not null]
+  statusId String [not null]
+  examinationTypeId String [not null]
+  examinedLotId String [not null]
+  linkedBprId String
+  linkedPurchaseOrderItemId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  status qc_record_statuses [not null]
+  conductedBy users [not null]
+  examinedLot lots [not null]
+  linkedPurchaseOrderItem purchase_order_items
+  linkedBpr batch_production_records
+  examinationType qc_examination_types [not null]
+  qcParameterResults qc_parameter_results [not null]
+  qcRecordNotes qc_record_notes [not null]
+  qcAuditLogs qc_audit_logs [not null]
+  QcRecordFile qc_record_files [not null]
+}
+
+Table qc_template_parameters {
+  id String [pk]
+  templateId String [not null]
+  parameterId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  template qc_templates [not null]
+  parameter qc_parameters [not null]
+}
+
+Table qc_templates {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  parameters qc_template_parameters [not null]
+}
+
+Table accounts {
+  id String [pk]
+  userId String [not null]
+  type String [not null]
+  provider String [not null]
+  providerAccountId String [not null]
+  refresh_token String
+  access_token String
+  expires_at Int
+  token_type String
+  scope String
+  id_token String
+  session_state String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user users [not null]
+
+  indexes {
+    (provider, providerAccountId) [unique]
+  }
+}
+
+Table authenticators {
+  id String [pk]
+  credentialID String [unique, not null]
+  userId String [not null]
+  providerAccountId String [not null]
+  credentialPublicKey String [not null]
+  counter Int [not null]
+  credentialDeviceType String [not null]
+  credentialBackedUp Boolean [not null]
+  transports String
+  user users [not null]
+}
+
+Table sessions {
+  id String [pk]
+  sessionToken String [unique, not null]
+  userId String [not null]
+  expires DateTime [not null]
+  user users [not null]
+}
+
+Table user_config_groups {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  userConfigs user_configs [not null]
+}
+
+Table user_configs {
+  id String [pk]
+  userId String [not null]
+  configGroupId String [not null]
+  name String [not null]
+  value String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user users [not null]
+  configGroup user_config_groups [not null]
+}
+
+Table user_role_assignments {
+  id String [pk]
+  userId String [not null]
+  userRoleId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user users [not null]
+  userRole user_roles [not null]
+}
+
+Table user_roles {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  StepActionableType step_actionable_types [not null]
+  UserRoleAssignment user_role_assignments [not null]
+}
+
+Table users {
+  id String [pk]
+  name String
+  email String [unique]
+  emailVerified DateTime
+  image String
+  accounts accounts [not null]
+  sessions sessions [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  purchaseOrders purchase_orders [not null]
+  transactions transactions [not null]
+  purchaseOrderNotes purchase_order_notes [not null]
+  activityLogs activity_logs [not null]
+  userConfigs user_configs [not null]
+  purchasingRequests purchasing_requests [not null]
+  requestNotes request_notes [not null]
+  auditRequests audit_requests [not null]
+  auditRequestNotes audit_request_notes [not null]
+  pricingExaminations pricing_examinations [not null]
+  qcRecords qc_records [not null]
+  qcRecordNotes qc_record_notes [not null]
+  qcAuditLog qc_audit_logs [not null]
+  files files [not null]
+  poAccountingAuditLogd po_accounting_audit_logs [not null]
+  generalRequests general_requests [not null]
+  generalRequestNotes general_request_notes [not null]
+  PoAccountingNote po_accounting_notes [not null]
+  PricingExaminationNote pricing_examination_notes [not null]
+  DiscrepancyAuditItemNote discrepancy_audit_item_notes [not null]
+  InventoryAudit inventory_audits [not null]
+  LotNote lot_notes [not null]
+  ItemNote item_notes [not null]
+  BprNote bpr_notes [not null]
+  BprStaging bpr_stagings [not null]
+  BprStagingVerification bpr_staging_verifications [not null]
+  BprStepActionableCompletion bpr_step_action_completions [not null]
+  BprStepActionableVerification bpr_step_actionable_verifications [not null]
+  PoPublicNote po_public_notes [not null]
+  PoSupplierNote po_supplier_notes [not null]
+  Authenticator authenticators [not null]
+  UserRoleAssignment user_role_assignments [not null]
+}
+
+Table verification_tokens {
+  identifier String [not null]
+  token String [not null]
+  expires DateTime [not null]
+
+  indexes {
+    (identifier, token) [pk]
+  }
+}
+
+Ref: bom_pricing_data_archives.producedPricingDataArchiveId > produced_pricing_data_archives.id
+
+Ref: bom_pricing_data_archives.examinationId > pricing_examinations.id
+
+Ref: bom_pricing_data_archives.bomId > bill_of_materials.id
+
+Ref: bom_pricing_data_archives.itemId > items.id
+
+Ref: bom_pricing_data_archives.upcomingPriceUomId > units_of_measurement.id
+
+Ref: consumer_containers_archives.containerItemId > items.id
+
+Ref: consumer_containers_archives.examinationId > pricing_examinations.id
+
+Ref: consumer_containers_archives.currentConsumerContaineId > consumer_containers.id
+
+Ref: consumer_containers.containerItemId > items.id
+
+Ref: finished_product_archives.filledWithItemId > items.id
+
+Ref: finished_product_archives.fillUomId > units_of_measurement.id
+
+Ref: finished_product_archives.pricingExaminationId > pricing_examinations.id
+
+Ref: finished_product_archives.currentFinishedProductId > finished_products.id
+
+Ref: finished_product_auxiliaries.apartOfFinishedProductId > finished_products.id
+
+Ref: finished_product_auxiliaries.auxiliaryItemId > items.id
+
+Ref: finished_product_auxiliaries.finishedProductArchiveId > finished_product_archives.id
+
+Ref: finished_product_auxiliary_archives.apartOfFinishedProductId > finished_products.id
+
+Ref: finished_product_auxiliary_archives.auxiliaryItemId > items.id
+
+Ref: finished_product_auxiliary_archives.ipdUpcomingPriceUomId > units_of_measurement.id
+
+Ref: finished_products.filledWithItemId > items.id
+
+Ref: finished_products.fillUomId > units_of_measurement.id
+
+Ref: finished_products.recordStatusId > record_statuses.id
+
+Ref: item_consumer_container_archives.consumerContainerArchiveId > consumer_containers_archives.id
+
+Ref: item_consumer_container_archives.uomId > units_of_measurement.id
+
+Ref: item_consumer_container_archives.examinationId > pricing_examinations.id
+
+Ref: item_consumer_container_archives.currentItemConsumerContainerId > item_consumer_containers.id
+
+Ref: item_consumer_containers.itemId > items.id
+
+Ref: item_consumer_containers.consumerContainerId > consumer_containers.id
+
+Ref: item_consumer_containers.uomId > units_of_measurement.id
+
+Ref: item_consumer_containers.recordStatusId > record_statuses.id
+
+Ref: item_consumer_containers.consumerContainerArchiveId > consumer_containers_archives.id
+
+Ref: item_cost_determinations.itemId > items.id
+
+Ref: item_cost_determinations.itemPricingDataId > item_pricing_data.id
+
+Ref: item_pricing_data.itemId > items.id
+
+Ref: item_pricing_data.upcomingPriceUomId > units_of_measurement.id
+
+Ref: item_pricing_data_archives.upcomingPriceUomId > units_of_measurement.id
+
+Ref: item_pricing_data_archives.examinationId > pricing_examinations.id
+
+Ref: item_pricing_data_archives.currentItemPricingDataId > item_pricing_data.id
+
+Ref: po_accounting_audit_logs.userId > users.id
+
+Ref: po_accounting_audit_logs.poId > purchase_orders.id
+
+Ref: po_accounting_details.statusId > po_accounting_statuses.id
+
+Ref: po_accounting_details.purchaseOrderId - purchase_orders.id
+
+Ref: po_accounting_details.paymentMethodId > payment_methods.id
+
+Ref: po_accounting_files.fileTypeId > po_accounting_file_types.id
+
+Ref: po_accounting_files.fileId > files.id
+
+Ref: po_accounting_files.purchaseOrderId > purchase_orders.id
+
+Ref: po_accounting_notes.purchaseOrderId > purchase_orders.id
+
+Ref: po_accounting_notes.userId > users.id
+
+Ref: po_accounting_notes.noteTypeId > po_accounting_note_types.id
+
+Ref: pricing_examination_notes.pricingExaminationId > pricing_examinations.id
+
+Ref: pricing_examination_notes.userId > users.id
+
+Ref: pricing_examination_notes.noteTypeId > pricing_examination_note_types.id
+
+Ref: pricing_examination_validations.examinationId > pricing_examinations.id
+
+Ref: pricing_examinations.examinedItemId > items.id
+
+Ref: pricing_examinations.userId > users.id
+
+Ref: pricing_queue.itemId > items.id
+
+Ref: pricing_template_auxiliary.apartOfPricingTemplateFinishedProductId > pricing_template_finished_products.id
+
+Ref: pricing_template_auxiliary.auxiliaryItemId > items.id
+
+Ref: pricing_template_finished_products.apartOfPricingTemplateId > pricing_template.id
+
+Ref: pricing_template_finished_products.fillUomId > units_of_measurement.id
+
+Ref: pricing_template.forItemTypeId > item_types.id
+
+Ref: produced_pricing_data_archives.examinationId > pricing_examinations.id
+
+Ref: produced_pricing_data_archives.mbprId > master_batch_production_records.id
+
+Ref: produced_pricing_data_archives.batchSizeId > batch_sizes.id
+
+Ref: produced_pricing_data_archives.compoundingVesselId > compounding_vessels.id
+
+Ref: configs.configGroupId > app_config_groups.id
+
+Ref: files.uploadedById > users.id
+
+Ref: activity_logs.userId > users.id
+
+Ref: equipment.equipmentTypeId > equipment_types.id
+
+Ref: audit_request_notes.requestId > audit_requests.id
+
+Ref: audit_request_notes.userId > users.id
+
+Ref: audit_request_notes.noteTypeId > audit_request_note_types.id
+
+Ref: audit_requests.requestById > users.id
+
+Ref: audit_requests.itemId > items.id
+
+Ref: audit_requests.inventoryAuditId > inventory_audits.id
+
+Ref: audit_requests.statusId > audit_request_statuses.id
+
+Ref: discrepancy_audit_item_notes.auditItemId > discrepancy_audit_items.id
+
+Ref: discrepancy_audit_item_notes.userId > users.id
+
+Ref: discrepancy_audit_item_notes.noteTypeId > discrepancy_audit_item_note_types.id
+
+Ref: discrepancy_audit_item_transactions.auditItemId > discrepancy_audit_items.id
+
+Ref: discrepancy_audit_item_transactions.transactionId - transactions.id
+
+Ref: discrepancy_audit_items.itemId > items.id
+
+Ref: discrepancy_audit_items.statusId > discrepancy_audit_item_statuses.id
+
+Ref: discrepancy_audit_items.discrepancyAuditId > discrepancy_audits.id
+
+Ref: discrepancy_audit_items.quantitiesUomId > units_of_measurement.id
+
+Ref: discrepancy_audits.itemTypeId > item_types.id
+
+Ref: discrepancy_audits.statusId > discrepancy_audit_statuses.id
+
+Ref: discrete_unit_of_measurement_conversions.uomAId > units_of_measurement.id
+
+Ref: discrete_unit_of_measurement_conversions.uomBId > units_of_measurement.id
+
+Ref: discrete_unit_of_measurement_conversions.supplierId > suppliers.id
+
+Ref: discrete_unit_of_measurement_conversions.itemId > items.id
+
+Ref: generic_unit_conversion_factors.itemId > items.id
+
+Ref: generic_unit_conversion_factors.supplierId > suppliers.id
+
+Ref: generic_unit_conversion_factors.convertToUomId > units_of_measurement.id
+
+Ref: inventory_audit_transactions.transactionId - transactions.id
+
+Ref: inventory_audit_transactions.inventoryAuditId > inventory_audits.id
+
+Ref: inventory_audits.itemId > items.id
+
+Ref: inventory_audits.conductedById > users.id
+
+Ref: lot_notes.lotId > lots.id
+
+Ref: lot_notes.userId > users.id
+
+Ref: lot_notes.noteTypeId > lot_note_types.id
+
+Ref: lot_origins.purchaseOrderId > purchase_orders.id
+
+Ref: lot_origins.bprId - batch_production_records.id
+
+Ref: lot_origins.lotId - lots.id
+
+Ref: lots.itemId > items.id
+
+Ref: lots.uomId > units_of_measurement.id
+
+Ref: transactions.transactionTypeId > transaction_types.id
+
+Ref: transactions.userId > users.id
+
+Ref: transactions.uomId > units_of_measurement.id
+
+Ref: transactions.lotId > lots.id
+
+Ref: unit_of_measurement_conversions.uomAId > units_of_measurement.id
+
+Ref: unit_of_measurement_conversions.uomBId > units_of_measurement.id
+
+Ref: aliases.aliasTypeId > alias_types.id
+
+Ref: aliases.itemId > items.id
+
+Ref: item_files.fileTypeId > item_file_types.id
+
+Ref: item_files.fileId > files.id
+
+Ref: item_files.itemId > items.id
+
+Ref: item_notes.itemId > items.id
+
+Ref: item_notes.userId > users.id
+
+Ref: item_notes.noteTypeId > item_note_types.id
+
+Ref: item_type_configs.itemTypeId - item_types.id
+
+Ref: items.itemTypeId > item_types.id
+
+Ref: items.procurementTypeId > procurement_types.id
+
+Ref: items.inventoryTypeId > inventory_types.id
+
+Ref: items.recordStatusId > record_statuses.id
+
+Ref: items.inventoryUomId > units_of_measurement.id
+
+Ref: notion_bprs.lumexiaBprId > batch_production_records.id
+
+Ref: notion_bprs.purchasingRequestId > purchasing_requests.id
+
+Ref: notion_purchase_orders.lumexiaPoId > purchase_orders.id
+
+Ref: notion_purchasing_requests.lumexiaPurchasingRequestId > purchasing_requests.id
+
+Ref: batch_production_records.mbprId > master_batch_production_records.id
+
+Ref: batch_production_records.bprStatusId > bpr_statuses.id
+
+Ref: batch_production_records.batchSizeId > batch_sizes.id
+
+Ref: batch_size_compounding_vessels.compoundingVesselId > compounding_vessels.id
+
+Ref: batch_size_compounding_vessels.batchSizeId > batch_sizes.id
+
+Ref: batch_sizes.mbprId > master_batch_production_records.id
+
+Ref: batch_sizes.uomId > units_of_measurement.id
+
+Ref: batch_sizes.recordStatusId > record_statuses.id
+
+Ref: batch_steps.mbprId > master_batch_production_records.id
+
+Ref: bill_of_materials.itemId > items.id
+
+Ref: bill_of_materials.mbprId > master_batch_production_records.id
+
+Ref: bill_of_materials.stepId > batch_steps.id
+
+Ref: bpr_batch_steps.batchStepId > batch_steps.id
+
+Ref: bpr_batch_steps.bprId > batch_production_records.id
+
+Ref: bpr_batch_steps.statusId > bpr_batch_step_statuses.id
+
+Ref: bpr_bills_of_materials.bprId > batch_production_records.id
+
+Ref: bpr_bills_of_materials.bomId > bill_of_materials.id
+
+Ref: bpr_bills_of_materials.uomId > units_of_measurement.id
+
+Ref: bpr_bills_of_materials.statusId > bpr_staging_statuses.id
+
+Ref: bpr_notes.bprId > batch_production_records.id
+
+Ref: bpr_notes.userId > users.id
+
+Ref: bpr_notes.noteTypeId > bpr_note_types.id
+
+Ref: bpr_stagings.bprBomId > bpr_bills_of_materials.id
+
+Ref: bpr_stagings.lotId > lots.id
+
+Ref: bpr_stagings.pulledByUserId > users.id
+
+Ref: bpr_stagings.uomId > units_of_measurement.id
+
+Ref: bpr_stagings.bprStagingStatusId > bpr_staging_statuses.id
+
+Ref: bpr_staging_consumptions.bprStagingId - bpr_stagings.id
+
+Ref: bpr_staging_consumptions.transactionId - transactions.id
+
+Ref: bpr_staging_files.fileId > files.id
+
+Ref: bpr_staging_files.bprStagingId > bpr_stagings.id
+
+Ref: bpr_staging_verifications.userId > users.id
+
+Ref: bpr_staging_verifications.bprStagingId > bpr_stagings.id
+
+Ref: bpr_step_actionables.bprBatchStepId > bpr_batch_steps.id
+
+Ref: bpr_step_actionables.batchStepActionableId > step_actionables.id
+
+Ref: bpr_step_actionables.statusId > bpr_step_actionable_statuses.id
+
+Ref: bpr_step_action_completions.completedByUserId > users.id
+
+Ref: bpr_step_action_completions.bprStepActionableId > bpr_step_actionables.id
+
+Ref: bpr_step_actionable_verifications.completedByUserId > users.id
+
+Ref: bpr_step_actionable_verifications.bprStepActionableId > bpr_step_actionables.id
+
+Ref: bpr_timer_entries.timerTypeId > bpr_timer_types.id
+
+Ref: bpr_timer_entries.bprId > batch_production_records.id
+
+Ref: compounding_vessels.equipmentId > equipment.id
+
+Ref: master_batch_production_records.producesItemId > items.id
+
+Ref: master_batch_production_records.recordStatusId > record_statuses.id
+
+Ref: step_actionables.stepId > batch_steps.id
+
+Ref: step_actionables.actionableTypeId > step_actionable_types.id
+
+Ref: step_actionable_types.userRoleId > user_roles.id
+
+Ref: step_addendums.stepId > batch_steps.id
+
+Ref: step_addendums.addendumTypeId > step_addendum_types.id
+
+Ref: step_equipment.stepId > batch_steps.id
+
+Ref: step_equipment.equipmentId > equipment.id
+
+Ref: step_instructions.stepId > batch_steps.id
+
+Ref: general_request_files.fileId > files.id
+
+Ref: general_request_files.generalRequestId > general_requests.id
+
+Ref: general_request_links.generalRequestId > general_requests.id
+
+Ref: general_request_links.purchasingRequestId > purchasing_requests.id
+
+Ref: general_request_notes.requestId > general_requests.id
+
+Ref: general_request_notes.userId > users.id
+
+Ref: general_request_notes.noteTypeId > general_request_note_types.id
+
+Ref: general_requests.statusId > general_request_statuses.id
+
+Ref: general_requests.userId > users.id
+
+Ref: po_public_notes.purchaseOrderId > purchase_orders.id
+
+Ref: po_public_notes.userId > users.id
+
+Ref: po_public_notes.noteTypeId > po_public_note_types.id
+
+Ref: po_supplier_notes.supplierId > suppliers.id
+
+Ref: po_supplier_notes.userId > users.id
+
+Ref: po_supplier_notes.noteTypeId > po_supplier_note_types.id
+
+Ref: purchase_order_item_details.poItemId > purchase_order_items.id
+
+Ref: purchase_order_items.purchaseOrderId > purchase_orders.id
+
+Ref: purchase_order_items.itemId > items.id
+
+Ref: purchase_order_items.uomId > units_of_measurement.id
+
+Ref: purchase_order_items.purchaseOrderStatusId > purchase_order_status.id
+
+Ref: purchase_order_items.lotId - lots.id
+
+Ref: purchase_order_notes.userId > users.id
+
+Ref: purchase_order_notes.purchaseOrderId > purchase_orders.id
+
+Ref: purchase_order_notes.noteTypeId > purchase_order_note_types.id
+
+Ref: purchase_orders.supplierId > suppliers.id
+
+Ref: purchase_orders.submittingUserId > users.id
+
+Ref: purchase_orders.recordStatusId > record_statuses.id
+
+Ref: purchase_orders.paymentMethodId > payment_methods.id
+
+Ref: purchase_orders.statusId > purchase_order_status.id
+
+Ref: purchasing_request_supplier_tags.purchasingRequestId > purchasing_requests.id
+
+Ref: purchasing_request_supplier_tags.supplierId > suppliers.id
+
+Ref: purchasing_requests.statusId > request_statuses.id
+
+Ref: purchasing_requests.requestingUserId > users.id
+
+Ref: purchasing_requests.itemId > items.id
+
+Ref: purchasing_requests.priorityId > request_priorities.id
+
+Ref: request_bprs.requestId > purchasing_requests.id
+
+Ref: request_bprs.bprId > batch_production_records.id
+
+Ref: request_inventory_snapshots.requestId > purchasing_requests.id
+
+Ref: request_notes.requestId > purchasing_requests.id
+
+Ref: request_notes.userId > users.id
+
+Ref: request_notes.noteTypeId > request_note_types.id
+
+Ref: request_purchase_orders.requestId > purchasing_requests.id
+
+Ref: request_purchase_orders.poId > purchase_orders.id
+
+Ref: supplier_aliases.supplierId > suppliers.id
+
+Ref: supplier_aliases.aliasId > aliases.id
+
+Ref: supplier_contact_notes.supplierContactId > supplier_contacts.id [delete: Cascade]
+
+Ref: supplier_contacts.supplierId > suppliers.id
+
+Ref: supplier_notes.supplierId > suppliers.id
+
+Ref: supplier_payment_methods.supplierId > suppliers.id
+
+Ref: supplier_payment_methods.paymentMethodId > payment_methods.id
+
+Ref: micro_submissions.bprId > batch_production_records.id
+
+Ref: qc_audit_logs.qcRecordId > qc_records.id
+
+Ref: qc_audit_logs.editedById > users.id
+
+Ref: qc_group_parameters.groupId > qc_parameter_groups.id
+
+Ref: qc_group_parameters.parameterId > qc_parameters.id
+
+Ref: qc_item_parameters.itemId > items.id
+
+Ref: qc_item_parameters.parameterId > qc_parameters.id
+
+Ref: qc_item_specification_inputs.parameterInputDefinitionId > qc_parameter_input_definitions.id
+
+Ref: qc_item_specification_inputs.itemSpecificationId > qc_item_specifications.id
+
+Ref: qc_item_specifications.itemParameterId > qc_item_parameters.id
+
+Ref: qc_parameter_groups.examinationTypeId > qc_examination_types.id
+
+Ref: qc_parameter_input_definitions.parameterId > qc_parameters.id
+
+Ref: qc_parameter_input_definitions.dataTypeId > qc_data_types.id
+
+Ref: qc_parameter_input_results.qcResultId > qc_parameter_results.id
+
+Ref: qc_parameter_input_results.parameterInputDefinitionId > qc_parameter_input_definitions.id
+
+Ref: qc_parameter_results.qcRecordId > qc_records.id
+
+Ref: qc_parameter_results.qcItemParameterId > qc_item_parameters.id
+
+Ref: qc_parameter_results.qcParameterId > qc_parameters.id
+
+Ref: qc_parameters.dataTypeId > qc_data_types.id
+
+Ref: qc_record_files.fileTypeId > qc_record_file_types.id
+
+Ref: qc_record_files.fileId > files.id
+
+Ref: qc_record_files.qcRecordId > qc_records.id
+
+Ref: qc_record_notes.recordId > qc_records.id
+
+Ref: qc_record_notes.userId > users.id
+
+Ref: qc_record_notes.noteTypeId > qc_record_note_types.id
+
+Ref: qc_records.statusId > qc_record_statuses.id
+
+Ref: qc_records.conductedById > users.id
+
+Ref: qc_records.examinedLotId > lots.id
+
+Ref: qc_records.linkedPurchaseOrderItemId > purchase_order_items.id
+
+Ref: qc_records.linkedBprId > batch_production_records.id
+
+Ref: qc_records.examinationTypeId > qc_examination_types.id
+
+Ref: qc_template_parameters.templateId > qc_templates.id
+
+Ref: qc_template_parameters.parameterId > qc_parameters.id
+
+Ref: accounts.userId > users.id [delete: Cascade]
+
+Ref: authenticators.userId > users.id [delete: Cascade]
+
+Ref: sessions.userId > users.id [delete: Cascade]
+
+Ref: user_configs.userId > users.id
+
+Ref: user_configs.configGroupId > user_config_groups.id
+
+Ref: user_role_assignments.userId > users.id
+
+Ref: user_role_assignments.userRoleId > user_roles.id
