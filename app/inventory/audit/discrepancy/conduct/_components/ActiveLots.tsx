@@ -10,6 +10,7 @@ import ConfirmationButton from "@/components/Buttons/ConfirmationButton"
 import { handleZeroDepletions } from "../_actions/handleZeroDepletions"
 import { handleDiscrepancyAuditAdjustment } from "../_actions/handleDiscrepencyAuditAdjustment"
 import { Panels } from "@/components/Panels"
+import GenerateLotButton from "./GenerateLotButton"
 
 
 const ActiveLots = () => {
@@ -91,12 +92,16 @@ const ActiveLots = () => {
 
           <div className="flex flex-col gap-y-2 bg-lilac-100  rounded-xl items-center p-8 ">
 
-            <h2 className="font-poppins text-md uppercase text-base-content font-medium">Bulk Actions</h2>
+            <h2 className="font-poppins text-md uppercase text-base-content font-medium">Actions</h2>
 
 
             {inactiveLotsTotal !== 0 && <ConfirmationButton onConfirmation={() => handleZeroAllDepletions()} label="Zero All Depleted" />}
 
             <ConfirmationButton onConfirmation={() => onDepleteAll()} label="Deplete All" />
+
+
+            <GenerateLotButton />
+
 
           </div>
 

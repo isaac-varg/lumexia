@@ -70,7 +70,7 @@ const ActionsPanel = () => {
 
       <div className="grid grid-cols-1 gap-4">
 
-        {(item && mode === 'item') && <button className="btn btn-success btn-lg" onClick={() => handleCompleteItem()}>Complete <span className="italic">{item.item.name}</span> Audit</button>}
+        {(item && mode === 'item') && <button className="btn btn-success btn-lg" onClick={() => handleCompleteItem()}>Complete Audit For Item</button>}
         <button className="btn btn-lg" onClick={() => handleModeClick()} >{mode === 'item' ? 'View Audit Progress' : 'Conduct Audit'}</button>
 
         {mode === 'view' && <button onClick={() => handleDiscrepancyAuditClose()} className="btn btn-error" >Close Entire Discrepancy Audit</button>}
