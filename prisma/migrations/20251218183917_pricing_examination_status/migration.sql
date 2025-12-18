@@ -8,7 +8,7 @@
 -- AlterTable
 ALTER TABLE "pricing_examinations" DROP COLUMN "approved",
 DROP COLUMN "rejected",
-ADD COLUMN     "status_id" TEXT NOT NULL DEFAULT '1';
+ADD COLUMN     "status_id" TEXT;
 
 -- CreateTable
 CREATE TABLE "pricing_examination_statuses" (
@@ -28,4 +28,4 @@ CREATE TABLE "pricing_examination_statuses" (
 CREATE UNIQUE INDEX "pricing_examination_statuses_sequence_key" ON "pricing_examination_statuses"("sequence");
 
 -- AddForeignKey
-ALTER TABLE "pricing_examinations" ADD CONSTRAINT "pricing_examinations_status_id_fkey" FOREIGN KEY ("status_id") REFERENCES "pricing_examination_statuses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "pricing_examinations" ADD CONSTRAINT "pricing_examinations_status_id_fkey" FOREIGN KEY ("status_id") REFERENCES "pricing_examination_statuses"("id") ON DELETE SET NULL ON UPDATE CASCADE;

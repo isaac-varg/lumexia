@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Dec 18 2025 09:27:54 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Dec 18 2025 10:35:47 GMT-0800 (Pacific Standard Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -435,14 +435,14 @@ model PricingExaminationValidation {
 
 model PricingExamination {
   id                              String                         @id @default(uuid())
-  statusId                        String                         @default("1") @map("status_id")
+  statusId                        String?                        @map("status_id")
   examinedItemId                  String                         @map("examined_item_id")
   userId                          String                         @map("user_id")
   createdAt                       DateTime                       @default(now()) @map("created_at")
   updatedAt                       DateTime                       @updatedAt @map("updated_at")
   examinedItem                    Item                           @relation(fields: [examinedItemId], references: [id])
   user                            User                           @relation(fields: [userId], references: [id])
-  status                          PricingExaminationStatus       @relation(fields: [statusId], references: [id])
+  status                          PricingExaminationStatus?      @relation(fields: [statusId], references: [id])
   itemPricingDataArchive          ItemPricingDataArchive[]
   consumerContainerArchive        ConsumerContainerArchive[]
   filledConsumerContainerArchives ItemConsumerContainerArchive[]
