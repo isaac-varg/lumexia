@@ -1,6 +1,6 @@
 model PricingExamination {
     id                              String                         @id @default(uuid())
-    statusId                        String                         @default("1") @map("status_id")
+    statusId                        String                         @default("ba5b8cdb-7307-465f-914f-24666db36add") @map("status_id")
     examinedItemId                  String                         @map("examined_item_id")
     userId                          String                         @map("user_id")
     createdAt                       DateTime                       @default(now()) @map("created_at")
