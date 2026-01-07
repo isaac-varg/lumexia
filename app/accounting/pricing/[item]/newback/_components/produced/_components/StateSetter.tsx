@@ -4,58 +4,58 @@ import { ActiveMbpr } from "@/actions/production/getActiveMbpr"
 import { MbprByItem } from "@/actions/production/getMbprsByItem"
 import { BatchSize } from "@/actions/production/mbpr/batchSizes/getAllByMbpr"
 import useDialog from "@/hooks/useDialog"
-import { usePricingProducedActions, usePricingProducedSelection } from "@/store/pricingProducedSlice"
+import { usePricingProducedActions, usePricingProducedSelection } from "@/store/pricingProducedSliceback"
 import { useEffect } from "react"
 
 type SetterProps = {
-    activeMbpr: ActiveMbpr
-    batchSizes: BatchSize[]
+  activeMbpr: ActiveMbpr
+  batchSizes: BatchSize[]
 }
 
 const StateSetter = ({
-    activeMbpr,
-    batchSizes,
+  activeMbpr,
+  batchSizes,
 }: SetterProps) => {
 
-    const {
-        setActiveMbpr,
-        setBatchSizes,
-        getProducedPricingSummations,
-        getFinishedProducts,
-    } = usePricingProducedActions()
-    const { activeBatchSize, producedPricingSummations } = usePricingProducedSelection()
-    const { showDialog } = useDialog()
+  const {
+    setActiveMbpr,
+    setBatchSizes,
+    getProducedPricingSummations,
+    getFinishedProducts,
+  } = usePricingProducedActions()
+  const { activeBatchSize, producedPricingSummations } = usePricingProducedSelection()
+  const { showDialog } = useDialog()
 
-    useEffect(() => {
-        setActiveMbpr(activeMbpr);
-        setBatchSizes(batchSizes);
+  useEffect(() => {
+    setActiveMbpr(activeMbpr);
+    setBatchSizes(batchSizes);
 
-    }, [activeMbpr, batchSizes, setActiveMbpr, setBatchSizes])
-
-
-    useEffect(() => {
-        // recalcaulate bom when active batch sizes change;
-        getProducedPricingSummations();
-
-    }, [activeBatchSize, activeMbpr, getProducedPricingSummations])
+  }, [activeMbpr, batchSizes, setActiveMbpr, setBatchSizes])
 
 
+  useEffect(() => {
+    // recalcaulate bom when active batch sizes change;
+    getProducedPricingSummations();
 
-    useEffect(() => {
-        if (producedPricingSummations && producedPricingSummations.isError) {
-            showDialog('pricingError')
-        }
-
-
-        if (producedPricingSummations && !producedPricingSummations.isError) {
-            getFinishedProducts()
-        }
+  }, [activeBatchSize, activeMbpr, getProducedPricingSummations])
 
 
-    }, [producedPricingSummations, getFinishedProducts, showDialog])
+
+  useEffect(() => {
+    if (producedPricingSummations && producedPricingSummations.isError) {
+      showDialog('pricingError')
+    }
 
 
-    return false
+    if (producedPricingSummations && !producedPricingSummations.isError) {
+      getFinishedProducts()
+    }
+
+
+  }, [producedPricingSummations, getFinishedProducts, showDialog])
+
+
+  return false
 }
 
 export default StateSetter 

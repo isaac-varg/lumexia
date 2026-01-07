@@ -2,8 +2,9 @@ import { inventoryActions } from "@/actions/inventory"
 import StateSetter from "./_components/state/StateSetter"
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
 import { accountingActions } from "@/actions/accounting"
-import Purchased from "./_components/purchased/Purchased"
-import PageTitle from "@/components/Text/PageTitle"
+import PricingTabs from "./_components/shared/view/PricingTabs"
+import Header from "./_components/shared/Header"
+import { getTotalCostPerLbPurchased } from "./_calculations/getTotalCostPerLbPurchased"
 
 type Props = {
   searchParams: {
@@ -33,21 +34,31 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
     isPurchased
       ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
       : Promise.resolve(null),
+  ]);
 
+  const [
+    totalCostPerLb,
+  ] = await Promise.all([
+    isPurchased
+      ? await getTotalCostPerLbPurchased(purchasedItemLastPrice, purchasedItemPricingData)
+      : Promise.resolve(0),
+  ])
 
-  ]); return (
+  return (
     <div className="flex flex-col gap-6">
-      <PageTitle>{`Pricing Determination - ${item.name}`}</PageTitle>
+
+      <Header />
 
       <StateSetter
         item={item}
         purchasedItemPricingData={purchasedItemPricingData}
         purchasedItemLastPrice={purchasedItemLastPrice}
         finishedProducts={finishedProducts}
+        totalCostPerLb={totalCostPerLb}
       />
 
-      {isPurchased && <Purchased />}
-      {!isPurchased && <div>produced</div>}
+      <PricingTabs />
+
 
     </div>
   )

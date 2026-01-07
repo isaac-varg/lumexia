@@ -14,20 +14,24 @@ type Props = {
   purchasedItemPricingData: ItemPricingData | null
   purchasedItemLastPrice: LastItemPrice | null
   finishedProducts: FinishedProductFromPurchased[] | FinishedProductFromProduced[] | null
+  totalCostPerLb: number
 }
 
 const StateSetter = ({
   item,
   purchasedItemPricingData,
   purchasedItemLastPrice,
-  finishedProducts
+  finishedProducts,
+  totalCostPerLb,
 }: Props) => {
 
   const isPurchased = item.procurementTypeId === procurementTypes.purchased;
 
   const {
     setItem,
+    setIsProduced,
     setFinishedProducts,
+    setTotalCostPerLb,
   } = usePricingSharedActions()
 
 
@@ -39,13 +43,18 @@ const StateSetter = ({
 
   // shared stuff
   useEffect(() => {
-
     setItem(item);
     setFinishedProducts(finishedProducts);
+    setTotalCostPerLb(totalCostPerLb);
+
+    // determine if isProduced
+    const isProduced = item && item.procurementTypeId === procurementTypes.produced;
+    setIsProduced(isProduced);
+
+
 
   }, [
     item, setItem,
-
   ])
 
 
