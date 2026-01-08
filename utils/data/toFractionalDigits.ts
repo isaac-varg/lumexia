@@ -5,6 +5,13 @@
 import { fractionalDigits } from "@/configs/data/fractionalDigits"
 
 export const toFracitonalDigits = {
+  pricingCurrency: (value: number, useThousandSeparator = true) => {
+    return value.toLocaleString('en-US', {
+      minimumFractionDigits: fractionalDigits.pricingCurrency,
+      maximumFractionDigits: fractionalDigits.pricingCurrency,
+      useGrouping: useThousandSeparator,
+    });
+  },
   curreny: (value: number, useThousandSeparator = true) => {
     return value.toLocaleString('en-US', {
       minimumFractionDigits: fractionalDigits.currency,

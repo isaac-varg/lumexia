@@ -32,6 +32,7 @@ const StateSetter = ({
     setIsProduced,
     setFinishedProducts,
     setTotalCostPerLb,
+    setProcessedFinishedProduct
   } = usePricingSharedActions()
 
 
@@ -47,6 +48,14 @@ const StateSetter = ({
     setFinishedProducts(finishedProducts);
     setTotalCostPerLb(totalCostPerLb);
 
+
+    // set processed finished products to initial state
+    if (finishedProducts && finishedProducts.length !== 0) {
+      finishedProducts.forEach(fp => {
+        setProcessedFinishedProduct(fp.id, false)
+      })
+    }
+
     // determine if isProduced
     const isProduced = item && item.procurementTypeId === procurementTypes.produced;
     setIsProduced(isProduced);
@@ -55,6 +64,7 @@ const StateSetter = ({
 
   }, [
     item, setItem,
+    finishedProducts, setFinishedProducts,
   ])
 
 

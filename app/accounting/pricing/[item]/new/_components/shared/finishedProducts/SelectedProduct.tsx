@@ -1,6 +1,8 @@
 import SectionTitle from "@/components/Text/SectionTitle";
 import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import PriceAltering from "./PriceAltering";
+import Card from "@/components/Card";
+import Outputs from "./Outputs";
 
 const SelectedProduct = () => {
 
@@ -19,12 +21,17 @@ const SelectedProduct = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-6 ">
-        <div className="bg-red-300 col-span-1">
 
-          <PriceAltering />
+        <div className=" col-span-1">
+          <Card.Root>
+            <PriceAltering />
+          </Card.Root>
         </div>
 
-        <div className="bg-blue-300 col-span-2">outputs</div>
+        <div className="col-span-2">
+
+          <Outputs />
+        </div>
       </div>
 
 
