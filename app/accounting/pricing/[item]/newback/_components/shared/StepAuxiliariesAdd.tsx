@@ -1,7 +1,7 @@
 import { PackagingItem } from "@/actions/accounting/consumerContainers/getPackagingItems"
 import { Search } from "@/components/Search"
 import { UnmanagedForm } from "@/components/UnmanagedForm"
-import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pricingSharedSlice"
+import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pricingSharedSliceback"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { TbEdit } from "react-icons/tb"
 import { InterimAuxiliaryItem } from "./StepAuxiliaries"

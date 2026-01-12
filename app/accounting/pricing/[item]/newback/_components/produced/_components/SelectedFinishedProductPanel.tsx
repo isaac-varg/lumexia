@@ -11,7 +11,7 @@ import validator from 'validator';
 import Text from '@/components/Text';
 import { TbCopy, TbEdit, TbTrash } from 'react-icons/tb';
 import useDialog from '@/hooks/useDialog';
-import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSlice';
+import { usePricingProducedActions, usePricingProducedSelection } from '@/store/pricingProducedSliceback';
 import { FinishedProductFromProduced } from '@/actions/accounting/finishedProducts/getByProducedItem';
 import DeleteFinishedProductAlert from '../../shared/DeleteFinishedProductAlert';
 import EditFinishedProductDialog from '../../shared/editFinishedProduct/EditFinishedProductDialog';

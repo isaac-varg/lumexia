@@ -4,8 +4,8 @@ import { FinishedProductFromProduced } from '@/actions/accounting/finishedProduc
 import { ActiveMbpr } from '@/actions/production/getActiveMbpr';
 import { MbprByItem } from '@/actions/production/getMbprsByItem';
 import { BatchSize } from '@/actions/production/mbpr/batchSizes/getAllByMbpr';
-import { BatchSummations } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomPricingSummations';
-import { ProducedPricingSummations, getBomWithPricing } from '@/app/accounting/pricing/[item]/new/_components/produced/_functions/getBomWithPricing';
+import { BatchSummations } from '@/app/accounting/pricing/[item]/newback/_components/produced/_functions/getBomPricingSummations';
+import { ProducedPricingSummations, getBomWithPricing } from '@/app/accounting/pricing/[item]/newback/_components/produced/_functions/getBomWithPricing';
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 import { create } from 'zustand';
 

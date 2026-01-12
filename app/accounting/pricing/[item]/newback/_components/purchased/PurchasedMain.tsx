@@ -14,24 +14,26 @@ const PurchasedMain = async ({ item, noteTypes }: { item: Item, noteTypes: Prici
 
   const pricingData = await accountingActions.pricing.item.getItemPricingData(item.id)
   const lastPrice = await accountingActions.pricing.item.getLastItemPrice(item.id)
-  const finishedProducts = await accountingActions.finishedProducts.getByPurchasedItem(item.id, pricingData, lastPrice);
+  //const finishedProducts = await accountingActions.finishedProducts.getByPurchasedItem(item.id, pricingData, lastPrice);
   const examinationId = uuidv4();
 
-  return (
-    <div className='flex flex-col gap-y-4'>
-      <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} finishedProducts={finishedProducts} />
-      <PageTitle>Pricing Determination - {item.name}</PageTitle>
-      <PageBreadcrumbs />
-      <div className="grid grid-cols-2 gap-4">
-        <Basics />
-        <ActionsPanel examinationId={examinationId} />
-
-        <FinishedProducts fillItemId={item.id} itemTypeId={item.itemTypeId} />
-
-        <NotesPanel noteTypes={noteTypes} examinationId={examinationId} itemId={item.id} />
-      </div>
-    </div>
-  )
+  return (<div>hey</div>)
+  //
+  //  return (
+  //    <div className='flex flex-col gap-y-4'>
+  //      <InitialStateSetter lastPrice={lastPrice} pricingData={pricingData} finishedProducts={finishedProducts} />
+  //      <PageTitle>Pricing Determination - {item.name}</PageTitle>
+  //      <PageBreadcrumbs />
+  //      <div className="grid grid-cols-2 gap-4">
+  //        <Basics />
+  //        <ActionsPanel examinationId={examinationId} />
+  //
+  //        <FinishedProducts fillItemId={item.id} itemTypeId={item.itemTypeId} />
+  //
+  //        <NotesPanel noteTypes={noteTypes} examinationId={examinationId} itemId={item.id} />
+  //      </div>
+  //    </div>
+  //  )
 }
 
 export default PurchasedMain

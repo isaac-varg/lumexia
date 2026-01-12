@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction } from "react"
 import { PricingExaminationNoteType } from "@/actions/accounting/examinations/notes/getAllNoteTypes"
 import { accountingActions } from "@/actions/accounting"
 import { getUserId } from "@/actions/users/getUserId"
-import { usePricingSharedActions } from "@/store/pricingSharedSlice"
+import { usePricingSharedActions } from "@/store/pricingSharedSliceback"
 import { pricingExaminationNoteTypes } from "@/configs/staticRecords/pricingExaminationNoteTypes"
 
 type Inputs = {

@@ -1,6 +1,6 @@
 'use client'
 import Form from "@/components/Form";
-import { usePricingProducedSelection } from "@/store/pricingProducedSlice";
+import { usePricingProducedSelection } from "@/store/pricingProducedSliceback";
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 

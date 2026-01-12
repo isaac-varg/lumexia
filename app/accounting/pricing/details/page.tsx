@@ -9,44 +9,42 @@ import FinishedProductsPanel from './_components/FinishedProductsPanel'
 import NotesPanel from './_components/NotesPanel'
 
 interface PricingDetailsProps {
-    searchParams: {
-        id: string
-    }
+  searchParams: {
+    id: string
+  }
 }
 
 const PricingDetailsPage = async ({ searchParams }: PricingDetailsProps) => {
 
-    const examId = searchParams.id
-    const examination = await accountingActions.examinations.getOne(examId);
-    const noteTypes = await accountingActions.examinations.notes.getAllNoteTypes();
+  const examId = searchParams.id
+  const examination = await accountingActions.examinations.getOne(examId);
+  const noteTypes = await accountingActions.examinations.notes.getAllNoteTypes();
 
 
-    return (
-        <div className="flex flex-col gap-y-4">
+  return (
+    <div className="flex flex-col gap-y-4">
 
-            <PageTitle>{`Pricing Examination ${examination.examinedItem.name}`}</PageTitle>
-            <PageBreadcrumbs />
-
-
-            <div className='grid grid-cols-2 gap-6'>
-                <BasicsPanel exam={examination} />
-                {(!examination.approved && !examination.rejected) && <ActionsPanel examId={examId} />}
-                {(examination.approved || (!examination.approved && examination.rejected)) && <ApprovalStatus exam={examination} />}
+      <PageTitle>{`Pricing Examination ${examination.examinedItem.name}`}</PageTitle>
+      <PageBreadcrumbs />
 
 
-                <FinishedProductsPanel finishedProducts={examination.FinishedProductArchive} />
-                <NotesPanel pricingExaminationId={examId} notes={examination.PricingExaminationNote} noteTypes={noteTypes} />
+      <div className='grid grid-cols-2 gap-6'>
+        <BasicsPanel exam={examination} />
 
-            </div>
+
+        <FinishedProductsPanel finishedProducts={examination.FinishedProductArchive} />
+        <NotesPanel pricingExaminationId={examId} notes={examination.PricingExaminationNote} noteTypes={noteTypes} />
+
+      </div>
 
 
 
 
 
-        </div>
+    </div>
 
 
-    )
+  )
 }
 
 export default PricingDetailsPage 
