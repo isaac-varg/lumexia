@@ -1,32 +1,67 @@
-import React from 'react'
-import { getItem } from './_functions/getItem'
-import PurchasedMain from './_components/purchased/PurchasedMain'
-import ProducedMain from './_components/produced/ProducedMain'
-import { accountingActions } from '@/actions/accounting'
-import { procurementTypes } from '@/configs/staticRecords/procurementTypes'
+import { inventoryActions } from "@/actions/inventory"
+import StateSetter from "./_components/state/StateSetter"
+import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
+import { accountingActions } from "@/actions/accounting"
+import PricingTabs from "./_components/shared/view/PricingTabs"
+import Header from "./_components/shared/Header"
+import { getTotalCostPerLbPurchased } from "./_calculations/getTotalCostPerLbPurchased"
 
-interface NewPricingEntryProps {
+type Props = {
   searchParams: {
     id: string
   }
 }
 
-const NewPricingEntry = async ({ searchParams }: NewPricingEntryProps) => {
+const NewPricingExaminationPage = async ({ searchParams }: Props) => {
 
-  const item = await getItem(searchParams.id)
-  const noteTypes = await accountingActions.examinations.notes.getAllNoteTypes();
+  // start
+  const item = await inventoryActions.items.getOne(searchParams.id);
 
-  if (item.procurementType.id !== procurementTypes.produced) {
-    return (
-      <PurchasedMain item={item} noteTypes={noteTypes} />
-    )
-  }
+  // determine what type of pricing this is
+  const isPurchased = item.procurementTypeId === procurementTypes.purchased;
+
+  const [
+    purchasedItemPricingData,
+    purchasedItemLastPrice,
+    finishedProducts,
+  ] = await Promise.all([
+    isPurchased
+      ? accountingActions.pricing.item.getItemPricingData(item.id)
+      : Promise.resolve(null),
+    isPurchased
+      ? await accountingActions.pricing.item.getLastItemPrice(item.id)
+      : Promise.resolve(null),
+    isPurchased
+      ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
+      : Promise.resolve(null),
+  ]);
+
+  const [
+    totalCostPerLb,
+  ] = await Promise.all([
+    isPurchased
+      ? await getTotalCostPerLbPurchased(purchasedItemLastPrice, purchasedItemPricingData)
+      : Promise.resolve(0),
+  ])
 
   return (
-    <div>
-      <ProducedMain item={item} noteTypes={noteTypes} />
+    <div className="flex flex-col gap-6">
+
+      <Header />
+
+      <StateSetter
+        item={item}
+        purchasedItemPricingData={purchasedItemPricingData}
+        purchasedItemLastPrice={purchasedItemLastPrice}
+        finishedProducts={finishedProducts}
+        totalCostPerLb={totalCostPerLb}
+      />
+
+      <PricingTabs />
+
+
     </div>
   )
 }
 
-export default NewPricingEntry 
+export default NewPricingExaminationPage

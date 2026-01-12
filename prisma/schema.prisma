@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Nov 26 2025 13:03:33 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Dec 18 2025 10:35:47 GMT-0800 (Pacific Standard Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -407,6 +407,20 @@ model PricingExaminationNote {
   @@map("pricing_examination_notes")
 }
 
+model PricingExaminationStatus {
+  id           String               @id @default(uuid())
+  name         String
+  description  String?
+  sequence     Int                  @unique
+  bgColor      String               @default("#333333") @map("bg_color")
+  textColor    String               @default("#ffffff") @map("text_color")
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
+  examinations PricingExamination[]
+
+  @@map("pricing_examination_statuses")
+}
+
 model PricingExaminationValidation {
   id                                 String             @id @default(uuid())
   examinationId                      String             @map("examination_id")
@@ -421,14 +435,14 @@ model PricingExaminationValidation {
 
 model PricingExamination {
   id                              String                         @id @default(uuid())
-  approved                        Boolean                        @default(false)
-  rejected                        Boolean                        @default(false)
+  statusId                        String?                        @map("status_id")
   examinedItemId                  String                         @map("examined_item_id")
   userId                          String                         @map("user_id")
   createdAt                       DateTime                       @default(now()) @map("created_at")
   updatedAt                       DateTime                       @updatedAt @map("updated_at")
   examinedItem                    Item                           @relation(fields: [examinedItemId], references: [id])
   user                            User                           @relation(fields: [userId], references: [id])
+  status                          PricingExaminationStatus?      @relation(fields: [statusId], references: [id])
   itemPricingDataArchive          ItemPricingDataArchive[]
   consumerContainerArchive        ConsumerContainerArchive[]
   filledConsumerContainerArchives ItemConsumerContainerArchive[]
