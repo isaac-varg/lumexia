@@ -3,6 +3,7 @@ import DataCard from "./dataCards/DataCard"
 import DataCardText from "./dataCards/DataCardText"
 import { ProcessedFinishedProduct, usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import { useEffect, useState } from "react"
+import Card from "@/components/Card"
 
 const Outputs = () => {
 
@@ -24,6 +25,7 @@ const Outputs = () => {
 
 
   if (!selectedFinishedProduct) return false;
+
 
 
   return (
@@ -52,6 +54,20 @@ const Outputs = () => {
           <DataCardText size='tiny' color='light'>{toFracitonalDigits.pricingCurrency(processedProduct.profitPercentage)} % profit margin</DataCardText>
         </DataCard>
       </div>
+
+
+      <div className="flex flex-col gap-y-6">
+
+        <Card.Root>
+
+          <Card.Title>Filled Container</Card.Title>
+        </Card.Root>
+
+
+      </div>
+
+
+
 
 
     </div>
