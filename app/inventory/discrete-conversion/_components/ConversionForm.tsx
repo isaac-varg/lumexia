@@ -41,7 +41,7 @@ const ConversionForm = ({ inventoryUom, supplierUom, item, supplier }: { invento
           <div className="flex flex-col gap-4">
             <div className="text-3xl font-medium font-poppins justify-between flex">
               <span className="text-base-content/50">Item</span>
-              <span className="text-primary/70 capitalize">{`${item.name}`}</span>
+              <span onClick={() => router.push(`/inventory/items/${item.referenceCode}?id=${item.id}`)} className="text-primary/70 capitalize hover:cursor-pointer hover:text-primary/50">{`${item.name}`}</span>
             </div>
             <div className="text-3xl font-medium font-poppins justify-between flex">
               <span className="text-base-content/50">Purchased From</span>

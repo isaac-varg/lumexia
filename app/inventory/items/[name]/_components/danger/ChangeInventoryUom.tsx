@@ -54,11 +54,10 @@ const ChangeInventoryUom = () => {
         {!isChanging && (
           <Fragment>
             <div className="font-poppins text-xl font-medium text-base-content">
-              The inventory unit of measurement is what the system will keep inventory, conduct transactions, calculate pricing, and affects more system facets. Changing this will immediately affect the inventory quantity and discrete unit of measurement conversions.
+              Do not do this unless absolutely certain you know what you are doing. The inventory unit of measurement is what the system will keep inventory, conduct transactions, calculate pricing, and affects more system facets. Changing this will immediately affect the inventory quantity and discrete unit of measurement conversions.
             </div>
 
             <button
-              disabled
               onClick={() => setIsChanging(true)}
               className="btn btn-error btn-outline ">
               Change Inventory UOM
@@ -106,7 +105,7 @@ const ChangeInventoryUom = () => {
             setIsChanging(false)
           }}
         >
-          Are you sure you want to change the inventory unit of measurement. This will delete descrete conversions that have been added.
+          Don't do this unless absolutely certain. Are you sure you want to change the inventory unit of measurement. This will delete descrete conversions that have been added.
         </Alert.Content>
       </Alert.Root>
 
