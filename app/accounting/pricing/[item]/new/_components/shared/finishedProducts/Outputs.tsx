@@ -4,6 +4,7 @@ import DataCardText from "./dataCards/DataCardText"
 import { ProcessedFinishedProduct, usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import { useEffect, useState } from "react"
 import Card from "@/components/Card"
+import Contributions from "./Contributions"
 
 const Outputs = () => {
 
@@ -61,6 +62,8 @@ const Outputs = () => {
         <Card.Root>
 
           <Card.Title>Filled Container</Card.Title>
+
+          <Contributions />
         </Card.Root>
 
 
