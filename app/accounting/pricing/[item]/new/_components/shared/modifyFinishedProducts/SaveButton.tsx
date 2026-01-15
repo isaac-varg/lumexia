@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 const SaveButton = () => {
 
   const { interimFinishedProductData, selectedFinishedProduct } = usePricingSharedSelection()
-  const { setFinishedProductsMode } = usePricingSharedActions()
+  const { setFinishedProductsMode, clearInterimFinishedProductData } = usePricingSharedActions()
   const router = useRouter()
 
   if (!selectedFinishedProduct) return;
@@ -25,7 +25,9 @@ const SaveButton = () => {
     await handleAuxiliaryCreation();
     await handleAuxiliaryUpdate();
 
+    clearInterimFinishedProductData();
     setFinishedProductsMode('normal');
+
     router.refresh()
 
   }

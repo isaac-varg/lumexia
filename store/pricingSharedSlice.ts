@@ -69,6 +69,8 @@ type State = {
 
 type Actions = {
   actions: {
+    clearInterimFinishedProductData: () => void;
+    deleteInterimFinishedProductData: (key: string) => void;
     setAuxiliaryMode: (mode: AuxiliaryModes) => void;
     setItem: (item: Item) => void;
     setIsProduced: (isProduced: boolean) => void;
@@ -104,6 +106,16 @@ export const usePricingSharedSelection = create<State & Actions>((set, get) => (
   totalCostPerLb: 0,
 
   actions: {
+    clearInterimFinishedProductData: () => {
+      set(() => ({ interimFinishedProductData: new Map() }))
+    },
+    deleteInterimFinishedProductData: (key) => {
+      set((state) => {
+        const newMap = new Map(state.interimFinishedProductData);
+        newMap.delete(key);
+        return { interimFinishedProductData: newMap }
+      })
+    },
     setAuxiliaryMode: (mode) => set(() => ({ auxiliaryMode: mode })),
     setItem: (item) => set(() => ({ item, })),
     setIsProduced: (isProduced) => set(() => ({ isProduced, })),

@@ -1,5 +1,4 @@
 import { accountingActions } from "@/actions/accounting"
-import { AuxiliaryItemBreakdown } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost"
 import { useAppForm } from "@/components/Form2"
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import { InterimAuxiliaryDetails, usePricingSharedActions } from "@/store/pricingSharedSlice"
@@ -15,7 +14,7 @@ type Props = {
 const AuxiliaryCard = ({ aux }: Props) => {
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const { setInterimFinishedProductDatum } = usePricingSharedActions()
+  const { setInterimFinishedProductDatum, deleteInterimFinishedProductData } = usePricingSharedActions()
   const router = useRouter()
 
   const handleDelete = async () => {
@@ -24,6 +23,7 @@ const AuxiliaryCard = ({ aux }: Props) => {
       recordStatusId: recordStatuses.archived,
     });
 
+    deleteInterimFinishedProductData(aux.id);
     router.refresh();
 
   }

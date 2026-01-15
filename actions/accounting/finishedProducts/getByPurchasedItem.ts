@@ -23,6 +23,9 @@ export const getFinishedProductsByPurchasedItem = async (itemId: string,) => {
     include: {
       fillUom: true,
       auxiliaries: {
+        where: {
+          recordStatusId: recordStatuses.active,
+        },
         include: {
           auxiliaryItem: {
             include: {
