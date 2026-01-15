@@ -1,12 +1,14 @@
 import SectionTitle from "@/components/Text/SectionTitle";
-import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
+import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import PriceAltering from "./PriceAltering";
 import Card from "@/components/Card";
 import Outputs from "./Outputs";
+import { TbEdit } from "react-icons/tb";
 
 const SelectedProduct = () => {
 
   const { selectedFinishedProduct } = usePricingSharedSelection()
+  const { setModifyMode, setFinishedProductsMode } = usePricingSharedActions()
 
   if (!selectedFinishedProduct) return false;
 
@@ -16,7 +18,13 @@ const SelectedProduct = () => {
       <div className="flex justify-between items-center">
         <SectionTitle>{selectedFinishedProduct.name}</SectionTitle>
         <div className="flex gap-2">
-          i
+          <button
+            className="btn btn-outline btn-secondary"
+            onClick={() => {
+              setModifyMode('edit')
+              setFinishedProductsMode('modify')
+            }}
+          ><TbEdit className={'size-6'} /></button>
         </div>
       </div>
 

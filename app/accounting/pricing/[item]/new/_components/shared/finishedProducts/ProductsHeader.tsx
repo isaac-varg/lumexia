@@ -5,7 +5,7 @@ import { TbPlus } from "react-icons/tb"
 
 const ProductsHeader = () => {
 
-  const { setFinishedProductsMode } = usePricingSharedActions()
+  const { setFinishedProductsMode, setModifyMode, setModifyCurrentStep } = usePricingSharedActions()
   const { finishedProductsMode: mode } = usePricingSharedSelection()
 
 
@@ -17,17 +17,24 @@ const ProductsHeader = () => {
       {mode === 'normal' && (
         <button
           className="btn btn-primary flex gap-2 items-center"
-          onClick={() => setFinishedProductsMode('add')}
+          onClick={() => {
+            setModifyMode('new');
+            setFinishedProductsMode('modify')
+
+          }}
         >
           <TbPlus className="size-6" />
           Add Product
         </button>
       )}
 
-      {mode === 'add' && (
+      {mode === 'modify' && (
         <button
           className="btn btn-warning flex gap-2 items-center"
-          onClick={() => setFinishedProductsMode('normal')}
+          onClick={() => {
+            setModifyCurrentStep(0);
+            setFinishedProductsMode('normal')
+          }}
         >
           Cancel
         </button>

@@ -4,10 +4,10 @@ import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pric
 import BasicsPanels from "../basics/BasicsPanels"
 import ProductsHeader from "./ProductsHeader"
 import NormalMode from "./NormalMode";
-import AddMode from "./AddMode";
 import { useEffect } from "react";
+import Modify from "../modifyFinishedProducts/Modify";
 
-export type FinishedProductsMode = "normal" | "add";
+export type FinishedProductsMode = "normal" | "modify";
 
 const FinishedProducts = () => {
 
@@ -28,7 +28,7 @@ const FinishedProducts = () => {
 
       {finishedProductsMode === 'normal' && <NormalMode />}
 
-      {finishedProductsMode === 'add' && <AddMode />}
+      {finishedProductsMode === 'modify' && <Modify />}
 
 
 

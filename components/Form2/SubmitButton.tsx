@@ -1,30 +1,36 @@
+
 import { useStore } from "@tanstack/react-form";
 import { useFormContext } from ".";
 
 type SubmitButtonProps = {
   children?: React.ReactNode;
-  isAlwaysSubmittable?: boolean;
-}
+  allowPristine?: boolean;
+};
 
-const SubmitButton = ({ children, isAlwaysSubmittable = false }: SubmitButtonProps) => {
-
+const SubmitButton = ({
+  children,
+  allowPristine = false,
+}: SubmitButtonProps) => {
   const form = useFormContext();
+
   const [isSubmitting, isDirty] = useStore(form.store, (state) => [
     state.isSubmitting,
     state.isDirty,
-  ])
+  ]);
 
-  const isDisabled = isSubmitting || (!isAlwaysSubmittable && !isDirty);
+  const disabled =
+    isSubmitting || (!allowPristine && !isDirty);
 
   return (
     <button
       type="submit"
-      className={`btn ${isDisabled ? 'btn-disabled' : 'btn-success'}`}
-      disabled={isDisabled}
+      className={`btn ${disabled ? "btn-disabled" : "btn-success"}`}
+      disabled={disabled}
     >
-      {children ? children : 'Save'}
+      {children ?? "Save"}
     </button>
-  )
-}
+  );
+};
 
-export default SubmitButton
+export default SubmitButton;
+

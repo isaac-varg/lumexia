@@ -3,6 +3,7 @@ import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import { ReactFlow, Controls, Background, useNodesState, useEdgesState, Position, Node, Edge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useEffect } from "react";
+import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 const Contributions = () => {
 
@@ -34,7 +35,7 @@ const Contributions = () => {
           label: (
             <div className="text-xs">
               <div className="font-semibold mb-1">Base Price</div>
-              <div>${lastPrice?.pricePerUnit?.toFixed(4) ?? '0.0000'} /lb</div>
+              <div>${toFracitonalDigits.pricingCurrency(lastPrice?.pricePerUnit ?? 0)} /lb</div>
             </div>
           )
         },
@@ -48,7 +49,7 @@ const Contributions = () => {
           label: (
             <div className="text-xs">
               <div className="font-semibold mb-1">Arrival Cost</div>
-              <div>${pricingData.arrivalCost?.toFixed(4) ?? '0.0000'} /lb</div>
+              <div>${toFracitonalDigits.pricingCurrency(pricingData.arrivalCost ?? 0)} /lb</div>
             </div>
           )
         },
@@ -62,7 +63,7 @@ const Contributions = () => {
           label: (
             <div className="text-xs">
               <div className="font-semibold mb-1">Unforeseen</div>
-              <div>${pricingData.unforeseenDifficultiesCost?.toFixed(4) ?? '0.0000'} /lb</div>
+              <div>${toFracitonalDigits.pricingCurrency(pricingData.unforeseenDifficultiesCost ?? 0)} /lb</div>
             </div>
           )
         },
@@ -82,7 +83,7 @@ const Contributions = () => {
         label: (
           <div className="text-xs">
             <div className="font-semibold">{aux.name}</div>
-            <div>${aux.lineTotal?.toFixed(4)}</div>
+            <div>${toFracitonalDigits.pricingCurrency(aux.lineTotal ?? 0)}</div>
           </div>
         )
       },
@@ -101,9 +102,9 @@ const Contributions = () => {
         label: (
           <div className="text-left text-xs">
              <div className="font-bold border-b pb-1 mb-1">Product Fill Cost</div>
-             <div className="font-semibold text-sm">${productFillCostTotal.toFixed(4)}</div>
+             <div className="font-semibold text-sm">${toFracitonalDigits.pricingCurrency(productFillCostTotal)}</div>
              <div className="text-gray-500 mt-1 text-[10px]">
-               {fillQuantity} lbs @ ${totalCostPerLb.toFixed(4)}/lb
+               {fillQuantity} lbs @ ${toFracitonalDigits.pricingCurrency(totalCostPerLb)}/lb
              </div>
           </div>
         )
@@ -127,7 +128,7 @@ const Contributions = () => {
         label: (
           <div className="text-left text-xs">
              <div className="font-bold border-b pb-1 mb-1">Total Auxiliaries</div>
-             <div className="font-semibold text-sm">${auxTotalCost.toFixed(4)}</div>
+             <div className="font-semibold text-sm">${toFracitonalDigits.pricingCurrency(auxTotalCost)}</div>
           </div>
         )
       },
@@ -147,7 +148,7 @@ const Contributions = () => {
         label: (
           <div className="text-left text-xs">
              <div className="font-bold border-b pb-1 mb-1">Difficulty Adj.</div>
-             <div className="font-semibold text-sm">${difficultyCost.toFixed(4)}</div>
+             <div className="font-semibold text-sm">${toFracitonalDigits.pricingCurrency(difficultyCost)}</div>
           </div>
         )
       },
@@ -166,7 +167,7 @@ const Contributions = () => {
         label: (
           <div className="text-left text-xs">
              <div className="font-bold border-b pb-1 mb-1">Free Shipping</div>
-             <div className="font-semibold text-sm">${shippingCost.toFixed(4)}</div>
+             <div className="font-semibold text-sm">${toFracitonalDigits.pricingCurrency(shippingCost)}</div>
           </div>
         )
       },
@@ -195,7 +196,7 @@ const Contributions = () => {
         label: (
             <div className="text-xs p-2">
                 <div className="font-bold border-b pb-1 mb-1 text-center">Filled Container Cost</div>
-                <div className="font-bold text-center text-sm">${totalDisplayedCost.toFixed(4)}</div>
+                <div className="font-bold text-center text-sm">${toFracitonalDigits.pricingCurrency(totalDisplayedCost)}</div>
             </div>
         ) 
       },
