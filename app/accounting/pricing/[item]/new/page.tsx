@@ -25,6 +25,8 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
     purchasedItemLastPrice,
     finishedProducts,
     packagingItems,
+    notes,
+    noteTypes,
   ] = await Promise.all([
     isPurchased
       ? await accountingActions.pricing.item.getItemPricingData(item.id)
@@ -36,6 +38,7 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
       ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
       : Promise.resolve(null),
     await accountingActions.consumerContainers.getPackagingItems(),
+
   ]);
 
   const [

@@ -21,6 +21,7 @@ const Auxiliaries = () => {
         quantity: a.quantity,
         difficultyAdjustmentCost: a.difficultyAdjustmentCost,
         isDirty: false,
+        itemId: '',
       }
       setInterimFinishedProductDatum(a.auxiliaryId, data);
     })

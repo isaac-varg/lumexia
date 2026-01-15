@@ -4,6 +4,7 @@ import PriceAltering from "./PriceAltering";
 import Card from "@/components/Card";
 import Outputs from "./Outputs";
 import { TbEdit } from "react-icons/tb";
+import Notes from "../notes/Notes";
 
 const SelectedProduct = () => {
 
@@ -30,9 +31,12 @@ const SelectedProduct = () => {
 
       <div className="grid grid-cols-3 gap-6 ">
 
-        <div className=" col-span-1">
+        <div className="flex flex-col gap-6 col-span-1">
           <Card.Root>
             <PriceAltering />
+          </Card.Root>
+          <Card.Root>
+            <Notes />
           </Card.Root>
         </div>
 
