@@ -18,7 +18,12 @@ const FinishedProductDetails = () => {
   const form = useAppForm({
     defaultValues: defaults,
     onSubmit: ({ value }) => {
-      setInterimFinishedProductDatum("finishedProductData", { ...value })
+      const additionalProperties = {
+        isNew: isEditable ? false : true,
+        id: isEditable ? selectedFinishedProduct.id : '',
+      }
+
+      setInterimFinishedProductDatum("finishedProductData", { ...value, ...additionalProperties })
       setModifyCurrentStep(1);
     }
   })

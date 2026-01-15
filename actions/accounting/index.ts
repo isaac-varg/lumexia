@@ -22,6 +22,7 @@ import { upsertPricingExamination } from "./examinations/upsert";
 import { createAuxiliary } from "./finishedProducts/auxiliaries/create";
 import { deleteAuxiliary } from "./finishedProducts/auxiliaries/delete";
 import { getAllAuxiliaries } from "./finishedProducts/auxiliaries/getAll";
+import { updateAuxiliary } from "./finishedProducts/auxiliaries/update";
 import { createFinishedProduct } from "./finishedProducts/create";
 import { deleteFinishedProduct } from "./finishedProducts/delete";
 import { getFinishedProductsByItem } from "./finishedProducts/getByItem";
@@ -51,93 +52,94 @@ import { getQueue } from "./pricing/getQueue";
 import { getReviewablePricingExams } from "./pricing/getReviewable";
 
 export const accountingActions = {
-    pricing: {
-        item: {
-            getItemPricingData: getItemPricingData,
-            getLastItemPrice: getLastItemPrice,
-        },
-        createQueue: createPricingQueue,
-        getQueue: getQueue,
+  pricing: {
+    item: {
+      getItemPricingData: getItemPricingData,
+      getLastItemPrice: getLastItemPrice,
     },
-    paymentMethods: {
-        create: createPaymentMethod,
-        getAll: getAllPaymentMethods,
-        update: updatePaymentMethod,
-        getOne: getOnePaymentMethod,
+    createQueue: createPricingQueue,
+    getQueue: getQueue,
+  },
+  paymentMethods: {
+    create: createPaymentMethod,
+    getAll: getAllPaymentMethods,
+    update: updatePaymentMethod,
+    getOne: getOnePaymentMethod,
+  },
+  finishedProducts: {
+    templates: {
+      finishedProducts: {
+        update: updateTemplateFinishedProduct,
+        create: createPricingTemplateFinishedProduct,
+      },
+      auxiliaries: {
+        getByFinishedProduct: getByFinishedProduct,
+        delete: deletePricingTemplateAuxiliary,
+        create: createPricingTemplateAuxiliaries,
+      },
+      create: createPricingTemplate,
+      update: updatePricingTemplate,
+      getAllByItemType: getAllByItemType,
+      getOne: getOnePricingTemplate,
+      getAllTemplates: getAllTemplates,
     },
-    finishedProducts: {
-        templates: {
-            finishedProducts: {
-                update: updateTemplateFinishedProduct,
-                create: createPricingTemplateFinishedProduct,
-            },
-            auxiliaries: {
-                getByFinishedProduct: getByFinishedProduct,
-                delete: deletePricingTemplateAuxiliary,
-                create: createPricingTemplateAuxiliaries,
-            },
-            create: createPricingTemplate,
-            update: updatePricingTemplate,
-            getAllByItemType: getAllByItemType,
-            getOne: getOnePricingTemplate,
-            getAllTemplates: getAllTemplates,
-        },
-        auxiliaries: {
-            delete: deleteAuxiliary,
-            create: createAuxiliary,
-            getAll: getAllAuxiliaries,
-        },
-        getByItem: getFinishedProductsByItem,
-        getByPurchasedItem: getFinishedProductsByPurchasedItem,
-        getByProducedItem: getFinishedProductsByProducedItem,
-        create: createFinishedProduct,
-        delete: deleteFinishedProduct,
-        update: updateFinishedProduct,
+    auxiliaries: {
+      delete: deleteAuxiliary,
+      create: createAuxiliary,
+      getAll: getAllAuxiliaries,
+      update: updateAuxiliary,
     },
-    filledConsumerContainers: {
-        getAllByFillItem: getAllByFillItem,
-        createOne: createFilledConsumerContainer,
-        update: updateOneFilledConsumerContainer,
-        delete: deletedFilledConsumerContainer,
+    getByItem: getFinishedProductsByItem,
+    getByPurchasedItem: getFinishedProductsByPurchasedItem,
+    getByProducedItem: getFinishedProductsByProducedItem,
+    create: createFinishedProduct,
+    delete: deleteFinishedProduct,
+    update: updateFinishedProduct,
+  },
+  filledConsumerContainers: {
+    getAllByFillItem: getAllByFillItem,
+    createOne: createFilledConsumerContainer,
+    update: updateOneFilledConsumerContainer,
+    delete: deletedFilledConsumerContainer,
+  },
+  consumerContainers: {
+    getPackagingItems: getPackagingItems,
+    getAll: getAllConsumerContainers,
+    createOne: createOneConsumerContainer,
+  },
+  examinations: {
+    notes: {
+      getAllNoteTypes: getAllNoteTypes,
+      getAll: getAllByExamId,
+      createNoteType: createExaminationNoteType,
+      create: createExaminationNote,
     },
-    consumerContainers: {
-        getPackagingItems: getPackagingItems,
-        getAll: getAllConsumerContainers,
-        createOne: createOneConsumerContainer,
+    archives: {
+      itemPricingData: {
+        create: createItemPricingDataArchive,
+      },
+      filleConsumerContainer: {
+        create: createFilledConsumerContainer,
+        createMany: createManyFilledConsumerContainerArchive,
+      },
+      consumerContainer: {
+        createMany: createManyConsumerContainerArchives,
+      },
+      examinationValidation: {
+        create: createExaminationValidationArchive,
+      }
     },
-    examinations: {
-        notes: {
-            getAllNoteTypes: getAllNoteTypes,
-            getAll: getAllByExamId,
-            createNoteType: createExaminationNoteType,
-            create: createExaminationNote,
-        },
-        archives: {
-            itemPricingData: {
-                create: createItemPricingDataArchive,
-            },
-            filleConsumerContainer: {
-                create: createFilledConsumerContainer,
-                createMany: createManyFilledConsumerContainerArchive,
-            },
-            consumerContainer: {
-                createMany: createManyConsumerContainerArchives,
-            },
-            examinationValidation: {
-                create: createExaminationValidationArchive,
-            }
-        },
-        create: createExamination,
-        getReviewable: getReviewablePricingExams,
-        getAllByItem: getAllPricingExaminationsByItem,
-        getOne: getOnePricingExamination,
-        getAll: getAllPricingExaminations,
-        upsert: upsertPricingExamination,
-    },
-    pos: {
-        details: {
-            update: updatePoAccountingDetails,
-            create: createPoAccountingDetail,
-        }
+    create: createExamination,
+    getReviewable: getReviewablePricingExams,
+    getAllByItem: getAllPricingExaminationsByItem,
+    getOne: getOnePricingExamination,
+    getAll: getAllPricingExaminations,
+    upsert: upsertPricingExamination,
+  },
+  pos: {
+    details: {
+      update: updatePoAccountingDetails,
+      create: createPoAccountingDetail,
     }
+  }
 }

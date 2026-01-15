@@ -13,10 +13,25 @@ export const getPackagingItems = async () => {
       recordStatusId: {
         not: recordStatuses.archived
       }
+    },
+    include: {
+      aliases: true
     }
   });
 
-  return items;
+  const transformedItems = items.map((item) => {
+
+    const mergedAliases = item.aliases?.map((alias) => alias.name).join(", ")
+
+    return {
+      ...item,
+      mergedAliases
+    }
+  })
+
+  return transformedItems
+
+
 }
 
 export type PackagingItem = Awaited<ReturnType<typeof getPackagingItems>>[number]

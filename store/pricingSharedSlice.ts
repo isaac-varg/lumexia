@@ -1,3 +1,4 @@
+import { PackagingItem } from "@/actions/accounting/consumerContainers/getPackagingItems";
 import { FinishedProductFromProduced } from "@/actions/accounting/finishedProducts/getByProducedItem";
 import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem";
 import { Item } from "@/actions/inventory/items/getOne"
@@ -16,11 +17,14 @@ export type ProcessedFinishedProduct = {
 }
 
 export type ModifyModes = "new" | "edit"
+export type AuxiliaryModes = "view" | 'add';
 
 type PriceAltering = Map<string, ProcessedFinishedProduct | false>;
 
 
 export type InterimFinishedProductDetails = {
+  isNew: boolean
+  id: string
   name: string
   fillQuantity: number
   declaredQuantity: number
@@ -36,6 +40,7 @@ export type InterimAuxiliaryDetails = {
   name: string
   difficultyAdjustmentCost: number
   isDirty: boolean // was it modified
+  itemId: string
 }
 
 type InterimProductDataValues =
@@ -48,6 +53,7 @@ type InterimProductDataValues =
 type InterimFinishedProductData = Map<string, InterimProductDataValues>;
 
 type State = {
+  auxiliaryMode: AuxiliaryModes
   item: Item | null;
   finishedProducts: FinishedProductFromProduced[] | FinishedProductFromPurchased[] | null
   isProduced: boolean
@@ -57,21 +63,24 @@ type State = {
   modifyMode: ModifyModes
   modifyCurrentStep: number
   selectedFinishedProduct: FinishedProductFromProduced | FinishedProductFromPurchased | null
+  packagingItems: PackagingItem[]
   processedFinishedProducts: PriceAltering
 }
 
 type Actions = {
   actions: {
-    setItem: (item: Item) => void,
+    setAuxiliaryMode: (mode: AuxiliaryModes) => void;
+    setItem: (item: Item) => void;
     setIsProduced: (isProduced: boolean) => void;
-    setInterimFinishedProductDatum: (key: string, value: InterimProductDataValues) => void,
-    setFinishedProducts: (finishedProducts: FinishedProductFromProduced[] | FinishedProductFromPurchased[] | null) => void,
-    setFinishedProductsMode: (mode: FinishedProductsMode) => void,
-    setModifyMode: (mode: ModifyModes) => void,
-    setModifyCurrentStep: (step: number) => void,
+    setInterimFinishedProductDatum: (key: string, value: InterimProductDataValues) => void;
+    setFinishedProducts: (finishedProducts: FinishedProductFromProduced[] | FinishedProductFromPurchased[] | null) => void;
+    setFinishedProductsMode: (mode: FinishedProductsMode) => void;
+    setModifyMode: (mode: ModifyModes) => void;
+    setModifyCurrentStep: (step: number) => void;
     setProcessedFinishedProduct: (id: string, data: ProcessedFinishedProduct | false) => void;
+    setPackagingItems: (items: PackagingItem[]) => void;
     getProcessedFinishedProduct: (id: string) => ProcessedFinishedProduct | false | undefined
-    setSelectedFinishedProduct: (finishedProduct: FinishedProductFromProduced | FinishedProductFromPurchased | null) => void,
+    setSelectedFinishedProduct: (finishedProduct: FinishedProductFromProduced | FinishedProductFromPurchased | null) => void;
     setTotalCostPerLb: (totalCostPerLb: number) => void;
 
   }
@@ -81,6 +90,7 @@ type Actions = {
 // the slice
 
 export const usePricingSharedSelection = create<State & Actions>((set, get) => ({
+  auxiliaryMode: 'view' as AuxiliaryModes,
   item: null,
   isProduced: false,
   interimFinishedProductData: new Map(),
@@ -88,11 +98,13 @@ export const usePricingSharedSelection = create<State & Actions>((set, get) => (
   finishedProductsMode: 'normal' as FinishedProductsMode,
   modifyCurrentStep: 0,
   modifyMode: 'new' as ModifyModes,
+  packagingItems: [],
   processedFinishedProducts: new Map(),
   selectedFinishedProduct: null,
   totalCostPerLb: 0,
 
   actions: {
+    setAuxiliaryMode: (mode) => set(() => ({ auxiliaryMode: mode })),
     setItem: (item) => set(() => ({ item, })),
     setIsProduced: (isProduced) => set(() => ({ isProduced, })),
     setInterimFinishedProductDatum: (key, value) => {
@@ -106,6 +118,7 @@ export const usePricingSharedSelection = create<State & Actions>((set, get) => (
     setFinishedProductsMode: (mode) => set(() => ({ finishedProductsMode: mode })),
     setModifyCurrentStep: (step) => set(() => ({ modifyCurrentStep: step })),
     setModifyMode: (mode) => set(() => ({ modifyMode: mode })),
+    setPackagingItems: (items) => set(() => ({ packagingItems: items })),
     setProcessedFinishedProduct: (id, data) => set((state) => {
       const newMap = new Map(state.processedFinishedProducts);
       newMap.set(id, data);

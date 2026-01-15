@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Thu Dec 18 2025 10:35:47 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Thu Jan 15 2026 13:46:55 GMT-0800 (Pacific Standard Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -94,12 +94,14 @@ model FinishedProductAuxiliary {
   id                       String                  @id @default(uuid())
   apartOfFinishedProductId String                  @map("apart_of_finished_product_id")
   auxiliaryItemId          String                  @map("auxiliary_item_id")
+  recordStatusId           String                  @default("d7b0a804-52c6-4586-b4f4-0fe49895f794") @map("record_status_id")
   quantity                 Int
   difficultyAdjustmentCost Float                   @map("difficulty_adjustment_cost")
   createdAt                DateTime                @default(now()) @map("created_at")
   updatedAt                DateTime                @updatedAt @map("updated_at")
   apartOfFinishedProduct   FinishedProduct         @relation(fields: [apartOfFinishedProductId], references: [id])
   auxiliaryItem            Item                    @relation(fields: [auxiliaryItemId], references: [id])
+  recordStatus             RecordStatus            @relation(fields: [recordStatusId], references: [id])
   FinishedProductArchive   FinishedProductArchive? @relation(fields: [finishedProductArchiveId], references: [id])
   finishedProductArchiveId String?
 
@@ -597,6 +599,7 @@ model RecordStatus {
   itemConsumerContainers      ItemConsumerContainer[]
   purchaseOrders              PurchaseOrder[]
   items                       Item[]
+  finishedProductAuxiliaries  FinishedProductAuxiliary[]
   FinishedProduct             FinishedProduct[]
   BatchSize                   BatchSize[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]

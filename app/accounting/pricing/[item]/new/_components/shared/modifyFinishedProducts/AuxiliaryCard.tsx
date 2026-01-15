@@ -1,7 +1,10 @@
+import { accountingActions } from "@/actions/accounting"
 import { AuxiliaryItemBreakdown } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost"
 import { useAppForm } from "@/components/Form2"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import { InterimAuxiliaryDetails, usePricingSharedActions } from "@/store/pricingSharedSlice"
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+import { useRouter } from "next/navigation"
 import { Fragment, useState } from "react"
 import { TbEdit, TbPlus, TbTrash, TbX } from "react-icons/tb"
 
@@ -13,6 +16,17 @@ const AuxiliaryCard = ({ aux }: Props) => {
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const { setInterimFinishedProductDatum } = usePricingSharedActions()
+  const router = useRouter()
+
+  const handleDelete = async () => {
+
+    await accountingActions.finishedProducts.auxiliaries.update(aux.id, {
+      recordStatusId: recordStatuses.archived,
+    });
+
+    router.refresh();
+
+  }
 
   const form = useAppForm({
     defaultValues: {
@@ -21,12 +35,13 @@ const AuxiliaryCard = ({ aux }: Props) => {
     },
     onSubmit: ({ value }) => {
       setInterimFinishedProductDatum(aux.id, {
-        isNew: false,
+        isNew: aux.isNew,
         name: aux.name,
         id: aux.id,
         quantity: value.quantity,
         difficultyAdjustmentCost: value.difficultyAdjustmentCost,
         isDirty: true,
+        itemId: aux.itemId,
       })
       setIsEdit(false);
     }
@@ -93,7 +108,7 @@ const AuxiliaryCard = ({ aux }: Props) => {
           <div className="flex justify-end gap-2 items-center">
 
             <button onClick={() => setIsEdit(true)} className="btn btn-sm btn-outline btn-secondary"><TbEdit className="size-4" /></button>
-            <button className="btn btn-sm btn-outline btn-error"><TbTrash className="size-4" /></button>
+            <button onClick={handleDelete} className="btn btn-sm btn-outline btn-error"><TbTrash className="size-4" /></button>
           </div>
 
 

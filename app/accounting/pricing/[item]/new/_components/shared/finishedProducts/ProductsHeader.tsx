@@ -2,11 +2,13 @@
 import SectionTitle from "@/components/Text/SectionTitle"
 import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import { TbPlus } from "react-icons/tb"
+import SaveButton from "../modifyFinishedProducts/SaveButton"
 
 const ProductsHeader = () => {
 
   const { setFinishedProductsMode, setModifyMode, setModifyCurrentStep } = usePricingSharedActions()
   const { finishedProductsMode: mode } = usePricingSharedSelection()
+
 
 
   return (
@@ -29,15 +31,19 @@ const ProductsHeader = () => {
       )}
 
       {mode === 'modify' && (
-        <button
-          className="btn btn-warning flex gap-2 items-center"
-          onClick={() => {
-            setModifyCurrentStep(0);
-            setFinishedProductsMode('normal')
-          }}
-        >
-          Cancel
-        </button>
+        <div className="flex gap-2 items-center">
+          <button
+            className="btn btn-warning flex gap-2 items-center"
+            onClick={() => {
+              setModifyCurrentStep(0);
+              setFinishedProductsMode('normal')
+            }}
+          >
+            Cancel
+          </button>
+
+          <SaveButton />
+        </div>
       )}
 
     </div>

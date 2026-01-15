@@ -1,4 +1,5 @@
 'use client'
+import { PackagingItem } from "@/actions/accounting/consumerContainers/getPackagingItems";
 import { FinishedProductFromProduced } from "@/actions/accounting/finishedProducts/getByProducedItem";
 import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem";
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
@@ -15,6 +16,7 @@ type Props = {
   purchasedItemLastPrice: LastItemPrice | null
   finishedProducts: FinishedProductFromPurchased[] | FinishedProductFromProduced[] | null
   totalCostPerLb: number
+  packagingItems: PackagingItem[]
 }
 
 const StateSetter = ({
@@ -23,6 +25,7 @@ const StateSetter = ({
   purchasedItemLastPrice,
   finishedProducts,
   totalCostPerLb,
+  packagingItems,
 }: Props) => {
 
   const isPurchased = item.procurementTypeId === procurementTypes.purchased;
@@ -32,7 +35,8 @@ const StateSetter = ({
     setIsProduced,
     setFinishedProducts,
     setTotalCostPerLb,
-    setProcessedFinishedProduct
+    setProcessedFinishedProduct,
+    setPackagingItems,
   } = usePricingSharedActions()
 
 
@@ -47,6 +51,7 @@ const StateSetter = ({
     setItem(item);
     setFinishedProducts(finishedProducts);
     setTotalCostPerLb(totalCostPerLb);
+    setPackagingItems(packagingItems);
 
 
     // set processed finished products to initial state

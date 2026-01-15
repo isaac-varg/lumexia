@@ -2,6 +2,7 @@ import { Wizard } from "@/components/Wizard"
 import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import FinishedProductDetails from "./FinishedProductDetails"
 import Auxiliaries from "./Auxiliaries"
+import Card from "@/components/Card"
 
 const Modify = () => {
 
@@ -19,9 +20,10 @@ const Modify = () => {
       </Wizard.Steps>
 
 
-      <FinishedProductDetails />
-      <Auxiliaries />
-
+      <Card.Root>
+        <FinishedProductDetails />
+        <Auxiliaries />
+      </Card.Root>
     </div>
   )
 }

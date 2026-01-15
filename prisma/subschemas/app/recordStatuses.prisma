@@ -9,6 +9,7 @@ model RecordStatus {
     itemConsumerContainers ItemConsumerContainer[]
     purchaseOrders          PurchaseOrder[] 
     items Item[]
+    finishedProductAuxiliaries FinishedProductAuxiliary[]
 
     @@map("record_statuses")
 }

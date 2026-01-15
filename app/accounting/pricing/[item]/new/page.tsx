@@ -24,9 +24,10 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
     purchasedItemPricingData,
     purchasedItemLastPrice,
     finishedProducts,
+    packagingItems,
   ] = await Promise.all([
     isPurchased
-      ? accountingActions.pricing.item.getItemPricingData(item.id)
+      ? await accountingActions.pricing.item.getItemPricingData(item.id)
       : Promise.resolve(null),
     isPurchased
       ? await accountingActions.pricing.item.getLastItemPrice(item.id)
@@ -34,6 +35,7 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
     isPurchased
       ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
       : Promise.resolve(null),
+    await accountingActions.consumerContainers.getPackagingItems(),
   ]);
 
   const [
@@ -55,6 +57,7 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
         purchasedItemLastPrice={purchasedItemLastPrice}
         finishedProducts={finishedProducts}
         totalCostPerLb={totalCostPerLb}
+        packagingItems={packagingItems}
       />
 
       <PricingTabs />
