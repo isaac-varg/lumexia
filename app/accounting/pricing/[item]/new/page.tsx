@@ -9,6 +9,7 @@ import { getTotalCostPerLbPurchased } from "./_calculations/getTotalCostPerLbPur
 type Props = {
   searchParams: {
     id: string
+    examId: string
   }
 }
 
@@ -16,6 +17,9 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
 
   // start
   const item = await inventoryActions.items.getOne(searchParams.id);
+  const examId = searchParams.examId
+    ? searchParams.examId
+    : (await accountingActions.examinations.create(item.id)).id;
 
   // determine what type of pricing this is
   const isPurchased = item.procurementTypeId === procurementTypes.purchased;
@@ -38,7 +42,8 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
       ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
       : Promise.resolve(null),
     await accountingActions.consumerContainers.getPackagingItems(),
-
+    await accountingActions.examinations.notes.getAll(examId),
+    await accountingActions.examinations.notes.getAllNoteTypes(),
   ]);
 
   const [
@@ -56,11 +61,14 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
 
       <StateSetter
         item={item}
+        examId={examId}
         purchasedItemPricingData={purchasedItemPricingData}
         purchasedItemLastPrice={purchasedItemLastPrice}
         finishedProducts={finishedProducts}
         totalCostPerLb={totalCostPerLb}
         packagingItems={packagingItems}
+        notes={notes}
+        noteTypes={noteTypes}
       />
 
       <PricingTabs />

@@ -1,5 +1,7 @@
 'use client'
 import { PackagingItem } from "@/actions/accounting/consumerContainers/getPackagingItems";
+import { PricingExaminationNote } from "@/actions/accounting/examinations/notes/getAllByExamId";
+import { PricingExaminationNoteType } from "@/actions/accounting/examinations/notes/getAllNoteTypes";
 import { FinishedProductFromProduced } from "@/actions/accounting/finishedProducts/getByProducedItem";
 import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProducts/getByPurchasedItem";
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
@@ -17,6 +19,9 @@ type Props = {
   finishedProducts: FinishedProductFromPurchased[] | FinishedProductFromProduced[] | null
   totalCostPerLb: number
   packagingItems: PackagingItem[]
+  notes: PricingExaminationNote[]
+  noteTypes: PricingExaminationNoteType[]
+  examId: string
 }
 
 const StateSetter = ({
@@ -26,6 +31,9 @@ const StateSetter = ({
   finishedProducts,
   totalCostPerLb,
   packagingItems,
+  notes,
+  noteTypes,
+  examId,
 }: Props) => {
 
   const isPurchased = item.procurementTypeId === procurementTypes.purchased;
@@ -35,8 +43,11 @@ const StateSetter = ({
     setIsProduced,
     setFinishedProducts,
     setTotalCostPerLb,
+    setNotes,
+    setNoteTypes,
     setProcessedFinishedProduct,
     setPackagingItems,
+    setExamId,
   } = usePricingSharedActions()
 
 
@@ -49,9 +60,13 @@ const StateSetter = ({
   // shared stuff
   useEffect(() => {
     setItem(item);
+    setExamId(examId);
     setFinishedProducts(finishedProducts);
     setTotalCostPerLb(totalCostPerLb);
     setPackagingItems(packagingItems);
+
+    setNotes(notes);
+    setNoteTypes(noteTypes);
 
 
     // set processed finished products to initial state
