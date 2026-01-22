@@ -2,45 +2,43 @@ import { PricingBOM } from "./getPricingBom";
 
 export const validatePricingBom = (bom: PricingBOM[]) => {
 
-    const errorOnBomItem: string[] = [];
+  const errorOnBomItem: string[] = [];
 
-    bom.forEach((i) => {
-        const itemPricingData = i.item.itemPricingData;
-        const lastPurchase = i.item.purchaseOrderItem;
-        const itemName = i.item.name;
-        const itemSequence = i.identifier;
-
-        console.log(itemPricingData)
-        console.log(lastPurchase)
+  bom.forEach((i) => {
+    const itemPricingData = i.item.itemPricingData;
+    const lastPurchase = i.item.purchaseOrderItem;
+    const itemName = i.item.name;
+    const itemSequence = i.identifier;
 
 
-        const hasSufficientPricing = itemPricingData != null &&
-            Array.isArray(itemPricingData) &&
-            itemPricingData.length > 0 &&
-            itemPricingData[0] != null &&
-            itemPricingData[0].isUpcomingPriceActive === true;
 
-        const hasSufficientPurchase = lastPurchase != null &&
-            Array.isArray(lastPurchase) &&
-            lastPurchase.length > 0;
+    const hasSufficientPricing = itemPricingData != null &&
+      Array.isArray(itemPricingData) &&
+      itemPricingData.length > 0 &&
+      itemPricingData[0] != null &&
+      itemPricingData[0].isUpcomingPriceActive === true;
 
-
-        // flag if it has NEITHER sufficient pricing NOR sufficient purchase data
-        if (!hasSufficientPricing && !hasSufficientPurchase) {
-            errorOnBomItem.push(`#${itemSequence} ${itemName}`);
-        }
-    });
+    const hasSufficientPurchase = lastPurchase != null &&
+      Array.isArray(lastPurchase) &&
+      lastPurchase.length > 0;
 
 
-    if (errorOnBomItem.length !== 0) {
-        return {
-            passes: false,
-            errorOnBomItem,
-        };
+    // flag if it has NEITHER sufficient pricing NOR sufficient purchase data
+    if (!hasSufficientPricing && !hasSufficientPurchase) {
+      errorOnBomItem.push(`#${itemSequence} ${itemName}`);
     }
+  });
 
+
+  if (errorOnBomItem.length !== 0) {
     return {
-        errorOnBomItem,
-        passes: true
+      passes: false,
+      errorOnBomItem,
     };
+  }
+
+  return {
+    errorOnBomItem,
+    passes: true
+  };
 };

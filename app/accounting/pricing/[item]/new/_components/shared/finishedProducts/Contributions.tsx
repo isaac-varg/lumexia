@@ -1,5 +1,6 @@
 import { usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
 import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
+import { usePricingProducedSelection } from "@/store/pricingProducedSlice"
 import { ReactFlow, Controls, Background, useNodesState, useEdgesState, Position, Node, Edge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useEffect } from "react";
@@ -7,14 +8,19 @@ import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 
 const Contributions = () => {
 
-  const { totalCostPerLb, selectedFinishedProduct, } = usePricingSharedSelection()
-  const { pricingData, lastPrice } = usePricingPurchasedSelection()
+  const { totalCostPerLb, selectedFinishedProduct, isProduced } = usePricingSharedSelection()
+  const { pricingData: purchasedPricingData, lastPrice } = usePricingPurchasedSelection()
+  const { pricingData: producedPricingData } = usePricingProducedSelection()
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   useEffect(() => {
-    if (!pricingData) return;
+    if (isProduced) {
+      if (!producedPricingData) return;
+    } else {
+      if (!purchasedPricingData) return;
+    }
 
     // Data preparation
     const fillQuantity = selectedFinishedProduct?.fillQuantity || 0;
@@ -27,50 +33,86 @@ const Contributions = () => {
     // -- Nodes Definition --
 
     // Layer 1A: Inputs to Product Cost (Top Left)
-    const inputNodes: Node[] = [
-      {
-        id: 'input-base-price',
-        position: { x: 0, y: 0 },
-        data: { 
-          label: (
-            <div className="text-xs">
-              <div className="font-semibold mb-1">Base Price</div>
-              <div>${toFracitonalDigits.pricingCurrency(lastPrice?.pricePerUnit ?? 0)} /lb</div>
-            </div>
-          )
+    let inputNodes: Node[] = [];
+
+    if (isProduced && producedPricingData && 'totalCostPerLb' in producedPricingData) {
+      const laborCostPerLb = producedPricingData.totalCostPerLb - producedPricingData.totalBomCostPerLb;
+      inputNodes = [
+        {
+          id: 'input-bom-cost',
+          position: { x: 0, y: 0 },
+          data: { 
+            label: (
+              <div className="text-xs">
+                <div className="font-semibold mb-1">BOM Cost</div>
+                <div>${toFracitonalDigits.pricingCurrency(producedPricingData.totalBomCostPerLb ?? 0)} /lb</div>
+              </div>
+            )
+          },
+          sourcePosition: Position.Right,
+          style: { minWidth: 120, fontSize: '10px' }
         },
-        sourcePosition: Position.Right,
-        style: { minWidth: 120, fontSize: '10px' }
-      },
-      {
-        id: 'input-arrival',
-        position: { x: 0, y: 100 },
-        data: { 
-          label: (
-            <div className="text-xs">
-              <div className="font-semibold mb-1">Arrival Cost</div>
-              <div>${toFracitonalDigits.pricingCurrency(pricingData.arrivalCost ?? 0)} /lb</div>
-            </div>
-          )
+        {
+          id: 'input-labor-cost',
+          position: { x: 0, y: 100 },
+          data: { 
+            label: (
+              <div className="text-xs">
+                <div className="font-semibold mb-1">Labor Cost</div>
+                <div>${toFracitonalDigits.pricingCurrency(laborCostPerLb ?? 0)} /lb</div>
+              </div>
+            )
+          },
+          sourcePosition: Position.Right,
+          style: { minWidth: 120, fontSize: '10px' }
+        }
+      ];
+    } else if (purchasedPricingData) {
+      inputNodes = [
+        {
+          id: 'input-base-price',
+          position: { x: 0, y: 0 },
+          data: { 
+            label: (
+              <div className="text-xs">
+                <div className="font-semibold mb-1">Base Price</div>
+                <div>${toFracitonalDigits.pricingCurrency(lastPrice?.pricePerUnit ?? 0)} /lb</div>
+              </div>
+            )
+          },
+          sourcePosition: Position.Right,
+          style: { minWidth: 120, fontSize: '10px' }
         },
-        sourcePosition: Position.Right,
-        style: { minWidth: 120, fontSize: '10px' }
-      },
-      {
-        id: 'input-unforeseen',
-        position: { x: 0, y: 200 },
-        data: { 
-          label: (
-            <div className="text-xs">
-              <div className="font-semibold mb-1">Unforeseen</div>
-              <div>${toFracitonalDigits.pricingCurrency(pricingData.unforeseenDifficultiesCost ?? 0)} /lb</div>
-            </div>
-          )
+        {
+          id: 'input-arrival',
+          position: { x: 0, y: 100 },
+          data: { 
+            label: (
+              <div className="text-xs">
+                <div className="font-semibold mb-1">Arrival Cost</div>
+                <div>${toFracitonalDigits.pricingCurrency(purchasedPricingData.arrivalCost ?? 0)} /lb</div>
+              </div>
+            )
+          },
+          sourcePosition: Position.Right,
+          style: { minWidth: 120, fontSize: '10px' }
         },
-        sourcePosition: Position.Right,
-        style: { minWidth: 120, fontSize: '10px' }
-      }
-    ];
+        {
+          id: 'input-unforeseen',
+          position: { x: 0, y: 200 },
+          data: { 
+            label: (
+              <div className="text-xs">
+                <div className="font-semibold mb-1">Unforeseen</div>
+                <div>${toFracitonalDigits.pricingCurrency(purchasedPricingData.unforeseenDifficultiesCost ?? 0)} /lb</div>
+              </div>
+            )
+          },
+          sourcePosition: Position.Right,
+          style: { minWidth: 120, fontSize: '10px' }
+        }
+      ];
+    }
 
     // Layer 1B: Auxiliary Inputs (Bottom Left)
     const auxStartTop = 350; 
@@ -285,7 +327,7 @@ const Contributions = () => {
     setNodes(activeNodes);
     setEdges(generatedEdges);
 
-  }, [pricingData, selectedFinishedProduct, totalCostPerLb, lastPrice, setNodes, setEdges]);
+  }, [purchasedPricingData, producedPricingData, isProduced, totalCostPerLb, selectedFinishedProduct, lastPrice, setNodes, setEdges]);
 
   return (
     <div className="h-[600px] w-full border rounded-lg overflow-hidden bg-gray-50">
@@ -308,5 +350,3 @@ const Contributions = () => {
 }
 
 export default Contributions
-
-
