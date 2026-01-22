@@ -15,7 +15,11 @@ export const getPricingMbpr = async (id: string) => {
         include: {
           batchSizeCompoundingVessels: {
             include: {
-              compoundingVessel: true
+              compoundingVessel: {
+                include: {
+                  equipment: true
+                }
+              }
             }
           }
         }
