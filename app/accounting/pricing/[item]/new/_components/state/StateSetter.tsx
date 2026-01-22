@@ -7,10 +7,13 @@ import { FinishedProductFromPurchased } from "@/actions/accounting/finishedProdu
 import { ItemPricingData } from "@/actions/accounting/pricing/getItemPricingData";
 import { LastItemPrice } from "@/actions/accounting/pricing/getLastItemPrice";
 import { Item } from "@/actions/inventory/items/getOne";
+import { ActiveMbpr } from "@/actions/production/getActiveMbpr";
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes";
+import { usePricingProducedActions } from "@/store/pricingProducedSlice";
 import { usePricingPurchasedActions } from "@/store/pricingPurchasedSlice";
 import { usePricingSharedActions, } from "@/store/pricingSharedSlice";
 import { useEffect } from "react";
+import { ProducedPricingSummations } from "../../_actions/getBomWithPricing";
 
 type Props = {
   item: Item
@@ -22,6 +25,8 @@ type Props = {
   notes: PricingExaminationNote[]
   noteTypes: PricingExaminationNoteType[]
   examId: string
+  activeMbpr: ActiveMbpr | null
+  producedItemPricingData: ProducedPricingSummations | null
 }
 
 const StateSetter = ({
@@ -34,6 +39,8 @@ const StateSetter = ({
   notes,
   noteTypes,
   examId,
+  activeMbpr,
+  producedItemPricingData,
 }: Props) => {
 
   const isPurchased = item.procurementTypeId === procurementTypes.purchased;
@@ -55,6 +62,11 @@ const StateSetter = ({
     setPricingData,
     setLastPrice,
   } = usePricingPurchasedActions()
+
+  const {
+    setActiveMbpr,
+    setPricingData: setProducedPricingData,
+  } = usePricingProducedActions()
 
 
   // shared stuff
@@ -85,6 +97,16 @@ const StateSetter = ({
   }, [
     item, setItem,
     finishedProducts, setFinishedProducts,
+  ])
+
+  // produced stuff
+  useEffect(() => {
+
+    setActiveMbpr(activeMbpr);
+    setProducedPricingData(producedItemPricingData);
+
+  }, [
+    item,
   ])
 
 

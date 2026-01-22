@@ -5,6 +5,9 @@ import { accountingActions } from "@/actions/accounting"
 import PricingTabs from "./_components/shared/view/PricingTabs"
 import Header from "./_components/shared/Header"
 import { getTotalCostPerLbPurchased } from "./_calculations/getTotalCostPerLbPurchased"
+import { getBomWithPricing } from "./_actions/getBomWithPricing"
+import { productionActions } from "@/actions/production"
+import { BatchSummations } from "./_actions/getBomPricingSummations"
 
 type Props = {
   searchParams: {
@@ -24,13 +27,15 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
   // determine what type of pricing this is
   const isPurchased = item.procurementTypeId === procurementTypes.purchased;
 
+  const activeMbpr = !isPurchased ? await productionActions.mbprs.getActive(item.id) : null
+
   const [
     purchasedItemPricingData,
     purchasedItemLastPrice,
-    finishedProducts,
     packagingItems,
     notes,
     noteTypes,
+    producedItemPricingData,
   ] = await Promise.all([
     isPurchased
       ? await accountingActions.pricing.item.getItemPricingData(item.id)
@@ -38,21 +43,37 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
     isPurchased
       ? await accountingActions.pricing.item.getLastItemPrice(item.id)
       : Promise.resolve(null),
-    isPurchased
-      ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
-      : Promise.resolve(null),
     await accountingActions.consumerContainers.getPackagingItems(),
     await accountingActions.examinations.notes.getAll(examId),
     await accountingActions.examinations.notes.getAllNoteTypes(),
+    !isPurchased
+      ? await getBomWithPricing(activeMbpr?.id || '')
+      : Promise.resolve(null),
+
   ]);
 
   const [
     totalCostPerLb,
+    finishedProducts,
   ] = await Promise.all([
     isPurchased
       ? await getTotalCostPerLbPurchased(purchasedItemLastPrice, purchasedItemPricingData)
-      : Promise.resolve(0),
+      : Promise.resolve(
+        (producedItemPricingData?.isError)
+          ? 0
+          : (producedItemPricingData as BatchSummations).totalCostPerLb
+      ),
+    isPurchased
+      ? await accountingActions.finishedProducts.getByPurchasedItem(item.id)
+      :
+      await accountingActions.finishedProducts.getByProducedItem(item.id, producedItemPricingData as any),
+
   ])
+
+
+
+
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -69,6 +90,8 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
         packagingItems={packagingItems}
         notes={notes}
         noteTypes={noteTypes}
+        activeMbpr={activeMbpr}
+        producedItemPricingData={producedItemPricingData}
       />
 
       <PricingTabs />

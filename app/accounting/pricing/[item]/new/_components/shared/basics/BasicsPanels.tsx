@@ -3,6 +3,8 @@
 import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import PurchasedBasics from "./PurchasedBasics"
 import TotalCostPerLbPurchased from "./TotalCostPerLbPurchased"
+import ProducedBasics from "./ProducedBasics"
+import TotalCostPerLbProduced from "./TotalCostPerLbProduced"
 
 const BasicsPanels = () => {
 
@@ -18,6 +20,10 @@ const BasicsPanels = () => {
       {!isProduced && <PurchasedBasics />}
 
       {!isProduced && <TotalCostPerLbPurchased />}
+
+      {isProduced && <ProducedBasics />}
+
+      {isProduced && <TotalCostPerLbProduced />}
 
     </div>
   )
