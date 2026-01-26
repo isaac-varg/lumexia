@@ -1,0 +1,42 @@
+'use client'
+
+import { accountingActions } from '@/actions/accounting'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { FaRegThumbsUp } from 'react-icons/fa'
+
+type Props = {
+  examId: string
+}
+
+const ApproveButton = ({ examId }: Props) => {
+  const [isPending, setIsPending] = useState(false)
+  const router = useRouter()
+
+  const handleApprove = async () => {
+    if (isPending) return
+    setIsPending(true)
+    router.back();
+    try {
+      await accountingActions.examinations.approve(examId)
+    } catch (error) {
+      console.error('Error approving examination:', error)
+      alert('Failed to approve examination')
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  return (
+    <button
+      onClick={handleApprove}
+      disabled={isPending}
+      className={`btn btn-success ${isPending ? 'loading' : ''}`}
+    >
+      {!isPending && <FaRegThumbsUp />}
+      {isPending ? 'Approving...' : 'Approve'}
+    </button>
+  )
+}
+
+export default ApproveButton

@@ -1,14 +1,15 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import { pricingExaminationStatuses } from "@/configs/staticRecords/pricingExaminationStatuses"
 
 export const getQueue = async () => {
-    const queue = await prisma.pricingQueue.findMany({
+    const queue = await prisma.pricingExamination.findMany({
         where: {
-            isCompleted: false,
+            statusId: pricingExaminationStatuses.queued,
         },
         include: {
-            item: true,
+            examinedItem: true,
         },
         orderBy: {
             createdAt: 'desc'

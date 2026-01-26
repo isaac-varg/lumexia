@@ -19,6 +19,8 @@ import { createExaminationNoteType } from "./examinations/notes/createExaminatio
 import { getAllByExamId } from "./examinations/notes/getAllByExamId";
 import { getAllNoteTypes } from "./examinations/notes/getAllNoteTypes";
 import { upsertPricingExamination } from "./examinations/upsert";
+import { approvePricingExamination } from "./examinations/approve";
+import { rejectPricingExamination } from "./examinations/reject";
 import { createAuxiliary } from "./finishedProducts/auxiliaries/create";
 import { deleteAuxiliary } from "./finishedProducts/auxiliaries/delete";
 import { getAllAuxiliaries } from "./finishedProducts/auxiliaries/getAll";
@@ -135,6 +137,8 @@ export const accountingActions = {
     getOne: getOnePricingExamination,
     getAll: getAllPricingExaminations,
     upsert: upsertPricingExamination,
+    approve: approvePricingExamination,
+    reject: rejectPricingExamination,
   },
   pos: {
     details: {

@@ -30,14 +30,14 @@ const QueueList = () => {
     return (
         <div className="grid grid-cols-1 gap-2">
 
-            {queue.map((item) => {
+            {queue.map((exam) => {
                 return (
                     <div
-                        key={item.id}
+                        key={exam.id}
                         className="flex px-4 py-2 rounded-xl bg-neutral-100 font-poppins text-xl font-medium hover:bg-lilac-300 hover:cursor-pointer"
-                        onClick={() => router.push(`/accounting/pricing/${item.item.referenceCode}?id=${item.item.id}&fromQueueId=${item.id}`)}
+                        onClick={() => router.push(`/accounting/pricing/${exam.examinedItem.referenceCode}/new?id=${exam.examinedItem.id}&examId=${exam.id}`)}
                     >
-                        {item.item.name}
+                        {exam.examinedItem.name}
                     </div>
                 )
             })}

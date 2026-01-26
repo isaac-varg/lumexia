@@ -7,6 +7,8 @@ import ActionsPanel from './_components/ActionsPanel'
 import ApprovalStatus from './_components/ApprovalStatus'
 import FinishedProductsPanel from './_components/FinishedProductsPanel'
 import NotesPanel from './_components/NotesPanel'
+import ApproveButton from './_components/ApproveButton'
+import RejectButton from './_components/RejectButton'
 
 interface PricingDetailsProps {
   searchParams: {
@@ -24,16 +26,22 @@ const PricingDetailsPage = async ({ searchParams }: PricingDetailsProps) => {
   return (
     <div className="flex flex-col gap-y-4">
 
-      <PageTitle>{`Pricing Examination ${examination.examinedItem.name}`}</PageTitle>
-      <PageBreadcrumbs />
+      <div className="flex items-center justify-between">
+        <PageTitle>{`${examination.examinedItem.name} Pricing Examination `}</PageTitle>
+        <div className="flex gap-2">
+          <RejectButton examId={examId} />
+          <ApproveButton examId={examId} />
+        </div>
+      </div>
 
 
       <div className='grid grid-cols-2 gap-6'>
         <BasicsPanel exam={examination} />
 
+        <NotesPanel pricingExaminationId={examId} notes={examination.PricingExaminationNote} noteTypes={noteTypes} />
+
 
         <FinishedProductsPanel finishedProducts={examination.FinishedProductArchive} />
-        <NotesPanel pricingExaminationId={examId} notes={examination.PricingExaminationNote} noteTypes={noteTypes} />
 
       </div>
 
