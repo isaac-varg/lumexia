@@ -105,7 +105,7 @@ const ChangeInventoryUom = () => {
             setIsChanging(false)
           }}
         >
-          Don't do this unless absolutely certain. Are you sure you want to change the inventory unit of measurement. This will delete descrete conversions that have been added.
+          Do not do this unless absolutely certain. Are you sure you want to change the inventory unit of measurement. This will delete descrete conversions that have been added.
         </Alert.Content>
       </Alert.Root>
 

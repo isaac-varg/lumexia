@@ -10,7 +10,7 @@ export const archiveProducedPricingData = async (
   mbprId: string,
   pricingData: ProducedPricingSummations
 ) => {
-  if (!pricingData || pricingData.isError || pricingData instanceof Error) return;
+  if (!pricingData || 'errorOnFunction' in pricingData) return;
 
   const mbpr = await getPricingMbpr(mbprId);
 

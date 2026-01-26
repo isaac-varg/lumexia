@@ -2,11 +2,10 @@
 
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
 import prisma from "@/lib/prisma"
-import { BatchSummations } from "@/app/accounting/pricing/[item]/newback/_components/produced/_functions/getBomPricingSummations";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
-export const getFinishedProductsByProducedItem = async (itemId: string, summations: BatchSummations) => {
+export const getFinishedProductsByProducedItem = async (itemId: string, summations: any) => {
 
   const fp = await prisma.finishedProduct.findMany({
     where: {

@@ -81,7 +81,7 @@ const LabelForm = ({ items, onComplete }: { items: PurchaseOrderItem[], onComple
 
       <div>
         <form.AppForm>
-          <form.SubmitButton isAlwaysSubmittable={true}>Print</form.SubmitButton>
+          <form.SubmitButton allowPristine>Print</form.SubmitButton>
         </form.AppForm>
       </div>
     </form>
