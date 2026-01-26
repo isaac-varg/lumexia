@@ -12,8 +12,6 @@ export const archiveFinishedProducts = async (
 ) => {
   for (const fp of finishedProducts) {
     const processed = processedData[fp.id];
-    if (!processed) continue;
-
     const interim = interimData[fp.id] as InterimFinishedProductDetails | undefined;
     
     const name = interim?.name || fp.name;
@@ -28,11 +26,12 @@ export const archiveFinishedProducts = async (
     const auxiliaryArchivesData = [];
 
     // Process auxiliaries
-    for (const aux of fp.auxiliaries) {
-      const interimAux = interimData[aux.id] as InterimAuxiliaryDetails | undefined;
+    const auxiliariesBreakdown = fp.auxiliaries?.breakdown || [];
+    for (const aux of auxiliariesBreakdown) {
+      const interimAux = interimData[aux.auxiliaryId] as InterimAuxiliaryDetails | undefined;
       const quantity = interimAux?.quantity || aux.quantity;
       const auxDiffCost = interimAux?.difficultyAdjustmentCost || aux.difficultyAdjustmentCost;
-      
+
       const ipd = await prisma.itemPricingData.findFirst({
         where: { itemId: aux.auxiliaryItemId }
       });
@@ -57,7 +56,7 @@ export const archiveFinishedProducts = async (
 
       // Update the actual auxiliary record
       await prisma.finishedProductAuxiliary.update({
-        where: { id: aux.id },
+        where: { id: aux.auxiliaryId },
         data: {
           quantity,
           difficultyAdjustmentCost: auxDiffCost
@@ -82,10 +81,10 @@ export const archiveFinishedProducts = async (
         finishedProductTotalCost,
         auxiliariesTotalCost,
         productFillCost,
-        consumerPrice: processed.consumerPrice,
-        markup: processed.markup,
-        profit: processed.profit,
-        profitPercentage: processed.profitPercentage,
+        consumerPrice: processed ? processed.consumerPrice : fp.consumerPrice,
+        markup: processed ? processed.markup : fp.markup,
+        profit: processed ? processed.profit : fp.profit,
+        profitPercentage: processed ? processed.profitPercentage : fp.profitPercentage,
       }
     });
 
@@ -114,10 +113,10 @@ export const archiveFinishedProducts = async (
             finishedProductTotalCost,
             auxiliariesTotalCost,
             productFillCost,
-            consumerPrice: processed.consumerPrice,
-            markup: processed.markup,
-            profit: processed.profit,
-            profitPercentage: processed.profitPercentage,
+            consumerPrice: processed ? processed.consumerPrice : fp.consumerPrice,
+            markup: processed ? processed.markup : fp.markup,
+            profit: processed ? processed.profit : fp.profit,
+            profitPercentage: processed ? processed.profitPercentage : fp.profitPercentage,
         }
     });
   }
