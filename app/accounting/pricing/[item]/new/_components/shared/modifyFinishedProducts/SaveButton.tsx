@@ -3,15 +3,14 @@ import { TbDeviceFloppy } from "react-icons/tb"
 import { updateFinishedProductData } from "../../../_actions/updateFinishedProductData"
 import { accountingActions } from "@/actions/accounting"
 import { useRouter } from "next/navigation"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 const SaveButton = () => {
 
-  const { interimFinishedProductData, selectedFinishedProduct } = usePricingSharedSelection()
+  const { interimFinishedProductData, selectedFinishedProduct, item } = usePricingSharedSelection()
   const { setFinishedProductsMode, clearInterimFinishedProductData } = usePricingSharedActions()
   const router = useRouter()
-
-  if (!selectedFinishedProduct) return;
-
 
   const keysToExclude = ['finishedProductData'];
   const auxes = Array.from(interimFinishedProductData)
@@ -21,9 +20,13 @@ const SaveButton = () => {
 
   const handleSave = async () => {
 
-    await handleFinishedProduct();
-    await handleAuxiliaryCreation();
-    await handleAuxiliaryUpdate();
+    const finishedProduct = await handleFinishedProduct();
+    const finishedProductId = finishedProduct?.id ?? selectedFinishedProduct?.id;
+
+    if (finishedProductId) {
+      await handleAuxiliaryCreation(finishedProductId);
+      await handleAuxiliaryUpdate();
+    }
 
     clearInterimFinishedProductData();
     setFinishedProductsMode('normal');
@@ -32,13 +35,13 @@ const SaveButton = () => {
 
   }
 
-  const handleAuxiliaryCreation = async () => {
+  const handleAuxiliaryCreation = async (finishedProductId: string) => {
 
     const newAuxes = auxes.filter(a => a.isNew);
 
     const response = await Promise.all(newAuxes.map(async (aux) => {
       return await accountingActions.finishedProducts.auxiliaries.create({
-        apartOfFinishedProductId: selectedFinishedProduct.id,
+        apartOfFinishedProductId: finishedProductId,
         auxiliaryItemId: aux.itemId,
         quantity: aux.quantity,
         difficultyAdjustmentCost: aux.difficultyAdjustmentCost,
@@ -68,6 +71,20 @@ const SaveButton = () => {
 
     if (interimFinishedProductData.has('finishedProductData')) {
       const fp = interimFinishedProductData.get('finishedProductData') as InterimFinishedProductDetails;
+
+      if (fp.isNew) {
+        const newFinishedProduct = await accountingActions.finishedProducts.create({
+          name: fp.name,
+          fillQuantity: fp.fillQuantity,
+          declaredQuantity: fp.declaredQuantity,
+          difficultyAdjustmentCost: fp.difficultyAdjustmentCost,
+          freeShippingCost: fp.freeShippingCost,
+          filledWithItemId: item.id,
+          fillUomId: uom.pounds,
+          recordStatusId: recordStatuses.active,
+        });
+        return newFinishedProduct;
+      }
 
       const finishedProductUpdate = await updateFinishedProductData(fp.id, {
         name: fp.name,
