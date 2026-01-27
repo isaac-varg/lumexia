@@ -1,12 +1,24 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { Prisma } from "@prisma/client"
+import { pricingExaminationStatuses } from "@/configs/staticRecords/pricingExaminationStatuses"
+import { getUserId } from "@/actions/users/getUserId"
 
-export const createPricingQueue = async (data: Prisma.PricingQueueUncheckedCreateInput) => {
+interface CreateQueueInput {
+    itemId: string
+    isCompleted?: boolean
+}
 
-    const response = await prisma.pricingQueue.create({
-        data,
+export const createPricingQueue = async (data: CreateQueueInput) => {
+
+    const userId = await getUserId()
+
+    const response = await prisma.pricingExamination.create({
+        data: {
+            examinedItemId: data.itemId,
+            userId,
+            statusId: pricingExaminationStatuses.queued,
+        },
     });
 
     return response
