@@ -15,7 +15,8 @@
     "generate-static-records": "tsx ./scripts/generate/main.ts",
     "seed": "npx prisma db seed",
     "reset": "npx prisma migrate reset",
-    "import-staging": "tsx ./utils/importer/modules/staging/main.ts"
+    "import-staging": "tsx ./utils/importer/modules/staging/main.ts",
+    "docker:update": "./scripts/update/update.sh"
   },
   "prisma": {
     "seed": "tsx prisma/seed/seed.ts"
