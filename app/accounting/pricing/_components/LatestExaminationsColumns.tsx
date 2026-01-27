@@ -30,4 +30,20 @@ export const latestExaminationsColumns = [
       return DateTime.fromJSDate(row.row.original.createdAt).toFormat(dateFormatString);
     },
   }),
+  columnHelper.accessor("status.name", {
+    id: "status",
+    header: "Status",
+    cell: (row) => {
+      const status = row.row.original.status;
+      if (!status) return null;
+      return (
+        <span
+          style={{ backgroundColor: status.bgColor, color: status.textColor }}
+          className="py-1 px-2 rounded-xl text-sm font-poppins font-semibold"
+        >
+          {status.name}
+        </span>
+      );
+    },
+  }),
 ]

@@ -8,6 +8,7 @@ export const getAllPricingExaminations = async (limit?: number) => {
         include: {
             examinedItem: true,
             user: true,
+            status: true,
             itemPricingDataArchive: true,
             filledConsumerContainerArchives: {
                 include: {

@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { getUserId } from "@/actions/users/getUserId"
+import { pricingExaminationStatuses } from "@/configs/staticRecords/pricingExaminationStatuses"
 
 
 export const createExaminationNote = async (data: Prisma.PricingExaminationNoteUncheckedCreateInput, examinationData: { examinationId: string, examinedItemId: string }) => {
@@ -22,6 +23,7 @@ export const createExaminationNote = async (data: Prisma.PricingExaminationNoteU
                 id: examinationData.examinationId,
                 examinedItemId: examinationData.examinedItemId,
                 userId,
+                statusId: pricingExaminationStatuses.queued,
             }
         })
 
