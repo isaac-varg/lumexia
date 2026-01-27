@@ -3,6 +3,7 @@ import { Tabs } from "@/components/Tabs2"
 import { procurementTypes } from "@/configs/staticRecords/procurementTypes"
 import { usePricingSharedSelection } from "@/store/pricingSharedSlice"
 import FinishedProducts from "../finishedProducts/FinishedProducts"
+import BomTable from "../bom/BomTable"
 
 const PricingTabs = () => {
 
@@ -25,6 +26,12 @@ const PricingTabs = () => {
           <Tabs.Content value="finishedProducts">
             <FinishedProducts />
           </Tabs.Content>
+
+          {!isPurchased && (
+            <Tabs.Content value="bom">
+              <BomTable />
+            </Tabs.Content>
+          )}
         </Tabs.ContentContainer>
       </Tabs.Root>
 
