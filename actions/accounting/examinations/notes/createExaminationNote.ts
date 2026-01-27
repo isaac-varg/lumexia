@@ -18,6 +18,14 @@ export const createExaminationNote = async (data: Prisma.PricingExaminationNoteU
     })
 
     if (!examination) {
+        // Delete any existing queued examinations for this item
+        await prisma.pricingExamination.deleteMany({
+            where: {
+                examinedItemId: examinationData.examinedItemId,
+                statusId: pricingExaminationStatuses.queued,
+            },
+        });
+
         const examinationResponse = await prisma.pricingExamination.create({
             data: {
                 id: examinationData.examinationId,

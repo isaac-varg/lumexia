@@ -8,6 +8,14 @@ export const createExamination = async (examinedItemId: string, examinationId?: 
 
     const userId = await getUserId()
 
+    // Delete any existing queued examinations for this item
+    await prisma.pricingExamination.deleteMany({
+        where: {
+            examinedItemId,
+            statusId: pricingExaminationStatuses.queued,
+        },
+    });
+
     const payload = {
         userId,
         examinedItemId,

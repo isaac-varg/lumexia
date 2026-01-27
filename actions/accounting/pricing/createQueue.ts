@@ -13,6 +13,14 @@ export const createPricingQueue = async (data: CreateQueueInput) => {
 
     const userId = await getUserId()
 
+    // Delete any existing queued examinations for this item
+    await prisma.pricingExamination.deleteMany({
+        where: {
+            examinedItemId: data.itemId,
+            statusId: pricingExaminationStatuses.queued,
+        },
+    });
+
     const response = await prisma.pricingExamination.create({
         data: {
             examinedItemId: data.itemId,
