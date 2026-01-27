@@ -72,6 +72,8 @@ const SaveButton = () => {
     if (interimFinishedProductData.has('finishedProductData')) {
       const fp = interimFinishedProductData.get('finishedProductData') as InterimFinishedProductDetails;
 
+      if (!item) throw new Error("No item.");
+
       if (fp.isNew) {
         const newFinishedProduct = await accountingActions.finishedProducts.create({
           name: fp.name,
@@ -82,6 +84,13 @@ const SaveButton = () => {
           filledWithItemId: item.id,
           fillUomId: uom.pounds,
           recordStatusId: recordStatuses.active,
+          finishedProductTotalCost: 0,
+          auxiliariesTotalCost: 0,
+          productFillCost: 0,
+          consumerPrice: 0,
+          markup: 0,
+          profit: 0,
+          profitPercentage: 0,
         });
         return newFinishedProduct;
       }
