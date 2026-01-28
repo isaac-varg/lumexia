@@ -3,15 +3,28 @@ import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pric
 import PriceAltering from "./PriceAltering";
 import Card from "@/components/Card";
 import Outputs from "./Outputs";
-import { TbEdit } from "react-icons/tb";
+import { TbEdit, TbTrash } from "react-icons/tb";
 import Notes from "../notes/Notes";
+import { accountingActions } from "@/actions/accounting";
+import { useRouter } from "next/navigation";
+import Alert from "@/components/Alert";
+import useDialog from "@/hooks/useDialog";
 
 const SelectedProduct = () => {
 
   const { selectedFinishedProduct } = usePricingSharedSelection()
-  const { setModifyMode, setFinishedProductsMode } = usePricingSharedActions()
+  const { setModifyMode, setFinishedProductsMode, setSelectedFinishedProduct } = usePricingSharedActions()
+  const router = useRouter()
+  const { showDialog, resetDialogContext } = useDialog()
 
   if (!selectedFinishedProduct) return false;
+
+  const handleDelete = async () => {
+    await accountingActions.finishedProducts.delete(selectedFinishedProduct.id)
+    resetDialogContext()
+    setSelectedFinishedProduct(null)
+    router.refresh()
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -26,8 +39,26 @@ const SelectedProduct = () => {
               setFinishedProductsMode('modify')
             }}
           ><TbEdit className={'size-6'} /></button>
+          <button
+            className="btn btn-outline btn-error"
+            onClick={() => showDialog('archiveFinishedProduct')}
+          >
+            <TbTrash className="size-6" />
+          </button>
         </div>
       </div>
+
+      <Alert.Root identifier="archiveFinishedProduct">
+        <Alert.Content
+          title="Archive Finished Product"
+          action={handleDelete}
+          actionLabel="Archive"
+          actionColor="error"
+          cancelAction={resetDialogContext}
+        >
+          Are you sure you want to archive &quot;{selectedFinishedProduct.name}&quot;? It will be hidden from pricing and verification.
+        </Alert.Content>
+      </Alert.Root>
 
       <div className="grid grid-cols-3 gap-6 ">
 
