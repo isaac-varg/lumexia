@@ -2,6 +2,7 @@
 
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem";
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import prisma from "@/lib/prisma"
 
 export const getAllDiscrepancyAuditItems = async (auditId: string) => {
@@ -9,6 +10,11 @@ export const getAllDiscrepancyAuditItems = async (auditId: string) => {
   const items = await prisma.discrepancyAuditItem.findMany({
     where: {
       discrepancyAuditId: auditId,
+      item: {
+        recordStatusId: {
+          not: recordStatuses.archived
+        }
+      }
     },
     include: {
       notes: {

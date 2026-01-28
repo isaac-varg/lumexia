@@ -2,6 +2,7 @@
 
 import { getOnHandByItem } from "@/actions/inventory/inventory/getOnHandByItem";
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import prisma from "@/lib/prisma"
 
 export const getDisrepancyItem = async (itemId: string) => {
@@ -9,6 +10,11 @@ export const getDisrepancyItem = async (itemId: string) => {
   const item = await prisma.discrepancyAuditItem.findFirstOrThrow({
     where: {
       itemId,
+      item: {
+        recordStatusId: {
+          not: recordStatuses.archived
+        }
+      }
     },
     include: {
       notes: {
