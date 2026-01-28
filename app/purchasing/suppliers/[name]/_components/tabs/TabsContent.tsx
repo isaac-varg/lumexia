@@ -35,7 +35,7 @@ const TabsContent = () => {
         </Tabs.Content>
 
         <Tabs.Content value="items">
-          <ItemsTab items={items} />
+          <ItemsTab />
         </Tabs.Content>
       </Tabs.ContentContainer>
     </Tabs.Root>

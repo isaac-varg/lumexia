@@ -34,6 +34,7 @@ type State = {
   poActivity: string
   qcParameters: string
   accountingActivity: string
+  supplierItemPurchases: string
 }
 
 
@@ -76,6 +77,7 @@ export const useTableFilter = create<State & Actions>((set) => ({
   poActivity: '',
   qcParameters: '',
   accountingActivity: '',
+  supplierItemPurchases: '',
 
   setFilter: (filterName, value) => set((state) => ({
     ...state,
