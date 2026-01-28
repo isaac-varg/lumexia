@@ -1,13 +1,16 @@
 'use client'
 import SectionTitle from "@/components/Text/SectionTitle"
+import useDialog from "@/hooks/useDialog"
 import { usePricingSharedActions, usePricingSharedSelection } from "@/store/pricingSharedSlice"
-import { TbPlus } from "react-icons/tb"
+import { TbPlus, TbTemplate } from "react-icons/tb"
 import SaveButton from "../modifyFinishedProducts/SaveButton"
+import AddTemplateDialog from "./AddTemplateDialog"
 
 const ProductsHeader = () => {
 
   const { setFinishedProductsMode, setModifyMode, setModifyCurrentStep } = usePricingSharedActions()
   const { finishedProductsMode: mode } = usePricingSharedSelection()
+  const { showDialog } = useDialog()
 
 
 
@@ -17,18 +20,29 @@ const ProductsHeader = () => {
       <SectionTitle>Finished Products</SectionTitle>
 
       {mode === 'normal' && (
-        <button
-          className="btn btn-primary flex gap-2 items-center"
-          onClick={() => {
-            setModifyMode('new');
-            setFinishedProductsMode('modify')
+        <div className="flex gap-2">
+          <button
+            className="btn btn-secondary flex gap-2 items-center"
+            onClick={() => showDialog('addTemplateDialog')}
+          >
+            <TbTemplate className="size-5" />
+            Add Template
+          </button>
+          <button
+            className="btn btn-primary flex gap-2 items-center"
+            onClick={() => {
+              setModifyMode('new');
+              setFinishedProductsMode('modify')
 
-          }}
-        >
-          <TbPlus className="size-6" />
-          Add Product
-        </button>
+            }}
+          >
+            <TbPlus className="size-6" />
+            Add Product
+          </button>
+        </div>
       )}
+
+      <AddTemplateDialog />
 
       {mode === 'modify' && (
         <div className="flex gap-2 items-center">

@@ -36,6 +36,7 @@ import { getByFinishedProduct } from "./finishedProducts/templates/auxiliaries/g
 import { createPricingTemplate } from "./finishedProducts/templates/create";
 import { createPricingTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/create";
 import { updateTemplateFinishedProduct } from "./finishedProducts/templates/finishedProducts/update";
+import { applyTemplate } from "./finishedProducts/templates/applyTemplate";
 import { getAllTemplates } from "./finishedProducts/templates/getAll";
 import { getAllByItemType } from "./finishedProducts/templates/getAllByItemType";
 import { getOnePricingTemplate } from "./finishedProducts/templates/getOne";
@@ -84,6 +85,7 @@ export const accountingActions = {
       getAllByItemType: getAllByItemType,
       getOne: getOnePricingTemplate,
       getAllTemplates: getAllTemplates,
+      apply: applyTemplate,
     },
     auxiliaries: {
       delete: deleteAuxiliary,
