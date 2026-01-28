@@ -3,9 +3,10 @@ import Card from "@/components/Card"
 import Text from "@/components/Text"
 import { usePricingPurchasedSelection } from "@/store/pricingPurchasedSlice"
 import { toFracitonalDigits } from "@/utils/data/toFractionalDigits"
+import { TbInfoCircle } from "react-icons/tb"
 
 const PurchasedBasics = () => {
-  const { pricingData, lastPrice } = usePricingPurchasedSelection()
+  const { pricingData, lastPrice, lastPriceConvertedToLb } = usePricingPurchasedSelection()
 
   if (!pricingData) return false;
 
@@ -19,9 +20,21 @@ const PurchasedBasics = () => {
 
         <Text.LabelDataPair
           label='Last Purchase Price'
-          tooltip='The price per unit obtained from the last purchase order.'
-          data={`${toFracitonalDigits.curreny(lastPrice?.pricePerUnit || 0)} $/${lastPrice?.uom.abbreviation || 'unspecified'} ` || 0}
-        />
+          tooltip='The price per unit obtained from the last purchase order, converted to $/lb.'
+        >
+          <div className="flex items-center gap-1">
+            <span>{toFracitonalDigits.pricingCurrency(lastPriceConvertedToLb || 0)} $/lb</span>
+            <div className="tooltip tooltip-info tooltip-left z-50">
+              <div className="tooltip-content p-4 z-50">
+                <div className="flex flex-col gap-1">
+                  <p className="font-medium">Original Purchase Price:</p>
+                  <p>{toFracitonalDigits.pricingCurrency(lastPrice?.pricePerUnit || 0)} $/{lastPrice?.uom.abbreviation || 'unspecified'}</p>
+                </div>
+              </div>
+              <TbInfoCircle className="size-5 text-info cursor-help" />
+            </div>
+          </div>
+        </Text.LabelDataPair>
 
         <Text.LabelDataPair
           label='Upcoming Price'

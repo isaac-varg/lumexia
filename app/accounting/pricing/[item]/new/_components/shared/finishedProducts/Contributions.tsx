@@ -9,7 +9,7 @@ import { toFracitonalDigits } from "@/utils/data/toFractionalDigits";
 const Contributions = () => {
 
   const { totalCostPerLb, selectedFinishedProduct, isProduced } = usePricingSharedSelection()
-  const { pricingData: purchasedPricingData, lastPrice } = usePricingPurchasedSelection()
+  const { pricingData: purchasedPricingData, lastPrice, lastPriceConvertedToLb } = usePricingPurchasedSelection()
   const { pricingData: producedPricingData } = usePricingProducedSelection()
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
@@ -72,11 +72,11 @@ const Contributions = () => {
         {
           id: 'input-base-price',
           position: { x: 0, y: 0 },
-          data: { 
+          data: {
             label: (
               <div className="text-xs">
                 <div className="font-semibold mb-1">Base Price</div>
-                <div>${toFracitonalDigits.pricingCurrency(lastPrice?.pricePerUnit ?? 0)} /lb</div>
+                <div>${toFracitonalDigits.pricingCurrency(lastPriceConvertedToLb ?? 0)} /lb</div>
               </div>
             )
           },
@@ -327,7 +327,7 @@ const Contributions = () => {
     setNodes(activeNodes);
     setEdges(generatedEdges);
 
-  }, [purchasedPricingData, producedPricingData, isProduced, totalCostPerLb, selectedFinishedProduct, lastPrice, setNodes, setEdges]);
+  }, [purchasedPricingData, producedPricingData, isProduced, totalCostPerLb, selectedFinishedProduct, lastPriceConvertedToLb, setNodes, setEdges]);
 
   return (
     <div className="h-[600px] w-full border rounded-lg overflow-hidden bg-gray-50">

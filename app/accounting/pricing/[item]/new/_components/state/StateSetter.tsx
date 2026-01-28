@@ -19,6 +19,7 @@ type Props = {
   item: Item
   purchasedItemPricingData: ItemPricingData | null
   purchasedItemLastPrice: LastItemPrice | null
+  lastPriceConvertedToLb: number | null
   finishedProducts: FinishedProductFromPurchased[] | FinishedProductFromProduced[] | null
   totalCostPerLb: number
   packagingItems: PackagingItem[]
@@ -33,6 +34,7 @@ const StateSetter = ({
   item,
   purchasedItemPricingData,
   purchasedItemLastPrice,
+  lastPriceConvertedToLb,
   finishedProducts,
   totalCostPerLb,
   packagingItems,
@@ -61,6 +63,7 @@ const StateSetter = ({
   const {
     setPricingData,
     setLastPrice,
+    setLastPriceConvertedToLb,
   } = usePricingPurchasedActions()
 
   const {
@@ -117,12 +120,14 @@ const StateSetter = ({
 
     setPricingData(purchasedItemPricingData);
     setLastPrice(purchasedItemLastPrice);
+    setLastPriceConvertedToLb(lastPriceConvertedToLb);
 
 
   }, [
     item,
     purchasedItemPricingData, setPricingData,
     purchasedItemLastPrice, setLastPrice,
+    lastPriceConvertedToLb, setLastPriceConvertedToLb,
   ])
 
   return false;

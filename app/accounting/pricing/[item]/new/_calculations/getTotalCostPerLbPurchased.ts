@@ -41,11 +41,18 @@ export const getTotalCostPerLbPurchased = async (lastPurchase: LastItemPrice, pr
   }
 
   // handle uom conversion
-  // TODO use a defaultUom instead of lbs because metric is better  
+  // TODO use a defaultUom instead of lbs because metric is better
+  // Note: For price conversion, we need the inverse of quantity conversion.
+  // If 1 kg = 2.2 lb, then $10/kg = $10/2.2 = $4.54/lb
+  // We achieve this by converting 1 lb to the source UOM, then multiplying.
 
   const convertedCurrentMaterialCost = currentCostUomId === uom.pounds
     ? currentMaterialCost
-    : await uomUtils.convert({ id: currentCostUomId, isStandard: true }, currentMaterialCost, { id: uom.pounds, isStandard: true })
+    : currentMaterialCost * await uomUtils.convert(
+      { id: uom.pounds, isStandard: true },
+      1,
+      { id: currentCostUomId, isStandard: true }
+    )
 
   return convertedCurrentMaterialCost +
     pricingData.arrivalCost +

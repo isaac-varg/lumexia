@@ -8,6 +8,8 @@ import { getTotalCostPerLbPurchased } from "./_calculations/getTotalCostPerLbPur
 import { getBomWithPricing } from "./_actions/getBomWithPricing"
 import { productionActions } from "@/actions/production"
 import { BatchSummations } from "./_actions/getBomPricingSummations"
+import { uomUtils } from "@/utils/uom"
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 
 type Props = {
   searchParams: {
@@ -52,6 +54,20 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
 
   ]);
 
+  // Convert last purchase price to $/lb for display
+  // Note: For price conversion, we need the inverse of quantity conversion.
+  // If 1 kg = 2.2 lb, then $10/kg = $10/2.2 = $4.54/lb
+  // We achieve this by converting 1 lb to the source UOM, then multiplying.
+  const lastPriceConvertedToLb = isPurchased && purchasedItemLastPrice
+    ? purchasedItemLastPrice.uomId === uom.pounds
+      ? purchasedItemLastPrice.pricePerUnit
+      : purchasedItemLastPrice.pricePerUnit * await uomUtils.convert(
+        { id: uom.pounds, isStandard: true },
+        1,
+        { id: purchasedItemLastPrice.uomId, isStandard: true }
+      )
+    : null;
+
   const [
     totalCostPerLb,
     finishedProducts,
@@ -85,6 +101,7 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
         examId={examId}
         purchasedItemPricingData={purchasedItemPricingData}
         purchasedItemLastPrice={purchasedItemLastPrice}
+        lastPriceConvertedToLb={lastPriceConvertedToLb}
         finishedProducts={finishedProducts}
         totalCostPerLb={totalCostPerLb}
         packagingItems={packagingItems}
