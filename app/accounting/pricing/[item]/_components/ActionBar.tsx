@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { getSlug } from '@/utils/general/getSlug'
 
 const ActionBar = ({
   itemId,
@@ -12,7 +13,8 @@ const ActionBar = ({
 
   const router = useRouter()
   const handleNew = () => {
-    router.push(`/accounting/pricing/${itemName}/new?id=${itemId}`)
+    const slugName = getSlug(itemName)
+    router.push(`/accounting/pricing/${slugName}/new?id=${itemId}`)
   }
   return (
     <div className='flex justify-between'>
