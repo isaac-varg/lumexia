@@ -197,6 +197,7 @@ const Default = ({
                   const page = e.target.value ? Number(e.target.value) - 1 : 0;
                   table.setPageIndex(page);
                 }}
+                onWheel={(e) => e.currentTarget.blur()}
                 className="border border-accent/35 bg-base-100 p-2 rounded w-16"
               />
             </span>

@@ -31,6 +31,7 @@ const NumberField = ({ label, description, labelClass = 'default', errorClass = 
         value={field.state.value}
         className="input w-full input-lg"
         onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+        onWheel={(e) => e.currentTarget.blur()}
         type="number"
       />
       {meta.isTouched && meta.errors.length > 0 ? (
