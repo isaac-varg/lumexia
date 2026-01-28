@@ -7,8 +7,14 @@ export const getAuxiliariesTotalCost = async (auxiliaries: FinishedProductAuxili
     auxiliaries.map(async (current) => {
       const lastItemPrice = await getLastItemPrice(current.auxiliaryItemId);
 
+      const pricingData = current.auxiliaryItem.itemPricingData[0]
+
+      if (!pricingData) {
+        throw new Error(`Pricing data not provided for auxiliary item: ${current.auxiliaryItem.name}`)
+      }
+
       const itemCost = getItemCost(
-        current.auxiliaryItem.itemPricingData[0],
+        pricingData,
         lastItemPrice
       );
 
