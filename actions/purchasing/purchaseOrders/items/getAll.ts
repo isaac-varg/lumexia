@@ -1,6 +1,7 @@
 'use server'
 
 import { handleLot } from "@/app/receiving/[referenceCode]/_actions/receiveItems";
+import { aliasTypes } from "@/configs/staticRecords/aliasTypes";
 import prisma from "@/lib/prisma"
 import { UomConversionError } from "@/utils/uom/conversionError";
 import { validateConversion } from "@/utils/uom/validateConversion";
@@ -20,7 +21,8 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
               config: true
             }
           },
-          inventoryUom: true
+          inventoryUom: true,
+          aliases: true
         },
       },
       uom: true,
@@ -43,16 +45,40 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
       item.item.id,
     )
 
+    const matchingSupplierAlias = await prisma.supplierAlias.findFirst({
+      where: {
+        supplierId: item.purchaseOrders.supplierId,
+        alias: {
+          itemId: item.itemId,
+        }
+      },
+      include: {
+        alias: true,
+      },
+    })
+
+    const otherAliases = item.item.aliases.filter(a => a.aliasTypeId !== aliasTypes.supplier);
+    const allAliases = [
+      ...otherAliases,
+      ...(matchingSupplierAlias?.alias ? [matchingSupplierAlias.alias] : []),
+    ];
+
+    const base = {
+      ...item,
+      alias: matchingSupplierAlias,
+      allAliases,
+    };
+
     if (!conversionValidation.isSuccessful && conversionValidation.error instanceof UomConversionError) {
       return {
         hasConversionError: true,
-        ...item
+        ...base
       }
     }
 
     return {
       hasConversionError: false,
-      ...item
+      ...base
     };
   }))
 

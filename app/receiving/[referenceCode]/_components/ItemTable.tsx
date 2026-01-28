@@ -219,6 +219,7 @@ ${res.error.message}
             data={receivableItems}
             columns={itemColumns}
             onSelectionChange={handleSelectionChange}
+            overflowVisible
           />
         )}
 

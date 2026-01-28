@@ -65,6 +65,7 @@ const RecievedTable = ({ items }: { items: PurchaseOrderItem[] }) => {
             data={receivedItems}
             columns={receivedColumns}
             onSelectionChange={handleSelectionChange}
+            overflowVisible
           />
         )}
 

@@ -8,9 +8,10 @@ type SelectableProps<TData> = {
   columns: ColumnDef<TData, any>[],
   showFooter?: boolean
   onSelectionChange?: (data: TData[]) => void,
+  overflowVisible?: boolean,
 }
 
-const Selectable = <TData extends object>({ data, columns, onSelectionChange, showFooter = false }: SelectableProps<TData>) => {
+const Selectable = <TData extends object>({ data, columns, onSelectionChange, showFooter = false, overflowVisible = false }: SelectableProps<TData>) => {
 
   const [rowSelection, setRowSelection] = useState({})
   const tableColumns = useMemo<ColumnDef<TData, any>[]>(() => [
@@ -62,7 +63,7 @@ const Selectable = <TData extends object>({ data, columns, onSelectionChange, sh
   }, [rowSelection, onSelectionChange])
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className={`w-full ${overflowVisible ? 'overflow-visible' : 'overflow-x-auto'}`}>
       <table className="table min-w-full text-left text-lg font-light">
         <thead
           className="font-semibold text-xl border-accent/35 text-base-content"
