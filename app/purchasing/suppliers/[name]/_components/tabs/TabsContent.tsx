@@ -1,36 +1,45 @@
 "use client";
-import TabsPanel from "@/components/Tabs";
+
+import { Tabs } from "@/components/Tabs2";
 import PurchasesTab from "../purchases/PurchasesTab";
-import { SupplierDetailPurchases } from "../../_actions/getPurchases";
-import { PurchaseOrderItem } from "@/types/purchaseOrderItem";
 import ItemsTab from "../items/ItemsTab";
-import { SupplierDetailsItems } from "../../_actions/getItems";
+import ContactsPanel from "../contacts/ContactsPanel";
+import NotesTable from "../notes/NotesTable";
+import { useSupplierDetailSelection } from "@/store/supplierDetailSlice";
 
-const tabs = [
-    { identifier: "purchases", label: "Purchases" },
-    { identifier: "items", label: "Items" },
-];
+const TabsContent = () => {
+  const { supplier, purchases, items, contacts, notes } = useSupplierDetailSelection();
 
-const TabsContent = ({
-    purchases,
-    items,
-}: {
-    purchases: SupplierDetailPurchases[];
-    items: SupplierDetailsItems[];
-}) => {
-    return (
-        <TabsPanel.Root panelStateName="supplierDetails">
-            <TabsPanel.List tabTriggers={tabs} panelStateName="supplierDetails" />
+  if (!supplier) return null;
 
-            <TabsPanel.Content identifier="purchases">
-                <PurchasesTab purchases={purchases} />
-            </TabsPanel.Content>
+  return (
+    <Tabs.Root defaultValue="purchases">
+      <Tabs.List>
+        <Tabs.Trigger size="large" value="purchases">Purchases</Tabs.Trigger>
+        <Tabs.Trigger size="large" value="contacts">Contacts</Tabs.Trigger>
+        <Tabs.Trigger size="large" value="notes">Notes</Tabs.Trigger>
+        <Tabs.Trigger size="large" value="items">Items</Tabs.Trigger>
+      </Tabs.List>
 
-            <TabsPanel.Content identifier="items">
-                <ItemsTab items={items} />
-            </TabsPanel.Content>
-        </TabsPanel.Root>
-    );
+      <Tabs.ContentContainer>
+        <Tabs.Content value="purchases">
+          <PurchasesTab />
+        </Tabs.Content>
+
+        <Tabs.Content value="contacts">
+          <ContactsPanel />
+        </Tabs.Content>
+
+        <Tabs.Content value="notes">
+          <NotesTable />
+        </Tabs.Content>
+
+        <Tabs.Content value="items">
+          <ItemsTab items={items} />
+        </Tabs.Content>
+      </Tabs.ContentContainer>
+    </Tabs.Root>
+  );
 };
 
 export default TabsContent;

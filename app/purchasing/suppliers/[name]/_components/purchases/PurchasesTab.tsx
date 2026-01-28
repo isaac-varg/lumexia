@@ -2,20 +2,18 @@
 
 import DataTable from "@/components/DataTable";
 import { purchasesColumns } from "./Columns";
-import { SupplierDetailPurchases } from "../../_actions/getPurchases";
 import TotalMetrics from "./TotalMetrics";
 import Card from "@/components/Card";
+import SectionTitle from "@/components/Text/SectionTitle";
 import {
   RowSelectionHandlerMethod,
   rowSelectionHandler,
 } from "@/utils/auxiliary/rowSelectionHandler";
 import { useRouter } from "next/navigation";
+import { useSupplierDetailSelection } from "@/store/supplierDetailSlice";
 
-const PurchasesTab = ({
-  purchases,
-}: {
-  purchases: SupplierDetailPurchases[];
-}) => {
+const PurchasesTab = () => {
+  const { purchases } = useSupplierDetailSelection();
   const router = useRouter();
 
   const handleClick = (row: any, method: RowSelectionHandlerMethod) => {
@@ -24,9 +22,12 @@ const PurchasesTab = ({
   };
 
   return (
-    <div className="p-4 flex flex-col gap-y-4">
-      <TotalMetrics purchases={purchases} />
-      <Card.Root bg="elevated" shadow='none'>
+    <div className="flex flex-col gap-6">
+      <TotalMetrics />
+
+      <SectionTitle>Purchase Orders</SectionTitle>
+
+      <Card.Root>
         <DataTable.Default
           data={purchases}
           columns={purchasesColumns}
