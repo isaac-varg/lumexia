@@ -57,11 +57,7 @@ export const getAllPurchaseOrderItems = async (purchaseOrderId: string) => {
       },
     })
 
-    const otherAliases = item.item.aliases.filter(a => a.aliasTypeId !== aliasTypes.supplier);
-    const allAliases = [
-      ...otherAliases,
-      ...(matchingSupplierAlias?.alias ? [matchingSupplierAlias.alias] : []),
-    ];
+    const allAliases = item.item.aliases;
 
     const base = {
       ...item,

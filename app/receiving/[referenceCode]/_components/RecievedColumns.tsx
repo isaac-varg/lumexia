@@ -11,7 +11,8 @@ export const receivedColumns = [
     cell: info => {
       const row = info.row.original;
       const hasAliases = row.allAliases.length > 0;
-      const displayName = row.item.name;
+      const supplierAlias = row.alias?.alias?.name;
+      const displayName = supplierAlias ?? row.item.name;
 
       if (!hasAliases) return displayName;
 
@@ -22,7 +23,8 @@ export const receivedColumns = [
             <div className="tooltip-content p-6 z-50">
               <div className="flex flex-col gap-1">
                 <p className="font-semibold">Aliases:</p>
-                {row.allAliases.map(a => <div key={a.id}>{a.name}</div>)}
+                {row.allAliases.filter(a => a.name !== supplierAlias && a.name !== row.item.name).map(a => <div key={a.id}>{a.name}</div>)}
+                {supplierAlias && <div>{row.item.name}</div>}
               </div>
             </div>
             <TbMessageDots className="size-6" />
