@@ -16,6 +16,7 @@ import Searcher from "@/components/Search/Searcher";
 import DataTable from "@/components/DataTable";
 import { TbSortAscending, TbSortDescending } from "react-icons/tb";
 import { SortableHeaderType } from "@/components/DataTable/SortableHeaderType";
+import Tag from "@/components/Text/Tag";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import {
@@ -29,6 +30,26 @@ const columnHelper = createColumnHelper<any>();
 const purchaseColumns = [
   columnHelper.accessor("purchaseOrders.referenceCode", {
     header: SortableHeaderType("PO #"),
+  }),
+  columnHelper.accessor("purchaseOrders.status.id", {
+    id: "status",
+    header: SortableHeaderType("Status"),
+    cell: (row) => {
+      const status = row.row.original.purchaseOrders?.status;
+      if (!status) return "—";
+      return <Tag label={status.name} bgColor={status.bgColor} textColor={status.textColor} />;
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  }),
+  columnHelper.accessor((row) => row.purchaseOrders?.paymentMethod?.id, {
+    id: "paymentMethod",
+    header: SortableHeaderType("Payment Method"),
+    cell: (row) => row.row.original.purchaseOrders?.paymentMethod?.name ?? "—",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   }),
   columnHelper.accessor("quantity", {
     header: SortableHeaderType("Quantity"),

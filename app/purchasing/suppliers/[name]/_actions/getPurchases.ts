@@ -16,6 +16,8 @@ export interface SupplierDetailPurchases extends PurchaseOrder {
 export const getPurchases = async (supplierId: string) => {
 	const purchases = await purchaseOrderActions.getAll({ supplierId }, [
 		"purchaseOrderItems",
+		"status",
+		"paymentMethod",
 	]);
 
 	const extended: SupplierDetailPurchases[] = purchases.map((purchase: PurchaseOrder) => {
