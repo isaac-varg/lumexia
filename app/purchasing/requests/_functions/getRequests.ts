@@ -3,7 +3,7 @@
 import { requestStatuses } from "@/configs/staticRecords/requestStatuses";
 import prisma from "@/lib/prisma"
 
-const { delivered, requestCancelledDuplicateRequest, discontinuedIngredient } = requestStatuses;
+const { delivered, requestCancelledDuplicateRequest, discontinuedIngredient, replacementIngredientFound } = requestStatuses;
 
 export const getRequests = async () => {
   const requests = await prisma.purchasingRequest.findMany({
@@ -13,6 +13,7 @@ export const getRequests = async () => {
           delivered,
           requestCancelledDuplicateRequest,
           discontinuedIngredient,
+          replacementIngredientFound,
         ]
       }
     },
