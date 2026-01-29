@@ -1,15 +1,10 @@
 import React from "react";
-import ScanPanel from "./_components/ScanPanel";
 import PageTitle from "@/components/Text/PageTitle";
-import RequestsPanel from "./_components/RequestsPanel";
 import { inventoryActions } from "@/actions/inventory";
-import PageBreadcrumbs from "@/components/App/PageBreadcrumbs";
-import Layout from "@/components/Layout";
-import RecentAuditsPanel from "./_components/RecentAuditsPanel";
 import DiscrepancyButton from "./_components/DiscrepancyButton";
+import AuditTabs from "./_components/AuditTabs";
 
 const ScanPage = async () => {
-
 
   const requests = await inventoryActions.auditReqests.getAll();
   const completedRequests = await inventoryActions.auditReqests.getAllCompleted();
@@ -25,16 +20,7 @@ const ScanPage = async () => {
 
       </div>
 
-      <ScanPanel />
-
-      <Layout.Grid cols={2} gap={6} >
-
-        <RequestsPanel requests={requests} />
-
-        <RecentAuditsPanel audits={completedRequests} />
-
-
-      </Layout.Grid>
+      <AuditTabs requests={requests} completedRequests={completedRequests} />
 
     </div>
   );
