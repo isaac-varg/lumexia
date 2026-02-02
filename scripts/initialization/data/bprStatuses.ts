@@ -93,6 +93,14 @@ export const data = {
       "sequence": 3,
       "bgColor": "#FCD5CE",
       "textColor": "#333333"
-    }
+    },
+    {
+      "name": "Consumption Error",
+      "description": "There was an error consuming the materials for this batch that must be looked into.",
+      "sequence": 13,
+      "bgColor": "#FEC5BB",
+      "textColor": "#333333"
+    },
+
   ],
 };

@@ -2,6 +2,7 @@
 
 import { handleCompletedBprs } from "@/actions/queries/completedBprs/handleCompletedBprs"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
+import useToast from "@/hooks/useToast"
 import { useBprPlanningSelection } from "@/store/bprPlanningSlice"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -9,11 +10,11 @@ import { TbChecks } from "react-icons/tb"
 
 const CompleteBprs = () => {
 
-
   const { bprs } = useBprPlanningSelection()
   const [hasCompleted, setHasCompleted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter()
+  const { toast } = useToast()
 
   useEffect(() => {
 
@@ -26,10 +27,21 @@ const CompleteBprs = () => {
   const handleClick = async () => {
     try {
       setIsLoading(true);
-      await handleCompletedBprs();
+      const result = await handleCompletedBprs();
       router.refresh()
+
+      const { succeeded, failed } = result;
+
+      if (failed.length === 0) {
+        toast("BPRs Processed", `${succeeded.length} BPR${succeeded.length === 1 ? '' : 's'} processed successfully`, "success");
+      } else if (succeeded.length === 0) {
+        toast("BPR Processing Failed", `All ${failed.length} BPR${failed.length === 1 ? '' : 's'} failed — check BPR notes for details`, "error");
+      } else {
+        toast("BPR Processing Partial", `${succeeded.length} succeeded, ${failed.length} failed — check BPR notes for details`, "error");
+      }
     } catch (error) {
       console.error(error);
+      toast("Error", "An unexpected error occurred while processing BPRs", "error");
     } finally {
       setIsLoading(false)
     }
@@ -51,4 +63,4 @@ const CompleteBprs = () => {
   )
 }
 
-export default CompleteBprs 
+export default CompleteBprs

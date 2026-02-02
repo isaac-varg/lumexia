@@ -11,6 +11,7 @@ export const toastClasses = {
   color: {
     default: "bg-white text-neutral-700",
     success: "bg-bay-leaf-100 text-bay-leaf-700 ",
+    error: "bg-red-100 text-red-700",
   },
 };
 

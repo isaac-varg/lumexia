@@ -9,7 +9,9 @@ export type BprConsumptionErrorName =
 
 export interface BprConsumptionErrorData {
   bprId?: string;
+  referenceCode?: string;
   error?: unknown;
+  failedStagings?: { lotId: string; itemName: string; quantity: number; uom: string }[];
 }
 
 

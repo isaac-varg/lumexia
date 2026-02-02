@@ -12,6 +12,8 @@ import bprActions from "@/actions/production/bprActions";
 import { productionActions } from "@/actions/production";
 import { BprStaging } from "@/actions/production/bprs/stagings/getAll";
 import { BprConsumptionError } from "@/utils/errors/BprConsumptionError";
+import { bprNoteTypes } from "@/configs/staticRecords/bprNoteTypes";
+import { users } from "@/configs/staticRecords/users";
 
 export const handleCompletedBprCascade = async (bprId: string) => {
 
@@ -35,9 +37,34 @@ export const handleCompletedBprCascade = async (bprId: string) => {
       throw new BprConsumptionError('GET_USER_ID_FAILED', 'Could not get user id.', { error });
     }
 
+    // Snapshot staging details before transaction for error reporting
+    const stagingDetails = stagings.map((s) => ({
+      lotId: s.lotId,
+      itemName: s.lot?.lotNumber ?? 'Unknown',
+      quantity: Number(s.quantity),
+      uom: s.uom?.abbreviation ?? 'lbs',
+    }));
+
     try {
       await prisma.$transaction(async (tx) => {
-        await Promise.all(stagings.map(async (staging) => processStaging(staging, userId, tx)));
+        const failedStagings: typeof stagingDetails = [];
+
+        for (const staging of stagings) {
+          try {
+            await processStaging(staging, userId, tx);
+          } catch (error) {
+            const detail = stagingDetails.find((d) => d.lotId === staging.lotId);
+            if (detail) failedStagings.push(detail);
+          }
+        }
+
+        if (failedStagings.length > 0) {
+          throw new BprConsumptionError('TRANSACTION_FAILED', 'One or more stagings failed during BPR consumption.', {
+            bprId,
+            referenceCode: bpr.referenceCode,
+            failedStagings,
+          });
+        }
 
         await tx.batchProductionRecord.update({
           where: { id: bprId },
@@ -45,22 +72,70 @@ export const handleCompletedBprCascade = async (bprId: string) => {
         });
       });
     } catch (error) {
-      throw new BprConsumptionError('TRANSACTION_FAILED', 'Failed to execute BPR consumption transaction.', { bprId, error });
+      if (error instanceof BprConsumptionError) {
+        throw error;
+      }
+      throw new BprConsumptionError('TRANSACTION_FAILED', 'Failed to execute BPR consumption transaction.', { bprId, referenceCode: bpr.referenceCode, error });
     }
 
 
     await createActivityLog('cascadeBprCompletion', 'bpr', bprId, { context: `BPR #${bpr.referenceCode} completion cascade executed.` });
 
   } catch (error) {
-    if (error instanceof BprConsumptionError) {
-      console.error(`BprConsumptionError in handleCompletedBprCascade for BPR ${bprId}:`, {
-        name: error.name,
-        message: error.message,
-        data: error.data
+    const consumptionError = error instanceof BprConsumptionError ? error : null;
+
+    console.error(`BprConsumptionError in handleCompletedBprCascade for BPR ${bprId}:`, {
+      name: consumptionError?.name ?? 'UnknownError',
+      message: consumptionError?.message ?? String(error),
+      data: consumptionError?.data,
+    });
+
+    // Set BPR status to failed (outside rolled-back transaction)
+    try {
+      await prisma.batchProductionRecord.update({
+        where: { id: bprId },
+        data: { bprStatusId: bprStatuses.consumptionError },
       });
-    } else {
-      console.error("Failed to execute BPR completion cascade:", error);
+    } catch (statusError) {
+      console.error(`Failed to set BPR ${bprId} status to failed:`, statusError);
     }
+
+    // Write failure note to BPR
+    try {
+      const failedStagings = consumptionError?.data?.failedStagings ?? [];
+      const stagingLines = failedStagings.map(
+        (s) => `  - Lot: ${s.lotId}, Item: ${s.itemName}, Qty: ${s.quantity} ${s.uom}`
+      ).join('\n');
+
+      const content = [
+        `Error Code: ${consumptionError?.name ?? 'UNKNOWN'}`,
+        `Message: ${consumptionError?.message ?? String(error)}`,
+        failedStagings.length > 0 ? `Failed Stagings:\n${stagingLines}` : null,
+      ].filter(Boolean).join('\n');
+
+      await prisma.bprNote.create({
+        data: {
+          bprId,
+          userId: users.lumexia,
+          noteTypeId: bprNoteTypes.cascadeError,
+          content,
+        },
+      });
+    } catch (noteError) {
+      console.error(`Failed to create failure note for BPR ${bprId}:`, noteError);
+    }
+
+    // Write activity log for failure
+    try {
+      await createActivityLog('cascadeBprCompletionFailed', 'bpr', bprId, {
+        errorCode: consumptionError?.name ?? 'UNKNOWN',
+        errorMessage: consumptionError?.message ?? String(error),
+        failedStagings: consumptionError?.data?.failedStagings ?? [],
+      }, true);
+    } catch (logError) {
+      console.error(`Failed to create activity log for BPR ${bprId} failure:`, logError);
+    }
+
     throw new Error("Failed to execute BPR completion cascade.");
   }
 }
@@ -117,4 +192,3 @@ const createTransaction = async (staging: BprStaging, userId: string, tx: Prisma
     }
   })
 }
-

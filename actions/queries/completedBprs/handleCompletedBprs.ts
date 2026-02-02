@@ -7,7 +7,12 @@ import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 
 const { completed } = bprStatuses;
 
-export const handleCompletedBprs = async () => {
+export interface CompletedBprsResult {
+  succeeded: number[];
+  failed: { bprId: string; referenceCode: number; error: string }[];
+}
+
+export const handleCompletedBprs = async (): Promise<CompletedBprsResult> => {
 
   const now = DateTime.now()
 
@@ -17,15 +22,25 @@ export const handleCompletedBprs = async () => {
     }
   });
 
+  const results = await Promise.allSettled(bprs.map((bpr) => handleCompletedBprCascade(bpr.id)));
 
+  const succeeded: number[] = [];
+  const failed: { bprId: string; referenceCode: number; error: string }[] = [];
 
-  const cascades = await Promise.all(bprs.map(async (bpr) => {
-    const cascade = await handleCompletedBprCascade(bpr.id)
-    return cascade;
-  }));
+  results.forEach((result, index) => {
+    const bpr = bprs[index];
+    if (result.status === 'fulfilled') {
+      succeeded.push(bpr.referenceCode);
+    } else {
+      failed.push({
+        bprId: bpr.id,
+        referenceCode: bpr.referenceCode,
+        error: result.reason instanceof Error ? result.reason.message : String(result.reason),
+      });
+    }
+  });
 
-  console.info(`Completed BPR Cascade ran ${now.toFormat("ccc, LLL dd yyyy @ t")}`)
+  console.info(`Completed BPR Cascade ran ${now.toFormat("ccc, LLL dd yyyy @ t")} — ${succeeded.length} succeeded, ${failed.length} failed`)
 
-
-  return cascades;
+  return { succeeded, failed };
 }
