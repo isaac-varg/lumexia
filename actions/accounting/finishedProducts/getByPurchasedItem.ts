@@ -1,11 +1,11 @@
 'use server'
 
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
-import { getItemCost } from "@/app/accounting/pricing/_calculations/getItemCost";
 import prisma from "@/lib/prisma"
 import { getProductFillCost } from "@/app/accounting/pricing/_calculations/getProductFillCost";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { accountingActions } from "..";
+import { getTotalCostPerLbPurchased } from "@/app/accounting/pricing/[item]/new/_calculations/getTotalCostPerLbPurchased";
 
 export const getFinishedProductsByPurchasedItem = async (itemId: string,) => {
 
@@ -43,12 +43,12 @@ export const getFinishedProductsByPurchasedItem = async (itemId: string,) => {
     },
   });
 
-  const itemCost = getItemCost(itemPricingData, lastPrice)
+  const itemCostPerLb = await getTotalCostPerLbPurchased(lastPrice, itemPricingData)
 
   const withAuxiliaries = await Promise.all(
     fp.map(async (current) => {
       const auxiliaries = await getAuxiliariesTotalCost(current.auxiliaries);
-      const productFillCost = getProductFillCost(current.fillQuantity, itemCost)
+      const productFillCost = getProductFillCost(current.fillQuantity, itemCostPerLb)
       const finishedProductTotalCost = productFillCost +
         auxiliaries.total +
         current.difficultyAdjustmentCost +
