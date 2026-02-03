@@ -23,7 +23,7 @@ export const getBomItemCost = async (bom: PricingBOM[], batchSize: number) => {
     // item cost calculated 
     let convertedPrice = price;
     if (priceUom === uom.units || priceUom === uom.case) {
-      const converted = await getGenericUnitsConvertedPrice(i.item.id, i.item.purchaseOrderItem[0].purchaseOrders.supplierId, price)
+      const converted = await getGenericUnitsConvertedPrice(i.item.id, i.item.purchaseOrderItem[0].purchaseOrders.supplierId, price, i.item.name)
       convertedPrice = converted
     }
 
@@ -68,18 +68,18 @@ const getConvertedPrice = async (currentUomId: string, price: number, item: any)
 
   if (!conversionFactor) {
     console.error('the item in question', item)
-    throw new Error(`Conversion factor not found for ${currentUomId}; `)
+    throw new Error(`Conversion factor not found for item "${item.name}"`)
   }
 
   return price / conversionFactor;
 }
 
 
-const getGenericUnitsConvertedPrice = async (itemId: string, supplierId: string, price: number) => {
+const getGenericUnitsConvertedPrice = async (itemId: string, supplierId: string, price: number, itemName: string) => {
   const conversionFactor = await inventoryActions.genericUnitsConversion.getBySupplierItemUnique(itemId, supplierId);
 
   if (!conversionFactor) {
-    throw new Error(`No conversion factor found for one of the BOM items with generic units: ${itemId}`)
+    throw new Error(`No conversion factor found for item "${itemName}"`)
   }
 
   if (conversionFactor.convertToUomId !== lb) {
