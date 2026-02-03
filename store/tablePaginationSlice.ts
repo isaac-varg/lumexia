@@ -41,6 +41,11 @@ type State = {
   qcParameters: StateData,
   accountingActivity: StateData,
   supplierItemPurchases: StateData,
+  investigationLots: StateData,
+  investigationTransactions: StateData,
+  investigationPurchaseOrders: StateData,
+  investigationAudits: StateData,
+  investigationNotes: StateData,
 }
 
 
@@ -83,6 +88,11 @@ export const useTablePagination = create<State & Actions>((set) => ({
   qcParameters: { pageSize: 20, pageIndex: 0 },
   accountingActivity: { pageSize: 50, pageIndex: 0 },
   supplierItemPurchases: { pageSize: 10, pageIndex: 0 },
+  investigationLots: { pageSize: 50, pageIndex: 0 },
+  investigationTransactions: { pageSize: 20, pageIndex: 0 },
+  investigationPurchaseOrders: { pageSize: 20, pageIndex: 0 },
+  investigationAudits: { pageSize: 20, pageIndex: 0 },
+  investigationNotes: { pageSize: 20, pageIndex: 0 },
 
 
   setPagination: (filterName, value) =>

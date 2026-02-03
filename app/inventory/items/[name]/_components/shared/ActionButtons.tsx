@@ -2,6 +2,7 @@ import useDialog from "@/hooks/useDialog";
 import { useItemSelection } from "@/store/itemSlice";
 import { useRouter } from "next/navigation";
 import AuditDialog from "./AuditDialog";
+import { getSlug } from "@/utils/general/getSlug";
 
 const ActionButtons = () => {
 
@@ -20,11 +21,23 @@ const ActionButtons = () => {
     router.push(`/purchasing/requests/new?itemId=${item.id}`)
   }
 
+  const handleInvestigate = () => {
+    if (!item) return;
+    const slug = getSlug(item.name)
+    router.push(`/inventory/investigation/${slug}?id=${item.id}`)
+  }
+
   if (!item) return false
 
   return (
     <div className="flex gap-x-6">
       <AuditDialog itemId={item.id} />
+
+      <button
+        onClick={() => handleInvestigate()}
+        className="btn btn-accent">
+        Investigate
+      </button>
 
       <button
         onClick={() => handleAudit()}

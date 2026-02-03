@@ -37,6 +37,11 @@ type State = {
   qcParameters: FilterArray
   accountingActivity: FilterArray
   supplierItemPurchases: FilterArray
+  investigationLots: FilterArray
+  investigationTransactions: FilterArray
+  investigationPurchaseOrders: FilterArray
+  investigationAudits: FilterArray
+  investigationNotes: FilterArray
 };
 
 export type TableStateName = keyof State;
@@ -83,6 +88,11 @@ export const useTableFacets = create<State & Actions>((set) => ({
   qcParameters: [],
   accountingActivity: [],
   supplierItemPurchases: [],
+  investigationLots: [],
+  investigationTransactions: [],
+  investigationPurchaseOrders: [],
+  investigationAudits: [],
+  investigationNotes: [],
 
   setFilter: (tableState, value) =>
     set((state) => ({
