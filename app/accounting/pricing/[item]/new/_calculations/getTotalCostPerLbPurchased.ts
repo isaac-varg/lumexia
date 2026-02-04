@@ -9,7 +9,7 @@ import { uomUtils } from "@/utils/uom"
 
 // total cost per lb is defined as
 // the sum of
-//    currentMaterialCost 
+//    currentMaterialCost
 //    arrival costs
 //    unforeseen diffulties cost
 //
@@ -36,6 +36,13 @@ export const getTotalCostPerLbPurchased = async (lastPurchase: LastItemPrice, pr
     ? pricingData.upcomingPriceUomId
     : lastPurchase?.uomId;
 
+  const currentCostUomIsStandard = pricingData.isUpcomingPriceActive
+    ? pricingData.upcomingPriceUom.isStandardUom
+    : lastPurchase?.uom.isStandardUom ?? true;
+
+  const itemId = pricingData.itemId;
+  const supplierId = lastPurchase?.purchaseOrders?.supplierId;
+
   if (!currentMaterialCost || !currentCostUomId) {
     throw new PricingError('NULL_REFERENCE', "Either the current material cost or current cost uom is null")
   }
@@ -51,7 +58,9 @@ export const getTotalCostPerLbPurchased = async (lastPurchase: LastItemPrice, pr
     : currentMaterialCost * await uomUtils.convert(
       { id: uom.pounds, isStandard: true },
       1,
-      { id: currentCostUomId, isStandard: true }
+      { id: currentCostUomId, isStandard: currentCostUomIsStandard },
+      itemId,
+      supplierId
     )
 
   return convertedCurrentMaterialCost +

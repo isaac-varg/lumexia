@@ -66,7 +66,9 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
         : purchasedItemLastPrice.pricePerUnit * await uomUtils.convert(
           { id: uom.pounds, isStandard: true },
           1,
-          { id: purchasedItemLastPrice.uomId, isStandard: true }
+          { id: purchasedItemLastPrice.uomId, isStandard: purchasedItemLastPrice.uom.isStandardUom },
+          item.id,
+          purchasedItemLastPrice.purchaseOrders?.supplierId
         )
       : null;
 

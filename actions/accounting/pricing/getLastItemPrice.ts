@@ -10,6 +10,11 @@ export const getLastItemPrice = async (itemId: string) => {
         },
         include: {
             uom: true,
+            purchaseOrders: {
+                select: {
+                    supplierId: true,
+                }
+            }
         },
         orderBy: {
             createdAt: 'desc'
