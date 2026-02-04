@@ -1,26 +1,42 @@
-import Card from "@/components/Card"
-import DataTable from "@/components/DataTable"
 import { useItemSelection } from "@/store/itemSlice"
-import { lotsColumns } from "./LotsColumns"
-import { Filter } from "@/types/filter"
 import { AnimatePresence, motion } from "framer-motion"
 import LotsTable from "./LotsTable"
 import LotDetails from "./LotDetails"
 import SectionTitle from "@/components/Text/SectionTitle"
+import { TbPlus } from "react-icons/tb"
+import useDialog from "@/hooks/useDialog"
+import CreateLotDialog from "./CreateLotDialog"
 
 export type LotsViewMode = 'table' | 'lot';
 
 const Lots = () => {
 
   const { lotsViewMode, selectedLot } = useItemSelection()
+  const { showDialog } = useDialog()
   const title = lotsViewMode === 'table' ? 'Lots' : `Lot ${selectedLot?.lotNumber}`;
 
+  const handleCreateLot = () => {
+    showDialog('createLot')
+  }
+
   return (
+    <>
+      <CreateLotDialog />
 
-    <div className="col-span-3">
+      <div className="col-span-3">
 
-      <div className="flex flex-col gap-y-6">
-        <SectionTitle>{title}</SectionTitle>
+        <div className="flex flex-col gap-y-6">
+          <div className="flex flex-row items-center justify-between">
+            <SectionTitle>{title}</SectionTitle>
+            {lotsViewMode === 'table' && (
+              <button
+                onClick={handleCreateLot}
+                className="btn btn-secondary"
+              >
+                <TbPlus className="size-4" />
+              </button>
+            )}
+          </div>
 
 
         <AnimatePresence mode="wait">
@@ -38,7 +54,8 @@ const Lots = () => {
       </div>
 
 
-    </div>
+      </div>
+    </>
   )
 }
 

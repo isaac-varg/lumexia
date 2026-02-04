@@ -40,6 +40,8 @@ export const lotsColumns = [
           return `PO #${origin.purchaseOrder?.referenceCode}`
         case 'bprProduction':
           return `BPR #${origin.bpr?.referenceCode}`
+        case 'manuallyCreated':
+          return 'Manually Created'
         default:
           return `Unknown`
       }
