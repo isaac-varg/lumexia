@@ -26,7 +26,6 @@ model Item {
     pricingExaminations          PricingExamination[]
     consumerContainerArchives    ConsumerContainerArchive[]
     qcItemParameters             QcItemParameter[]
-    genericUnitConversionFactors GenericUnitConversionFactor[]
     discrepancyAuditItems        DiscrepancyAuditItem[]
     discreteUnitOfMeasurementConversions                 DiscreteUnitOfMeasurementConversion[]
 

@@ -8,8 +8,6 @@ const Buttons = () => {
 
     return (
         <div className="grid grid-cols-3 gap-6">
-
-            <button className="btn h-40" onClick={() => router.push('settings/uom')}>UOM</button>
             <button className="btn h-40" onClick={() => router.push('settings/fixes')}>Fixes</button>
         </div>
 

@@ -16,7 +16,6 @@ model Supplier {
     supplierAlias                SupplierAlias[]
     supplierNotes                SupplierNote[]
     SupplierPaymentMethod        SupplierPaymentMethod[]
-    genericUnitConversionFactors GenericUnitConversionFactor[]
     poSupplierNotes PoSupplierNote[]
     discreteUnitOfMeasurementConversions                 DiscreteUnitOfMeasurementConversion[]
 

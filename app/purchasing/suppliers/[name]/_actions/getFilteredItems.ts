@@ -1,16 +1,17 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getConversionFactor } from "@/utils/uom/getConversionFactor";
 import { groupByMonthAndYear } from "@/utils/general/groupByMonthAndYear";
 import { UnitOfMeasurement } from "@prisma/client";
 import { getPricingChartData } from "./getPricingChartData";
 import { ExPurchaseOrderItem } from "@/types/purchaseOrderItem";
 import { DateTime } from "luxon";
 import { getModeDates } from "@/utils/general/getModeDates";
+import { uomUtils } from "@/utils/uom";
+import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 //
 // TODO make this configurable and then pull what the use selected as their default uom rather than hard code it. . . what if someone doesn't want to only use lb as their default.
-const defaultUomId = "68171f7f-3ac0-4a3a-b197-18742ebf6b5b";
+const defaultUomId = uom.pounds;
 
 export interface SupplierFilterItems {
     totalSpent: number;
@@ -89,22 +90,21 @@ export const getFilteredItems = async (itemId: string, supplierId: string, mode:
                 const isDefaultUom = item.uomId === defaultUomId;
 
                 if (!isDefaultUom) {
-                    const conversionFactor = await getConversionFactor(
-                        item.uomId,
-                        defaultUomId,
-                    );
-
-                    if (!conversionFactor) {
+                    try {
+                        // Convert price to $/lb using the unified conversion approach
+                        // For price conversion, we convert 1 lb to the source UOM, then multiply
+                        price = item.pricePerUnit * await uomUtils.convert(
+                            { id: defaultUomId, isStandard: true },
+                            1,
+                            { id: item.uomId, isStandard: item.uom.isStandardUom },
+                            itemId,
+                            supplierId
+                        );
+                    } catch (error) {
+                        // If conversion fails, keep original price
                         price = item.pricePerUnit;
-                        return
                     }
-                    const convertedPricePerUnit = item.pricePerUnit / conversionFactor;
-                    price = convertedPricePerUnit;
-                } else {
-
-                    price = item.pricePerUnit;
                 }
-
             }
             return { price: price, createdAt: item.createdAt }
         }),

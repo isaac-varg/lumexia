@@ -5,8 +5,6 @@ import { getOneCompletedAuditRequest } from "./auditRequests/getOneCompleted";
 import { createAuditRequestNoteType } from "./auditRequests/noteTypes/create";
 import { getAuditRequestNoteTypes } from "./auditRequests/noteTypes/getAll";
 import { createAuditRequestNote } from "./auditRequests/notes/create";
-import { createGenericUnitConversionFactor } from "./genericUnitConversionFactors/create";
-import { getConversionByItemSupplierUnique } from "./genericUnitConversionFactors/getByItemSupplierUnique";
 import { getAllItems } from "./getAllItems";
 import { getAllUom } from "./getAllUom";
 import { getAuditRequests } from "./getAuditRequests";
@@ -78,10 +76,6 @@ export const inventoryActions = {
   },
   receiving: {
     getReceivables: getReceivables,
-  },
-  genericUnitsConversion: {
-    getBySupplierItemUnique: getConversionByItemSupplierUnique,
-    create: createGenericUnitConversionFactor,
   },
   lots: {
     getOne: getSingleLot,
