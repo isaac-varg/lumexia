@@ -10,9 +10,14 @@ export const getPricingBom = async (mbprId: string) => {
         include: {
             item: {
                 include: {
-                    itemPricingData: true,
+                    itemPricingData: {
+                        include: {
+                            upcomingPriceUom: true,
+                        }
+                    },
                     purchaseOrderItem: {
                         include: {
+                            uom: true,
                             purchaseOrders: {
                                 select: {
                                     supplierId: true,

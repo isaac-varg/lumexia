@@ -60,17 +60,36 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
     // Note: For price conversion, we need the inverse of quantity conversion.
     // If 1 kg = 2.2 lb, then $10/kg = $10/2.2 = $4.54/lb
     // We achieve this by converting 1 lb to the source UOM, then multiplying.
-    const lastPriceConvertedToLb = isPurchased && purchasedItemLastPrice
-      ? purchasedItemLastPrice.uomId === uom.pounds
-        ? purchasedItemLastPrice.pricePerUnit
-        : purchasedItemLastPrice.pricePerUnit * await uomUtils.convert(
-          { id: uom.pounds, isStandard: true },
-          1,
-          { id: purchasedItemLastPrice.uomId, isStandard: purchasedItemLastPrice.uom.isStandardUom },
-          item.id,
-          purchasedItemLastPrice.purchaseOrders?.supplierId
-        )
-      : null;
+    let lastPriceConvertedToLb: number | null = null;
+    if (isPurchased && purchasedItemLastPrice) {
+      if (purchasedItemLastPrice.uomId === uom.pounds) {
+        lastPriceConvertedToLb = purchasedItemLastPrice.pricePerUnit;
+      } else {
+        try {
+          lastPriceConvertedToLb = purchasedItemLastPrice.pricePerUnit * await uomUtils.convert(
+            { id: uom.pounds, isStandard: true },
+            1,
+            { id: purchasedItemLastPrice.uomId, isStandard: purchasedItemLastPrice.uom.isStandardUom },
+            item.id,
+            purchasedItemLastPrice.purchaseOrders?.supplierId
+          );
+        } catch (error: any) {
+          const poContext = {
+            location: 'lastPriceConvertedToLb',
+            purchaseOrderId: purchasedItemLastPrice.purchaseOrders?.id,
+            purchaseOrderReferenceCode: purchasedItemLastPrice.purchaseOrders?.referenceCode,
+            purchaseOrderItemId: purchasedItemLastPrice.id,
+            itemId: item.id,
+            itemName: item.name,
+            supplierId: purchasedItemLastPrice.purchaseOrders?.supplierId,
+            uomId: purchasedItemLastPrice.uomId,
+            uomName: purchasedItemLastPrice.uom.name,
+            uomIsStandard: purchasedItemLastPrice.uom.isStandardUom,
+          };
+          throw new Error(`${error.message} | Debug: ${JSON.stringify(poContext)}`);
+        }
+      }
+    }
 
     const [
       totalCostPerLb,

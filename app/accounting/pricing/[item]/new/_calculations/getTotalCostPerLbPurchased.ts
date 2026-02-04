@@ -53,15 +53,41 @@ export const getTotalCostPerLbPurchased = async (lastPurchase: LastItemPrice, pr
   // If 1 kg = 2.2 lb, then $10/kg = $10/2.2 = $4.54/lb
   // We achieve this by converting 1 lb to the source UOM, then multiplying.
 
-  const convertedCurrentMaterialCost = currentCostUomId === uom.pounds
-    ? currentMaterialCost
-    : currentMaterialCost * await uomUtils.convert(
-      { id: uom.pounds, isStandard: true },
-      1,
-      { id: currentCostUomId, isStandard: currentCostUomIsStandard },
-      itemId,
-      supplierId
-    )
+  let convertedCurrentMaterialCost: number;
+
+  if (currentCostUomId === uom.pounds) {
+    convertedCurrentMaterialCost = currentMaterialCost;
+  } else {
+    try {
+      convertedCurrentMaterialCost = currentMaterialCost * await uomUtils.convert(
+        { id: uom.pounds, isStandard: true },
+        1,
+        { id: currentCostUomId, isStandard: currentCostUomIsStandard },
+        itemId,
+        supplierId
+      );
+    } catch (error: any) {
+      // Add purchase order context to the error for debugging
+      const poContext = lastPurchase ? {
+        purchaseOrderId: lastPurchase.purchaseOrders?.id,
+        purchaseOrderReferenceCode: lastPurchase.purchaseOrders?.referenceCode,
+        purchaseOrderItemId: lastPurchase.id,
+        uomId: lastPurchase.uomId,
+        uomName: lastPurchase.uom.name,
+        uomIsStandard: lastPurchase.uom.isStandardUom,
+      } : null;
+
+      throw new PricingError(
+        'UOM_CONVERSION_FAILED',
+        `${error.message} | PO Context: ${JSON.stringify(poContext)}`,
+        {
+          originalError: error,
+          priceSource: pricingData.isUpcomingPriceActive ? 'upcoming_price' : 'last_purchase',
+          ...poContext,
+        }
+      );
+    }
+  }
 
   return convertedCurrentMaterialCost +
     pricingData.arrivalCost +

@@ -12,6 +12,8 @@ export const getLastItemPrice = async (itemId: string) => {
             uom: true,
             purchaseOrders: {
                 select: {
+                    id: true,
+                    referenceCode: true,
                     supplierId: true,
                 }
             }

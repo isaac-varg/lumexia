@@ -54,7 +54,11 @@ export const convertUom = async (
 
   // is non-standard unit of uom
   // i.e., requires discrete conversion
-  if (inputUom && !inputUom.isStandard)
+  // Check if EITHER the input OR output UOM is non-standard
+  const inputIsNonStandard = inputUom && !inputUom.isStandard;
+  const outputIsNonStandard = outputUom && !outputUom.isStandard;
+
+  if (inputIsNonStandard || outputIsNonStandard)
     if (itemId && supplierId) {
       const discreteConversion = await prisma.discreteUnitOfMeasurementConversion.findUnique({
         where: {
@@ -99,7 +103,12 @@ export const convertUom = async (
       `No conversion factor found between the item inventory UOM and the UOM the item was purchased in. Please either add a discrete UOM conversion or standard conversion for SI units of measurement.`,
       {
         inputUomId: inputUom.id,
+        inputUomIsStandard: inputUom.isStandard,
         targetUomId,
+        targetUomIsStandard: outputUom?.isStandard ?? 'not provided',
+        itemId: itemId ?? 'not provided',
+        supplierId: supplierId ?? 'not provided',
+        discreteConversionAttempted: (inputIsNonStandard || outputIsNonStandard) && !!itemId && !!supplierId,
       },
     )
   }
