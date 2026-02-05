@@ -22,7 +22,7 @@ export const getBomItemCost = async (bom: PricingBOM[], batchSize: number) => {
     const price = isUpcomingPrice ? i.item.itemPricingData[0].upcomingPrice : lastPurchase.pricePerUnit;
 
     const itemId = i.item.id;
-    const supplierId = lastPurchase.purchaseOrders.supplierId;
+    const supplierId = lastPurchase?.purchaseOrders?.supplierId;
 
     // Convert price to $/lb using the unified conversion approach
     // Note: For price conversion, we need the inverse of quantity conversion.
