@@ -4,11 +4,11 @@ import { SortableHeaderType } from "@/components/DataTable/SortableHeaderType"
 import { createColumnHelper } from "@tanstack/react-table"
 import { DateTime } from "luxon"
 
-type CombinedAudit = {
+export type CombinedAudit = {
   type: string
   id: string
   createdAt: Date
-  user: string
+  user: string | null
   status: string
   transactions: any[]
   details: string
