@@ -5,15 +5,25 @@ export type BprConsumptionErrorName =
   | 'NO_STAGINGS_FOUND'
   | 'GET_STAGINGS_FAILED'
   | 'GET_USER_ID_FAILED'
-  | 'TRANSACTION_FAILED';
+  | 'TRANSACTION_FAILED'
+  | 'STAGING_FAILED';
+
+export type StagingOperation = 'createTransaction' | 'updateBom' | 'updateStagingStatus';
 
 export interface BprConsumptionErrorData {
   bprId?: string;
   referenceCode?: string;
   error?: unknown;
   failedStagings?: { lotId: string; itemName: string; quantity: number; uom: string }[];
+  failedStaging?: {
+    lotId: string;
+    itemName: string;
+    quantity: number;
+    uom: string;
+    operation: StagingOperation;
+    errorMessage: string;
+  };
 }
 
 
 export class BprConsumptionError extends ErrorBase<BprConsumptionErrorName, BprConsumptionErrorData> { }
-

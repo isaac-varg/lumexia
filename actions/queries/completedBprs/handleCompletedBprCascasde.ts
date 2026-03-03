@@ -11,9 +11,21 @@ import { Prisma } from "@prisma/client";
 import bprActions from "@/actions/production/bprActions";
 import { productionActions } from "@/actions/production";
 import { BprStaging } from "@/actions/production/bprs/stagings/getAll";
-import { BprConsumptionError } from "@/utils/errors/BprConsumptionError";
+import { BprConsumptionError, StagingOperation } from "@/utils/errors/BprConsumptionError";
 import { bprNoteTypes } from "@/configs/staticRecords/bprNoteTypes";
 import { users } from "@/configs/staticRecords/users";
+
+class StagingOperationError extends Error {
+  operation: StagingOperation;
+  originalError: unknown;
+
+  constructor(operation: StagingOperation, originalError: unknown) {
+    const message = originalError instanceof Error ? originalError.message : String(originalError);
+    super(message);
+    this.operation = operation;
+    this.originalError = originalError;
+  }
+}
 
 export const handleCompletedBprCascade = async (bprId: string) => {
 
@@ -37,33 +49,38 @@ export const handleCompletedBprCascade = async (bprId: string) => {
       throw new BprConsumptionError('GET_USER_ID_FAILED', 'Could not get user id.', { error });
     }
 
-    // Snapshot staging details before transaction for error reporting
-    const stagingDetails = stagings.map((s) => ({
-      lotId: s.lotId,
-      itemName: s.lot?.lotNumber ?? 'Unknown',
-      quantity: Number(s.quantity),
-      uom: s.uom?.abbreviation ?? 'lbs',
-    }));
-
     try {
       await prisma.$transaction(async (tx) => {
-        const failedStagings: typeof stagingDetails = [];
+
+        await cleanupPreviousConsumption(bprId, tx);
 
         for (const staging of stagings) {
           try {
             await processStaging(staging, userId, tx);
           } catch (error) {
-            const detail = stagingDetails.find((d) => d.lotId === staging.lotId);
-            if (detail) failedStagings.push(detail);
-          }
-        }
+            const itemName = staging.lot?.lotNumber ?? 'Unknown';
+            const quantity = Number(staging.quantity);
+            const stagingUom = staging.uom?.abbreviation ?? 'lbs';
+            const operation = error instanceof StagingOperationError ? error.operation : 'createTransaction';
+            const errorMessage = error instanceof Error ? error.message : String(error);
 
-        if (failedStagings.length > 0) {
-          throw new BprConsumptionError('TRANSACTION_FAILED', 'One or more stagings failed during BPR consumption.', {
-            bprId,
-            referenceCode: bpr.referenceCode,
-            failedStagings,
-          });
+            throw new BprConsumptionError(
+              'STAGING_FAILED',
+              `Staging consumption failed for ${itemName} during ${operation}.`,
+              {
+                bprId,
+                referenceCode: bpr.referenceCode,
+                failedStaging: {
+                  lotId: staging.lotId,
+                  itemName,
+                  quantity,
+                  uom: stagingUom,
+                  operation,
+                  errorMessage,
+                },
+              }
+            );
+          }
         }
 
         await tx.batchProductionRecord.update({
@@ -102,16 +119,23 @@ export const handleCompletedBprCascade = async (bprId: string) => {
 
     // Write failure note to BPR
     try {
-      const failedStagings = consumptionError?.data?.failedStagings ?? [];
-      const stagingLines = failedStagings.map(
-        (s) => `  - Lot: ${s.lotId}, Item: ${s.itemName}, Qty: ${s.quantity} ${s.uom}`
-      ).join('\n');
+      const failedStaging = consumptionError?.data?.failedStaging;
 
-      const content = [
-        `Error Code: ${consumptionError?.name ?? 'UNKNOWN'}`,
-        `Message: ${consumptionError?.message ?? String(error)}`,
-        failedStagings.length > 0 ? `Failed Stagings:\n${stagingLines}` : null,
-      ].filter(Boolean).join('\n');
+      const content = failedStaging
+        ? [
+            `Error Code: ${consumptionError.name}`,
+            `Message: ${consumptionError.message}`,
+            `Root Cause:`,
+            `  Material: ${failedStaging.itemName}`,
+            `  Lot: ${failedStaging.lotId}`,
+            `  Quantity: ${failedStaging.quantity} ${failedStaging.uom}`,
+            `  Failed Operation: ${failedStaging.operation}`,
+            `  Error Detail: ${failedStaging.errorMessage}`,
+          ].join('\n')
+        : [
+            `Error Code: ${consumptionError?.name ?? 'UNKNOWN'}`,
+            `Message: ${consumptionError?.message ?? String(error)}`,
+          ].join('\n');
 
       await prisma.bprNote.create({
         data: {
@@ -130,7 +154,7 @@ export const handleCompletedBprCascade = async (bprId: string) => {
       await createActivityLog('cascadeBprCompletionFailed', 'bpr', bprId, {
         errorCode: consumptionError?.name ?? 'UNKNOWN',
         errorMessage: consumptionError?.message ?? String(error),
-        failedStagings: consumptionError?.data?.failedStagings ?? [],
+        failedStaging: consumptionError?.data?.failedStaging ?? null,
       }, true);
     } catch (logError) {
       console.error(`Failed to create activity log for BPR ${bprId} failure:`, logError);
@@ -160,14 +184,56 @@ const getStagings = async (bprId: string): Promise<BprStaging[] | BprConsumption
 }
 
 const processStaging = async (staging: BprStaging, userId: string, tx: Prisma.TransactionClient) => {
-  await createTransaction(staging, userId, tx)
-  await tx.bprBillOfMaterials.update({
-    where: { id: staging.bprBomId },
-    data: { statusId: bprStagingStatuses.consumed }
+  try {
+    await createTransaction(staging, userId, tx)
+  } catch (error) {
+    throw new StagingOperationError('createTransaction', error);
+  }
+
+  try {
+    await tx.bprBillOfMaterials.update({
+      where: { id: staging.bprBomId },
+      data: { statusId: bprStagingStatuses.consumed }
+    })
+  } catch (error) {
+    throw new StagingOperationError('updateBom', error);
+  }
+
+  try {
+    await tx.bprStaging.update({
+      where: { id: staging.id },
+      data: { bprStagingStatusId: bprStagingStatuses.consumed }
+    })
+  } catch (error) {
+    throw new StagingOperationError('updateStagingStatus', error);
+  }
+}
+
+async function cleanupPreviousConsumption(bprId: string, tx: Prisma.TransactionClient) {
+  const consumptions = await tx.bprStagingConsumption.findMany({
+    where: { bprStaging: { bprBom: { bprId } } },
+    select: { id: true, transactionId: true, bprStagingId: true, bprStaging: { select: { bprBomId: true } } }
   })
-  await tx.bprStaging.update({
-    where: { id: staging.id },
-    data: { bprStagingStatusId: bprStagingStatuses.consumed }
+
+  if (consumptions.length === 0) return
+
+  const consumptionIds = consumptions.map(c => c.id)
+  const transactionIds = consumptions.map(c => c.transactionId)
+  const stagingIds = consumptions.map(c => c.bprStagingId)
+  const bomIds = Array.from(new Set(consumptions.map(c => c.bprStaging.bprBomId)))
+
+  await tx.bprStagingConsumption.deleteMany({ where: { id: { in: consumptionIds } } })
+
+  await tx.transaction.deleteMany({ where: { id: { in: transactionIds } } })
+
+  await tx.bprStaging.updateMany({
+    where: { id: { in: stagingIds }, bprStagingStatusId: bprStagingStatuses.consumed },
+    data: { bprStagingStatusId: bprStagingStatuses.staged }
+  })
+
+  await tx.bprBillOfMaterials.updateMany({
+    where: { id: { in: bomIds }, statusId: bprStagingStatuses.consumed },
+    data: { statusId: bprStagingStatuses.staged }
   })
 }
 

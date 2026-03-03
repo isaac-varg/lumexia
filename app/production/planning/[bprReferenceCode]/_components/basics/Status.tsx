@@ -1,18 +1,40 @@
 'use client'
-import { Panels } from "@/components/Panels"
-import Text from "@/components/Text"
+import { handleCompletedBprCascade } from "@/actions/queries/completedBprs/handleCompletedBprCascasde"
+import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 import useDialog from "@/hooks/useDialog"
-import ChangeStatusDialog from "./StatusDialog"
+import useToast from "@/hooks/useToast"
 import { useBprDetailsSelection } from "@/store/bprDetailsSlice"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import ChangeStatusDialog from "./StatusDialog"
 import Card from "@/components/Card"
 
 const Statuses = () => {
 
   const { bpr } = useBprDetailsSelection()
   const { showDialog } = useDialog()
+  const { toast } = useToast()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleStatusClick = () => {
     showDialog('changeBprStatus')
+  }
+
+  const retryConsumption = async () => {
+    if (!bpr) return
+    try {
+      setIsLoading(true)
+      await handleCompletedBprCascade(bpr.id)
+      toast("Consumption Successful", "BPR consumption cascade completed successfully", "success")
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+      toast("Consumption Failed", "Failed to execute BPR consumption cascade — check BPR notes for details", "error")
+      router.refresh()
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -31,7 +53,14 @@ const Statuses = () => {
         </div>
       </div>
 
-
+      {bpr?.bprStatusId === bprStatuses.consumptionError && (
+        <button
+          onClick={() => retryConsumption()}
+          className={`btn ${isLoading ? 'btn-disabled' : 'btn-primary'} mt-2 col-span-2`}
+        >
+          {isLoading ? 'Retrying...' : 'Retry Consumption'}
+        </button>
+      )}
 
 
 
