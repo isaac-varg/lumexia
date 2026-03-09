@@ -6,7 +6,6 @@ import { bprStatuses } from "@/configs/staticRecords/bprStatuses";
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses";
 import { transactionTypes } from "@/configs/staticRecords/transactionTypes";
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
-import { getUserId } from "@/actions/users/getUserId";
 import { Prisma } from "@prisma/client";
 import bprActions from "@/actions/production/bprActions";
 import { productionActions } from "@/actions/production";
@@ -42,13 +41,6 @@ export const handleCompletedBprCascade = async (bprId: string) => {
       throw stagings;
     }
 
-    let userId: string;
-    try {
-      userId = await getUserId();
-    } catch (error) {
-      throw new BprConsumptionError('GET_USER_ID_FAILED', 'Could not get user id.', { error });
-    }
-
     try {
       await prisma.$transaction(async (tx) => {
 
@@ -56,7 +48,7 @@ export const handleCompletedBprCascade = async (bprId: string) => {
 
         for (const staging of stagings) {
           try {
-            await processStaging(staging, userId, tx);
+            await processStaging(staging, users.lumexia, tx);
           } catch (error) {
             const itemName = staging.lot?.lotNumber ?? 'Unknown';
             const quantity = Number(staging.quantity);
