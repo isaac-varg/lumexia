@@ -6,6 +6,8 @@ import BasicsPanel from './_components/BasicsPanel';
 import { appActions } from '@/actions/app';
 import BOMPanel from './_components/BOMPanel';
 import BatchSizesPanel from './_components/BatchSizesPanel';
+import WorkInstructionsPanel from './_components/WorkInstructionsPanel';
+import Link from 'next/link';
 
 type MbprDetailsProps = {
   searchParams: {
@@ -21,8 +23,12 @@ const MbprDetailsPage = async ({ searchParams }: MbprDetailsProps) => {
 
   return (
     <div>
-      <PageTitle>{mbpr.producesItem.name} MBPR</PageTitle>
-
+      <div className='flex justify-between items-center mb-8'>
+        <PageTitle>{mbpr.producesItem.name} MBPR</PageTitle>
+        <Link href={`/production/mbpr/wizard?itemId=${mbpr.producesItemId}`} className='btn btn-accent'>
+          Edit MBPR
+        </Link>
+      </div>
 
       <div className='grid grid-cols-2 gap-6'>
 
@@ -30,6 +36,7 @@ const MbprDetailsPage = async ({ searchParams }: MbprDetailsProps) => {
         <BatchSizesPanel sizes={mbpr.BatchSize} />
 
         <BOMPanel bom={mbpr.bom} />
+        <WorkInstructionsPanel steps={mbpr.BatchStep} />
 
       </div>
 

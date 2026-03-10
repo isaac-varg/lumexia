@@ -2,6 +2,7 @@
 
 import batchStepActions from "@/actions/production/batchSteps"
 import stepEquipmentActions from "@/actions/production/stepEquipment"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import Dialog from "@/components/Dialog"
 import Form from "@/components/Form"
 import useDialog from "@/hooks/useDialog"
@@ -30,6 +31,7 @@ const EquipmentForm = ({ equipment }: { equipment: Equipment[] }) => {
     const payload = {
       stepId: selectedBatchStep.id,
       equipmentId,
+      recordStatusId: recordStatuses.active,
     }
 
 

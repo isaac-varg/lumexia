@@ -5,12 +5,14 @@ import bprActions from "@/actions/production/bprActions"
 import bprBomActions from "@/actions/production/bprBom"
 import { bprStagingStatuses } from "@/configs/staticRecords/bprStagingStatuses"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import { ExBillOfMaterials } from "@/types/billOfMaterials"
 
 export const createBprBom = async (bprId: string) => {
 
   const bpr = await bprActions.getOne(bprId, undefined, ["batchSize"]);
-  const mbprBom = await billOfMaterialActions.getAll({ mbprId: bpr.mbprId }, ["item"])
+  const allBom = await billOfMaterialActions.getAll({ mbprId: bpr.mbprId }, ["item"])
+  const mbprBom = allBom.filter((item: ExBillOfMaterials) => item.recordStatusId !== recordStatuses.archived)
   const batchSize = await bpr.batchSize.quantity // assumes base uom of lb
 
   console.log(bpr)

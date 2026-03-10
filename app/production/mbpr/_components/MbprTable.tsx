@@ -7,6 +7,7 @@ import React from 'react'
 import { MbprColumns } from './MbprColumns'
 import Card from '@/components/Card'
 import { useRouter } from 'next/navigation'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 
 const MbprTable = ({ mbprs }: { mbprs: Mbpr[] }) => {
 
@@ -38,6 +39,7 @@ const MbprTable = ({ mbprs }: { mbprs: Mbpr[] }) => {
         data={mbprs}
         searchBg='elevated'
         filters={filters}
+        initialColumnFilters={[{ id: 'recordStatus.id', value: [recordStatuses.active] }]}
         onRowClick={(row) => router.push(`/production/mbpr/${row.original.producesItem.name}?id=${row.original.id}`)}
       />
     </Card.Root>

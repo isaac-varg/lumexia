@@ -22,6 +22,12 @@ export const getOneMbpr = async (id: string) => {
           recordStatus: true
         }
       },
+      BatchStep: {
+        orderBy: { sequence: 'asc' },
+        include: {
+          StepInstruction: true,
+        }
+      },
       recordStatus: true,
     }
   })

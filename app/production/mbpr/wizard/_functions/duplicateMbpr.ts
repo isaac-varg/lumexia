@@ -1,6 +1,7 @@
 "use server"
 
 import { productionActions } from "@/actions/production"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import prisma from "@/lib/prisma"
 
 export const duplicateMbpr = async (mbprId: string) => {
@@ -72,6 +73,7 @@ export const duplicateMbpr = async (mbprId: string) => {
                 sequence: step.sequence,
                 phase: step.phase,
                 label: step.label,
+                recordStatusId: step.recordStatusId,
             }
         });
 
@@ -107,6 +109,7 @@ export const duplicateMbpr = async (mbprId: string) => {
         return ({
             stepId: newStep,
             instructionContent: instr.instructionContent,
+            recordStatusId: instr.recordStatusId,
         })
     });
     await prisma.stepInstruction.createMany({
@@ -123,7 +126,8 @@ export const duplicateMbpr = async (mbprId: string) => {
         return ({
             stepId: newStep,
             addendumTypeId: add.addendumTypeId,
-            content: add.content
+            content: add.content,
+            recordStatusId: add.recordStatusId,
         })
     })
     await prisma.stepAddendum.createMany({

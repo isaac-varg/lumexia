@@ -6,6 +6,7 @@ import Heading from '../details/Heading';
 import { TextUtils } from '@/utils/text';
 import { Prisma } from '@prisma/client';
 import { productionActions } from '@/actions/production';
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 import { stepActionableTypes } from '@/configs/staticRecords/stepActionableTypes';
 
 type Inputs = {
@@ -18,12 +19,21 @@ type Inputs = {
 const ActionableForm = () => {
 
   const { selectedStep, isNewForFormPanel, actionableTypes, selectedActionable } = useMbprWizardSelection()
-  const { addActionable, updateActionable } = useMbprWizardActions()
+  const { addActionable, updateActionable, removeActionable, setFormPanelMode } = useMbprWizardActions()
 
   const typeOptions = actionableTypes.map((t) => ({ value: t.id, label: TextUtils.properCase(t.name) }))
 
   const form = useForm<Inputs>();
 
+
+  const handleDelete = async () => {
+    if (!selectedActionable) return;
+    await productionActions.mbprs.actionables.update(selectedActionable.id, {
+      recordStatusId: recordStatuses.archived,
+    });
+    removeActionable(selectedActionable.id);
+    setFormPanelMode('default');
+  }
 
   const handleSubmit = async (data: Inputs) => {
 
@@ -36,6 +46,7 @@ const ActionableForm = () => {
         required: data.required,
         verificationRequired: data.verificationRequired,
         secondaryVerificationRequired: data.secondaryVerificationRequired,
+        recordStatusId: recordStatuses.active,
       }
 
       const response = await productionActions.mbprs.actionables.create(payload);
@@ -79,6 +90,7 @@ const ActionableForm = () => {
           <Heading>Actions</Heading>
           <div className='flex flex-col gap-y-1'>
             <button type="submit" className='btn btn-success'>Save</button>
+            {!isNewForFormPanel && <button type="button" onClick={handleDelete} className='btn btn-error'>Delete</button>}
           </div>
         </div>
 

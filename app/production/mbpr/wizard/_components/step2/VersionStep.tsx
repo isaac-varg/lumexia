@@ -46,12 +46,11 @@ const VersionStep = () => {
 
       <div className="grid grid-cols-3 gap-4">
 
-        <div onClick={() => { showDialog('mbprNew'); setDialogMode('create') }} className="flex gap-x-4  items-center justify-center text-center gap-y-4  bg-base-200/50 rounded-xl p-4 hover:bg-secondary/50 hover:cursor-pointer">
-          <span className="text-3xl "><TbPlus /></span>
-          <h1 className="font-poppins text-xl text-base-content font-semibold">
-            Add New
-          </h1>
-
+        <div onClick={() => { showDialog('mbprNew'); setDialogMode('create') }} className="card bg-base-200 shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow border-2 border-dashed border-base-300">
+          <div className="card-body items-center justify-center flex-row gap-x-4">
+            <TbPlus className="text-3xl" />
+            <h2 className="card-title font-poppins">Add New</h2>
+          </div>
         </div>
 
         {mbprs.length !== 0 && (

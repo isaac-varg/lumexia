@@ -47,7 +47,7 @@ const BatchSizeStep = () => {
 
                     <div className='grid grid-cols-1 gap-2'>
 
-                        <NewButton onClick={handleNewBatchSize} label='Add Addendum' />
+                        <NewButton onClick={handleNewBatchSize} label='Add Batch Size' />
 
                         {batchSizes.map((bs) => <BatchSizeCard key={bs.id} batchSize={bs} />)}
 

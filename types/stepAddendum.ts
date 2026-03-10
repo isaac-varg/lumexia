@@ -5,7 +5,8 @@ export interface StepAddendum {
   stepId: string
   addendumTypeId: string
   content: string
+  recordStatusId: string
   createdAt: Date
   updatedAt: Date
-  addendumType: StepAddendumType 
+  addendumType: StepAddendumType
 }

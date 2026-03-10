@@ -7,18 +7,28 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { UnmanagedForm } from '@/components/UnmanagedForm'
 import { Prisma } from '@prisma/client'
 import { productionActions } from '@/actions/production'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 
 // TODO this is a biiig file... maybe split it up
 
 const MaterialForm = () => {
   const { materialIdentifierSequence, selectedMbpr, selectedStep, isMaterialFormEdited, materialFormSeletedBomItem, selectedMaterial, isNewForFormPanel, materialItems } = useMbprWizardSelection()
-  const { updateSelectedMbprBomItem, addSelectedMbprBomItem, incrementMaterialIdentifierSequence, setMaterialFormSelectedBomItem, setIsMaterialFormEdited } = useMbprWizardActions()
+  const { updateSelectedMbprBomItem, addSelectedMbprBomItem, incrementMaterialIdentifierSequence, setMaterialFormSelectedBomItem, setIsMaterialFormEdited, removeBomItem, setFormPanelMode } = useMbprWizardActions()
   const [isSearch, setIsSearch] = useState(isNewForFormPanel)
   const [results, setResults] = useState<Item[]>([])
   const [searcherInput, setSearcherInput] = useState("")
   const [concentrationInput, setConcentrationInput] = useState<string>("");
 
   const { getMaterialItems } = useMbprWizardActions()
+
+  const handleDelete = async () => {
+    if (!selectedMaterial) return;
+    await productionActions.mbprs.bom.update(selectedMaterial.id, {
+      recordStatusId: recordStatuses.archived,
+    });
+    removeBomItem(selectedMaterial.id);
+    setFormPanelMode('default');
+  }
 
   const submitData = () => {
 
@@ -66,7 +76,8 @@ const MaterialForm = () => {
       mbprId: selectedMbpr.id,
       stepId: selectedStep.id,
       identifier: `${materialIdentifierSequence + 1}`,
-      concentration: parseFloat(concentrationInput)
+      concentration: parseFloat(concentrationInput),
+      recordStatusId: recordStatuses.active,
     }
 
     const item = await productionActions.mbprs.bom.create(payload);
@@ -112,8 +123,8 @@ const MaterialForm = () => {
       <div className='flex flex-col'>
         <Heading>Actions</Heading>
         <div className='flex flex-col gap-y-1'>
-          {/* {!isNewForFormPanel && <button className='btn btn-warning'>Delete Material</button>} */}
           <button onClick={() => submitData()} className='btn btn-success'>Save</button>
+          {!isNewForFormPanel && <button onClick={handleDelete} className='btn btn-error'>Delete</button>}
           <button className='btn btn-info' onClick={() => { setIsSearch(true); setMaterialFormSelectedBomItem(null); setSearcherInput(""); setResults([]); setIsMaterialFormEdited(true) }}>Change Material</button>
         </div>
       </div>

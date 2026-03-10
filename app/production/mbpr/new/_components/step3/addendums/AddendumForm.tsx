@@ -1,4 +1,5 @@
 import stepAddendumActions from "@/actions/production/stepAddendums"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import Dialog from "@/components/Dialog"
 import Form from "@/components/Form"
 import useDialog from "@/hooks/useDialog"
@@ -27,9 +28,10 @@ if (!selectedBatchStep) { throw new Error("Batch step not selected") }
 
     const { addendumTypeId, content } = data;
     const payload = {
-      stepId: selectedBatchStep.id, 
+      stepId: selectedBatchStep.id,
       addendumTypeId,
       content,
+      recordStatusId: recordStatuses.active,
     }
 
 

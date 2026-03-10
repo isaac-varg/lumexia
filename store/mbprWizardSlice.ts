@@ -77,6 +77,9 @@ type Actions = {
     updateActionable: (id: string, actionable: Actionable) => void;
     removeInstruction: (instructionId: string) => void;
     removeAddendum: (id: string) => void;
+    removeActionable: (id: string) => void;
+    removeBomItem: (id: string) => void;
+    removeStep: (id: string) => void;
     setIsMaterialFormEdited: (edited: boolean) => void;
     incrementMaterialIdentifierSequence: () => void;
     incrementStepSequence: () => void;
@@ -229,6 +232,24 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
     removeAddendum: (id) => {
       set((state) => ({
         selectedMbprAddendums: state.selectedMbprAddendums.filter((a) => a.id !== id)
+      }))
+    },
+
+    removeActionable: (id) => {
+      set((state) => ({
+        selectedMbprActionables: state.selectedMbprActionables.filter((a) => a.id !== id)
+      }))
+    },
+
+    removeBomItem: (id) => {
+      set((state) => ({
+        selectedMbprBomItems: state.selectedMbprBomItems.filter((b) => b.id !== id)
+      }))
+    },
+
+    removeStep: (id) => {
+      set((state) => ({
+        steps: state.steps.filter((s) => s.id !== id)
       }))
     },
 
@@ -393,8 +414,8 @@ export const useMbprWizardSelection = create<State & Actions>((set, get) => ({
 
     setSelectedStep: async (step) => {
 
-      // set selected step
-      set(() => ({ selectedStep: step }))
+      // set selected step and reset form panel
+      set(() => ({ selectedStep: step, formPanelMode: 'default' as FormPanelMode }))
 
       // get bom
       try {

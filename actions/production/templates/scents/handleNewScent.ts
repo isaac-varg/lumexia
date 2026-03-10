@@ -91,6 +91,7 @@ export const handleNewScent = async (itemId: string) => {
     sequence: 1,
     phase: 'A',
     label: 'Blend',
+    recordStatusId: recordStatuses.active,
   };
   const step = await prisma.batchStep.create({
     data: stepPayload,
@@ -111,7 +112,8 @@ export const handleNewScent = async (itemId: string) => {
   await prisma.stepInstruction.create({
     data: {
       stepId: step.id,
-      instructionContent: 'Sequentially add all blend components to a new gallon. Mix well.'
+      instructionContent: 'Sequentially add all blend components to a new gallon. Mix well.',
+      recordStatusId: recordStatuses.active,
     }
   });
 

@@ -4,6 +4,7 @@ import Form from '@/components/Form'
 import useDialog from '@/hooks/useDialog'
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice'
 import { Prisma } from '@prisma/client'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -26,7 +27,8 @@ const AddStepForm = () => {
             label: data.label,
             phase: data.phase,
             sequence: stepSequence,
-            mbprId: selectedMbpr.id
+            mbprId: selectedMbpr.id,
+            recordStatusId: recordStatuses.active,
         }
         const step = await productionActions.mbprs.steps.create(payload)
 

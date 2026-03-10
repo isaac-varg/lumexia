@@ -3,6 +3,7 @@ import { useTranslation } from "@/hooks/useTranslation"
 import { translations } from "../../_configs/translations"
 import { ProductionStep } from "../../_actions/compounding/getSteps"
 import { useProductionSelection } from "@/store/productionSlice"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import { stepAddendumTypes } from "@/configs/staticRecords/stepAddendumTypes"
 
 const { warning, info } = stepAddendumTypes;
@@ -28,7 +29,7 @@ const Addendums = () => {
       <Card.Title>{t(translations, 'addendaTitle')}</Card.Title>
 
       <div className="grid grid-col-1 gap-4">
-        {selectedStep?.batchStep.StepAddendum.map(addendum => <AddendaCard key={addendum.id} addendum={addendum} />)}
+        {selectedStep?.batchStep.StepAddendum.filter(a => a.recordStatusId !== recordStatuses.archived).map(addendum => <AddendaCard key={addendum.id} addendum={addendum} />)}
       </div>
 
     </Card.Root>

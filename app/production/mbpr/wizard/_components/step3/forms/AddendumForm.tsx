@@ -6,6 +6,7 @@ import Text from "@/components/Text";
 import { TextUtils } from "@/utils/text";
 import { productionActions } from "@/actions/production";
 import { Prisma } from "@prisma/client";
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 import { useEffect } from "react";
 
 type Input = {
@@ -16,7 +17,7 @@ type Input = {
 const AddendumForm = () => {
 
     const { isNewForFormPanel, selectedStep, selectedAddendum, addendumTypes } = useMbprWizardSelection()
-    const { updateAddendum, addAddendum } = useMbprWizardActions()
+    const { updateAddendum, addAddendum, removeAddendum, setFormPanelMode } = useMbprWizardActions()
 
     const typesOptions = addendumTypes.map((type) => ({
         value: type.id,
@@ -25,6 +26,15 @@ const AddendumForm = () => {
 
     const form = useForm<Input>()
 
+
+    const handleDelete = async () => {
+        if (!selectedAddendum) return;
+        await productionActions.mbprs.addendums.update(selectedAddendum.id, {
+            recordStatusId: recordStatuses.archived,
+        });
+        removeAddendum(selectedAddendum.id);
+        setFormPanelMode('default');
+    }
 
     const handleSubmit = async (data: Input) => {
 
@@ -36,6 +46,7 @@ const AddendumForm = () => {
                 stepId: selectedStep.id,
                 addendumTypeId: data.addendumTypeId,
                 content: data.content,
+                recordStatusId: recordStatuses.active,
             }
             const response = await productionActions.mbprs.addendums.create(payload)
 
@@ -69,6 +80,7 @@ const AddendumForm = () => {
                     <Heading>Actions</Heading>
                     <div className='flex flex-col gap-y-1'>
                         <button type="submit" className='btn btn-success'>Save</button>
+                        {!isNewForFormPanel && <button type="button" onClick={handleDelete} className='btn btn-error'>Delete</button>}
                     </div>
                 </div>
 

@@ -3,13 +3,12 @@ import Heading from '../details/Heading';
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice';
 import { Prisma } from '@prisma/client';
 import { productionActions } from '@/actions/production';
-import { deleteInstruction } from '@/actions/production/mbpr/instructions/delete';
-import prisma from '@/lib/prisma';
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 
 const InstructionForm = () => {
 
     const { isNewForFormPanel, selectedStep, selectedInstruction, } = useMbprWizardSelection()
-    const { addInstruction, updateInstruction, removeInstruction } = useMbprWizardActions()
+    const { addInstruction, updateInstruction, removeInstruction, setFormPanelMode } = useMbprWizardActions()
 
     const [content, setContent] = useState<string>();
 
@@ -30,6 +29,7 @@ const InstructionForm = () => {
         const payload: Prisma.StepInstructionUncheckedCreateInput = {
             stepId: selectedStep?.id,
             instructionContent: content || '',
+            recordStatusId: recordStatuses.active,
         }
 
         const response = await productionActions.mbprs.instructions.create(payload);
@@ -56,11 +56,12 @@ const InstructionForm = () => {
 
         if (!selectedInstruction) return;
 
-        const id = selectedInstruction.id;
+        await productionActions.mbprs.instructions.update(selectedInstruction.id, {
+            recordStatusId: recordStatuses.archived,
+        });
 
-        await productionActions.mbprs.instructions.delete(id)
-
-        deleteInstruction(selectedInstruction.id)
+        removeInstruction(selectedInstruction.id);
+        setFormPanelMode('default');
 
     }
 
@@ -83,6 +84,7 @@ const InstructionForm = () => {
                 <Heading>Actions</Heading>
                 <div className='flex flex-col gap-y-1'>
                     <button onClick={() => submitData()} className='btn btn-success'>Save</button>
+                    {!isNewForFormPanel && <button onClick={handleDelete} className='btn btn-error'>Delete</button>}
                 </div>
             </div>
 

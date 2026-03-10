@@ -5,9 +5,10 @@ export interface StepEquipment {
   id: string
   stepId: string
   equipmentId: string
+  recordStatusId: string
   createdAt: Date
   updatedAt: Date
   equipment: Equipment
   step: BatchStep
-   
+
 }

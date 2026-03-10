@@ -7,9 +7,10 @@ export interface StepActionable {
   required: boolean
   verificationRequired: boolean
   secondaryVerificationRequired: boolean
+  recordStatusId: string
   createdAt: Date
   updatedAt: Date
-  
+
   actionableType: ActionableType
 
 }

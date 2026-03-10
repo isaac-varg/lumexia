@@ -7,6 +7,7 @@ export interface BillOfMaterials {
   stepId: string
   identifier: string
   concentration: number
+  recordStatusId: string
   createdAt: Date
   updatedAt: Date
 

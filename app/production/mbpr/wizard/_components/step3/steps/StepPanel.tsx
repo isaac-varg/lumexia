@@ -1,5 +1,6 @@
 import { Step } from '@/actions/production/mbpr/steps/getAllByMbpr';
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import { groupByProperty } from '@/utils/data/groupByProperty'
 import React from 'react'
 import AddStepForm from './AddStepForm';
@@ -12,7 +13,8 @@ const StepPanel = () => {
   const { steps, selectedStep } = useMbprWizardSelection()
   const { setSelectedStep } = useMbprWizardActions()
   const { showDialog } = useDialog()
-  const groupedSteps = groupByProperty(steps, "phase")
+  const activeSteps = steps.filter((s) => s.recordStatusId !== recordStatuses.archived)
+  const groupedSteps = groupByProperty(activeSteps, "phase")
 
 
   return (

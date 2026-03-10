@@ -7,6 +7,7 @@ import NewButton from './NewButton'
 import InstructionCard from './InstructionCard'
 import AddendumCard from './AddendumCard'
 import ActionableCard from './ActionableCard'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 
 const StepDetailsPanel = () => {
 
@@ -80,7 +81,7 @@ const StepDetailsPanel = () => {
                     <div className='grid grid-cols-2 gap-2'>
                         <NewButton onClick={handleNewMaterial} label='Add Material' />
 
-                        {selectedMbprBomItems.filter((bi) => bi.stepId === selectedStep.id).map((material) => <MaterialCard key={material.id} material={material} />)}
+                        {selectedMbprBomItems.filter((bi) => bi.stepId === selectedStep.id && bi.recordStatusId !== recordStatuses.archived).map((material) => <MaterialCard key={material.id} material={material} />)}
                     </div>
                 </div>
 
@@ -92,7 +93,7 @@ const StepDetailsPanel = () => {
 
                         <NewButton onClick={handleNewInstruction} label='Add Instruction' />
 
-                        {selectedMbprInstructions.filter((i) => i.stepId === selectedStep.id).map((instruction) => <InstructionCard key={instruction.id} instruction={instruction} />)}
+                        {selectedMbprInstructions.filter((i) => i.stepId === selectedStep.id && i.recordStatusId !== recordStatuses.archived).map((instruction) => <InstructionCard key={instruction.id} instruction={instruction} />)}
                     </div>
 
                 </div>
@@ -105,7 +106,7 @@ const StepDetailsPanel = () => {
 
                         <NewButton onClick={handleNewAddendum} label='Add Addendum' />
 
-                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id).map((addendum) => <AddendumCard key={addendum.id} addendum={addendum} />)}
+                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id && a.recordStatusId !== recordStatuses.archived).map((addendum) => <AddendumCard key={addendum.id} addendum={addendum} />)}
                     </div>
 
                 </div>
@@ -119,7 +120,7 @@ const StepDetailsPanel = () => {
                         {/**
                         <NewButton onClick={handleNewAddendum} label='Add Addendum' />
 
-                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id).map((addendum) => <AddendumCard key={addendum.id} addendum={addendum} />)}
+                        {selectedMbprAddendums.filter((a) => a.stepId === selectedStep.id && a.recordStatusId !== recordStatuses.archived).map((addendum) => <AddendumCard key={addendum.id} addendum={addendum} />)}
                         **/}
                     </div>
 
@@ -133,7 +134,7 @@ const StepDetailsPanel = () => {
 
                         <NewButton onClick={handleNewActionable} label='Add Actionable' />
 
-                        {selectedMbprActionables.filter((a) => a.stepId === selectedStep.id).map((actionable) => <ActionableCard key={actionable.id} actionable={actionable} />)}
+                        {selectedMbprActionables.filter((a) => a.stepId === selectedStep.id && a.recordStatusId !== recordStatuses.archived).map((actionable) => <ActionableCard key={actionable.id} actionable={actionable} />)}
                     </div>
 
                 </div>

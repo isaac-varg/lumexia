@@ -1,6 +1,7 @@
 "use server"
 
 import stepInstructionActions from "@/actions/production/stepInstructions"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 
 type Payload = {
   stepId: string
@@ -9,7 +10,10 @@ type Payload = {
 
 export const createStepInstruction = async (payload: Payload) => {
 
-  const response = await stepInstructionActions.createNew(payload)
+  const response = await stepInstructionActions.createNew({
+    ...payload,
+    recordStatusId: recordStatuses.active,
+  })
 
   return response
 

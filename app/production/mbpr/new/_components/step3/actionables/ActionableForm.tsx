@@ -1,4 +1,5 @@
 import stepActionableActions from '@/actions/production/stepActionables'
+import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
 import Dialog from '@/components/Dialog'
 import Form from '@/components/Form'
 import useDialog from '@/hooks/useDialog'
@@ -33,7 +34,7 @@ const ActionableForm = ({ actionableTypes }: { actionableTypes: ActionableType[]
             required,
             verificationRequired,
             secondaryVerificationRequired,
-
+            recordStatusId: recordStatuses.active,
         }
 
 

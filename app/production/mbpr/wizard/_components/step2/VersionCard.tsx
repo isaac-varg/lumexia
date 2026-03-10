@@ -29,24 +29,25 @@ const VersionCard = ({ mbpr, }: { mbpr: MbprFromItem }) => {
   return (
     <div
       onClick={handleSelect}
-      className="grid grid-col gap-y-4 bg-base-200/50 rounded-xl p-4 hover:bg-secondary/50 hover:cursor-pointer">
-      <div className="flex justify-between items-center">
-        <h1 className="font-poppins text-xl text-base-content font-semibold">
-          {mbpr.versionLabel}
-        </h1>
-        <div onClick={(event) => handleDuplicate(event)} className=" bg-lilac-100 p-4 h-8 w-8 rounded-full hover:bg-emerald-500 hover:cursor-pointer items-center justify-center flex ">
-          <span className="text-lg">
-            <TbCopy />
-          </span>
+      className="card bg-base-200 shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow">
+      <div className="card-body">
+        <div className="flex justify-between items-center">
+          <h2 className="card-title font-poppins">
+            {mbpr.versionLabel}
+          </h2>
+          <div onClick={(event) => handleDuplicate(event)} className="btn btn-circle btn-ghost btn-sm hover:bg-emerald-500 hover:text-white">
+            <TbCopy className="text-lg" />
+          </div>
         </div>
 
-      </div>
-
-      <div
-        className="flex items-center justify-center px-6 py-2 rounded-xl w-fit font-poppins font-semibold text-base"
-        style={{ backgroundColor: mbpr.recordStatus.bgColor, color: mbpr.recordStatus.textColor }}
-      >
-        {TextUtils.properCase(mbpr.recordStatus.name)}
+        <div className="card-actions">
+          <div
+            className="badge font-semibold py-3 px-4"
+            style={{ backgroundColor: mbpr.recordStatus.bgColor, color: mbpr.recordStatus.textColor }}
+          >
+            {TextUtils.properCase(mbpr.recordStatus.name)}
+          </div>
+        </div>
       </div>
     </div>
   )

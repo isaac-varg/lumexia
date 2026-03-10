@@ -7,9 +7,15 @@ model RecordStatus {
     createdAt              DateTime                @default(now()) @map("created_at")
     updatedAt              DateTime                @updatedAt @map("updated_at")
     itemConsumerContainers ItemConsumerContainer[]
-    purchaseOrders          PurchaseOrder[] 
+    purchaseOrders          PurchaseOrder[]
     items Item[]
     finishedProductAuxiliaries FinishedProductAuxiliary[]
+    batchSteps             BatchStep[]
+    stepInstructions       StepInstruction[]
+    stepAddendums          StepAddendum[]
+    stepActionables        StepActionable[]
+    billOfMaterials        BillOfMaterial[]
+    stepEquipment          StepEquipment[]
 
     @@map("record_statuses")
 }

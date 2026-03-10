@@ -43,7 +43,7 @@ const BatchSizeForm = () => {
       mbprId: selectedMbpr?.id,
       quantity: parseFloat(sizeInput),
       uomId: uom.pounds,
-      recordStatusId: recordStatuses.inactive,
+      recordStatusId: recordStatuses.active,
     }
 
     // create batch size

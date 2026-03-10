@@ -4,6 +4,7 @@ export interface BatchStep {
   sequence: number
   phase: string
   label: string
+  recordStatusId: string
   createdAt: Date
   updatedAt: Date
 }

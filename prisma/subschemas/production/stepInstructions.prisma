@@ -2,10 +2,12 @@ model StepInstruction {
   id                 String   @id @default(uuid())
   stepId             String   @map("step_id")
   instructionContent String   @map("instruction_content")
+  recordStatusId     String   @map("record_status_id")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  step BatchStep @relation(fields: [stepId], references: [id])
+  step         BatchStep    @relation(fields: [stepId], references: [id])
+  recordStatus RecordStatus @relation(fields: [recordStatusId], references: [id])
 
   @@map("step_instructions")
 }

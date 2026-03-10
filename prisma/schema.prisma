@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Wed Feb 04 2026 10:45:00 GMT-0800 (Pacific Standard Time)✨
+//🧩Don't Edit this file.✨Generated in Tue Mar 10 2026 13:25:20 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -600,6 +600,12 @@ model RecordStatus {
   purchaseOrders              PurchaseOrder[]
   items                       Item[]
   finishedProductAuxiliaries  FinishedProductAuxiliary[]
+  batchSteps                  BatchStep[]
+  stepInstructions            StepInstruction[]
+  stepAddendums               StepAddendum[]
+  stepActionables             StepActionable[]
+  billOfMaterials             BillOfMaterial[]
+  stepEquipment               StepEquipment[]
   FinishedProduct             FinishedProduct[]
   BatchSize                   BatchSize[]
   MasterBatchProductionRecord MasterBatchProductionRecord[]
@@ -1272,15 +1278,17 @@ model BatchSize {
 }
 
 model BatchStep {
-  id        String   @id @default(uuid())
-  mbprId    String   @map("mbpr_id")
-  sequence  Int
-  phase     String
-  label     String?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid())
+  mbprId         String   @map("mbpr_id")
+  sequence       Int
+  phase          String
+  label          String?
+  recordStatusId String   @map("record_status_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   mbpr            MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  recordStatus    RecordStatus                @relation(fields: [recordStatusId], references: [id])
   BillOfMaterial  BillOfMaterial[]
   BprBatchStep    BprBatchStep[]
   StepActionable  StepActionable[]
@@ -1292,18 +1300,20 @@ model BatchStep {
 }
 
 model BillOfMaterial {
-  id            String   @id @default(uuid())
-  itemId        String   @map("item_id")
-  mbprId        String   @map("mbpr_id")
-  stepId        String   @map("step_id")
-  identifier    String
-  concentration Float
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid())
+  itemId         String   @map("item_id")
+  mbprId         String   @map("mbpr_id")
+  stepId         String   @map("step_id")
+  identifier     String
+  concentration  Float
+  recordStatusId String   @map("record_status_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   item                  Item                        @relation(fields: [itemId], references: [id])
   mbpr                  MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
   step                  BatchStep                   @relation(fields: [stepId], references: [id])
+  recordStatus          RecordStatus                @relation(fields: [recordStatusId], references: [id])
   BomPricingDataArchive BomPricingDataArchive[]
   BprBillOfMaterials    BprBillOfMaterials[]
 
@@ -1606,11 +1616,13 @@ model StepActionable {
   required                      Boolean
   verificationRequired          Boolean  @map("verification_required")
   secondaryVerificationRequired Boolean  @map("secondary_verification_required")
+  recordStatusId                String   @map("record_status_id")
   createdAt                     DateTime @default(now()) @map("created_at")
   updatedAt                     DateTime @updatedAt @map("updated_at")
 
   step              BatchStep           @relation(fields: [stepId], references: [id])
   actionableType    StepActionableType  @relation(fields: [actionableTypeId], references: [id])
+  recordStatus      RecordStatus        @relation(fields: [recordStatusId], references: [id])
   BprStepActionable BprStepActionable[]
 
   @@map("step_actionables")
@@ -1638,11 +1650,13 @@ model StepAddendum {
   stepId         String   @map("step_id")
   addendumTypeId String   @map("addendum_type_id")
   content        String
+  recordStatusId String   @map("record_status_id")
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
   step         BatchStep        @relation(fields: [stepId], references: [id])
   addendumType StepAddendumType @relation(fields: [addendumTypeId], references: [id])
+  recordStatus RecordStatus     @relation(fields: [recordStatusId], references: [id])
 
   @@map("step_addendums")
 }
@@ -1661,14 +1675,16 @@ model StepAddendumType {
 }
 
 model StepEquipment {
-  id          String   @id @default(uuid())
-  stepId      String   @map("step_id")
-  equipmentId String   @map("equipment_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid())
+  stepId         String   @map("step_id")
+  equipmentId    String   @map("equipment_id")
+  recordStatusId String   @map("record_status_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
-  step      BatchStep @relation(fields: [stepId], references: [id])
-  equipment Equipment @relation(fields: [equipmentId], references: [id])
+  step         BatchStep    @relation(fields: [stepId], references: [id])
+  equipment    Equipment    @relation(fields: [equipmentId], references: [id])
+  recordStatus RecordStatus @relation(fields: [recordStatusId], references: [id])
 
   @@map("step_equipment")
 }
@@ -1677,10 +1693,12 @@ model StepInstruction {
   id                 String   @id @default(uuid())
   stepId             String   @map("step_id")
   instructionContent String   @map("instruction_content")
+  recordStatusId     String   @map("record_status_id")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  step BatchStep @relation(fields: [stepId], references: [id])
+  step         BatchStep    @relation(fields: [stepId], references: [id])
+  recordStatus RecordStatus @relation(fields: [recordStatusId], references: [id])
 
   @@map("step_instructions")
 }

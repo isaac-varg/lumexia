@@ -1,6 +1,7 @@
 "use client"
 
 import batchStepActions from "@/actions/production/batchSteps"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import Dialog from "@/components/Dialog"
 import Form from "@/components/Form"
 import useDialog from "@/hooks/useDialog"
@@ -36,6 +37,7 @@ const BatchStepForm = ({ batchStep }: { batchStep?: BatchStep } ) => {
       sequence,
       phase,
       label,
+      recordStatusId: recordStatuses.active,
     }
 
     const finish = (response: BatchStep) => {
