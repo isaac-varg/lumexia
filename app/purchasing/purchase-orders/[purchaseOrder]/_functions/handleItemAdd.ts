@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma"
 import { PurchasableItem } from "./getAllItems"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
-import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 
 export const handleItemAdd = async (purchaseOrderId: string, item: PurchasableItem, poStatusId: string) => {
 
@@ -24,7 +23,7 @@ export const handleItemAdd = async (purchaseOrderId: string, item: PurchasableIt
       itemId: item.id,
       purchaseOrderId,
       quantity: 0,
-      uomId: uom.pounds,
+      uomId: item.inventoryUomId,
       pricePerUnit: 0,
       // quantity: previousPurchase ? previousPurchase.quantity : 0,
       // uomId: previousPurchase ? previousPurchase.uomId : uom.pounds,

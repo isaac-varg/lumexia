@@ -4,7 +4,6 @@ import { getUserId } from "@/actions/users/getUserId";
 import { containerTypes } from "@/configs/staticRecords/containerTypes";
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses";
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
-import { uom } from "@/configs/staticRecords/unitsOfMeasurement";
 import prisma from "@/lib/prisma";
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog";
 import { revalidatePath } from "next/cache";
@@ -51,13 +50,15 @@ const createPO = async (supplierId: string, userId: string) => {
 
 const createPOItem = async (poId: string, itemId: string) => {
 
+  const item = await prisma.item.findUniqueOrThrow({ where: { id: itemId }, select: { inventoryUomId: true } });
+
   const response = await prisma.purchaseOrderItem.create({
     data: {
       purchaseOrderId: poId,
       itemId,
       quantity: 0,
       pricePerUnit: 0,
-      uomId: uom.pounds,
+      uomId: item.inventoryUomId,
       purchaseOrderStatusId: purchaseOrderStatuses.draft
     },
     include: {

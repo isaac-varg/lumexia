@@ -88,7 +88,7 @@ const ItemTable = () => {
       purchaseOrderId: purchaseOrder.id,
       pricePerUnit: 0,
       quantity: 0,
-      uomId: "68171f7f-3ac0-4a3a-b197-18742ebf6b5b",
+      uomId: item.inventoryUomId,
       purchaseOrderStatusId: purchaseOrder.statusId,
     };
 

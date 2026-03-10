@@ -11,6 +11,7 @@ export interface Item {
   itemTypeId: string
   procurementTypeId: string
   inventoryTypeId: string
+  inventoryUomId: string
   createdAt?: string | Date
   updatedAt?: string | Date
   itemType?: ItemType
