@@ -1,13 +1,12 @@
 "use client"
 
-import { qualityActions } from "@/actions/quality"
 import { QcExamination } from "@/actions/quality/qc/records/getAll"
 import DataTable from "@/components/DataTable"
 import { examColumns } from "./Columns"
 import { Filter } from "@/types/filter"
 import { toFacetFilter } from "@/utils/data/toFacetFilter"
 import { useRouter } from "next/navigation"
-import { useQcExaminationActions } from "@/store/qcExaminationSlice"
+import { qcRecordStatuses } from "@/configs/staticRecords/qcRecordStatuses"
 
 const ExamsTable = ({ exams }: { exams: QcExamination[] }) => {
 
@@ -31,9 +30,14 @@ const ExamsTable = ({ exams }: { exams: QcExamination[] }) => {
     },
   ];
   const handleClick = (row: QcExamination) => {
-    const path = `/quality/qc/examination/new/${row.examinedLot.lotNumber}?lotId=${row.examinedLot.id}&examinationId=${row.id}`
-    router.push(path)
+    const isOpen = row.status.id === qcRecordStatuses.open
 
+    if (isOpen) {
+      const path = `/quality/qc/examination/new/${row.examinedLot.lotNumber}?lotId=${row.examinedLot.id}&examinationId=${row.id}`
+      router.push(path)
+    } else {
+      router.push(`/quality/qc/examination/${row.id}`)
+    }
   }
 
 

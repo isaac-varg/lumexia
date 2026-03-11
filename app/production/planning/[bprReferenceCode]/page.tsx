@@ -1,4 +1,5 @@
 import { productionActions } from "@/actions/production";
+import { qualityActions } from "@/actions/quality";
 import StateSetter from "./_components/state/StateSetter";
 import Title from "./_components/header/Title";
 import TabSelector from "./_components/shared/TabSelector";
@@ -15,11 +16,11 @@ const BprPlanningDetails = async ({ searchParams }: BprPlanningDetailsProps) => 
 
   const bpr = await productionActions.bprs.getOne(searchParams.id);
 
-  const [bom, activity, notes] = await Promise.all([
+  const [bom, activity, notes, qcRecords] = await Promise.all([
     await productionActions.bprs.boms.getByBpr(bpr.id),
     await productionActions.bprs.activity.getAll(bpr.id),
     await productionActions.bprs.notes.getAllByBpr(bpr.id),
-
+    await qualityActions.qc.records.getAllByBpr(bpr.id),
   ])
 
   const bomInventory = await inventoryActions.inventory.getAllByBprBom(bom);
@@ -34,6 +35,7 @@ const BprPlanningDetails = async ({ searchParams }: BprPlanningDetailsProps) => 
         bom={bom}
         bomInventory={bomInventory}
         notes={notes}
+        qcRecords={qcRecords}
       />
 
       <Title />

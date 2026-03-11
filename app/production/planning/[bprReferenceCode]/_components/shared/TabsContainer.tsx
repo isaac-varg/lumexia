@@ -6,6 +6,7 @@ import BomTab from "../bom/BomTab";
 import ActivityTab from "../activity/ActivityTab";
 import NotesTab from "../notes/NotesTab";
 import BasicsTab from "../basics/BasicsTab";
+import QualityTab from "../quality/QualityTab";
 
 
 const TabsContainer = () => {
@@ -23,6 +24,7 @@ const TabsContainer = () => {
       >
       </motion.div>
       {currentTab === 'basics' && <BomTab />}
+      {currentTab === 'quality' && <QualityTab />}
       {currentTab === 'notes' && <NotesTab />}
       {currentTab === 'activity' && <ActivityTab />}
     </AnimatePresence>

@@ -4,6 +4,7 @@ import SectionTitle from "@/components/Text/SectionTitle"
 import Tag from "@/components/Text/Tag"
 import UserIcon from "@/components/UI/UserIcon"
 import { dateFormatWithTime } from "@/configs/data/dateFormatString"
+import { qcRecordStatuses } from "@/configs/staticRecords/qcRecordStatuses"
 import { useItemSelection } from "@/store/itemSlice"
 import { DateTime } from "luxon"
 import { useRouter } from "next/navigation"
@@ -17,8 +18,14 @@ const Examinations = () => {
   const router = useRouter()
   const [isImport, setIsImport] = useState(false);
   const handleClick = (record: QcRecordExpanded) => {
-    const path = `/quality/qc/examination/new/${record.examinedLot.lotNumber}?lotId=${record.examinedLot.id}&examinationId=${record.id}`
-    router.push(path)
+    const isOpen = record.status.id === qcRecordStatuses.open
+
+    if (isOpen) {
+      const path = `/quality/qc/examination/new/${record.examinedLot.lotNumber}?lotId=${record.examinedLot.id}&examinationId=${record.id}`
+      router.push(path)
+    } else {
+      router.push(`/quality/qc/examination/${record.id}`)
+    }
   }
 
 

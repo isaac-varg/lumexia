@@ -8,6 +8,7 @@ import { BprNoteType } from "@/actions/production/bprs/notes/notesTypes/getAll"
 import { BprStatus } from "@/actions/production/bprs/statuses/getAll"
 import { purchasingActions } from "@/actions/purchasing"
 import { PurchasingRequestForPlanning } from "@/actions/purchasing/requests/getByItem"
+import { QcExamination } from "@/actions/quality/qc/records/getAll"
 import { BprTab } from "@/app/production/planning/[bprReferenceCode]/_components/shared/TabSelector"
 import { create } from "zustand"
 
@@ -27,6 +28,7 @@ type State = {
   isLoading: boolean
   selectedBomItemPurchasingRequests: PurchasingRequestForPlanning[]
   notes: BprNote[]
+  qcRecords: QcExamination[]
   options: Options
 }
 
@@ -39,6 +41,7 @@ type Actions = {
     setCurrentTab: (tab: BprTab) => void;
     setSelectedBomItem: (item: BprBomItemInventory) => void;
     setNotes: (notes: BprNote[]) => void;
+    setQcRecords: (qcRecords: QcExamination[]) => void;
     getSelectedBomItemPurchasingRequests: () => void;
     getOptions: () => void;
   }
@@ -54,6 +57,7 @@ export const useBprDetailsSelection = create<State & Actions>((set, get) => ({
   selectedBomItem: null,
   selectedBomItemPurchasingRequests: [],
   notes: [],
+  qcRecords: [],
   options: {
     noteTypes: [],
     bprStatuses: [],
@@ -67,6 +71,7 @@ export const useBprDetailsSelection = create<State & Actions>((set, get) => ({
     setBomInventory: (bomInventory) => set(() => ({ bomInventory, })),
     setSelectedBomItem: (item) => set(() => ({ selectedBomItem: item })),
     setNotes: (notes) => set(() => ({ notes })),
+    setQcRecords: (qcRecords) => set(() => ({ qcRecords })),
     getSelectedBomItemPurchasingRequests: async () => {
       const selectedBomItem = get().selectedBomItem;
       if (!selectedBomItem) return;
