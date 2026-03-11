@@ -5,14 +5,20 @@ import { useQcExaminationActions, useQcExaminationSelection } from "@/store/qcEx
 
 const Type = () => {
 
-  const { examinationTypes, qcRecord } = useQcExaminationSelection()
-  const { setSelectedExaminationType, setStep } = useQcExaminationActions()
+  const { examinationTypes, qcRecord, itemParameters, specimentLot } = useQcExaminationSelection()
+  const { setSelectedExaminationType, setItemParameters, setStep } = useQcExaminationActions()
 
   const handleSelection = async (type: ExaminationType) => {
-    if (!qcRecord) return;
+    if (!qcRecord || !specimentLot) return;
     await qualityActions.qc.records.update(qcRecord.id, {
       examinationTypeId: type.id,
     });
+
+    const groupedParams = await qualityActions.qc.groups.groupParameters.getAllByExamination(type.id, specimentLot.item.id)
+    const groupedParameterIds = new Set(groupedParams.map(gp => gp.parameter.id))
+    const filtered = itemParameters.filter(ip => groupedParameterIds.has(ip.parameterId))
+    setItemParameters(filtered)
+
     setSelectedExaminationType(type)
     setStep(2)
   }
