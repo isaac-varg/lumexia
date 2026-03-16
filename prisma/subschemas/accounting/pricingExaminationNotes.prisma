@@ -9,6 +9,7 @@ model PricingExaminationNote {
     pricingExamination   PricingExamination         @relation(fields: [pricingExaminationId], references: [id])
     user                 User                       @relation(fields: [userId], references: [id])
     noteType             PricingExaminationNoteType @relation(fields: [noteTypeId], references: [id])
+    files                PricingExaminationNoteFile[]
 
     @@map("pricing_examination_notes")
 }

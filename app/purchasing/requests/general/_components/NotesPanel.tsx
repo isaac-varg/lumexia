@@ -20,11 +20,12 @@ const NotesPanel = ({ notes, noteTypes, requestId }: { notes: GeneralRequestNote
 
     const handleNoteAdd = async (data: NoteInputs) => {
         const userId = await getUserId()
+        const { fileIds, ...noteData } = data
         await createGeneralRequestNote({
             requestId,
             userId,
-            ...data
-        });
+            ...noteData
+        }, fileIds);
 
         router.refresh()
     }

@@ -18,11 +18,12 @@ const Notes = () => {
   const handleNoteAdd = async (data: NoteInputs) => {
     if (!item) return;
     const userId = await getUserId()
+    const { fileIds, ...noteData } = data
     await inventoryActions.items.notes.create({
       userId,
       itemId: item.id,
-      ...data
-    });
+      ...noteData
+    }, fileIds);
 
     router.refresh()
   }

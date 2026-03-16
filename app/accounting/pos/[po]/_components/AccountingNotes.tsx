@@ -23,11 +23,12 @@ const AccountingNotes = ({ notes, noteTypes, poId }: { notes: AccountingNote[], 
 
   const handleNoteAdd = async (data: NoteInputs) => {
     const userId = await getUserId()
+    const { fileIds, ...noteData } = data
     await createAccountingNote({
-      ...data,
+      ...noteData,
       purchaseOrderId: poId,
       userId,
-    })
+    }, fileIds)
     router.refresh()
   }
 

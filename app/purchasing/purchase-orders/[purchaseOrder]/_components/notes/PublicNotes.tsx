@@ -22,7 +22,7 @@ const PublicNotes = () => {
       userId,
       content: data.content,
       noteTypeId: data.noteTypeId,
-    });
+    }, data.fileIds);
     router.refresh()
   }
 

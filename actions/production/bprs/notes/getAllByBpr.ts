@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from "@/lib/prisma"
+import { resolveNoteFiles } from "@/actions/notes/resolveNoteFiles"
 
 export const getAllBprNotes = async (bprId: string) => {
     const notes = await prisma.bprNote.findMany({
@@ -9,11 +10,12 @@ export const getAllBprNotes = async (bprId: string) => {
         },
         include: {
             user: true,
-            noteType: true
+            noteType: true,
+            files: { include: { file: true } },
         }
     });
 
-    return notes
+    return resolveNoteFiles(notes);
 };
 
 export type BprNote = Awaited<ReturnType<typeof getAllBprNotes>>[number];

@@ -19,12 +19,13 @@ const NotesPanel = () => {
         if (!item) return;
 
         const userId = await getUserId()
+        const { fileIds, ...noteData } = data
 
         await createNote({
             userId,
             auditItemId: item.id,
-            ...data,
-        });
+            ...noteData,
+        }, fileIds);
 
         getNotes();
     }

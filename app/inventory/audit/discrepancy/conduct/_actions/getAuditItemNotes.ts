@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import { resolveNoteFiles } from "@/actions/notes/resolveNoteFiles"
 
 export const getAuditItemNotes = async (auditItemId: string) => {
     const notes = await prisma.discrepancyAuditItemNote.findMany({
@@ -9,11 +10,12 @@ export const getAuditItemNotes = async (auditItemId: string) => {
         },
         include: {
             noteType: true,
-            user: true
+            user: true,
+            files: { include: { file: true } },
         }
     })
 
-    return notes;
+    return resolveNoteFiles(notes);
 }
 
 export type AuditItemNote = Awaited<ReturnType<typeof getAuditItemNotes>>[number];

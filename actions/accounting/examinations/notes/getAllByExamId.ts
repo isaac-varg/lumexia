@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from "@/lib/prisma"
+import { resolveNoteFiles } from "@/actions/notes/resolveNoteFiles"
 
 export const getAllByExamId = async (pricingExaminationId: string) => {
 
@@ -10,12 +11,12 @@ export const getAllByExamId = async (pricingExaminationId: string) => {
         },
         include: {
             user: true,
-            noteType: true
+            noteType: true,
+            files: { include: { file: true } },
         }
     })
 
-
-    return notes;
+    return resolveNoteFiles(notes);
 }
 
 export type PricingExaminationNote = Awaited<ReturnType<typeof getAllByExamId>>[number]

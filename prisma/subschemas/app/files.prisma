@@ -17,7 +17,20 @@ model File {
     generalRequestFiles    GeneralRequestFile[]
     itemFiles              ItemFile[]
     bprStagingFiles        BprStagingFile[]
-    qcRecordFiles          QcRecordFile[]
+    qcRecordFiles                  QcRecordFile[]
+    requestNoteFiles               RequestNoteFile[]
+    generalRequestNoteFiles        GeneralRequestNoteFile[]
+    purchaseOrderNoteFiles         PurchaseOrderNoteFile[]
+    poPublicNoteFiles              PoPublicNoteFile[]
+    poSupplierNoteFiles            PoSupplierNoteFile[]
+    poAccountingNoteFiles          PoAccountingNoteFile[]
+    pricingExaminationNoteFiles    PricingExaminationNoteFile[]
+    auditRequestNoteFiles          AuditRequestNoteFile[]
+    discrepancyAuditItemNoteFiles  DiscrepancyAuditItemNoteFile[]
+    lotNoteFiles                   LotNoteFile[]
+    itemNoteFiles                  ItemNoteFile[]
+    bprNoteFiles                   BprNoteFile[]
+    qcRecordNoteFiles              QcRecordNoteFile[]
 
     @@map("files")
 }

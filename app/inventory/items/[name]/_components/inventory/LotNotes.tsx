@@ -26,11 +26,12 @@ const LotNotes = () => {
 
     if (!selectedLot) return;
     const userId = await getUserId()
+    const { fileIds, ...noteData } = data
     await createLotNote({
       userId,
       lotId: selectedLot.id,
-      ...data
-    })
+      ...noteData
+    }, fileIds)
 
     getSelectedLotNotes()
 

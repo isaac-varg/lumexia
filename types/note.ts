@@ -5,6 +5,22 @@ export type NoteType = {
     textColor: string;
 };
 
+export type NoteFile = {
+    id: string;
+    file: {
+        id: string;
+        name: string;
+        objectName: string;
+        bucketName: string;
+        thumbnailObjectName: string | null;
+        thumbnailBucketName: string | null;
+        mimeType: string;
+        size: number;
+    };
+    url?: string;
+    thumbnailUrl?: string;
+};
+
 export type Note = {
     id: string;
     content: string;
@@ -13,4 +29,5 @@ export type Note = {
         name: string | null;
     };
     noteType: NoteType;
+    files?: NoteFile[];
 };

@@ -21,14 +21,15 @@ const Notes = () => {
   const handleNoteAdd = async (data: NoteInputs) => {
     if (!item) return;
     const userId = await getUserId()
+    const { fileIds, ...noteData } = data
     await accountingActions.examinations.notes.create({
       userId,
       pricingExaminationId: examId,
-      ...data
+      ...noteData
     }, {
       examinationId: examId,
       examinedItemId: item.id
-    })
+    }, fileIds)
     router.refresh()
   }
   return (

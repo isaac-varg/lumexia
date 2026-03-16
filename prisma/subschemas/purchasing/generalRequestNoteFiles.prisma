@@ -1,0 +1,11 @@
+model GeneralRequestNoteFile {
+    id                   String             @id @default(uuid())
+    generalRequestNoteId String             @map("general_request_note_id")
+    fileId               String             @map("file_id")
+    createdAt            DateTime           @default(now()) @map("created_at")
+    updatedAt            DateTime           @updatedAt @map("updated_at")
+    generalRequestNote   GeneralRequestNote @relation(fields: [generalRequestNoteId], references: [id])
+    file                 File               @relation(fields: [fileId], references: [id])
+
+    @@map("general_request_note_files")
+}

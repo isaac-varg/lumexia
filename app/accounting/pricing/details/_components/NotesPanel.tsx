@@ -15,12 +15,13 @@ const NotesPanel = ({ notes, noteTypes, pricingExaminationId }: { notes: SingleP
     const router = useRouter()
     const handleNoteAdd = async (data: NoteInputs) => {
         const userId = await getUserId()
+        const { fileIds, ...noteData } = data
         const payload = {
-            ...data,
+            ...noteData,
             userId,
             pricingExaminationId,
         }
-        await createPricingExamNote(payload)
+        await createPricingExamNote(payload, fileIds)
         router.refresh()
 
     }

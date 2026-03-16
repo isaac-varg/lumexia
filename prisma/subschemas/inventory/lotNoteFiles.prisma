@@ -1,0 +1,11 @@
+model LotNoteFile {
+    id        String   @id @default(uuid())
+    lotNoteId String   @map("lot_note_id")
+    fileId    String   @map("file_id")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    lotNote   LotNote  @relation(fields: [lotNoteId], references: [id])
+    file      File     @relation(fields: [fileId], references: [id])
+
+    @@map("lot_note_files")
+}

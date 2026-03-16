@@ -1,0 +1,11 @@
+model DiscrepancyAuditItemNoteFile {
+    id                          String                   @id @default(uuid())
+    discrepancyAuditItemNoteId  String                   @map("discrepancy_audit_item_note_id")
+    fileId                      String                   @map("file_id")
+    createdAt                   DateTime                 @default(now()) @map("created_at")
+    updatedAt                   DateTime                 @updatedAt @map("updated_at")
+    discrepancyAuditItemNote    DiscrepancyAuditItemNote @relation(fields: [discrepancyAuditItemNoteId], references: [id])
+    file                        File                     @relation(fields: [fileId], references: [id])
+
+    @@map("discrepancy_audit_item_note_files")
+}

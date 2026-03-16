@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import { resolveNoteFiles } from "@/actions/notes/resolveNoteFiles"
 
 // reusable type for the data structure
 const poWithAccountingDetailsArgs = Prisma.validator<Prisma.PurchaseOrderDefaultArgs>()({
@@ -23,7 +24,8 @@ const poWithAccountingDetailsArgs = Prisma.validator<Prisma.PurchaseOrderDefault
     poAccountingNotes: {
       include: {
         user: true,
-        noteType: true
+        noteType: true,
+        files: { include: { file: true } },
       },
       orderBy: {
         createdAt: 'desc'
@@ -32,22 +34,21 @@ const poWithAccountingDetailsArgs = Prisma.validator<Prisma.PurchaseOrderDefault
   }
 });
 
-// type for a single PO with all its relations
-type PoWithAccountingDetails = Prisma.PurchaseOrderGetPayload<typeof poWithAccountingDetailsArgs> & { total: number };
+type RawPo = Prisma.PurchaseOrderGetPayload<typeof poWithAccountingDetailsArgs>;
 
-// function to add the 'total'
-const addTotalToPo = (po: Prisma.PurchaseOrderGetPayload<typeof poWithAccountingDetailsArgs>): PoWithAccountingDetails => {
+const transformPo = async (po: RawPo) => {
   const total = po.purchaseOrderItems.reduce((acc, curr) => {
     return acc + (curr.quantity * curr.pricePerUnit)
   }, 0);
-  return { ...po, total };
+  const poAccountingNotes = await resolveNoteFiles(po.poAccountingNotes);
+  return { ...po, total, poAccountingNotes };
 }
 
 // overload signatures
-export function getPoWithAccountingDetails(id: string): Promise<PoWithAccountingDetails | null>;
-export function getPoWithAccountingDetails(): Promise<PoWithAccountingDetails[]>;
+export function getPoWithAccountingDetails(id: string): Promise<Awaited<ReturnType<typeof transformPo>> | null>;
+export function getPoWithAccountingDetails(): Promise<Awaited<ReturnType<typeof transformPo>>[]>;
 
-export async function getPoWithAccountingDetails(id?: string): Promise<PoWithAccountingDetails | PoWithAccountingDetails[] | null> {
+export async function getPoWithAccountingDetails(id?: string) {
   if (id) {
     const po = await prisma.purchaseOrder.findUnique({
       where: { id },
@@ -55,13 +56,13 @@ export async function getPoWithAccountingDetails(id?: string): Promise<PoWithAcc
     });
 
     if (!po) return null;
-    return addTotalToPo(po);
+    return transformPo(po);
   } else {
     const pos = await prisma.purchaseOrder.findMany({
       ...poWithAccountingDetailsArgs
     });
-    return pos.map(addTotalToPo);
+    return Promise.all(pos.map(transformPo));
   }
 };
 
-export type PoWithAccounting = PoWithAccountingDetails;
+export type PoWithAccounting = Awaited<ReturnType<typeof transformPo>>;

@@ -9,6 +9,7 @@ model PoSupplierNote {
     supplier Supplier @relation(fields: [supplierId], references: [id])
     user       User              @relation(fields: [userId], references: [id])
     noteType   PoSupplierNoteType   @relation(fields: [noteTypeId], references: [id])
+    files      PoSupplierNoteFile[]
 
     @@map("po_supplier_notes")
 }

@@ -9,6 +9,7 @@ model ItemNote {
     item   Item        @relation(fields: [itemId], references: [id])
     user            User                 @relation(fields: [userId], references: [id])
     noteType        ItemNoteType @relation(fields: [noteTypeId], references: [id])
+    files           ItemNoteFile[]
 
     @@map("item_notes")
 }

@@ -9,6 +9,7 @@ model PoPublicNote {
     purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
     user       User              @relation(fields: [userId], references: [id])
     noteType   PoPublicNoteType   @relation(fields: [noteTypeId], references: [id])
+    files      PoPublicNoteFile[]
 
     @@map("po_public_notes")
 }

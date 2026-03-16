@@ -14,7 +14,8 @@ export const getOneAuditRequest = async (id: string) => {
             notes: {
                 include: {
                     noteType: true,
-                    user: true
+                    user: true,
+                    files: { include: { file: true } },
                 }
             }
         }

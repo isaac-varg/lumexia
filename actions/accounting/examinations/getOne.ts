@@ -26,6 +26,7 @@ export const getOnePricingExamination = async (id: string) => {
                 include: {
                     user: true,
                     noteType: true,
+                    files: { include: { file: true } },
                 }
             }
         },

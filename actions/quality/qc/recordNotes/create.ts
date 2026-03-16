@@ -2,8 +2,9 @@
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import { createNoteFiles } from "@/actions/notes/createNoteFiles"
 
-export const createRecordNote = async (data: Prisma.QcRecordNoteUncheckedCreateInput) => {
+export const createRecordNote = async (data: Prisma.QcRecordNoteUncheckedCreateInput, fileIds: string[] = []) => {
   const response = await prisma.qcRecordNote.create({
     data,
     include: {
@@ -11,6 +12,6 @@ export const createRecordNote = async (data: Prisma.QcRecordNoteUncheckedCreateI
       noteType: true
     }
   });
-
+  await createNoteFiles('qcRecordNoteFile', response.id, fileIds)
   return response
 }

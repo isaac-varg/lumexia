@@ -9,6 +9,7 @@ model BprNote {
     bpr        BatchProductionRecord @relation(fields: [bprId], references: [id])
     user       User                  @relation(fields: [userId], references: [id])
     noteType   BprNoteType           @relation(fields: [noteTypeId], references: [id])
+    files      BprNoteFile[]
 
     @@map("bpr_notes")
 }

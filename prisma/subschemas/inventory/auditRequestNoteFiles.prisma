@@ -1,0 +1,11 @@
+model AuditRequestNoteFile {
+    id                  String           @id @default(uuid())
+    auditRequestNoteId  String           @map("audit_request_note_id")
+    fileId              String           @map("file_id")
+    createdAt           DateTime         @default(now()) @map("created_at")
+    updatedAt           DateTime         @updatedAt @map("updated_at")
+    auditRequestNote    AuditRequestNote @relation(fields: [auditRequestNoteId], references: [id])
+    file                File             @relation(fields: [fileId], references: [id])
+
+    @@map("audit_request_note_files")
+}

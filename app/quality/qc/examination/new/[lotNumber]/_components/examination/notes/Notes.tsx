@@ -22,11 +22,12 @@ const Notes = () => {
   const handleNoteAdd = async (data: NoteInputs) => {
     if (!qcRecord) return;
     const userId = await getUserId()
+    const { fileIds, ...noteData } = data
     await qualityActions.qc.recordNotes.create({
       userId,
       recordId: qcRecord.id,
-      ...data
-    })
+      ...noteData
+    }, fileIds)
     router.refresh()
   }
 

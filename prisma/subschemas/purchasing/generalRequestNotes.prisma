@@ -9,6 +9,7 @@ model GeneralRequestNote {
     request    GeneralRequest         @relation(fields: [requestId], references: [id])
     user       User                   @relation(fields: [userId], references: [id])
     noteType   GeneralRequestNoteType @relation(fields: [noteTypeId], references: [id])
+    files      GeneralRequestNoteFile[]
 
     @@map("general_request_notes")
 }

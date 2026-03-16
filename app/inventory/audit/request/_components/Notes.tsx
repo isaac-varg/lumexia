@@ -18,11 +18,12 @@ const Notes = ({ notes, noteTypes, requestId }: { notes: AuditRequestNote[], not
 
   const handleNoteAdd = async (data: NoteInputs) => {
     const userId = await getUserId()
+    const { fileIds, ...noteData } = data
     await inventoryActions.auditReqests.notes.create({
       userId,
       requestId,
-      ...data
-    })
+      ...noteData
+    }, fileIds)
     router.refresh()
   }
 

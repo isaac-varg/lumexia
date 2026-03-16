@@ -9,6 +9,7 @@ model DiscrepancyAuditItemNote {
     auditItem   DiscrepancyAuditItem         @relation(fields: [auditItemId], references: [id])
     user        User                         @relation(fields: [userId], references: [id])
     noteType    DiscrepancyAuditItemNoteType @relation(fields: [noteTypeId], references: [id])
+    files       DiscrepancyAuditItemNoteFile[]
 
     @@map("discrepancy_audit_item_notes")
 }

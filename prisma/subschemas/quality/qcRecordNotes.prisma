@@ -9,6 +9,7 @@ model QcRecordNote {
     record   QcRecord        @relation(fields: [recordId], references: [id])
     user            User                 @relation(fields: [userId], references: [id])
     noteType        QcRecordNoteType @relation(fields: [noteTypeId], references: [id])
+    files           QcRecordNoteFile[]
 
     @@map("qc_record_notes")
 }

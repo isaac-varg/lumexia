@@ -9,6 +9,7 @@ model LotNote {
     lot   Lot         @relation(fields: [lotId], references: [id])
     user        User                         @relation(fields: [userId], references: [id])
     noteType    LotNoteType @relation(fields: [noteTypeId], references: [id])
+    files       LotNoteFile[]
 
     @@map("lot_notes")
 }

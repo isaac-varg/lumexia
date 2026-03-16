@@ -9,6 +9,7 @@ model AuditRequestNote {
     request    AuditRequest         @relation(fields: [requestId], references: [id])
     user       User                 @relation(fields: [userId], references: [id])
     noteType   AuditRequestNoteType @relation(fields: [noteTypeId], references: [id])
+    files      AuditRequestNoteFile[]
 
     @@map("audit_request_notes")
 }

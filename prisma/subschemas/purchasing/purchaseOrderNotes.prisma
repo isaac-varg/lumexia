@@ -9,6 +9,7 @@ model PurchaseOrderNote {
     user            User          @relation(fields: [userId], references: [id])
     purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
     noteType   PurchaseOrderNoteType   @relation(fields: [noteTypeId], references: [id])
+    files      PurchaseOrderNoteFile[]
 
     @@map("purchase_order_notes")
 }

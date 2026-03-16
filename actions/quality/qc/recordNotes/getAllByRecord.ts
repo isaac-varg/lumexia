@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import { resolveNoteFiles } from "@/actions/notes/resolveNoteFiles"
 
 export const getAllRecordNotesByRecord = async (recordId: string) => {
 
@@ -11,10 +12,11 @@ export const getAllRecordNotesByRecord = async (recordId: string) => {
     include: {
       user: true,
       noteType: true,
+      files: { include: { file: true } },
     }
   });
 
-  return notes;
+  return resolveNoteFiles(notes);
 }
 
 export type QcRecordNote = Awaited<ReturnType<typeof getAllRecordNotesByRecord>>[number]

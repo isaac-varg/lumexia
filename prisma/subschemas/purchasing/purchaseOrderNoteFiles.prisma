@@ -1,0 +1,11 @@
+model PurchaseOrderNoteFile {
+    id                  String            @id @default(uuid())
+    purchaseOrderNoteId String            @map("purchase_order_note_id")
+    fileId              String            @map("file_id")
+    createdAt           DateTime          @default(now()) @map("created_at")
+    updatedAt           DateTime          @updatedAt @map("updated_at")
+    purchaseOrderNote   PurchaseOrderNote @relation(fields: [purchaseOrderNoteId], references: [id])
+    file                File              @relation(fields: [fileId], references: [id])
+
+    @@map("purchase_order_note_files")
+}

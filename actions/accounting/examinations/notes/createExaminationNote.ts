@@ -4,9 +4,10 @@ import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { getUserId } from "@/actions/users/getUserId"
 import { pricingExaminationStatuses } from "@/configs/staticRecords/pricingExaminationStatuses"
+import { createNoteFiles } from "@/actions/notes/createNoteFiles"
 
 
-export const createExaminationNote = async (data: Prisma.PricingExaminationNoteUncheckedCreateInput, examinationData: { examinationId: string, examinedItemId: string }) => {
+export const createExaminationNote = async (data: Prisma.PricingExaminationNoteUncheckedCreateInput, examinationData: { examinationId: string, examinedItemId: string }, fileIds: string[] = []) => {
 
     const userId = await getUserId()
 
@@ -46,6 +47,7 @@ export const createExaminationNote = async (data: Prisma.PricingExaminationNoteU
         data: payload,
 
     })
+    await createNoteFiles('pricingExaminationNoteFile', response.id, fileIds)
 
     return response;
 }

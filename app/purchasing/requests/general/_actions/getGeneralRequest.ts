@@ -1,6 +1,7 @@
 'use server'
 
 import { getFileUrl } from "@/actions/files/getUrl";
+import { resolveNoteFiles } from "@/actions/notes/resolveNoteFiles";
 import prisma from "@/lib/prisma"
 
 export const getGeneralRequest = async (id: string) => {
@@ -22,7 +23,8 @@ export const getGeneralRequest = async (id: string) => {
             notes: {
                 include: {
                     user: true,
-                    noteType: true
+                    noteType: true,
+                    files: { include: { file: true } },
                 }
             },
             status: true
@@ -40,13 +42,13 @@ export const getGeneralRequest = async (id: string) => {
     }));
 
     const { GeneralRequestFile, ...rest } = request;
+    const notes = await resolveNoteFiles(rest.notes);
 
     const transformedRequest = {
         ...rest,
+        notes,
         transformedFiles,
     }
-
-
 
     return transformedRequest;
 }
