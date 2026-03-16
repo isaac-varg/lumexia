@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma"
 export const getReviewablePricingExams = async () => {
   const exams = await prisma.pricingExamination.findMany({
     where: {
-      statusId: pricingExaminationStatuses.queued,
+      statusId: pricingExaminationStatuses.pendingReview,
     },
     include: {
       examinedItem: true,

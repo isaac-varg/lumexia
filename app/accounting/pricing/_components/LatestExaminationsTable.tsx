@@ -16,6 +16,11 @@ const LatestExaminationsTable = ({ examinations }: { examinations: PricingExamin
             filterLabel: "Item",
             options: toFacetFilter(examinations, "examinedItem.id", "examinedItem.name"),
         },
+        {
+            columnName: "status",
+            filterLabel: "Status",
+            options: toFacetFilter(examinations, "status.name", "status.name"),
+        },
     ]
 
 
@@ -26,6 +31,7 @@ const LatestExaminationsTable = ({ examinations }: { examinations: PricingExamin
                 columns={latestExaminationsColumns}
                 data={examinations}
                 filters={filters}
+                initialColumnFilters={[{ id: 'status', value: ['Pending Review'] }]}
                 onRowClick={(row) => router.push(`/accounting/pricing/details?id=${row.original.id}`)}
             />
         </div>
