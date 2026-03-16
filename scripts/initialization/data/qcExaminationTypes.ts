@@ -23,6 +23,13 @@ export const data = {
       "description": "Examination of parameters from documents rather than laboratory examination.",
       "bgColor": "#B0C4B1",
       "textColor": "#333333"
+    },
+    {
+      "name": "Legacy Data",
+      "abbreviation": "LD",
+      "description": "Historical examination data imported from legacy records.",
+      "bgColor": "#D4C5A9",
+      "textColor": "#333333"
     }
   ]
 };

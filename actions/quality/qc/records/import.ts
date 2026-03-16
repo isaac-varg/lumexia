@@ -9,14 +9,14 @@ const inputDefinitionSchema = z.object({
   id: z.string(),
   name: z.string(),
   required: z.boolean(),
-  value: z.string(),
+  value: z.string().nullable().transform(v => v ?? ''),
 })
 
 const parameterResultSchema = z.object({
   parameterId: z.string(),
   parameterName: z.string(),
   itemParameterId: z.string(),
-  value: z.string(),
+  value: z.string().nullable().transform(v => v ?? ''),
   inputDefinitions: z.array(inputDefinitionSchema),
 })
 
@@ -32,6 +32,7 @@ type ImportData = z.infer<typeof importSchema>
 export const importQcRecords = async (data: ImportData) => {
   const validation = importSchema.safeParse(data)
   if (!validation.success) {
+    console.error("QC Import validation failed:", JSON.stringify(validation.error.flatten(), null, 2))
     return {
       success: false,
       message: "Invalid data format."

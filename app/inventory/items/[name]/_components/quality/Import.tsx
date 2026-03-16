@@ -13,7 +13,7 @@ const Import = () => {
   const [errorContent, setErrorContent] = useState('');
 
   const generateFormat = () => {
-    const examinationTypes = ['In-Process', 'Finished Product', 'Dry']
+    const examinationTypes = ['In-Process', 'Finished Product', 'Dry', 'Legacy Data']
     const parameterResults = qcItemParameters.map(ip => {
       const inputDefinitions = ip.parameter.inputDefinitions.map(id => {
         return ({
