@@ -30,7 +30,9 @@ export const handleZeroDepletions = async (lots: DiscrepancyItem['lots'], itemId
     const auditItemTransaction = await prisma.discrepancyAuditItemTransaction.create({
       data: {
         auditItemId: itemId,
-        transactionId: transaction.id
+        transactionId: transaction.id,
+        quantityBefore: lot.totalQuantityOnHand,
+        quantityAfter: 0,
       }
     });
 

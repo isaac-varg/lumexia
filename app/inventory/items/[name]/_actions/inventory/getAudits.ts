@@ -59,7 +59,11 @@ export const getAudits = async (itemId: string) => {
     createdAt: item.createdAt,
     user: 'System', // Or derive from somewhere if possible
     status: item.status.name,
-    transactions: item.discrepancyAuditItemTransaction.map(t => t.transaction),
+    transactions: item.discrepancyAuditItemTransaction.map(t => ({
+      ...t.transaction,
+      quantityBefore: t.quantityBefore,
+      quantityAfter: t.quantityAfter,
+    })),
     details: `Ending lots: ${item.endingLotsCount}, Ending quantity: ${item.endingTotalQuantity}`
   }));
 
@@ -69,7 +73,11 @@ export const getAudits = async (itemId: string) => {
     createdAt: audit.createdAt,
     user: audit.user.name,
     status: 'Completed',
-    transactions: audit.transactions.map(t => t.transaction),
+    transactions: audit.transactions.map(t => ({
+      ...t.transaction,
+      quantityBefore: t.quantityBefore,
+      quantityAfter: t.quantityAfter,
+    })),
     details: `Conducted by ${audit.user.name}`
   }));
 

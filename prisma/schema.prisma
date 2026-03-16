@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Mar 16 2026 14:58:51 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Mon Mar 16 2026 16:01:42 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -827,13 +827,15 @@ model DiscrepancyAuditItemStatus {
 }
 
 model DiscrepancyAuditItemTransaction {
-  id            String               @id @default(uuid())
-  auditItemId   String               @map("audit_item_id")
-  transactionId String               @unique @map("transaction_id")
-  createdAt     DateTime             @default(now()) @map("created_at")
-  updatedAt     DateTime             @updatedAt @map("updated_at")
-  auditItem     DiscrepancyAuditItem @relation(fields: [auditItemId], references: [id])
-  transaction   Transaction          @relation(fields: [transactionId], references: [id])
+  id             String               @id @default(uuid())
+  auditItemId    String               @map("audit_item_id")
+  transactionId  String               @unique @map("transaction_id")
+  quantityBefore Float?               @map("quantity_before")
+  quantityAfter  Float?               @map("quantity_after")
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+  auditItem      DiscrepancyAuditItem @relation(fields: [auditItemId], references: [id])
+  transaction    Transaction          @relation(fields: [transactionId], references: [id])
 
   @@map("discrepancy_audit_item_transactions")
 }
@@ -912,6 +914,8 @@ model InventoryAuditTransaction {
   id               String         @id @default(uuid())
   transactionId    String         @unique @map("transaction_id")
   inventoryAuditId String         @map("inventory_audit_id")
+  quantityBefore   Float?         @map("quantity_before")
+  quantityAfter    Float?         @map("quantity_after")
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @updatedAt @map("updated_at")
   transaction      Transaction    @relation(fields: [transactionId], references: [id])

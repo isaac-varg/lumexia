@@ -1,12 +1,14 @@
 import { Panels } from "@/components/Panels"
 import SectionTitle from "@/components/Text/SectionTitle"
+import { dateFormatWithTime } from "@/configs/data/dateFormatString"
 import { discrepancyAuditItemStatuses } from "@/configs/staticRecords/discrepancyAuditItemStatuses"
 import { useDiscrepancySelection } from "@/store/discrepancySlice"
+import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
 
 const AuditStatusPanel = () => {
 
-  const { auditItems } = useDiscrepancySelection()
+  const { auditItems, audit } = useDiscrepancySelection()
   const [notAudited, setNotAudited] = useState<number>(0)
   const [audited, setAudited] = useState<number>(0)
 
@@ -54,6 +56,22 @@ const AuditStatusPanel = () => {
         </div>
       </div>
 
+      {audit && (
+        <div className="flex flex-col gap-y-2 mt-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-zinc-400 font-poppins">Created</span>
+            <span className="text-sm font-poppins">
+              {DateTime.fromJSDate(new Date(audit.createdAt)).toFormat(dateFormatWithTime)}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-zinc-400 font-poppins">Last Edited</span>
+            <span className="text-sm font-poppins">
+              {DateTime.fromJSDate(new Date(audit.updatedAt)).toFormat(dateFormatWithTime)}
+            </span>
+          </div>
+        </div>
+      )}
 
     </Panels.Root>
   )

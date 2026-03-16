@@ -34,12 +34,40 @@ export const completeAuditRequest = async (requestId: string, itemId: string) =>
   });
 
   if (auditTransactions.length > 0) {
-    await prisma.inventoryAuditTransaction.createMany({
-      data: auditTransactions.map((t) => ({
-        transactionId: t.id,
-        inventoryAuditId: response.id,
-      })),
-    });
+    // Compute before/after for each transaction by replaying lot history
+    for (const t of auditTransactions) {
+      const lot = await prisma.lot.findUniqueOrThrow({ where: { id: t.lotId } });
+
+      const priorTransactions = await prisma.transaction.findMany({
+        where: {
+          lotId: t.lotId,
+          createdAt: { lt: t.createdAt },
+        },
+        include: { transactionType: true },
+      });
+
+      const priorSum = priorTransactions.reduce(
+        (acc, pt) => acc + (pt.transactionType.deduction ? -pt.amount : pt.amount),
+        0
+      );
+
+      const quantityBefore = lot.initialQuantity + priorSum;
+
+      const currentType = await prisma.transactionType.findUniqueOrThrow({
+        where: { id: t.transactionTypeId },
+      });
+      const signedAmount = currentType.deduction ? -t.amount : t.amount;
+      const quantityAfter = quantityBefore + signedAmount;
+
+      await prisma.inventoryAuditTransaction.create({
+        data: {
+          transactionId: t.id,
+          inventoryAuditId: response.id,
+          quantityBefore,
+          quantityAfter,
+        },
+      });
+    }
   }
 
   // make an automated note

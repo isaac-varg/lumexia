@@ -37,7 +37,9 @@ export const handleDiscrepancyAuditAdjustment = async (itemId: string, newQuanti
   const auditItemTransaction = await prisma.discrepancyAuditItemTransaction.create({
     data: {
       auditItemId: itemId,
-      transactionId: transaction.id
+      transactionId: transaction.id,
+      quantityBefore: currentQuantity,
+      quantityAfter: newQuantity,
     }
   });
 

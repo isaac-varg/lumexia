@@ -46,6 +46,10 @@ const AuditDetails = ({ audit }: { audit: CompletedAuditDetail }) => {
             : '-'
           }
         </DetailRow>
+
+        <DetailRow label="Last Edited">
+          {DateTime.fromJSDate(audit.updatedAt).toFormat(dateFormatWithTime)}
+        </DetailRow>
       </div>
     </Card.Root>
   )
