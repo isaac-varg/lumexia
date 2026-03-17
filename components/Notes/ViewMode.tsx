@@ -6,18 +6,30 @@ interface ViewModeProps<TNote extends Note> {
   notes: TNote[];
   onDelete?: (note: TNote) => Promise<void>;
   maxHeight?: NotesManagerHeight
+  style?: NotesManagerStyle
+  noteStyle?: NotesNoteStyle
 }
 
 const classes = {
   maxHeight: {
     small: 'max-h-72',
     max: '',
+  },
+  style: {
+    base: 'bg-base-200/40',
+    flat: '',
+  },
+  noteStyle: {
+    default: '',
+    elevated: 'border border-base-300',
   }
 }
 
 export type NotesManagerHeight = keyof typeof classes.maxHeight;
+export type NotesManagerStyle = keyof typeof classes.style;
+export type NotesNoteStyle = keyof typeof classes.noteStyle;
 
-const NotesViewMode = <TNote extends Note>({ notes, onDelete, maxHeight = 'small' }: ViewModeProps<TNote>) => {
+const NotesViewMode = <TNote extends Note>({ notes, onDelete, maxHeight = 'small', style = 'base', noteStyle = 'default' }: ViewModeProps<TNote>) => {
 
   return (
     <div className={`grid grid-cols-1 gap-4 ${classes.maxHeight[maxHeight]} overflow-y-auto`}>
@@ -27,7 +39,7 @@ const NotesViewMode = <TNote extends Note>({ notes, onDelete, maxHeight = 'small
         const pdfFiles = note.files?.filter(f => f.file.mimeType === 'application/pdf') || []
 
         return (
-          <div key={note.id} className='flex flex-col gap-y-4 bg-base-200/40 p-6 rounded-xl'>
+          <div key={note.id} className={`flex flex-col gap-y-4 ${classes.style[style]} ${classes.noteStyle[noteStyle]} p-6 rounded-xl`}>
 
             <div className='flex flex-row justify-between items-center'>
               <div className="flex flex-row gap-x-4 items-center">

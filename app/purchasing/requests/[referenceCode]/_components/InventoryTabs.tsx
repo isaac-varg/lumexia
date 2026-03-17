@@ -9,9 +9,8 @@ import { ItemInventory } from '../_functions/getInventory'
 import InventoryCurrentTab from './InventoryCurrentTab'
 import { OtherRequest } from '../_functions/getOtherRequests'
 import { RequestNote } from '../_functions/getRequestNotes'
-import NotesPanel from './NotesPanel'
 import { RequestNoteType } from '../_functions/getNoteTypes'
-import RequestNotesTab from './RequestNotesTab'
+import RequestNotes from './RequestNotes'
 import { Tab } from '@/components/Tabs/Trigger'
 import { LastAuditRequest } from '../_functions/getAuditRequests'
 
@@ -24,6 +23,7 @@ const InventoryTabs = ({
     noteTypes,
     notes,
     lastAuditRequests,
+    requestId,
 }: {
     snapshot: InventorySnapshot
     snapshotBprs: SnapshotBpr[]
@@ -33,6 +33,7 @@ const InventoryTabs = ({
     notes: RequestNote[]
     noteTypes: RequestNoteType[]
     lastAuditRequests: LastAuditRequest[]
+    requestId: string
 }) => {
 
     const tabs: Tab[] = [
@@ -67,7 +68,7 @@ const InventoryTabs = ({
 
                 <TabsPanel.Content identifier='notes'>
 
-                    <RequestNotesTab notes={notes} noteTypes={noteTypes} />
+                    <RequestNotes notes={notes} noteTypes={noteTypes} requestId={requestId} maxHeight="max" />
 
                 </TabsPanel.Content>
 

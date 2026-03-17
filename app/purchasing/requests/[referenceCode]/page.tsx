@@ -16,8 +16,7 @@ import { getRequestStatuses } from './_functions/getRequestStatuses';
 import NewPurchaseOrderDialog from './_components/NewPurchaseOrderDialog';
 import { getSuppliers } from './_functions/getSuppliers';
 import RequestDetailsPageTitle from './_components/PageTitle';
-import NotesPanel from './_components/NotesPanel';
-import NewNoteDialog from './_components/NewNoteDialog';
+import RequestNotes from './_components/RequestNotes';
 import { getNoteTypes } from './_functions/getNoteTypes';
 import { getRequestNotes } from './_functions/getRequestNotes';
 import { getRequestPriorities } from './_functions/getRequestPriorities';
@@ -58,8 +57,6 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
       <SelectBprDialog requestId={request.id} linkableBprs={linkableBprs} />
       <SelectPoDialog requestId={request.id} linkablePos={linkablePos} />
       <NewPurchaseOrderDialog requestId={request.id} suppliers={suppliers} linkablePOs={linkablePos} itemId={request.itemId} />
-      <NewNoteDialog types={noteTypes} requestId={request.id} />
-
       <RequestDetailsPageTitle request={request} />
 
       <div className='grid grid-cols-2 gap-4'>
@@ -80,7 +77,7 @@ const RequestDetailsPage = async ({ searchParams }: RequestDetailsProps) => {
           expectedDateEnd={request.expectedDateEnd}
         />
 
-        <NotesPanel notes={requestNotes} noteTypes={noteTypes} />
+        <RequestNotes notes={requestNotes} noteTypes={noteTypes} requestId={request.id} />
 
         <LinkedBatchesPanel bprs={linkedBprs} linkedBprAmounts={linkedBprAmounts} />
 

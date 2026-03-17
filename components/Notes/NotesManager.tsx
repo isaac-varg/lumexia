@@ -1,7 +1,7 @@
 'use client'
 import Text from "@/components/Text";
 import { useState } from "react";
-import NotesViewMode, { NotesManagerHeight } from "./ViewMode";
+import NotesViewMode, { NotesManagerHeight, NotesManagerStyle, NotesNoteStyle } from "./ViewMode";
 import { Note, NoteType } from "@/types/note";
 import NotesAddMode, { NoteInputs } from "./NotesAddMode";
 import CreateNoteTypeForm, { NoteTypeInputs } from "./CreateNoteTypeForm";
@@ -14,9 +14,11 @@ interface NotesManagerProps<TNote extends Note, TNoteType extends NoteType> {
   onNoteTypeAdd: (noteType: NoteTypeInputs) => Promise<void>;
   onDelete?: (note: TNote) => Promise<void>;
   maxHeight?: NotesManagerHeight
+  style?: NotesManagerStyle
+  noteStyle?: NotesNoteStyle
 }
 
-const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes, onNoteAdd, onNoteTypeAdd, onDelete, maxHeight = 'small' }: NotesManagerProps<TNote, TNoteType>) => {
+const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, noteTypes, onNoteAdd, onNoteTypeAdd, onDelete, maxHeight = 'small', style = 'base', noteStyle = 'default' }: NotesManagerProps<TNote, TNoteType>) => {
 
   const [mode, setMode] = useState<'addType' | 'addNote' | 'view'>('view');
 
@@ -28,7 +30,7 @@ const NotesManager = <TNote extends Note, TNoteType extends NoteType>({ notes, n
         {mode === 'view' && <button onClick={() => setMode('addNote')} className="btn btn-neutral btn-soft">Add Note</button>}
       </div>
 
-      {mode === 'view' && <NotesViewMode<TNote> notes={notes} maxHeight={maxHeight} onDelete={onDelete} />}
+      {mode === 'view' && <NotesViewMode<TNote> notes={notes} maxHeight={maxHeight} style={style} noteStyle={noteStyle} onDelete={onDelete} />}
 
       {mode === 'addNote' && onNoteAdd && <NotesAddMode<TNoteType> onNoteAdd={onNoteAdd} noteTypes={noteTypes} setMode={setMode} />}
       {mode === 'addType' && onNoteTypeAdd && <CreateNoteTypeForm onNoteTypeAdd={onNoteTypeAdd} setMode={setMode} />}

@@ -21,15 +21,16 @@ const InventoryPanel = async ({ requestId, itemId, notes , noteTypes}: { request
 
     return (
         <div className='col-span-2'>
-            <InventoryTabs 
+            <InventoryTabs
                 lastAuditRequests={lastAuditRequests}
-                snapshot={snapshot} 
-                snapshotBprs={snapshotBprs} 
-                snapshotPos={snapshotPos} 
+                snapshot={snapshot}
+                snapshotBprs={snapshotBprs}
+                snapshotPos={snapshotPos}
                 inventory={inventory}
                 notes={notes}
                 noteTypes={noteTypes}
                 otherRequests={otherRequests}
+                requestId={requestId}
                 />
 
         </div>

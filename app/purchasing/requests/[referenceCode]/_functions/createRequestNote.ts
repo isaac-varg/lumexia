@@ -1,11 +1,12 @@
 'use server'
 
 import { getUserId } from "@/actions/users/getUserId"
+import { createNoteFiles } from "@/actions/notes/createNoteFiles"
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 
-export const createRequestNote = async (requestId: string, content: string, noteTypeId: string) => {
+export const createRequestNote = async (requestId: string, content: string, noteTypeId: string, fileIds: string[] = []) => {
 
     const userId = await getUserId()
     const payload: Prisma.RequestNoteUncheckedCreateInput = {
@@ -18,6 +19,8 @@ export const createRequestNote = async (requestId: string, content: string, note
     const response = await prisma.requestNote.create({
         data: payload
     });
+
+    await createNoteFiles('requestNoteFile', response.id, fileIds)
 
     revalidatePath('purchasing/requests/[referenceCode]')
 
