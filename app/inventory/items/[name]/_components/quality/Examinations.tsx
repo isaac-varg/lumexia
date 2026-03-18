@@ -14,7 +14,7 @@ import Import from "./Import"
 
 const Examinations = () => {
 
-  const { qcRecords } = useItemSelection()
+  const { qcRecords, item } = useItemSelection()
   const router = useRouter()
   const [isImport, setIsImport] = useState(false);
   const handleClick = (record: QcRecordExpanded) => {
@@ -33,7 +33,20 @@ const Examinations = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <SectionTitle>Examinations</SectionTitle>
-        {isImport ? <button onClick={() => setIsImport(false)} className='btn btn-error'><TbX className="size-4" /> </button> : <button onClick={() => setIsImport(true)} className='btn btn-primary'>Import</button>}
+        <div className="flex gap-2">
+          {isImport
+            ? <button onClick={() => setIsImport(false)} className='btn btn-error'><TbX className="size-4" /></button>
+            : <button onClick={() => setIsImport(true)} className='btn btn-primary'>Import</button>
+          }
+          {!isImport && (
+            <button
+              onClick={() => router.push(`/quality/qc/examination/bulk-entry/${item?.name}`)}
+              className='btn btn-secondary'
+            >
+              Bulk Entry
+            </button>
+          )}
+        </div>
       </div>
 
       {isImport && <Import />}
