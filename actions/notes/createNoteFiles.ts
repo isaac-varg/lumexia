@@ -15,6 +15,7 @@ type NoteFileTable =
   | 'lotNoteFile'
   | 'itemNoteFile'
   | 'bprNoteFile'
+  | 'mbprNoteFile'
   | 'qcRecordNoteFile'
 
 const noteIdFieldMap: Record<NoteFileTable, string> = {
@@ -30,6 +31,7 @@ const noteIdFieldMap: Record<NoteFileTable, string> = {
   lotNoteFile: 'lotNoteId',
   itemNoteFile: 'itemNoteId',
   bprNoteFile: 'bprNoteId',
+  mbprNoteFile: 'mbprNoteId',
   qcRecordNoteFile: 'qcRecordNoteId',
 }
 

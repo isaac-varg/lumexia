@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 
 export const createMbprBOM = async (data: Prisma.BillOfMaterialUncheckedCreateInput) => {
     const response = await prisma.billOfMaterial.create({
@@ -11,8 +12,8 @@ export const createMbprBOM = async (data: Prisma.BillOfMaterialUncheckedCreateIn
         }
     })
 
+    await createActivityLog('BOM Item Added', 'mbpr', data.mbprId, { context: `Added ${response.item.name} to BOM` })
+
     return response;
 
 }
-
-

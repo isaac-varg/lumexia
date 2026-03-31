@@ -5,6 +5,7 @@ import useDialog from '@/hooks/useDialog'
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice'
 import { Prisma } from '@prisma/client'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
+import { createActivityLog } from '@/utils/auxiliary/createActivityLog'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -32,6 +33,7 @@ const AddStepForm = () => {
         }
         const step = await productionActions.mbprs.steps.create(payload)
 
+        await createActivityLog('Added Batch Step', 'mbpr', selectedMbpr.id, { context: `Added step ${step.sequence} — ${step.label} (${step.phase})` })
         addStep(step)
         resetDialogContext()
 

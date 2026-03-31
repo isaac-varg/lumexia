@@ -1,0 +1,15 @@
+model MbprNote {
+    id         String                       @id @default(uuid())
+    mbprId     String                       @map("mbpr_id")
+    noteTypeId String                       @map("note_type_id")
+    userId     String                       @map("user_id")
+    content    String
+    createdAt  DateTime                     @default(now()) @map("created_at")
+    updatedAt  DateTime                     @updatedAt @map("updated_at")
+    mbpr       MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
+    user       User                         @relation(fields: [userId], references: [id])
+    noteType   MbprNoteType                 @relation(fields: [noteTypeId], references: [id])
+    files      MbprNoteFile[]
+
+    @@map("mbpr_notes")
+}

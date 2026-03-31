@@ -46,7 +46,7 @@ const VersionStep = () => {
 
       <div className="grid grid-cols-3 gap-4">
 
-        <div onClick={() => { showDialog('mbprNew'); setDialogMode('create') }} className="card bg-base-200 shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow border-2 border-dashed border-base-300">
+        <div onClick={() => { showDialog('mbprForm'); setDialogMode('create') }} className="card bg-base-200 shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow border-2 border-dashed border-base-300">
           <div className="card-body items-center justify-center flex-row gap-x-4">
             <TbPlus className="text-3xl" />
             <h2 className="card-title font-poppins">Add New</h2>
@@ -54,7 +54,7 @@ const VersionStep = () => {
         </div>
 
         {mbprs.length !== 0 && (
-          mbprs.map((mbpr) => <VersionCard key={mbpr.id} mbpr={mbpr} />)
+          mbprs.map((mbpr) => <VersionCard key={mbpr.id} mbpr={mbpr} setDialogMode={setDialogMode} />)
         )}
       </div>
 

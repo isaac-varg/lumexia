@@ -35,6 +35,14 @@ const MbprForm = ({ mode, mbpr }: MbpRFormProps) => {
 
     const form = useForm<MbprFormInputs>({ defaultValues })
 
+    useEffect(() => {
+        form.reset({
+            versionLabel: mbpr?.versionLabel || '',
+            recordStatusId: mbpr?.recordStatusId || '',
+            estimatedTotalTime: mbpr?.estimatedTotalTime || 0,
+        })
+    }, [mbpr, form])
+
     const handleSubmit = async (data: MbprFormInputs) => {
 
         if (!producesItem) {
@@ -89,7 +97,7 @@ const MbprForm = ({ mode, mbpr }: MbpRFormProps) => {
     }, [])
 
     return (
-        <Dialog.Root identifier={mbpr ? `mbprEdit${mbpr.id}` : 'mbprNew'}>
+        <Dialog.Root identifier='mbprForm'>
             <Form.Root form={form} onSubmit={handleSubmit}>
                 <Form.Text
                     form={form}

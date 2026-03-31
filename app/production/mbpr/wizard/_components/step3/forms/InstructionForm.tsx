@@ -4,10 +4,11 @@ import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizard
 import { Prisma } from '@prisma/client';
 import { productionActions } from '@/actions/production';
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
+import { createActivityLog } from '@/utils/auxiliary/createActivityLog';
 
 const InstructionForm = () => {
 
-    const { isNewForFormPanel, selectedStep, selectedInstruction, } = useMbprWizardSelection()
+    const { isNewForFormPanel, selectedStep, selectedInstruction, selectedMbpr } = useMbprWizardSelection()
     const { addInstruction, updateInstruction, removeInstruction, setFormPanelMode } = useMbprWizardActions()
 
     const [content, setContent] = useState<string>();
@@ -34,6 +35,7 @@ const InstructionForm = () => {
 
         const response = await productionActions.mbprs.instructions.create(payload);
 
+        if (selectedMbpr) await createActivityLog('Added Instruction', 'mbpr', selectedMbpr.id, { context: `Added instruction to step ${selectedStep.sequence}` })
         addInstruction(response);
 
     }
@@ -48,6 +50,7 @@ const InstructionForm = () => {
 
         const response = await productionActions.mbprs.instructions.update(selectedInstruction.id, payload);
 
+        if (selectedMbpr && selectedStep) await createActivityLog('Updated Instruction', 'mbpr', selectedMbpr.id, { context: `Updated instruction on step ${selectedStep.sequence}` })
         updateInstruction(selectedInstruction.id, response.instructionContent)
 
     }
@@ -60,6 +63,7 @@ const InstructionForm = () => {
             recordStatusId: recordStatuses.archived,
         });
 
+        if (selectedMbpr && selectedStep) await createActivityLog('Removed Instruction', 'mbpr', selectedMbpr.id, { context: `Removed instruction from step ${selectedStep.sequence}` })
         removeInstruction(selectedInstruction.id);
         setFormPanelMode('default');
 

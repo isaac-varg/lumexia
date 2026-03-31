@@ -1,12 +1,15 @@
 import { MbprFromItem } from "@/actions/production/mbpr/getAllByProducedItem"
 import { useMbprWizardActions } from "@/store/mbprWizardSlice"
 import { TextUtils } from "@/utils/text"
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
+import useDialog from "@/hooks/useDialog"
 import { MouseEvent } from "react"
-import { TbCopy } from "react-icons/tb"
+import { TbCopy, TbEdit } from "react-icons/tb"
 import { duplicateMbpr } from "../../_functions/duplicateMbpr"
 
-const VersionCard = ({ mbpr, }: { mbpr: MbprFromItem }) => {
+const VersionCard = ({ mbpr, setDialogMode }: { mbpr: MbprFromItem, setDialogMode: (mode: 'edit' | 'create') => void }) => {
   const { setSelectedMbpr, setProducesItem, nextStep } = useMbprWizardActions()
+  const { showDialog } = useDialog()
 
   const handleDuplicate = async (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation()
@@ -16,6 +19,7 @@ const VersionCard = ({ mbpr, }: { mbpr: MbprFromItem }) => {
 
     if (!newMbpr) throw new Error('MBPR not duplicated')
 
+    await createActivityLog('Duplicated MBPR', 'mbpr', newMbpr.id, { context: `Duplicated from version: ${mbpr.versionLabel}` })
     setProducesItem(newMbpr.producesItemId)
     setSelectedMbpr(newMbpr);
 
@@ -35,8 +39,13 @@ const VersionCard = ({ mbpr, }: { mbpr: MbprFromItem }) => {
           <h2 className="card-title font-poppins">
             {mbpr.versionLabel}
           </h2>
-          <div onClick={(event) => handleDuplicate(event)} className="btn btn-circle btn-ghost btn-sm hover:bg-emerald-500 hover:text-white">
-            <TbCopy className="text-lg" />
+          <div className="flex gap-x-1">
+            <div onClick={(event) => { event.stopPropagation(); setSelectedMbpr(mbpr); setDialogMode('edit'); showDialog('mbprForm') }} className="btn btn-circle btn-ghost btn-sm hover:bg-blue-500 hover:text-white">
+              <TbEdit className="text-lg" />
+            </div>
+            <div onClick={(event) => handleDuplicate(event)} className="btn btn-circle btn-ghost btn-sm hover:bg-emerald-500 hover:text-white">
+              <TbCopy className="text-lg" />
+            </div>
           </div>
         </div>
 

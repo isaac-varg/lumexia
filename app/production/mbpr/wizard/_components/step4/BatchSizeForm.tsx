@@ -12,6 +12,7 @@ import { setActiveBatchSize } from '../../_functions/setActiveBatchSize';
 import SelectItemStep from '@/app/production/planning/_components/createNewBpr/SelectItemStep';
 import { uom } from '@/configs/staticRecords/unitsOfMeasurement';
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
+import { createActivityLog } from '@/utils/auxiliary/createActivityLog';
 
 const BatchSizeForm = () => {
 
@@ -61,6 +62,7 @@ const BatchSizeForm = () => {
     // re-get batch size with proper data
     const bzNew = await productionActions.mbprs.batchSizes.getOne(batchSize.id);
 
+    await createActivityLog('Created Batch Size', 'mbpr', selectedMbpr.id, { context: `Created batch size: ${sizeInput} lbs` })
     // update zustand state
     addBatchSize(bzNew)
   }
@@ -99,7 +101,8 @@ const BatchSizeForm = () => {
     // get size
     const bzNew = await productionActions.mbprs.batchSizes.getOne(batchSize.id);
 
-    // update zustant
+    await createActivityLog('Updated Batch Size', 'mbpr', selectedMbpr.id, { context: `Updated batch size to ${sizeInput} lbs` })
+    // update zustand
     updateBatchSize(batchSize.id, bzNew)
 
   }
@@ -109,6 +112,7 @@ const BatchSizeForm = () => {
 
     await setActiveBatchSize(selectedBatchSize.id, selectedMbpr.id)
 
+    await createActivityLog('Set Active Batch Size', 'mbpr', selectedMbpr.id, { context: 'Set batch size as active' })
     location.reload()
 
   }

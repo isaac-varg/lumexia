@@ -10,8 +10,7 @@ const WorkInstructionsPanel = ({ steps }: { steps: Mbpr['BatchStep'] }) => {
     )
 
     return (
-        <div className="col-span-2">
-            <Card.Root>
+        <Card.Root>
                 <Card.Title>Work Instructions</Card.Title>
 
                 {stepsWithInstructions.length === 0 ? (
@@ -36,8 +35,7 @@ const WorkInstructionsPanel = ({ steps }: { steps: Mbpr['BatchStep'] }) => {
                         ))}
                     </div>
                 )}
-            </Card.Root>
-        </div>
+        </Card.Root>
     )
 }
 

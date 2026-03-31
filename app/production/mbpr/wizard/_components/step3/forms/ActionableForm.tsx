@@ -8,6 +8,7 @@ import { Prisma } from '@prisma/client';
 import { productionActions } from '@/actions/production';
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses';
 import { stepActionableTypes } from '@/configs/staticRecords/stepActionableTypes';
+import { createActivityLog } from '@/utils/auxiliary/createActivityLog';
 
 type Inputs = {
   actionableTypeId: string;
@@ -18,7 +19,7 @@ type Inputs = {
 
 const ActionableForm = () => {
 
-  const { selectedStep, isNewForFormPanel, actionableTypes, selectedActionable } = useMbprWizardSelection()
+  const { selectedStep, isNewForFormPanel, actionableTypes, selectedActionable, selectedMbpr } = useMbprWizardSelection()
   const { addActionable, updateActionable, removeActionable, setFormPanelMode } = useMbprWizardActions()
 
   const typeOptions = actionableTypes.map((t) => ({ value: t.id, label: TextUtils.properCase(t.name) }))
@@ -31,6 +32,7 @@ const ActionableForm = () => {
     await productionActions.mbprs.actionables.update(selectedActionable.id, {
       recordStatusId: recordStatuses.archived,
     });
+    if (selectedMbpr && selectedStep) await createActivityLog('Removed Actionable', 'mbpr', selectedMbpr.id, { context: `Removed actionable from step ${selectedStep.sequence}` })
     removeActionable(selectedActionable.id);
     setFormPanelMode('default');
   }
@@ -51,6 +53,7 @@ const ActionableForm = () => {
 
       const response = await productionActions.mbprs.actionables.create(payload);
 
+      if (selectedMbpr) await createActivityLog('Added Actionable', 'mbpr', selectedMbpr.id, { context: `Added ${response.actionableType.name} actionable to step ${selectedStep.sequence}` })
       addActionable(response);
     } else {
 
@@ -64,6 +67,7 @@ const ActionableForm = () => {
 
       const response = await productionActions.mbprs.actionables.update(selectedActionable.id, payload)
 
+      if (selectedMbpr && selectedStep) await createActivityLog('Updated Actionable', 'mbpr', selectedMbpr.id, { context: `Updated actionable on step ${selectedStep.sequence}` })
       updateActionable(selectedActionable.id, response);
     }
   }

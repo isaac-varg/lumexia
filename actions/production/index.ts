@@ -38,6 +38,11 @@ import { updateInstruction } from "./mbpr/instructions/update";
 import { addBatchStep } from "./mbpr/steps/add";
 import { getAllByMbpr } from "./mbpr/steps/getAllByMbpr";
 import { updateMbpr } from "./mbpr/updateMbpr";
+import { createMbprNote } from "./mbpr/notes/create";
+import { getAllMbprNotes } from "./mbpr/notes/getAllByMbpr";
+import { getAllMbprNoteTypes } from "./mbpr/notes/notesTypes/getAll";
+import { createMbprNoteType } from "./mbpr/notes/notesTypes/create";
+import { getMbprActivity } from "./mbpr/activity/getActivity";
 import { handleNewScent } from "./templates/scents/handleNewScent";
 import { updateBpr } from "./updateBpr";
 
@@ -109,7 +114,18 @@ export const productionActions = {
       getAllByMbpr: getAllActionablesByMbpr,
       create: createActionable,
       update: updateActionable,
-    }
+    },
+    notes: {
+      getAllByMbpr: getAllMbprNotes,
+      create: createMbprNote,
+      types: {
+        getAll: getAllMbprNoteTypes,
+        create: createMbprNoteType,
+      }
+    },
+    activity: {
+      getAll: getMbprActivity,
+    },
   },
   compoundingVessels: {
     getAll: getAllCompoundingVessels,

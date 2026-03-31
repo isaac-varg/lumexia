@@ -8,6 +8,7 @@ import { UnmanagedForm } from '@/components/UnmanagedForm'
 import { Prisma } from '@prisma/client'
 import { productionActions } from '@/actions/production'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
+import { createActivityLog } from '@/utils/auxiliary/createActivityLog'
 
 // TODO this is a biiig file... maybe split it up
 
@@ -26,6 +27,7 @@ const MaterialForm = () => {
     await productionActions.mbprs.bom.update(selectedMaterial.id, {
       recordStatusId: recordStatuses.archived,
     });
+    if (selectedMbpr) await createActivityLog('Removed BOM Item', 'mbpr', selectedMbpr.id, { context: 'Removed material from BOM' })
     removeBomItem(selectedMaterial.id);
     setFormPanelMode('default');
   }
@@ -57,6 +59,7 @@ const MaterialForm = () => {
 
     const response = await productionActions.mbprs.bom.update(selectedMaterial.id, payload)
 
+    if (selectedMbpr) await createActivityLog('Updated BOM Item', 'mbpr', selectedMbpr.id, { context: 'Updated material concentration' })
     updateSelectedMbprBomItem(selectedMaterial.id, response)
 
 
@@ -82,6 +85,7 @@ const MaterialForm = () => {
 
     const item = await productionActions.mbprs.bom.create(payload);
 
+    await createActivityLog('Added BOM Item', 'mbpr', selectedMbpr.id, { context: `Added ${item.item.name} at ${concentrationInput}% w/w` })
     addSelectedMbprBomItem(item);
     incrementMaterialIdentifierSequence()
 

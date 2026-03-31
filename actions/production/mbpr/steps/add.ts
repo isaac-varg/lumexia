@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 
 export const addBatchStep = async (data: Prisma.BatchStepUncheckedCreateInput) => {
     const response = await prisma.batchStep.create({
@@ -19,6 +20,8 @@ export const addBatchStep = async (data: Prisma.BatchStepUncheckedCreateInput) =
         }
 
     })
+
+    await createActivityLog('Batch Step Added', 'mbpr', data.mbprId, { context: `Added step ${response.sequence} — ${response.label || response.phase}` })
 
     return response
 }

@@ -622,6 +622,7 @@ model File {
   lotNoteFiles                  LotNoteFile[]
   itemNoteFiles                 ItemNoteFile[]
   bprNoteFiles                  BprNoteFile[]
+  mbprNoteFiles                 MbprNoteFile[]
   qcRecordNoteFiles             QcRecordNoteFile[]
 
   @@map("files")
@@ -1505,6 +1506,47 @@ model BprNote {
   @@map("bpr_notes")
 }
 
+model MbprNoteFile {
+  id         String   @id @default(uuid())
+  mbprNoteId String   @map("mbpr_note_id")
+  fileId     String   @map("file_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  mbprNote   MbprNote @relation(fields: [mbprNoteId], references: [id])
+  file       File     @relation(fields: [fileId], references: [id])
+
+  @@map("mbpr_note_files")
+}
+
+model MbprNoteType {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  mbprNotes   MbprNote[]
+
+  @@map("mbpr_note_types")
+}
+
+model MbprNote {
+  id         String                       @id @default(uuid())
+  mbprId     String                       @map("mbpr_id")
+  noteTypeId String                       @map("note_type_id")
+  userId     String                       @map("user_id")
+  content    String
+  createdAt  DateTime                     @default(now()) @map("created_at")
+  updatedAt  DateTime                     @updatedAt @map("updated_at")
+  mbpr       MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
+  user       User                         @relation(fields: [userId], references: [id])
+  noteType   MbprNoteType                 @relation(fields: [noteTypeId], references: [id])
+  files      MbprNoteFile[]
+
+  @@map("mbpr_notes")
+}
+
 model BprStaging {
   id                  String   @id @default(uuid())
   bprBomId            String   @map("bpr_bom_id")
@@ -1713,6 +1755,7 @@ model MasterBatchProductionRecord {
   BatchSize                   BatchSize[]
   BatchStep                   BatchStep[]
   BillOfMaterial              BillOfMaterial[]
+  MbprNote                    MbprNote[]
 
   @@map("master_batch_production_records")
 }
@@ -2795,6 +2838,7 @@ model User {
   LotNote                       LotNote[]
   ItemNote                      ItemNote[]
   BprNote                       BprNote[]
+  MbprNote                      MbprNote[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]

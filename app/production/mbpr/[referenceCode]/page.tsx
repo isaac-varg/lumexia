@@ -1,13 +1,11 @@
 import { productionActions } from '@/actions/production';
-import PageBreadcrumbs from '@/components/App/PageBreadcrumbs';
 import PageTitle from '@/components/Text/PageTitle';
 import React from 'react'
-import BasicsPanel from './_components/BasicsPanel';
 import { appActions } from '@/actions/app';
-import BOMPanel from './_components/BOMPanel';
-import BatchSizesPanel from './_components/BatchSizesPanel';
-import WorkInstructionsPanel from './_components/WorkInstructionsPanel';
 import Link from 'next/link';
+import StateSetter from './_components/state/StateSetter';
+import TabSelector from './_components/shared/TabSelector';
+import TabsContainer from './_components/shared/TabsContainer';
 
 type MbprDetailsProps = {
   searchParams: {
@@ -18,29 +16,34 @@ type MbprDetailsProps = {
 
 const MbprDetailsPage = async ({ searchParams }: MbprDetailsProps) => {
 
-  const mbpr = await productionActions.mbprs.getOne(searchParams.id)
-  const recordStatuses = await appActions.recordStatuses.getAll()
+  const [mbpr, recordStatuses] = await Promise.all([
+    productionActions.mbprs.getOne(searchParams.id),
+    appActions.recordStatuses.getAll(),
+  ])
+
+  const [notes, activity] = await Promise.all([
+    productionActions.mbprs.notes.getAllByMbpr(mbpr.id),
+    productionActions.mbprs.activity.getAll(mbpr.id),
+  ])
 
   return (
-    <div>
-      <div className='flex justify-between items-center mb-8'>
+    <div className='flex flex-col gap-y-6'>
+      <div className='flex justify-between items-center'>
         <PageTitle>{mbpr.producesItem.name} MBPR</PageTitle>
         <Link href={`/production/mbpr/wizard?itemId=${mbpr.producesItemId}`} className='btn btn-accent'>
           Edit MBPR
         </Link>
       </div>
 
-      <div className='grid grid-cols-2 gap-6'>
+      <StateSetter
+        mbpr={mbpr}
+        notes={notes}
+        activity={activity}
+        statuses={recordStatuses}
+      />
 
-        <BasicsPanel mbpr={mbpr} statuses={recordStatuses} />
-        <BatchSizesPanel sizes={mbpr.BatchSize} />
-
-        <BOMPanel bom={mbpr.bom} />
-        <WorkInstructionsPanel steps={mbpr.BatchStep} />
-
-      </div>
-
-
+      <TabSelector />
+      <TabsContainer />
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import { productionActions } from "@/actions/production"
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
 import prisma from "@/lib/prisma"
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 
 export const duplicateMbpr = async (mbprId: string) => {
 
@@ -189,6 +190,8 @@ export const duplicateMbpr = async (mbprId: string) => {
         data: [...vesselPayload]
     })
 
+
+    await createActivityLog('Duplicated MBPR', 'mbpr', newMbpr.id, { context: `Duplicated from MBPR version: ${versionLabel}` })
 
     return newMbpr;
 
