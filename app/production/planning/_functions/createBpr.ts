@@ -53,10 +53,6 @@ export const createBpr = async (wizardData: BprWizardData) => {
   await createBprBom(bpr.id)
   await generateBprBatchStepEntries(bpr.id)
 
-  //  await initiateNotionBpr(bpr.id)
-
-  // await createNotionNotification(`${bpr.referenceCode}`, wizardData.selectedItem.name)
-
   await accountingActions.pricing.createQueue({
     itemId: wizardData.selectedItem.id,
     isCompleted: false,

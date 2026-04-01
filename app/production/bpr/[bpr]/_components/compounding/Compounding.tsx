@@ -6,12 +6,14 @@ import StepList from "./StepList"
 import StepDetails from "./StepDetails"
 import { bprStatuses } from "@/configs/staticRecords/bprStatuses"
 import CompoundingHeader from "./CompoundingHeader"
+import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
 
 const compounding = bprStatuses.compounding
+const stagingMaterials = bprStatuses.stagingMaterials
 
 const Compounding = () => {
   const { bpr, selectedStep } = useProductionSelection()
-  const notStarted = bpr?.bprStatusId !== compounding
+  const isReadyForCompounding = bpr?.bprStatusId === stagingMaterials
   const router = useRouter()
 
 
@@ -19,10 +21,11 @@ const Compounding = () => {
     const updateBpr = async () => {
       if (!bpr) return;
       await bprActions.update({ id: bpr.id }, { bprStatusId: compounding })
+      await createActivityLog('modifyBprStatus', 'bpr', bpr.id, { context: `BPR #${bpr.referenceCode} transitioned from staging materials to compounding` })
       router.refresh()
     }
 
-    if (notStarted) {
+    if (isReadyForCompounding) {
       updateBpr()
     }
   }, [bpr, router])
