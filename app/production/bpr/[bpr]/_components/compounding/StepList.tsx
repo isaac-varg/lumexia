@@ -10,8 +10,8 @@ const StepList = () => {
   const { steps } = useProductionSelection()
   const { t } = useTranslation()
 
-  const toDoSteps = steps.filter(step => !step.completedAt)
-  const completedSteps = steps.filter(step => step.completedAt)
+  const toDoSteps = steps.filter(step => !step.completedAt).sort((a, b) => a.batchStep.sequence - b.batchStep.sequence)
+  const completedSteps = steps.filter(step => step.completedAt).sort((a, b) => a.batchStep.sequence - b.batchStep.sequence)
 
 
   return (

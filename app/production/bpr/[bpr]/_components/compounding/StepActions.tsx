@@ -13,18 +13,25 @@ const { completeStep } = stepActionableTypes
 
 const StepActions = () => {
   const { t } = useTranslation()
-  const { selectedStep, bprNotes } = useProductionSelection()
+  const { selectedStep, bprNotes, steps } = useProductionSelection()
   const { setCompoundingDetailsMode } = useProductionActions()
   const [completeActionable, setCompleteActionable,] = useState<ProductionStep['bprStepActionables'][number] | null>(null);
+  const [missingActionable, setMissingActionable] = useState(false);
   const router = useRouter()
 
   useEffect(() => {
     if (!selectedStep) return;
 
     const complete = selectedStep.bprStepActionables.filter(actionable => actionable.stepActionable.actionableTypeId === completeStep);
-    if (complete.length === 0) console.error('Complete Step Actionable Not Found');
-    setCompleteActionable(complete[0])
+    setMissingActionable(complete.length === 0);
+    setCompleteActionable(complete[0] ?? null)
   })
+
+  const priorStepsComplete = selectedStep
+    ? steps
+      .filter(s => s.batchStep.sequence < selectedStep.batchStep.sequence)
+      .every(s => s.isComplete)
+    : false;
 
   // step non complete step actionables (e.g., submit ph) 
   // make fields for those actionable types
@@ -53,7 +60,13 @@ const StepActions = () => {
       </button>
 
 
-      {(completeActionable && !selectedStep?.isComplete) && (
+      {missingActionable && !selectedStep?.isComplete && (
+        <div className="text-error text-sm font-medium">
+          This step is missing its complete actionable. Please contact an administrator.
+        </div>
+      )}
+
+      {(completeActionable && !selectedStep?.isComplete && priorStepsComplete) && (
         <button onClick={handleCompleteStep} className="btn btn-success btn-lg min-h-20">
           Complete
         </button>

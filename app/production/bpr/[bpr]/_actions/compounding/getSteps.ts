@@ -7,6 +7,11 @@ export const getSteps = async (bprId: string) => {
     where: {
       bprId,
     },
+    orderBy: {
+      batchStep: {
+        sequence: 'asc'
+      }
+    },
     include: {
       status: true,
       bprStepActionables: {

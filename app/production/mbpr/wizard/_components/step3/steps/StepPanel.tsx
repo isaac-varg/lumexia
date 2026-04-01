@@ -1,6 +1,7 @@
 import { Step } from '@/actions/production/mbpr/steps/getAllByMbpr';
 import { useMbprWizardActions, useMbprWizardSelection } from '@/store/mbprWizardSlice'
 import { recordStatuses } from '@/configs/staticRecords/recordStatuses'
+import { stepActionableTypes } from '@/configs/staticRecords/stepActionableTypes'
 import { groupByProperty } from '@/utils/data/groupByProperty'
 import React from 'react'
 import AddStepForm from './AddStepForm';
@@ -10,12 +11,17 @@ const bgColors = ["#EDEDE9", "#D6CCC2", "#F5EBE0", "#E3D5CA", "#D5BDAF", "#EDEDE
 
 const StepPanel = () => {
 
-  const { steps, selectedStep } = useMbprWizardSelection()
+  const { steps, selectedStep, selectedMbprActionables } = useMbprWizardSelection()
   const { setSelectedStep } = useMbprWizardActions()
   const { showDialog } = useDialog()
   const activeSteps = steps.filter((s) => s.recordStatusId !== recordStatuses.archived)
+  const activeActionables = selectedMbprActionables.filter((a) => a.recordStatusId !== recordStatuses.archived)
   const groupedSteps = groupByProperty(activeSteps, "phase")
 
+  const stepsWithoutComplete = activeSteps.filter((step) =>
+    !activeActionables.some((a) => a.stepId === step.id && a.actionableTypeId === stepActionableTypes.completeStep)
+  )
+  const hasIncompleteSteps = stepsWithoutComplete.length > 0
 
   return (
     <div className='flex flex-col gap-y-6 col-span-1'>
@@ -25,9 +31,16 @@ const StepPanel = () => {
           Steps & Phases
         </h1>
 
-        <button className='btn btn-neutral' onClick={() => showDialog("addStepForm")}>Add Step</button>
+        <button className='btn btn-neutral' disabled={hasIncompleteSteps} onClick={() => showDialog("addStepForm")}>Add Step</button>
 
       </div>
+
+      {hasIncompleteSteps && (
+        <div className='bg-warning/20 border border-warning text-warning-content rounded-xl p-4 text-sm font-medium'>
+          The following steps are missing a <strong>Complete Step</strong> actionable: {stepsWithoutComplete.map((s) => `Step ${s.sequence}`).join(', ')}.
+          Please add the actionable before creating a new step.
+        </div>
+      )}
 
       {Object.keys(groupedSteps).map((phase, index) => {
         const bgColor = bgColors[index]
