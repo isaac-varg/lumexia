@@ -12,7 +12,7 @@ export const getAllItemFiles = async (itemId: string) => {
       fileType: true,
       file: {
         include: {
-          uploadedBy: true
+          uploadedBy: true,
         }
       }
     }
@@ -20,10 +20,14 @@ export const getAllItemFiles = async (itemId: string) => {
 
   const transformedData = await Promise.all(files.map(async (file) => {
     const url = await fileActions.getUrl(file.file.bucketName, file.file.objectName);
+    const thumbnailUrl = file.file.thumbnailObjectName && file.file.thumbnailBucketName
+      ? await fileActions.getUrl(file.file.thumbnailBucketName, file.file.thumbnailObjectName)
+      : undefined;
 
     return {
       ...file,
       url,
+      thumbnailUrl,
     }
   }))
 

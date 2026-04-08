@@ -61,7 +61,8 @@ const FileButton = ({ label, url, mimeType, size = 'default', color = 'default',
                     <div className={`${classes.shape[shape]} ${classes.size[size]} ${classes.color[color]}`} >
                         <div className={`${shape === 'default' ? classes.buttonSpacing.default : classes.buttonSpacing.vertical}`}>
 
-                            {isPdf && (<div className="flex items-center justify-center rounded-full w-16 h-16 bg-neutral-400 p-6">
+                            {isPdf && thumbnailUrl && <Image className="w-16 h-16 rounded-lg object-cover" src={thumbnailUrl} alt={label} width={64} height={64} />}
+                            {isPdf && !thumbnailUrl && (<div className="flex items-center justify-center rounded-full w-16 h-16 bg-neutral-400 p-6">
                                 <span className="text-5xl text-white"><TbFileTypePdf /></span>
                             </div>)}
                             {!isPdf && <Image className="w-16 h-16 rounded-full object-cover" src={imageUrl} alt={label} width={64} height={64} />}

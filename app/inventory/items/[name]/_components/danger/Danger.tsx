@@ -1,5 +1,6 @@
 import ArchiveButton from "./ArchiveButton"
 import ChangeInventoryUom from "./ChangeInventoryUom"
+import ExportDataVerificationPackage from "./ExportDataVerificationPackage"
 
 const Danger = () => {
   return (
@@ -8,6 +9,8 @@ const Danger = () => {
       <ArchiveButton />
 
       <ChangeInventoryUom />
+
+      <ExportDataVerificationPackage />
 
     </div>
   )

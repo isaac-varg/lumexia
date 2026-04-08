@@ -2,12 +2,9 @@ import Card from "@/components/Card"
 import { useItemSelection } from "@/store/itemSlice"
 import { useEffect, useState } from "react"
 import { ItemFile } from "../../_actions/files/getAllItemFiles"
-import Tag from "@/components/Text/Tag"
-import UserIcon from "@/components/UI/UserIcon"
-import ContextMenu from "@/components/ContextMenu"
-import { ItemFileType } from "../../_actions/files/getItemFilesTypes"
 import { handleDeleteFile } from "../../_actions/files/handleDeleteFile"
 import { useRouter } from "next/navigation"
+import FileButton from "@/components/Uploader/FileButton"
 
 const View = () => {
 
@@ -71,35 +68,21 @@ const View = () => {
 
 
         <div className="grid grid-cols-4 gap-4">
-          {shownFiles.map(file => {
-            return (
-              <ContextMenu.Root key={file.id}>
-                <ContextMenu.Trigger asChild>
-
-                  <a href={file.url} target="_blank" rel="noopener noreferrer">
-                    <div className="flex flex-col gap-4 min-h-30  rounded-xl bg-base-300/30 p-8 hover:cursor-pointer hover:bg-accent/50">
-                      <div className='flex justify-between items-center'>
-                        <UserIcon image={file.file.uploadedBy.image || ''} name={file.file.uploadedBy.name || ''} />
-                        <Tag bgColor={file.fileType.bgColor} textColor={file.fileType.textColor} label={file.fileType.name} />
-                      </div>
-
-                      <h2 className="text-base-content font-semibold text-lg">{file.file.name}</h2>
-                    </div>
-                  </a>
-
-                </ContextMenu.Trigger>
-                <ContextMenu.Content>
-                  <ContextMenu.Item onClick={() => onEditClick()}>
-                    Edit
-                  </ContextMenu.Item>
-                  <ContextMenu.Item onClick={() => onDeleteClick(file)}>
-                    Delete
-                  </ContextMenu.Item>
-                </ContextMenu.Content>
-              </ContextMenu.Root>
-            )
-          })}
-
+          {shownFiles.map(file => (
+            <FileButton
+              key={file.id}
+              shape="vertical"
+              label={file.file.name}
+              url={file.url}
+              thumbnailUrl={file.thumbnailUrl}
+              mimeType={file.file.mimeType}
+              uploadedByName={file.file.uploadedBy.name || ''}
+              uploadedByImage={file.file.uploadedBy.image || ''}
+              fileTag={{ label: file.fileType.name, bgColor: file.fileType.bgColor, textColor: file.fileType.textColor }}
+              onEditClick={() => onEditClick()}
+              onDeleteClick={() => onDeleteClick(file)}
+            />
+          ))}
         </div>
       </div>
     </Card.Root>
