@@ -83,7 +83,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
       ? await s3.presignedGetObject(file.thumbnailBucketName, file.thumbnailObjectName, 3600)
       : null;
 
-  let module: FileModule = "unassigned";
+  let fileModule: FileModule = "unassigned";
   let junctionId: string | null = null;
   let fileType: FileTypeOption | null = null;
   let ownerLink: { href: string; label: string } | null = null;
@@ -91,7 +91,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
 
   if (file.itemFiles.length > 0) {
     const junc = file.itemFiles[0];
-    module = "item";
+    fileModule = "item";
     junctionId = junc.id;
     fileType = { id: junc.fileType.id, name: junc.fileType.name, bgColor: junc.fileType.bgColor, textColor: junc.fileType.textColor };
 
@@ -106,7 +106,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
 
   } else if (file.poAccountingFiles.length > 0) {
     const junc = file.poAccountingFiles[0];
-    module = "po-accounting";
+    fileModule = "po-accounting";
     junctionId = junc.id;
     fileType = { id: junc.fileType.id, name: junc.fileType.name, bgColor: junc.fileType.bgColor, textColor: junc.fileType.textColor };
     ownerLink = {
@@ -120,7 +120,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
 
   } else if (file.qcRecordFiles.length > 0) {
     const junc = file.qcRecordFiles[0];
-    module = "qc-record";
+    fileModule = "qc-record";
     junctionId = junc.id;
     fileType = { id: junc.fileType.id, name: junc.fileType.name, bgColor: junc.fileType.bgColor, textColor: junc.fileType.textColor };
     // No dedicated QC record detail page
@@ -132,7 +132,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
 
   } else if (file.bprStagingFiles.length > 0) {
     const junc = file.bprStagingFiles[0];
-    module = "bpr-staging";
+    fileModule = "bpr-staging";
     junctionId = junc.id;
     const bpr = junc.staging.bprBom.bpr;
     ownerLink = {
@@ -142,7 +142,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
 
   } else if (file.generalRequestFiles.length > 0) {
     const junc = file.generalRequestFiles[0];
-    module = "general-request";
+    fileModule = "general-request";
     junctionId = junc.id;
     ownerLink = {
       href: `/purchasing/requests/general/${junc.generalRequestId}?id=${junc.generalRequestId}`,
@@ -165,7 +165,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
     file.qcRecordNoteFiles.length > 0 ||
     file.mbprNoteFiles.length > 0
   ) {
-    module = "note";
+    fileModule = "note";
   }
 
   return {
@@ -180,7 +180,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
     },
     url,
     thumbnailUrl,
-    module,
+    module: fileModule,
     junctionId,
     fileType,
     ownerLink,

@@ -76,30 +76,30 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
             )
           : null;
 
-      let module: FileModule = "unassigned";
+      let fileModule: FileModule = "unassigned";
       let fileType: FileTypeInfo | null = null;
       let ownerId: string | null = null;
 
       if (file.itemFiles.length > 0) {
-        module = "item";
+        fileModule = "item";
         const ft = file.itemFiles[0].fileType;
         fileType = { name: ft.name, bgColor: ft.bgColor, textColor: ft.textColor };
         ownerId = file.itemFiles[0].itemId;
       } else if (file.poAccountingFiles.length > 0) {
-        module = "po-accounting";
+        fileModule = "po-accounting";
         const ft = file.poAccountingFiles[0].fileType;
         fileType = { name: ft.name, bgColor: ft.bgColor, textColor: ft.textColor };
         ownerId = file.poAccountingFiles[0].purchaseOrderId;
       } else if (file.qcRecordFiles.length > 0) {
-        module = "qc-record";
+        fileModule = "qc-record";
         const ft = file.qcRecordFiles[0].fileType;
         fileType = { name: ft.name, bgColor: ft.bgColor, textColor: ft.textColor };
         ownerId = file.qcRecordFiles[0].qcRecordId;
       } else if (file.bprStagingFiles.length > 0) {
-        module = "bpr-staging";
+        fileModule = "bpr-staging";
         ownerId = file.bprStagingFiles[0].bprStagingId;
       } else if (file.generalRequestFiles.length > 0) {
-        module = "general-request";
+        fileModule = "general-request";
         ownerId = file.generalRequestFiles[0].generalRequestId;
       } else if (
         file.itemNoteFiles.length > 0 ||
@@ -117,7 +117,7 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
         file.qcRecordNoteFiles.length > 0 ||
         file.mbprNoteFiles.length > 0
       ) {
-        module = "note";
+        fileModule = "note";
       }
 
       return {
@@ -132,7 +132,7 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
           image: file.uploadedBy.image,
         },
         createdAt: file.createdAt,
-        module,
+        module: fileModule,
         fileType,
         ownerId,
       };
