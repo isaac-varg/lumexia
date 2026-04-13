@@ -1,4 +1,4 @@
-import { TbBook2, TbClipboardCheck, TbSettings, TbShoppingBag, TbShoppingBagPlus, TbSmartHome, TbTruck } from "react-icons/tb";
+import { TbBook2, TbClipboardCheck, TbFiles, TbSettings, TbShoppingBag, TbShoppingBagPlus, TbSmartHome, TbTruck } from "react-icons/tb";
 import { BsBox2Heart } from "react-icons/bs";
 import { TbScale, TbCreditCard, TbClipboardHeart } from "react-icons/tb";
 import { BiBuildings } from "react-icons/bi";
@@ -16,6 +16,11 @@ export const sidebarElements = [
         label: "Dashboard",
         icon: <TbSmartHome />,
         path: "/",
+      },
+      {
+        label: "Files",
+        icon: <TbFiles />,
+        path: "/files",
       },
     ]
   },

@@ -67,7 +67,7 @@ export async function GET(
       }),
     ]);
 
-  const bomItemIds = [...new Set(mbpr?.BillOfMaterial.map((b) => b.item.id) ?? [])];
+  const bomItemIds = Array.from(new Set(mbpr?.BillOfMaterial.map((b) => b.item.id) ?? []));
   const bomItemFiles = bomItemIds.length > 0
     ? await prisma.itemFile.findMany({
         where: { itemId: { in: bomItemIds } },

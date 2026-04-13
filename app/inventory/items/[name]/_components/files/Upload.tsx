@@ -48,16 +48,20 @@ const Upload = () => {
       {step === 'upload' && <Uploader pathPrefix="/item/" onComplete={handleUpload} />}
 
       {step === 'type' && (
-        <div className="grid grid-cols-3 gap-6">
-
-
-          {options.itemFileTypes.map(type => {
-
-            return (
-              <button onClick={() => handleComplete(type)} key={type.id} className="btn btn-xl min-h-40">{type.name}</button>
-            )
-          })}
-
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-base-content/60 font-poppins">Choose a file type to finish uploading.</p>
+          <div className="flex flex-wrap gap-3">
+            {options.itemFileTypes.map(type => (
+              <button
+                key={type.id}
+                onClick={() => handleComplete(type)}
+                className="btn btn-md capitalize font-poppins"
+                style={{ backgroundColor: type.bgColor, color: type.textColor }}
+              >
+                {type.name}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
