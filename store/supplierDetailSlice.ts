@@ -3,6 +3,7 @@ import { SupplierNote } from "@/types/SupplierNote"
 import { SupplierContact } from "@/types/supplierContact"
 import { SupplierDetailPurchases } from "@/app/purchasing/suppliers/[name]/_actions/getPurchases"
 import { SupplierDetailsItems } from "@/app/purchasing/suppliers/[name]/_actions/getItems"
+import { SupplierAliasDetails } from "@/app/purchasing/suppliers/[name]/_actions/getAliases"
 import { create } from "zustand"
 
 type State = {
@@ -11,6 +12,7 @@ type State = {
   contacts: SupplierContact[]
   purchases: SupplierDetailPurchases[]
   items: SupplierDetailsItems[]
+  aliases: SupplierAliasDetails[]
   selectedContact: SupplierContact | null
   selectedNote: SupplierNote | null
 }
@@ -22,6 +24,7 @@ type Actions = {
     setContacts: (contacts: SupplierContact[]) => void
     setPurchases: (purchases: SupplierDetailPurchases[]) => void
     setItems: (items: SupplierDetailsItems[]) => void
+    setAliases: (aliases: SupplierAliasDetails[]) => void
     setSelectedContact: (contact: SupplierContact | null) => void
     setSelectedNote: (note: SupplierNote | null) => void
   }
@@ -33,6 +36,7 @@ export const useSupplierDetailSelection = create<State & Actions>((set) => ({
   contacts: [],
   purchases: [],
   items: [],
+  aliases: [],
   selectedContact: null,
   selectedNote: null,
 
@@ -42,6 +46,7 @@ export const useSupplierDetailSelection = create<State & Actions>((set) => ({
     setContacts: (contacts) => set(() => ({ contacts })),
     setPurchases: (purchases) => set(() => ({ purchases })),
     setItems: (items) => set(() => ({ items })),
+    setAliases: (aliases) => set(() => ({ aliases })),
     setSelectedContact: (contact) => set(() => ({ selectedContact: contact })),
     setSelectedNote: (note) => set(() => ({ selectedNote: note })),
   },

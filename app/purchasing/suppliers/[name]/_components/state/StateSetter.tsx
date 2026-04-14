@@ -5,6 +5,7 @@ import { SupplierNote } from "@/types/SupplierNote"
 import { SupplierContact } from "@/types/supplierContact"
 import { SupplierDetailPurchases } from "../../_actions/getPurchases"
 import { SupplierDetailsItems } from "../../_actions/getItems"
+import { SupplierAliasDetails } from "../../_actions/getAliases"
 import { useSupplierDetailActions } from "@/store/supplierDetailSlice"
 import { useEffect } from "react"
 
@@ -14,9 +15,10 @@ type Props = {
   contacts: SupplierContact[]
   purchases: SupplierDetailPurchases[]
   items: SupplierDetailsItems[]
+  aliases: SupplierAliasDetails[]
 }
 
-const StateSetter = ({ supplier, notes, contacts, purchases, items }: Props) => {
+const StateSetter = ({ supplier, notes, contacts, purchases, items, aliases }: Props) => {
 
   const {
     setSupplier,
@@ -24,6 +26,7 @@ const StateSetter = ({ supplier, notes, contacts, purchases, items }: Props) => 
     setContacts,
     setPurchases,
     setItems,
+    setAliases,
   } = useSupplierDetailActions()
 
   useEffect(() => {
@@ -32,7 +35,8 @@ const StateSetter = ({ supplier, notes, contacts, purchases, items }: Props) => 
     setContacts(contacts)
     setPurchases(purchases)
     setItems(items)
-  }, [supplier, notes, contacts, purchases, items, setSupplier, setNotes, setContacts, setPurchases, setItems])
+    setAliases(aliases)
+  }, [supplier, notes, contacts, purchases, items, aliases, setSupplier, setNotes, setContacts, setPurchases, setItems, setAliases])
 
   return false
 }

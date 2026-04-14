@@ -9,6 +9,7 @@ type State = {
   productionPlanningList: FilterArray
   poDetailsItems: FilterArray
   supplierDetailsPurchasesTab: FilterArray
+  supplierDetailsAliasesTab: FilterArray
   suppliers: FilterArray
   itemDetailsLot: FilterArray
   poRequests: FilterArray
@@ -61,6 +62,7 @@ export const useTableFacets = create<State & Actions>((set) => ({
   productionPlanningList: [],
   poDetailsItems: [],
   supplierDetailsPurchasesTab: [],
+  supplierDetailsAliasesTab: [],
   suppliers: [],
   itemDetailsLot: [],
   poRequests: [],

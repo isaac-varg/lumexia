@@ -8,6 +8,7 @@ import TabsMain from "./_components/tabs/TabsMain";
 import StateSetter from "./_components/state/StateSetter";
 import { getPurchases } from "./_actions/getPurchases";
 import { getItems } from "./_actions/getItems";
+import { getAliases } from "./_actions/getAliases";
 
 type SupplierDetailsProps = {
   searchParams: {
@@ -17,7 +18,7 @@ type SupplierDetailsProps = {
 
 const SupplierDetails = async ({ searchParams }: SupplierDetailsProps) => {
   const supplier = await supplierActions.getOne(searchParams.id);
-  const [notes, contacts, purchases, items] = await Promise.all([
+  const [notes, contacts, purchases, items, aliases] = await Promise.all([
     supplierNoteActions.getAll({ supplierId: supplier.id }),
     supplierContactActions.getAll(
       { supplierId: supplier.id },
@@ -25,6 +26,7 @@ const SupplierDetails = async ({ searchParams }: SupplierDetailsProps) => {
     ),
     getPurchases(supplier.id),
     getItems(supplier.id),
+    getAliases(supplier.id),
   ]);
 
   return (
@@ -35,6 +37,7 @@ const SupplierDetails = async ({ searchParams }: SupplierDetailsProps) => {
         contacts={contacts}
         purchases={purchases}
         items={items as any[]}
+        aliases={aliases}
       />
       <PageTitle>{supplier.name}</PageTitle>
       <TabsMain />

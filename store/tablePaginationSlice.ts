@@ -13,6 +13,7 @@ type State = {
   productionPlanningList: StateData
   poDetailsItems: StateData
   supplierDetailsPurchasesTab: StateData
+  supplierDetailsAliasesTab: StateData
   suppliers: StateData
   itemDetailsLot: StateData
   poRequests: StateData
@@ -61,6 +62,7 @@ export const useTablePagination = create<State & Actions>((set) => ({
   productionPlanningList: { pageSize: 50, pageIndex: 0 },
   poDetailsItems: { pageSize: 50, pageIndex: 0 },
   supplierDetailsPurchasesTab: { pageSize: 50, pageIndex: 0 },
+  supplierDetailsAliasesTab: { pageSize: 50, pageIndex: 0 },
   suppliers: { pageSize: 50, pageIndex: 0 },
   itemDetailsLot: { pageSize: 50, pageIndex: 0 },
   poRequests: { pageSize: 50, pageIndex: 0 },

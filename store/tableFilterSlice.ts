@@ -7,6 +7,7 @@ type State = {
   productionPlanningList: string
   poDetailsItems: string
   supplierDetailsPurchasesTab: string
+  supplierDetailsAliasesTab: string
   suppliers: string
   itemDetailsLot: string
   poRequests: string
@@ -56,6 +57,7 @@ export const useTableFilter = create<State & Actions>((set) => ({
   productionPlanningList: "",
   poDetailsItems: "",
   supplierDetailsPurchasesTab: "",
+  supplierDetailsAliasesTab: "",
   suppliers: "",
   itemDetailsLot: "",
   poRequests: "",
