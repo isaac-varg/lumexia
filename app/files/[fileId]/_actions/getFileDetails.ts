@@ -11,12 +11,18 @@ export type FileTypeOption = {
   textColor: string;
 };
 
+export type FileTagItem = {
+  id: string;
+  tag: { id: string; name: string; bgColor: string; textColor: string };
+};
+
 export type FileDetails = {
   file: {
     id: string;
     name: string;
     size: number;
     mimeType: string;
+    public: boolean;
     createdAt: Date;
     updatedAt: Date;
     uploadedBy: { name: string | null; image: string | null };
@@ -28,6 +34,7 @@ export type FileDetails = {
   fileType: FileTypeOption | null;
   ownerLink: { href: string; label: string } | null;
   availableFileTypes: FileTypeOption[];
+  tags: FileTagItem[];
 };
 
 export const getFileDetails = async (fileId: string): Promise<FileDetails | null> => {
@@ -35,6 +42,10 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
     where: { id: fileId },
     include: {
       uploadedBy: true,
+      fileTags: {
+        include: { tag: true },
+        orderBy: { createdAt: "asc" },
+      },
       itemFiles: { include: { fileType: true }, take: 1 },
       poAccountingFiles: {
         include: { fileType: true, purchaseOrder: true },
@@ -168,12 +179,23 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
     fileModule = "note";
   }
 
+  const tags: FileTagItem[] = file.fileTags.map((ft) => ({
+    id: ft.id,
+    tag: {
+      id: ft.tag.id,
+      name: ft.tag.name,
+      bgColor: ft.tag.bgColor,
+      textColor: ft.tag.textColor,
+    },
+  }));
+
   return {
     file: {
       id: file.id,
       name: file.name,
       size: file.size,
       mimeType: file.mimeType,
+      public: file.public,
       createdAt: file.createdAt,
       updatedAt: file.updatedAt,
       uploadedBy: { name: file.uploadedBy.name, image: file.uploadedBy.image },
@@ -185,5 +207,6 @@ export const getFileDetails = async (fileId: string): Promise<FileDetails | null
     fileType,
     ownerLink,
     availableFileTypes,
+    tags,
   };
 };

@@ -1,12 +1,17 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
-import { TbExternalLink, TbFile, TbPencil } from "react-icons/tb"
+import { useTransition } from "react"
+import { useRouter } from "next/navigation"
+import { TbExternalLink, TbFile, TbPencil, TbPlus, TbX } from "react-icons/tb"
 import Tag from "@/components/Text/Tag"
 import useDialog from "@/hooks/useDialog"
 import EditNameDialog from "./EditNameDialog"
 import EditFileTypeDialog from "./EditFileTypeDialog"
+import AddTagDialog from "./AddTagDialog"
 import { FileDetails } from "../_actions/getFileDetails"
+import { updateFilePublic } from "../_actions/updateFilePublic"
+import { removeFileTag } from "../_actions/removeFileTag"
 
 const MODULE_LABELS: Record<string, string> = {
   "item": "Item",
@@ -33,11 +38,27 @@ function formatDate(date: Date): string {
 
 const FileDetailsView = ({ details }: { details: FileDetails }) => {
   const { showDialog } = useDialog();
-  const { file, url, thumbnailUrl, module, junctionId, fileType, ownerLink, availableFileTypes } = details;
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const { file, url, thumbnailUrl, module, junctionId, fileType, ownerLink, availableFileTypes, tags } = details;
 
   const isPdf = file.mimeType === "application/pdf";
   const isImage = file.mimeType.startsWith("image/");
   const extType = isPdf ? "pdf" : isImage ? "image" : "other";
+
+  const handleTogglePublic = () => {
+    startTransition(async () => {
+      await updateFilePublic(file.id, !file.public);
+      router.refresh();
+    });
+  };
+
+  const handleRemoveTag = (fileTagId: string) => {
+    startTransition(async () => {
+      await removeFileTag(fileTagId);
+      router.refresh();
+    });
+  };
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 items-start">
@@ -52,6 +73,7 @@ const FileDetailsView = ({ details }: { details: FileDetails }) => {
           availableFileTypes={availableFileTypes}
         />
       )}
+      <AddTagDialog fileId={file.id} existingTagIds={tags.map((t) => t.tag.id)} />
 
       {/* Preview */}
       <div className="w-full lg:w-3/5 shrink-0">
@@ -127,6 +149,32 @@ const FileDetailsView = ({ details }: { details: FileDetails }) => {
                   )}
                 </div>
               )}
+              {tags.map((ft) => (
+                <div key={ft.id} className="flex items-center gap-1">
+                  <Tag
+                    text="normal"
+                    bgColor={ft.tag.bgColor}
+                    textColor={ft.tag.textColor}
+                    label={ft.tag.name}
+                    tooltip="Tag"
+                  />
+                  <button
+                    className="btn btn-ghost btn-xs btn-square"
+                    disabled={isPending}
+                    onClick={() => handleRemoveTag(ft.id)}
+                    title="Remove tag"
+                  >
+                    <TbX className="size-3" />
+                  </button>
+                </div>
+              ))}
+              <button
+                className="btn btn-ghost btn-xs gap-1"
+                onClick={() => showDialog("addFileTag")}
+                title="Add tag"
+              >
+                <TbPlus className="size-3" /> Tag
+              </button>
             </div>
 
             <div className="divider my-0" />
@@ -144,6 +192,17 @@ const FileDetailsView = ({ details }: { details: FileDetails }) => {
 
               <dt className="text-base-content/50">Modified</dt>
               <dd className="text-base-content font-medium">{formatDate(file.updatedAt)}</dd>
+
+              <dt className="text-base-content/50">Public</dt>
+              <dd>
+                <input
+                  type="checkbox"
+                  className="toggle toggle-sm"
+                  checked={file.public}
+                  disabled={isPending}
+                  onChange={handleTogglePublic}
+                />
+              </dd>
 
               {file.uploadedBy.name && (
                 <>

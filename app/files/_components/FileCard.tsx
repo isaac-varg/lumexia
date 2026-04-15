@@ -61,6 +61,16 @@ const FileCard = ({ entry }: { entry: UnifiedFileEntry }) => {
               tooltip="File Type"
             />
           )}
+          {entry.tags.map((t) => (
+            <Tag
+              key={t.id}
+              text="normal"
+              bgColor={t.bgColor}
+              textColor={t.textColor}
+              label={t.name}
+              tooltip="Tag"
+            />
+          ))}
         </div>
 
         {uploaderName && uploaderImage && (

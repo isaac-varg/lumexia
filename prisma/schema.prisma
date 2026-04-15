@@ -1,4 +1,4 @@
-//🧩Don't Edit this file.✨Generated in Mon Mar 16 2026 16:01:42 GMT-0700 (Pacific Daylight Time)✨
+//🧩Don't Edit this file.✨Generated in Wed Apr 15 2026 12:55:02 GMT-0700 (Pacific Daylight Time)✨
 model BomPricingDataArchive {
   id                           String                     @id @default(uuid())
   examinationId                String                     @map("examination_id")
@@ -601,6 +601,7 @@ model File {
   versionId                     String?                        @map("version_id")
   size                          Int
   mimeType                      String                         @map("mime_type")
+  public                        Boolean                        @default(false)
   uploadedById                  String                         @map("uploaded_by_id")
   createdAt                     DateTime                       @default(now()) @map("created_at")
   updatedAt                     DateTime                       @updatedAt @map("updated_at")
@@ -622,8 +623,9 @@ model File {
   lotNoteFiles                  LotNoteFile[]
   itemNoteFiles                 ItemNoteFile[]
   bprNoteFiles                  BprNoteFile[]
-  mbprNoteFiles                 MbprNoteFile[]
   qcRecordNoteFiles             QcRecordNoteFile[]
+  mbprNoteFiles                 MbprNoteFile[]
+  fileTags                      FileTag[]
 
   @@map("files")
 }
@@ -651,6 +653,30 @@ model RecordStatus {
   MasterBatchProductionRecord MasterBatchProductionRecord[]
 
   @@map("record_statuses")
+}
+
+model Tag {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  bgColor   String    @map("bg_color")
+  textColor String    @map("text_color")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  fileTags  FileTag[]
+
+  @@map("tags")
+}
+
+model FileTag {
+  id        String   @id @default(uuid())
+  fileId    String   @map("file_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  file      File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([fileId, tagId])
+  @@map("file_tags")
 }
 
 model ActivityLog {
@@ -1506,47 +1532,6 @@ model BprNote {
   @@map("bpr_notes")
 }
 
-model MbprNoteFile {
-  id         String   @id @default(uuid())
-  mbprNoteId String   @map("mbpr_note_id")
-  fileId     String   @map("file_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  mbprNote   MbprNote @relation(fields: [mbprNoteId], references: [id])
-  file       File     @relation(fields: [fileId], references: [id])
-
-  @@map("mbpr_note_files")
-}
-
-model MbprNoteType {
-  id          String     @id @default(uuid())
-  name        String
-  description String
-  bgColor     String     @map("bg_color")
-  textColor   String     @map("text_color")
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  mbprNotes   MbprNote[]
-
-  @@map("mbpr_note_types")
-}
-
-model MbprNote {
-  id         String                       @id @default(uuid())
-  mbprId     String                       @map("mbpr_id")
-  noteTypeId String                       @map("note_type_id")
-  userId     String                       @map("user_id")
-  content    String
-  createdAt  DateTime                     @default(now()) @map("created_at")
-  updatedAt  DateTime                     @updatedAt @map("updated_at")
-  mbpr       MasterBatchProductionRecord  @relation(fields: [mbprId], references: [id])
-  user       User                         @relation(fields: [userId], references: [id])
-  noteType   MbprNoteType                 @relation(fields: [noteTypeId], references: [id])
-  files      MbprNoteFile[]
-
-  @@map("mbpr_notes")
-}
-
 model BprStaging {
   id                  String   @id @default(uuid())
   bprBomId            String   @map("bpr_bom_id")
@@ -1758,6 +1743,47 @@ model MasterBatchProductionRecord {
   MbprNote                    MbprNote[]
 
   @@map("master_batch_production_records")
+}
+
+model MbprNoteFile {
+  id         String   @id @default(uuid())
+  mbprNoteId String   @map("mbpr_note_id")
+  fileId     String   @map("file_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  mbprNote   MbprNote @relation(fields: [mbprNoteId], references: [id])
+  file       File     @relation(fields: [fileId], references: [id])
+
+  @@map("mbpr_note_files")
+}
+
+model MbprNoteType {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  bgColor     String     @map("bg_color")
+  textColor   String     @map("text_color")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  mbprNotes   MbprNote[]
+
+  @@map("mbpr_note_types")
+}
+
+model MbprNote {
+  id         String                      @id @default(uuid())
+  mbprId     String                      @map("mbpr_id")
+  noteTypeId String                      @map("note_type_id")
+  userId     String                      @map("user_id")
+  content    String
+  createdAt  DateTime                    @default(now()) @map("created_at")
+  updatedAt  DateTime                    @updatedAt @map("updated_at")
+  mbpr       MasterBatchProductionRecord @relation(fields: [mbprId], references: [id])
+  user       User                        @relation(fields: [userId], references: [id])
+  noteType   MbprNoteType                @relation(fields: [noteTypeId], references: [id])
+  files      MbprNoteFile[]
+
+  @@map("mbpr_notes")
 }
 
 model StepActionable {
@@ -2838,11 +2864,11 @@ model User {
   LotNote                       LotNote[]
   ItemNote                      ItemNote[]
   BprNote                       BprNote[]
-  MbprNote                      MbprNote[]
   BprStaging                    BprStaging[]
   BprStagingVerification        BprStagingVerification[]
   BprStepActionableCompletion   BprStepActionableCompletion[]
   BprStepActionableVerification BprStepActionableVerification[]
+  MbprNote                      MbprNote[]
   PoPublicNote                  PoPublicNote[]
   PoSupplierNote                PoSupplierNote[]
   Authenticator                 Authenticator[]

@@ -22,6 +22,7 @@ const FilesView = ({ entries }: { entries: UnifiedFileEntry[] }) => {
   const [selectedModules, setSelectedModules] = useState<Set<FileModule>>(DEFAULT_MODULES);
   const [selectedFileTypes, setSelectedFileTypes] = useState<Set<string>>(new Set());
   const [selectedExtensions, setSelectedExtensions] = useState<Set<ExtensionFilter>>(new Set());
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
 
   const toggle = <T extends string>(set: Set<T>, value: T): Set<T> => {
     const next = new Set(set);
@@ -42,6 +43,11 @@ const FilesView = ({ entries }: { entries: UnifiedFileEntry[] }) => {
       return false;
     }
 
+    if (selectedTags.size > 0) {
+      const hasTag = entry.tags.some((t) => selectedTags.has(t.id));
+      if (!hasTag) return false;
+    }
+
     return true;
   });
 
@@ -55,9 +61,11 @@ const FilesView = ({ entries }: { entries: UnifiedFileEntry[] }) => {
           selectedModules={selectedModules}
           selectedFileTypes={selectedFileTypes}
           selectedExtensions={selectedExtensions}
+          selectedTags={selectedTags}
           onModuleChange={(v) => setSelectedModules(toggle(selectedModules, v))}
           onFileTypeChange={(v) => setSelectedFileTypes(toggle(selectedFileTypes, v))}
           onExtensionChange={(v) => setSelectedExtensions(toggle(selectedExtensions, v))}
+          onTagChange={(v) => setSelectedTags(toggle(selectedTags, v))}
         />
         <span className="text-sm font-poppins text-base-content/60">
           {visible.length} of {entries.length} files

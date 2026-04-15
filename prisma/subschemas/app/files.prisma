@@ -9,6 +9,7 @@ model File {
     versionId              String?              @map("version_id")
     size                   Int
     mimeType               String               @map("mime_type")
+    public                 Boolean              @default(false)
     uploadedById           String               @map("uploaded_by_id")
     createdAt              DateTime             @default(now()) @map("created_at")
     updatedAt              DateTime             @updatedAt @map("updated_at")
@@ -31,6 +32,8 @@ model File {
     itemNoteFiles                  ItemNoteFile[]
     bprNoteFiles                   BprNoteFile[]
     qcRecordNoteFiles              QcRecordNoteFile[]
+    mbprNoteFiles                  MbprNoteFile[]
+    fileTags                       FileTag[]
 
     @@map("files")
 }

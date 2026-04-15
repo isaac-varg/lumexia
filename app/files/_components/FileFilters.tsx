@@ -111,9 +111,11 @@ type FileFiltersProps = {
   selectedModules: Set<FileModule>;
   selectedFileTypes: Set<string>;
   selectedExtensions: Set<ExtensionFilter>;
+  selectedTags: Set<string>;
   onModuleChange: (value: FileModule) => void;
   onFileTypeChange: (value: string) => void;
   onExtensionChange: (value: ExtensionFilter) => void;
+  onTagChange: (value: string) => void;
 };
 
 const FileFilters = ({
@@ -121,9 +123,11 @@ const FileFilters = ({
   selectedModules,
   selectedFileTypes,
   selectedExtensions,
+  selectedTags,
   onModuleChange,
   onFileTypeChange,
   onExtensionChange,
+  onTagChange,
 }: FileFiltersProps) => {
   // Build unique fileType options from the data, tagged with module
   const fileTypeMap = new Map<string, FilterOption>();
@@ -141,6 +145,23 @@ const FileFilters = ({
     }
   }
   const fileTypeOptions = Array.from(fileTypeMap.values()).sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
+
+  const tagMap = new Map<string, FilterOption>();
+  for (const entry of entries) {
+    for (const tag of entry.tags) {
+      if (!tagMap.has(tag.id)) {
+        tagMap.set(tag.id, {
+          value: tag.id,
+          label: tag.name,
+          bgColor: tag.bgColor,
+          textColor: tag.textColor,
+        });
+      }
+    }
+  }
+  const tagOptions = Array.from(tagMap.values()).sort((a, b) =>
     a.label.localeCompare(b.label)
   );
 
@@ -166,6 +187,14 @@ const FileFilters = ({
         selected={selectedExtensions as Set<string>}
         onChange={(v) => onExtensionChange(v as ExtensionFilter)}
       />
+      {tagOptions.length > 0 && (
+        <FilterPopover
+          title="Tag"
+          options={tagOptions}
+          selected={selectedTags}
+          onChange={onTagChange}
+        />
+      )}
     </div>
   );
 };

@@ -17,6 +17,13 @@ export type FileTypeInfo = {
   textColor: string;
 };
 
+export type TagInfo = {
+  id: string;
+  name: string;
+  bgColor: string;
+  textColor: string;
+};
+
 export type UnifiedFileEntry = {
   id: string;
   name: string;
@@ -29,6 +36,7 @@ export type UnifiedFileEntry = {
   module: FileModule;
   fileType: FileTypeInfo | null;
   ownerId: string | null;
+  tags: TagInfo[];
 };
 
 export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
@@ -36,6 +44,7 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
     orderBy: { createdAt: "desc" },
     include: {
       uploadedBy: true,
+      fileTags: { include: { tag: true }, orderBy: { createdAt: "asc" } },
       itemFiles: { include: { fileType: true }, take: 1 },
       poAccountingFiles: { include: { fileType: true }, take: 1 },
       qcRecordFiles: { include: { fileType: true }, take: 1 },
@@ -135,6 +144,12 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
         module: fileModule,
         fileType,
         ownerId,
+        tags: file.fileTags.map((ft) => ({
+          id: ft.tag.id,
+          name: ft.tag.name,
+          bgColor: ft.tag.bgColor,
+          textColor: ft.tag.textColor,
+        })),
       };
     })
   );

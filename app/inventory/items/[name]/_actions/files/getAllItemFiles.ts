@@ -13,6 +13,10 @@ export const getAllItemFiles = async (itemId: string) => {
       file: {
         include: {
           uploadedBy: true,
+          fileTags: {
+            include: { tag: true },
+            orderBy: { createdAt: "asc" },
+          },
         }
       }
     }
