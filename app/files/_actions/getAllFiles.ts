@@ -19,6 +19,7 @@ export type FileTypeInfo = {
 
 export type TagInfo = {
   id: string;
+  fileTagId: string;
   name: string;
   bgColor: string;
   textColor: string;
@@ -33,9 +34,11 @@ export type UnifiedFileEntry = {
   thumbnailUrl: string | null;
   uploadedBy: { name: string | null; image: string | null };
   createdAt: Date;
+  public: boolean;
   module: FileModule;
   fileType: FileTypeInfo | null;
   ownerId: string | null;
+  junctionId: string | null;
   tags: TagInfo[];
 };
 
@@ -88,22 +91,26 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
       let fileModule: FileModule = "unassigned";
       let fileType: FileTypeInfo | null = null;
       let ownerId: string | null = null;
+      let junctionId: string | null = null;
 
       if (file.itemFiles.length > 0) {
         fileModule = "item";
         const ft = file.itemFiles[0].fileType;
         fileType = { name: ft.name, bgColor: ft.bgColor, textColor: ft.textColor };
         ownerId = file.itemFiles[0].itemId;
+        junctionId = file.itemFiles[0].id;
       } else if (file.poAccountingFiles.length > 0) {
         fileModule = "po-accounting";
         const ft = file.poAccountingFiles[0].fileType;
         fileType = { name: ft.name, bgColor: ft.bgColor, textColor: ft.textColor };
         ownerId = file.poAccountingFiles[0].purchaseOrderId;
+        junctionId = file.poAccountingFiles[0].id;
       } else if (file.qcRecordFiles.length > 0) {
         fileModule = "qc-record";
         const ft = file.qcRecordFiles[0].fileType;
         fileType = { name: ft.name, bgColor: ft.bgColor, textColor: ft.textColor };
         ownerId = file.qcRecordFiles[0].qcRecordId;
+        junctionId = file.qcRecordFiles[0].id;
       } else if (file.bprStagingFiles.length > 0) {
         fileModule = "bpr-staging";
         ownerId = file.bprStagingFiles[0].bprStagingId;
@@ -141,11 +148,14 @@ export const getAllFiles = async (): Promise<UnifiedFileEntry[]> => {
           image: file.uploadedBy.image,
         },
         createdAt: file.createdAt,
+        public: file.public,
         module: fileModule,
         fileType,
         ownerId,
+        junctionId,
         tags: file.fileTags.map((ft) => ({
           id: ft.tag.id,
+          fileTagId: ft.id,
           name: ft.tag.name,
           bgColor: ft.tag.bgColor,
           textColor: ft.tag.textColor,

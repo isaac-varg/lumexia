@@ -13,9 +13,10 @@ import {
   Updater,
   FilterFn,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FilterBar, { SearchBg } from "./FilterBar";
 import { Filter } from "@/types/filter";
+import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
 import ContextMenu from "../ContextMenu";
 import { RowSelectionHandlerMethod } from "@/utils/auxiliary/rowSelectionHandler";
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from "react-icons/fi";
@@ -30,7 +31,7 @@ type DataTableDefaultProps = {
   filters?: Filter[] | null;
   dialogIdentifier?: string;
   linkPath?: string;
-  onRowClick: (row: any, method: RowSelectionHandlerMethod) => void;
+  onRowClick?: (row: any, method: RowSelectionHandlerMethod) => void;
   onEnter?: (row: any) => any;
   initialSortBy?: { id: string, desc: boolean }[];
   tableStateName: TableStateName;
@@ -38,6 +39,8 @@ type DataTableDefaultProps = {
   disablePagination?: boolean
   searchBg?: SearchBg
   initialColumnFilters?: ColumnFiltersState;
+  selectable?: boolean;
+  onSelectionChange?: (rows: any[]) => void;
 };
 
 const globalFilterFn: FilterFn<any> = (row, columnId, filterValue) => {
@@ -77,6 +80,8 @@ const Default = ({
   disablePagination = false,
   searchBg,
   initialColumnFilters,
+  selectable = false,
+  onSelectionChange,
 }: DataTableDefaultProps) => {
 
   const tableFilterState = useTableFilter();
@@ -89,6 +94,31 @@ const Default = ({
   const [globalFilter, setGlobalFilter] = useState(tableFilterState[tableStateName] ?? "");
   const [pagination, setPagination] = useState<PaginationState>(tablePaginationSlice[tableStateName] || { pageIndex: 0, pageSize: 10 });
 
+  const selectableColumns = useMemo(() => {
+    if (!selectable) return columns;
+    return [
+      {
+        id: 'select',
+        header: ({ table }: any) => (
+          <IndeterminateCheckbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }: any) => (
+          <IndeterminateCheckbox
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+      },
+      ...columns,
+    ];
+  }, [selectable, columns]);
+
   const handlePaginationChange = (updater: Updater<PaginationState>) => {
 
     const newValue =
@@ -100,7 +130,7 @@ const Default = ({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: selectableColumns,
     initialState: {
       sorting: initialSortBy || [],
     },
@@ -124,6 +154,13 @@ const Default = ({
     onPaginationChange: handlePaginationChange,
     globalFilterFn,
   });
+
+  useEffect(() => {
+    if (selectable && onSelectionChange) {
+      const selected = table.getSelectedRowModel().flatRows;
+      onSelectionChange(selected.map((r) => r.original));
+    }
+  }, [rowSelection]);
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -160,7 +197,7 @@ const Default = ({
               <ContextMenu.Root key={row.id}>
                 <ContextMenu.Trigger asChild>
                   <tr
-                    onClick={() => onRowClick(row, 'rowClick')}
+                    onClick={() => selectable ? row.getToggleSelectedHandler()(row.id) : onRowClick?.(row, 'rowClick')}
                     className="border-b border-accent/35 hover:bg-accent/25 hover:cursor-pointer hover:text-accent-content"
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -175,7 +212,7 @@ const Default = ({
                 </ContextMenu.Trigger>
                 <ContextMenu.Content>
                   <ContextMenu.Item
-                    onClick={() => onRowClick(row, 'newTab')}
+                    onClick={() => onRowClick?.(row, 'newTab')}
                   >
                     New Tab
                   </ContextMenu.Item>
