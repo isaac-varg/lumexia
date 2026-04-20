@@ -3,10 +3,12 @@ import { purchasingActions } from "@/actions/purchasing"
 import purchaseOrderActions from "@/actions/purchasing/purchaseOrderActions"
 import purchaseOrderItemActions from "@/actions/purchasing/purchaseOrderItemActions"
 import { getUserId } from "@/actions/users/getUserId"
+import Alert from "@/components/Alert"
 import Card from "@/components/Card"
 import { poAccountingStatuses } from "@/configs/staticRecords/poAccountingStatuses"
 import { purchaseOrderStatuses } from "@/configs/staticRecords/purchaseOrderStatuses"
 import { recordStatuses } from "@/configs/staticRecords/recordStatuses"
+import useDialog from "@/hooks/useDialog"
 import { usePurchasingActions, usePurchasingSelection } from "@/store/purchasingSlice"
 import { useTabActions } from "@/store/tabSlice"
 import { createActivityLog } from "@/utils/auxiliary/createActivityLog"
@@ -17,6 +19,7 @@ const Options = () => {
   const { purchaseOrder, orderItems } = usePurchasingSelection()
   const { setActiveTab } = useTabActions()
   const router = useRouter()
+  const { showDialog, resetDialogContext } = useDialog()
 
   const handleDuplicate = async () => {
 
@@ -68,7 +71,7 @@ const Options = () => {
     await createActivityLog('Archived PO', 'purchaseOrder', purchaseOrder.id, { context: 'The PO was archived.' })
     router.push("/purchasing/purchase-orders")
     router.refresh();
-
+    resetDialogContext()
   }
 
   return (
@@ -80,7 +83,7 @@ const Options = () => {
               Duplicate
             </button>
 
-            <button className="btn btn-lg min-h-30 min-w-60 btn-error btn-outline" onClick={() => handleArchive()}>
+            <button className="btn btn-lg min-h-30 min-w-60 btn-error btn-outline" onClick={() => showDialog('archivePurchaseOrder')}>
               Archive
             </button>
 
@@ -90,6 +93,17 @@ const Options = () => {
 
       </Card.Root>
 
+      <Alert.Root identifier="archivePurchaseOrder">
+        <Alert.Content
+          title="Archive Purchase Order"
+          action={handleArchive}
+          actionLabel="Archive"
+          actionColor="error"
+          cancelAction={resetDialogContext}
+        >
+          Are you sure you want to archive this purchase order? This action cannot be undone.
+        </Alert.Content>
+      </Alert.Root>
 
     </div>
   )
