@@ -8,6 +8,12 @@ export const data = {
       "description": "This is a normal message",
       "bgColor": "#9a4573",
       "textColor": "#ffffff"
+    },
+    {
+      "name": "System",
+      "description": "Generated from lumxia",
+      "bgColor": "#9a4573",
+      "textColor": "#ffffff"
     }
   ]
 };

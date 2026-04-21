@@ -11,6 +11,8 @@ import { BatchSummations } from "./_actions/getBomPricingSummations"
 import { uomUtils } from "@/utils/uom"
 import { uom } from "@/configs/staticRecords/unitsOfMeasurement"
 import PricingErrorAlert from "./_components/PricingErrorAlert"
+import ZeroCostBomAlert from "./_components/ZeroCostBomAlert"
+import { detectZeroCostBomItems } from "./_actions/detectZeroCostBomItems"
 
 type Props = {
   searchParams: {
@@ -109,13 +111,22 @@ const NewPricingExaminationPage = async ({ searchParams }: Props) => {
 
     ])
 
-
-
-
-
+    // Detect zero-cost BOM items for produced items
+    const zeroCostBomDetection =
+      !isPurchased && producedItemPricingData && !producedItemPricingData.isError
+        ? detectZeroCostBomItems(producedItemPricingData as BatchSummations)
+        : null;
 
     return (
       <div className="flex flex-col gap-6">
+
+        {zeroCostBomDetection?.hasZeroCost && (
+          <ZeroCostBomAlert
+            affectedItems={zeroCostBomDetection.affectedItems}
+            examId={examId}
+            itemId={item.id}
+          />
+        )}
 
         <Header />
 
