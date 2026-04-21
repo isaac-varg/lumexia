@@ -17,6 +17,9 @@ export const getFinishedProductsByProducedItem = async (itemId: string, summatio
     include: {
       fillUom: true,
       auxiliaries: {
+        where: {
+          recordStatusId: recordStatuses.active,
+        },
         include: {
           auxiliaryItem: {
             include: {

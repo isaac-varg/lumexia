@@ -2,15 +2,22 @@
 
 import { getAuxiliariesTotalCost } from "@/app/accounting/pricing/_calculations/getAuxiliariesTotalCost";
 import prisma from "@/lib/prisma"
+import { recordStatuses } from "@/configs/staticRecords/recordStatuses";
 
 export const getFinishedProductsByItem = async (itemId: string) => {
     const fp = await prisma.finishedProduct.findMany({
         where: {
             filledWithItemId: itemId,
+            recordStatusId: {
+                not: recordStatuses.archived,
+            }
         },
         include: {
             fillUom: true,
             auxiliaries: {
+                where: {
+                    recordStatusId: recordStatuses.active,
+                },
                 include: {
                     auxiliaryItem: {
                         include: {
