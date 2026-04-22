@@ -19,13 +19,37 @@ export const createExaminationNote = async (data: Prisma.PricingExaminationNoteU
     })
 
     if (!examination) {
-        // Delete any existing queued examinations for this item
-        await prisma.pricingExamination.deleteMany({
+        // Delete any existing queued examinations for this item,
+        // cascading through note files and notes first to avoid foreign key constraints
+        const queuedExams = await prisma.pricingExamination.findMany({
             where: {
                 examinedItemId: examinationData.examinedItemId,
                 statusId: pricingExaminationStatuses.queued,
             },
+            select: { id: true },
         });
+
+        if (queuedExams.length > 0) {
+            const queuedExamIds = queuedExams.map((e) => e.id);
+
+            await prisma.pricingExaminationNoteFile.deleteMany({
+                where: {
+                    pricingExaminationNote: {
+                        pricingExaminationId: { in: queuedExamIds },
+                    },
+                },
+            });
+            await prisma.pricingExaminationNote.deleteMany({
+                where: {
+                    pricingExaminationId: { in: queuedExamIds },
+                },
+            });
+            await prisma.pricingExamination.deleteMany({
+                where: {
+                    id: { in: queuedExamIds },
+                },
+            });
+        }
 
         const examinationResponse = await prisma.pricingExamination.create({
             data: {
